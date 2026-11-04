@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Ảnh có chi tiết nhanh. Vạch mảnh và biên sắc tương ứng với biến thiên cường độ nhanh trong không gian.
+
+00:08.000 --> 00:16.000
+Bước 2: Biến đổi Fourier. FFT chuyển ảnh sang hệ số tần số. Phổ được dịch tâm để dễ nhìn vùng tần số thấp.
+
+00:16.000 --> 00:24.000
+Bước 3: Tạo mặt nạ thông thấp. Mặt nạ Gaussian giữ gần tâm mạnh hơn, giảm dần các tần số xa tâm.
+
+00:24.000 --> 00:32.000
+Bước 4: Nhân rồi biến đổi ngược. Nhân từng hệ số với H và dùng IFFT để trở về miền ảnh.
+
+00:32.000 --> 00:40.000
+Bước 5: Thay đổi tần số cắt. D0 nhỏ làm ảnh mượt mạnh hơn nhưng mất nhiều chi tiết hơn. Không phải mọi thông thấp đều khử mọi nhiễu.

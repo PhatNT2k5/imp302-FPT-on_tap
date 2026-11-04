@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Ảnh có vạch rất mảnh. Nhiều vạch sáng tối lặp nhanh tạo năng lượng tần số cao. Lưới mẫu thưa có thể không đủ để ghi nhận.
+
+00:08.000 --> 00:16.000
+Bước 2: Lấy thưa trực tiếp. Chỉ giữ một pixel mỗi bốn pixel theo từng chiều. Vạch có thể biến thành họa tiết sai.
+
+00:16.000 --> 00:24.000
+Bước 3: Lọc thông thấp trước. Giảm các biến thiên quá nhanh trước khi bỏ mẫu, thay vì đợi lấy mẫu xong mới làm mượt.
+
+00:24.000 --> 00:32.000
+Bước 4: So sánh cùng kích thước. Phóng lại hai kết quả chỉ để nhìn rõ. Nhánh lọc trước ít họa tiết giả hơn nhưng mất chi tiết nhỏ.
+
+00:32.000 --> 00:40.000
+Bước 5: Phân biệt độ nét và đúng mẫu. Ảnh có vẻ sắc không đồng nghĩa phản ánh đúng các vạch gốc; aliasing có thể tạo chi tiết giả.

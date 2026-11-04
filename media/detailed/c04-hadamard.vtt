@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Bốn mẫu đầu vào. Dùng vector x = [4,2,0,2]. Ma trận Hadamard chỉ gồm +1 và −1.
+
+00:08.000 --> 00:16.000
+Bước 2: Nhân với các mẫu dấu. Mỗi hàng của H cộng hoặc trừ các phần tử đầu vào theo một mẫu dấu.
+
+00:16.000 --> 00:24.000
+Bước 3: Thu các hệ số. Mẫu toàn dấu cộng lấy tổng 8. Các mẫu đổi dấu đo những kiểu biến thiên khác nhau.
+
+00:24.000 --> 00:32.000
+Bước 4: Đổi ngược. Vì HᵀH = 4I, nhân lại Hᵀ rồi chia 4 sẽ lấy lại vector x.
+
+00:32.000 --> 00:40.000
+Bước 5: Phân biệt với DCT. Hadamard dùng mẫu vuông ±1; DCT dùng cosine. Cả hai đều có thể là biểu diễn khả nghịch.

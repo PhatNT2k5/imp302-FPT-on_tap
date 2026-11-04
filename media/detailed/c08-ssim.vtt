@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Chọn hai ảnh để so sánh. Dùng ảnh tham chiếu và các phiên bản đổi sáng, đổi tương phản hoặc xáo pixel.
+
+00:08.000 --> 00:16.000
+Bước 2: Thành phần độ sáng. So sánh trung bình cường độ. Dịch toàn bộ mức sáng làm trung bình thay đổi.
+
+00:16.000 --> 00:24.000
+Bước 3: Thành phần tương phản. So sánh độ lệch chuẩn. Dải sáng tối co lại làm độ lệch chuẩn giảm.
+
+00:24.000 --> 00:32.000
+Bước 4: Thành phần cấu trúc. Hiệp phương sai cho biết các biến thiên có cùng vị trí và hướng hay không.
+
+00:32.000 --> 00:40.000
+Bước 5: Kết hợp và đọc kết quả. Clip tính SSIM toàn ảnh với trọng số 1; triển khai thường tính theo các cửa sổ cục bộ.

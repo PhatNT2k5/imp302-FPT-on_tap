@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Bitstream đầu vào. Ảnh trong video đã qua lượng tử hóa. Giải mã không tự lấy lại phần chi tiết đã mất.
+
+00:08.000 --> 00:16.000
+Bước 2: Giải mã để xử lý. Bộ chuyển mã miền pixel dựng lại khung trước khi đổi độ phân giải hoặc tham số mã hóa.
+
+00:16.000 --> 00:24.000
+Bước 3: Mã hóa lại với lượng tử mạnh. Bước lượng tử lớn hơn thường làm hệ số dễ mã hóa hơn nhưng tạo thêm sai số.
+
+00:24.000 --> 00:32.000
+Bước 4: So với mã hóa trực tiếp. So sánh tái lượng tử hóa hai lần với lượng tử hóa trực tiếp từ ảnh gốc. Hai đường có thể khác.
+
+00:32.000 --> 00:40.000
+Bước 5: Rút ra lựa chọn. Giảm bitrate cần đánh đổi chất lượng. Clip minh họa lượng tử vô hướng, không đo bitrate codec hoàn chỉnh.

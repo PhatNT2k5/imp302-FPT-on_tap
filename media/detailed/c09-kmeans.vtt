@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Biểu diễn pixel bằng đặc trưng. Mỗi điểm có hai đặc trưng mô phỏng. K-means không biết nhãn đúng; ta đặt K=3.
+
+00:08.000 --> 00:16.000
+Bước 2: Gán điểm vào tâm gần nhất. Tính khoảng cách Euclid từ mỗi điểm tới ba tâm, tô màu theo tâm gần nhất.
+
+00:16.000 --> 00:24.000
+Bước 3: Cập nhật các tâm. Thay mỗi tâm bằng trung bình những điểm đang thuộc cụm đó.
+
+00:24.000 --> 00:32.000
+Bước 4: Lặp gán và cập nhật. Hai bước lặp làm các tâm ổn định dần. Khởi tạo khác có thể đưa tới nghiệm khác.
+
+00:32.000 --> 00:40.000
+Bước 5: Liên hệ phân đoạn ảnh. Đặc trưng có thể là màu hoặc màu+khoảng cách. Cụm màu không tự bằng đối tượng ngữ nghĩa.

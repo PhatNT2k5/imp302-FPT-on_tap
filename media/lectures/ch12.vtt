@@ -1,0 +1,322 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.037 line:98%,end
+Chào các bạn, chúng ta đến với chương cuối cùng: phân loại mẫu ảnh.
+
+00:00:04.987 --> 00:00:09.287 line:98%,end
+Đây là bước sau cùng của pipeline nhận dạng: gán một nhãn, một lớp,
+
+00:00:09.287 --> 00:00:13.073 line:98%,end
+cho mẫu dựa trên các đặc trưng đã trích xuất ở chương mười.
+
+00:00:13.678 --> 00:00:19.353 line:98%,end
+Chúng ta sẽ đi qua khái niệm mẫu và lớp mẫu, phân loại bằng đối sánh nguyên mẫu,
+
+00:00:19.353 --> 00:00:23.112 line:98%,end
+bộ phân loại Bayes tối ưu, perceptron và mạng nơ-ron,
+
+00:00:23.112 --> 00:00:28.433 line:98%,end
+và cuối cùng là các kiến trúc CNN kinh điển: LeNet, AlexNet, VGG và ResNet.
+
+00:00:29.884 --> 00:00:34.899 line:98%,end
+Trong nhận dạng ảnh, một mẫu là một sự sắp xếp không gian của các đặc trưng.
+
+00:00:34.849 --> 00:00:38.820 line:98%,end
+Một lớp mẫu là tập hợp các mẫu có chung một số tính chất.
+
+00:00:39.430 --> 00:00:44.686 line:98%,end
+Nhận dạng gồm bốn giai đoạn: cảm biến sinh tín hiệu, tiền xử lý để giảm nhiễu,
+
+00:00:44.686 --> 00:00:49.133 line:98%,end
+tăng cường, phân đoạn, trích đặc trưng, và cuối cùng là phân loại.
+
+00:00:49.696 --> 00:00:54.407 line:98%,end
+Có ba hướng tiếp cận phân loại chính: đối sánh với nguyên mẫu định sẵn,
+
+00:00:54.407 --> 00:00:57.393 line:98%,end
+bộ phân loại thống kê tối ưu, và mạng nơ-ron.
+
+00:00:58.846 --> 00:01:02.748 line:98%,end
+Một vector mẫu x gồm các thành phần x một đến x n,
+
+00:01:02.748 --> 00:01:08.288 line:98%,end
+trong đó x i là descriptor đặc trưng thứ i, và n là tổng số descriptor.
+
+00:01:08.848 --> 00:01:12.955 line:98%,end
+Với các ứng dụng mà đối tượng được biểu diễn bằng đặc trưng cấu trúc,
+
+00:01:12.955 --> 00:01:16.170 line:98%,end
+ví dụ một chuỗi ký hiệu, vector mẫu không còn phù hợp,
+
+00:01:16.170 --> 00:01:18.134 line:98%,end
+và ta dùng mẫu cấu trúc thay thế.
+
+00:01:19.606 --> 00:01:23.655 line:98%,end
+Bộ phân loại khoảng cách tối thiểu dùng nguyên mẫu của mỗi lớp,
+
+00:01:23.655 --> 00:01:26.418 line:98%,end
+thường là vector trung bình m j của lớp đó.
+
+00:01:26.968 --> 00:01:31.330 line:98%,end
+Với một mẫu chưa biết, ta tính khoảng cách đến nguyên mẫu của từng lớp,
+
+00:01:31.330 --> 00:01:33.910 line:98%,end
+và gán mẫu vào lớp có nguyên mẫu gần nhất.
+
+00:01:34.474 --> 00:01:35.969 line:98%,end
+Nếu dùng khoảng cách Euclid,
+
+00:01:35.969 --> 00:01:42.484 line:98%,end
+chọn khoảng cách nhỏ nhất tương đương với việc đánh giá các hàm quyết định và chọn lớp có giá trị hàm quyết định lớn nhất.
+
+00:01:42.434 --> 00:01:45.832 line:98%,end
+Hai cách phát biểu này tương đương về mặt toán học.
+
+00:01:46.444 --> 00:01:55.313 line:98%,end
+Một cách khác là đối sánh tương quan: tính hệ số tương quan giữa mẫu chưa biết và một mẫu mô hình w. Phương pháp này còn gọi là template matching.
+
+00:01:55.870 --> 00:02:01.940 line:98%,end
+Ví dụ, lớp một có vector trung bình là một, một, lớp hai là năm, năm.
+
+00:02:01.890 --> 00:02:04.976 line:98%,end
+Mẫu chưa biết x là hai, ba.
+
+00:02:04.976 --> 00:02:10.783 line:98%,end
+Khoảng cách từ x đến m một khoảng hai phẩy hai, đến m hai khoảng ba phẩy sáu.
+
+00:02:10.783 --> 00:02:13.452 line:98%,end
+Vậy x được gán vào lớp một.
+
+00:02:13.452 --> 00:02:17.918 line:98%,end
+Biên quyết định giữa hai lớp là đường trung trực của đoạn nối hai trung bình.
+
+00:02:19.444 --> 00:02:22.727 line:98%,end
+Bây giờ là bộ phân loại thống kê tối ưu.
+
+00:02:22.677 --> 00:02:30.214 line:98%,end
+Xác suất mẫu x đến từ lớp w i là P của w i khi biết x. Nếu ta quyết định x thuộc lớp w i mà thực tế thuộc w j,
+
+00:02:30.214 --> 00:02:37.339 line:98%,end
+ta chịu tổn thất L i j. Tổn thất trung bình khi gán x vào lớp w i gọi là rủi ro trung bình có điều kiện.
+
+00:02:37.942 --> 00:02:42.996 line:98%,end
+Bộ phân loại tối thiểu hóa tổng tổn thất trung bình gọi là bộ phân loại Bayes.
+
+00:02:42.946 --> 00:02:46.935 line:98%,end
+Với hàm tổn thất không một, đúng thì không, sai thì một,
+
+00:02:46.935 --> 00:02:52.490 line:98%,end
+quy tắc trở thành: gán x vào lớp có tích p x khi biết w i nhân P w i lớn nhất.
+
+00:02:53.104 --> 00:02:55.726 line:98%,end
+Hạn chế lớn nhất trong thực tế: để tối ưu,
+
+00:02:55.726 --> 00:03:01.283 line:98%,end
+ta phải biết hàm mật độ xác suất của mẫu trong mỗi lớp và xác suất xuất hiện của mỗi lớp.
+
+00:03:01.233 --> 00:03:05.205 line:98%,end
+Những thông tin này thường phải ước lượng từ dữ liệu huấn luyện.
+
+00:03:05.818 --> 00:03:10.890 line:98%,end
+Với các lớp có phân phối Gauss, lấy logarit tự nhiên và bỏ các hằng số chung,
+
+00:03:10.890 --> 00:03:14.974 line:98%,end
+ta thấy hàm quyết định là các siêu mặt bậc hai, hyperquadrics.
+
+00:03:14.924 --> 00:03:18.478 line:98%,end
+Đây là kết quả kinh điển của phân loại thống kê.
+
+00:03:19.084 --> 00:03:23.853 line:98%,end
+Một trường hợp đặc biệt cần nhớ: nếu các lớp Gauss có cùng ma trận hiệp phương sai,
+
+00:03:23.853 --> 00:03:28.162 line:98%,end
+các thành phần bậc hai triệt tiêu, và biên quyết định trở thành tuyến tính.
+
+00:03:28.112 --> 00:03:28.650 line:98%,end
+Thêm nữa,
+
+00:03:28.650 --> 00:03:32.962 line:98%,end
+nếu hiệp phương sai là ma trận đơn vị và xác suất tiên nghiệm bằng nhau,
+
+00:03:32.962 --> 00:03:36.015 line:98%,end
+Bayes trở thành bộ phân loại khoảng cách tối thiểu.
+
+00:03:37.522 --> 00:03:41.111 line:98%,end
+Perceptron đơn học một biên tuyến tính, một siêu phẳng,
+
+00:03:41.111 --> 00:03:43.722 line:98%,end
+để tách hai lớp mẫu khả phân tuyến tính.
+
+00:03:43.672 --> 00:03:47.321 line:98%,end
+Trọng số được cập nhật từng bước với hệ số học alpha dương,
+
+00:03:47.321 --> 00:03:50.599 line:98%,end
+dựa trên việc mẫu hiện tại bị phân loại đúng hay sai.
+
+00:03:51.220 --> 00:03:55.788 line:98%,end
+Định lý hội tụ perceptron khẳng định: nếu hai lớp thực sự khả phân tuyến tính,
+
+00:03:55.788 --> 00:03:59.946 line:98%,end
+thuật toán chắc chắn hội tụ về một siêu mặt phân tách sau hữu hạn bước.
+
+00:04:00.502 --> 00:04:01.227 line:98%,end
+Mở rộng ra,
+
+00:04:01.227 --> 00:04:06.564 line:98%,end
+mạng nơ-ron nhiều lớp gồm các nơ-ron tính tổng có trọng số của đầu vào cộng bias,
+
+00:04:06.564 --> 00:04:08.278 line:98%,end
+rồi đưa qua hàm kích hoạt.
+
+00:04:08.848 --> 00:04:13.254 line:98%,end
+Huấn luyện bằng lan truyền ngược gồm bốn bước: đưa vector mẫu vào mạng,
+
+00:04:13.254 --> 00:04:18.095 line:98%,end
+lan truyền tiến để phân loại và tính sai số, lan truyền ngược sai số qua mạng,
+
+00:04:18.095 --> 00:04:19.957 line:98%,end
+rồi cập nhật trọng số và bias.
+
+00:04:19.907 --> 00:04:23.657 line:98%,end
+Đây là thuật toán nền tảng của mọi mạng nơ-ron sâu.
+
+00:04:24.274 --> 00:04:31.516 line:98%,end
+Giới hạn kinh điển của perceptron đơn là bài toán XOR: bốn điểm mà không đường thẳng nào tách được hai lớp.
+
+00:04:31.466 --> 00:04:33.833 line:98%,end
+Perceptron đơn không thể học XOR,
+
+00:04:33.833 --> 00:04:38.354 line:98%,end
+và đây là lý do cần mạng nhiều lớp với hàm kích hoạt phi tuyến.
+
+00:04:39.856 --> 00:04:43.283 line:98%,end
+Bây giờ đến các kiến trúc CNN kinh điển.
+
+00:04:43.233 --> 00:04:46.897 line:98%,end
+LeNet năm là CNN đầu tiên: ảnh đầu vào kích thước cố định,
+
+00:04:46.897 --> 00:04:51.508 line:98%,end
+các khối tích chập và pooling lặp lại, số filter tăng dần theo chiều sâu,
+
+00:04:51.508 --> 00:04:54.730 line:98%,end
+và tách rõ phần trích đặc trưng với phần phân loại.
+
+00:04:55.330 --> 00:05:10.697 line:98%,end
+AlexNet có năm điểm mới cần nhớ: dùng hàm kích hoạt ReLU và softmax ở đầu ra; dùng max pooling thay average pooling; dùng dropout để chính quy hóa giữa các lớp kết nối đầy đủ; cho phép hai lớp tích chập nối liền nhau; và dùng tăng cường dữ liệu.
+
+00:05:11.260 --> 00:05:11.998 line:98%,end
+Về bối cảnh,
+
+00:05:11.998 --> 00:05:18.332 line:98%,end
+LeNet năm ra đời năm một nghìn chín trăm chín mươi tám để nhận dạng chữ số viết tay trên séc ngân hàng.
+
+00:05:18.282 --> 00:05:23.014 line:98%,end
+AlexNet năm hai nghìn không trăm mười hai chiến thắng áp đảo cuộc thi ImageNet,
+
+00:05:23.014 --> 00:05:25.889 line:98%,end
+mở ra kỷ nguyên học sâu trong thị giác máy tính,
+
+00:05:25.889 --> 00:05:27.866 line:98%,end
+một phần nhờ huấn luyện trên GPU.
+
+00:05:28.486 --> 00:05:30.962 line:98%,end
+Vì sao ReLU quan trọng?
+
+00:05:30.912 --> 00:05:35.751 line:98%,end
+Hàm sigmoid và tanh bị bão hòa ở hai đầu, gradient gần bằng không,
+
+00:05:35.751 --> 00:05:37.657 line:98%,end
+làm mạng sâu học rất chậm.
+
+00:05:37.657 --> 00:05:41.097 line:98%,end
+ReLU bằng chính đầu vào khi dương và bằng không khi âm,
+
+00:05:41.097 --> 00:05:44.975 line:98%,end
+không bị bão hòa ở phía dương, nên huấn luyện nhanh hơn nhiều.
+
+00:05:46.492 --> 00:05:51.139 line:98%,end
+VGG16 dùng các bộ lọc rất nhỏ, ba nhân ba và một nhân một, với stride một,
+
+00:05:51.139 --> 00:05:52.709 line:98%,end
+max pooling hai nhân hai,
+
+00:05:52.709 --> 00:05:56.916 line:98%,end
+xếp chồng nhiều lớp tích chập trước mỗi lớp pooling thành một khối,
+
+00:05:56.916 --> 00:06:01.312 line:98%,end
+và lặp lại khối đó để tạo các mạng rất sâu, mười sáu và mười chín lớp.
+
+00:06:01.870 --> 00:06:04.788 line:98%,end
+ResNet dùng kết nối tắt, skip connection,
+
+00:06:04.788 --> 00:06:09.841 line:98%,end
+cho phép gradient đi thẳng qua nhiều lớp, và lặp lại các khối residual.
+
+00:06:09.791 --> 00:06:14.817 line:98%,end
+Nhờ đó có thể huấn luyện mạng cực sâu, lên đến một trăm năm mươi hai lớp.
+
+00:06:15.424 --> 00:06:20.991 line:98%,end
+Đây là bước đột phá giải quyết vấn đề suy giảm gradient, vanishing gradient,
+
+00:06:20.991 --> 00:06:22.236 line:98%,end
+khi mạng quá sâu.
+
+00:06:22.186 --> 00:06:27.668 line:98%,end
+Ý tưởng residual learning này đến nay vẫn có mặt trong hầu hết các kiến trúc hiện đại.
+
+00:06:28.282 --> 00:06:32.060 line:98%,end
+Vì sao VGG chỉ dùng bộ lọc ba nhân ba?
+
+00:06:32.010 --> 00:06:36.468 line:98%,end
+Hai lớp ba nhân ba chồng lên nhau có vùng nhìn tương đương một lớp năm nhân năm,
+
+00:06:36.468 --> 00:06:40.202 line:98%,end
+nhưng ít tham số hơn và có thêm một hàm kích hoạt phi tuyến ở giữa,
+
+00:06:40.202 --> 00:06:41.763 line:98%,end
+giúp mạng biểu diễn tốt hơn.
+
+00:06:42.364 --> 00:06:47.901 line:98%,end
+Khối residual tính đầu ra bằng F của x cộng với chính x. Mạng chỉ cần học phần dư F,
+
+00:06:47.901 --> 00:06:49.944 line:98%,end
+phần chênh lệch so với đầu vào.
+
+00:06:49.894 --> 00:06:54.972 line:98%,end
+Nếu lớp đó không cần thiết, mạng chỉ cần học F bằng không, rất dễ.
+
+00:06:54.972 --> 00:06:59.699 line:98%,end
+Đồng thời đường tắt cộng x cho phép gradient chảy thẳng về các lớp đầu.
+
+00:07:01.210 --> 00:07:03.465 line:98%,end
+Tổng kết chương mười hai.
+
+00:07:03.415 --> 00:07:08.311 line:98%,end
+Nhận dạng gồm cảm biến, tiền xử lý, trích đặc trưng và phân loại.
+
+00:07:08.932 --> 00:07:13.276 line:98%,end
+Bộ phân loại khoảng cách tối thiểu tương đương chọn hàm quyết định lớn nhất,
+
+00:07:13.276 --> 00:07:16.135 line:98%,end
+và đối sánh tương quan chính là template matching.
+
+00:07:16.702 --> 00:07:20.699 line:98%,end
+Bayes chọn lớp có p x khi biết w i nhân P w i lớn nhất,
+
+00:07:20.699 --> 00:07:24.842 line:98%,end
+và với lớp Gauss thì biên quyết định là siêu mặt bậc hai.
+
+00:07:25.408 --> 00:07:29.298 line:98%,end
+Perceptron hội tụ nếu dữ liệu khả phân tuyến tính,
+
+00:07:29.298 --> 00:07:34.277 line:98%,end
+và bốn kiến trúc CNN kinh điển là LeNet, AlexNet, VGG và ResNet.
+
+00:07:34.227 --> 00:07:39.566 line:98%,end
+Chúc mừng các bạn đã hoàn thành toàn bộ mười hai chương của IMP302.
+
+00:07:39.566 --> 00:07:44.110 line:98%,end
+Hãy luyện thêm các bộ câu hỏi để thật vững kiến thức trước kỳ thi nhé.
+
+00:07:44.110 --> 00:07:46.219 line:98%,end
+Chúc các bạn thi tốt!

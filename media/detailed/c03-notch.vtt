@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Thêm một sóng gây sọc. Cộng sóng sin có chu kỳ xác định vào ảnh. Sọc lặp đều là dấu hiệu nhiễu tuần hoàn.
+
+00:08.000 --> 00:16.000
+Bước 2: Nhìn vào phổ Fourier. Sóng sin tạo một cặp đỉnh đối xứng quanh tâm phổ của ảnh thực.
+
+00:16.000 --> 00:24.000
+Bước 3: Chặn đúng cặp đỉnh. Mặt nạ notch đặt gần 0 quanh hai vị trí nhiễu, giữ phần lớn hệ số khác.
+
+00:24.000 --> 00:32.000
+Bước 4: Biến đổi ngược. Áp dụng mặt nạ vào phổ rồi dùng IFFT. Các sọc giảm rõ trong ảnh tái tạo.
+
+00:32.000 --> 00:40.000
+Bước 5: Kiểm tra chi tiết bị mất. Nếu tín hiệu thật trùng tần số bị chặn, nó cũng bị ảnh hưởng. Notch rộng quá gây mất chi tiết.

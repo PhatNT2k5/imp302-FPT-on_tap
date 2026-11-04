@@ -1,0 +1,353 @@
+[
+[
+10,
+3,
+"What is the simplest approximation of the length of a boundary?",
+[
+"The area of the enclosed region",
+"The number of pixels along the boundary",
+"The diameter of the boundary",
+"The number of corners"
+],
+1,
+"Độ dài biên là descriptor đơn giản nhất; số pixel dọc theo biên xấp xỉ độ dài đó."
+],
+[
+10,
+3,
+"What is the major axis (longest chord) of a boundary?",
+[
+"The line joining the two extreme points that make up the diameter",
+"The line perpendicular to the diameter",
+"The shortest distance between two boundary points",
+"The line through the centroid parallel to the x-axis"
+],
+0,
+"Hai điểm cực trị tạo nên đường kính biên là trục chính (major axis / longest chord)."
+],
+[
+10,
+4,
+"How is the minor axis of a boundary defined?",
+[
+"The shortest chord through the centroid",
+"The line perpendicular to the major axis (longest perpendicular chord)",
+"Half of the major axis",
+"The diagonal of the bounding box"
+],
+1,
+"Trục phụ (longest perpendicular chord) là đường vuông góc với trục chính."
+],
+[
+10,
+4,
+"How is the curvature of a boundary defined?",
+[
+"The number of pixels along the boundary",
+"The rate of change of slope",
+"The ratio of perimeter squared to area",
+"The first difference of the chain code"
+],
+1,
+"Độ cong là tốc độ thay đổi độ dốc dọc biên, biểu diễn tiện qua slope chain code (tổng trị tuyệt đối các phần tử chuỗi)."
+],
+[
+10,
+5,
+"The shape number of a Freeman chain-coded boundary is defined as:",
+[
+"The chain code with the largest magnitude",
+"The first difference of smallest magnitude",
+"The number of 4-connected pixels",
+"The sum of the chain elements"
+],
+1,
+"Shape number (dựa trên mã chuỗi 4 hướng) là hiệu sai bậc một có độ lớn nhỏ nhất."
+],
+[
+10,
+7,
+"How are the boundary coordinates treated when computing Fourier descriptors?",
+[
+"As a binary image",
+"As complex numbers s(k) = x(k) + j·y(k)",
+"As a histogram of directions",
+"As a set of chain codes"
+],
+1,
+"Mỗi cặp tọa độ biên là một số phức s(k) = x(k) + j·y(k); DFT của dãy này cho các hệ số a(u) là Fourier descriptors."
+],
+[
+10,
+10,
+"Why are area and perimeter usually normalized when used as region descriptors?",
+[
+"Because they are always zero for small regions",
+"Because they generally make sense only when normalized, e.g. as compactness",
+"Because they cannot be computed on binary images",
+"Because they depend on color"
+],
+1,
+"Diện tích và chu vi chỉ có ý nghĩa khi chuẩn hóa, ví dụ độ compact (p²/A) hay độ tròn."
+],
+[
+10,
+11,
+"Eccentricity of a region is defined relative to:",
+[
+"A circle with the same area",
+"An ellipse that has the same second central moments as the region",
+"The bounding box of the region",
+"The convex hull of the region"
+],
+1,
+"Độ lệch tâm của vùng được định nghĩa theo ellipse có cùng moment trung tâm bậc hai với vùng."
+],
+[
+10,
+13,
+"Which moment of the intensity histogram is a measure of intensity contrast used for relative smoothness?",
+[
+"First moment",
+"Second moment",
+"Third moment",
+"Fourth moment"
+],
+1,
+"Moment bậc 2 đo độ tương phản cường độ, dùng làm descriptor độ mịn tương đối."
+],
+[
+10,
+14,
+"What does the third moment of the intensity histogram measure?",
+[
+"Relative flatness",
+"Skewness",
+"Uniformity",
+"Mean intensity"
+],
+1,
+"Moment bậc 3 đo độ lệch (skewness) của histogram; bậc 4 đo độ phẳng tương đối."
+],
+[
+10,
+18,
+"In spectral texture analysis, what do prominent peaks in the Fourier spectrum indicate?",
+[
+"The principal direction of the texture patterns",
+"The average intensity of the image",
+"The number of objects in the image",
+"The noise level"
+],
+0,
+"Đỉnh nổi bật cho hướng chính của mẫu kết cấu; vị trí đỉnh cho chu kỳ không gian cơ bản."
+],
+[
+10,
+22,
+"The seven 2-D moment invariants are invariant to which set of transformations?",
+[
+"Translation, scale change, mirroring (within a minus sign) and rotation",
+"Only rotation",
+"Blurring and noise",
+"Perspective projection and shear"
+],
+0,
+"Bảy moment bất biến (từ moment trung tâm chuẩn hóa bậc 2 và 3) bất biến với tịnh tiến, co giãn, phản chiếu (sai dấu) và xoay."
+],
+[
+10,
+24,
+"When using principal components as features for n registered images, how are pixels arranged?",
+[
+"Each image becomes one feature",
+"Corresponding pixels at the same location form an n-dimensional vector",
+"Pixels are sorted by intensity",
+"Only boundary pixels are used"
+],
+1,
+"Với n ảnh đã đăng ký, các pixel cùng vị trí tạo thành vector n chiều; từ ma trận hiệp phương sai lấy n vector riêng làm ma trận biến đổi."
+],
+[
+10,
+26,
+"What are the two principal whole-image feature detection approaches in the slides?",
+[
+"Detecting corners and detecting entire regions",
+"Histogram equalization and thresholding",
+"Huffman coding and arithmetic coding",
+"Edge linking and region growing"
+],
+0,
+"Đặc trưng toàn ảnh: phát hiện góc (Harris–Stephens) và phát hiện vùng (MSER)."
+],
+[
+10,
+28,
+"MSER stands for:",
+[
+"Mean Squared Error Ratio",
+"Maximally Stable Extremal Regions",
+"Multi-Scale Edge Response",
+"Minimum Spanning Edge Region"
+],
+1,
+"MSER = Maximally Stable Extremal Regions, phương pháp phát hiện toàn vùng ổn định."
+],
+[
+10,
+29,
+"Which model is used in the slides as an example of machine-learning based feature extraction?",
+[
+"LeNet-1",
+"VGG16",
+"Faster R-CNN",
+"SLIC"
+],
+1,
+"Slide minh họa dùng VGG16 để trích feature map của ảnh."
+],
+[
+4,
+3,
+"Which statement about image transforms is correct according to the slides?",
+[
+"Different transforms of an image contain different total energy",
+"All transforms of an image contain the same information and total energy and are reversible",
+"Only the DCT is reversible",
+"Transforms always reduce the amount of information"
+],
+1,
+"Mọi biến đổi của cùng ảnh chứa cùng thông tin và tổng năng lượng, đều khả nghịch; chỉ khác cách phân bố năng lượng giữa các hệ số."
+],
+[
+4,
+5,
+"Which symmetry property does the 2D DHT have?",
+[
+"H(u,v) = −H(−u,−v)",
+"H(u,v) = H(−u,−v)",
+"H(u,v) = H(v,u) only",
+"It has no symmetry"
+],
+1,
+"DHT 2D đối xứng: H(u,v) = H(−u,−v)."
+],
+[
+4,
+5,
+"The DHT transformation matrix is:",
+[
+"Complex and unitary",
+"Real, orthogonal and symmetric",
+"Binary and triangular",
+"Real but not invertible"
+],
+1,
+"Ma trận biến đổi DHT là thực, trực giao và đối xứng."
+],
+[
+4,
+8,
+"Compared with the DFT and DHT, the DCT spectrum has:",
+[
+"Half the frequency resolution",
+"The same frequency range but twice the frequency resolution",
+"No frequency resolution",
+"A complex-valued spectrum"
+],
+1,
+"DCT có cùng dải tần như Fourier và Hartley nhưng độ phân giải tần số gấp đôi."
+],
+[
+4,
+15,
+"Why is the 2D WHT efficient for digital implementation?",
+[
+"It uses only addition and subtraction",
+"It uses complex multiplications",
+"It is computed in the analog domain",
+"It needs no memory"
+],
+0,
+"WHT chỉ dùng phép cộng và trừ; FWHT có độ phức tạp O(NM log NM)."
+],
+[
+4,
+15,
+"What is the computational complexity of the 2D Fast Walsh-Hadamard Transform?",
+[
+"O(N²M²)",
+"O(NM)",
+"O(NM log(NM))",
+"O(log N)"
+],
+2,
+"FWHT 2D có độ phức tạp O(NM log(NM)), tương tự FFT 2D."
+],
+[
+4,
+16,
+"Which is listed as an application of the 2D WHT?",
+[
+"Image compression by compacting energy into a few coefficients",
+"Halftoning for laser printers",
+"Motion estimation in MPEG",
+"Graph-cut segmentation"
+],
+0,
+"Ứng dụng WHT: nén ảnh (dồn năng lượng như DCT nhưng tính đơn giản hơn), nhận dạng mẫu, xử lý tín hiệu số."
+],
+[
+4,
+17,
+"Multiresolution theory unifies techniques from which disciplines?",
+[
+"Subband coding, quadrature mirror filtering and pyramidal image processing",
+"Huffman coding, arithmetic coding and BTC",
+"Halftoning, dithering and error diffusion",
+"Graph cuts, K-means and SLIC"
+],
+0,
+"Lý thuyết đa phân giải hợp nhất mã hóa băng con, lọc gương cầu phương (nhận dạng tiếng nói) và xử lý ảnh kim tự tháp."
+],
+[
+4,
+20,
+"The DWT decomposes a signal into which two kinds of coefficients?",
+[
+"Real and imaginary coefficients",
+"Approximation and detail coefficients",
+"DC and AC coefficients only",
+"Magnitude and phase coefficients"
+],
+1,
+"DWT phân rã tín hiệu thành hệ số xấp xỉ (approximation) và hệ số chi tiết (detail)."
+],
+[
+4,
+22,
+"How many 2-D wavelet functions are required in a 2-D discrete wavelet transform?",
+[
+"One",
+"Two",
+"Three",
+"Four"
+],
+2,
+"2D DWT cần một hàm tỉ lệ 2D và ba hàm wavelet 2D tách được, nhạy theo cột, hàng và đường chéo."
+],
+[
+4,
+22,
+"The 2-D separable wavelets are 'directionally sensitive'. Along which directions do they measure intensity changes?",
+[
+"Columns, rows and diagonals",
+"Red, green and blue channels",
+"Time, space and frequency",
+"Only horizontal edges"
+],
+0,
+"Ba wavelet 2D đo biến thiên cường độ theo cột, hàng và đường chéo."
+]
+]

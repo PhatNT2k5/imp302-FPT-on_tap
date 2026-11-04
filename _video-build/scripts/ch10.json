@@ -1,0 +1,203 @@
+{
+  "title": "Trích xuất đặc trưng",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {
+          "text": "Mở đầu",
+          "say": "Chào các bạn, chương mười là trích xuất đặc trưng. Sau khi ảnh đã được phân đoạn thành các vùng và đường biên, ta cần mô tả chúng bằng những con số cô đọng, gọi là đặc trưng."
+        },
+        {
+          "text": "Yêu cầu",
+          "say": "Một đặc trưng tốt nên bất biến trước các biến đổi hình học như tịnh tiến, xoay, co giãn, để cùng một vật thể dù đặt ở đâu, xoay thế nào cũng cho ra cùng mô tả. Các đặc trưng này sẽ là đầu vào cho bước phân loại ở chương mười hai."
+        }
+      ]
+    },
+    {
+      "title": "Đặc trưng đường biên cơ bản",
+      "slide": 4,
+      "points": [
+        {
+          "text": "Độ dài biên: số pixel dọc theo biên",
+          "say": "Bắt đầu với đặc trưng mô tả đường biên. Đơn giản nhất là độ dài biên, xấp xỉ bằng số pixel dọc theo biên."
+        },
+        {
+          "text": "Đường kính: khoảng cách lớn nhất giữa hai điểm → trục chính; trục phụ vuông góc",
+          "say": "Đường kính biên là khoảng cách lớn nhất giữa hai điểm bất kỳ trên biên. Đoạn nối hai điểm đó là trục chính, major axis. Trục phụ, minor axis, là đường vuông góc với trục chính."
+        },
+        {
+          "text": "Độ cong qua slope chain code; đo độ ngoằn ngoèo (tortuosity)",
+          "say": "Độ cong là tốc độ thay đổi của độ dốc dọc theo biên, thường biểu diễn qua mã chuỗi độ dốc, slope chain code. Tổng giá trị tuyệt đối các phần tử của chuỗi đo độ ngoằn ngoèo của biên."
+        },
+        {
+          "text": "Mã chuỗi Freeman: hướng 4 hoặc 8 kết nối, mã hóa đường biên bằng dãy số",
+          "say": "Nhắc lại mã chuỗi Freeman: ta đi dọc đường biên và ghi lại hướng của mỗi bước. Với bốn kết nối, mỗi bước là một trong bốn hướng đánh số từ không đến ba. Với tám kết nối, có tám hướng từ không đến bảy. Cả đường biên trở thành một dãy số ngắn gọn."
+        }
+      ]
+    },
+    {
+      "title": "Shape number và Fourier descriptors",
+      "slide": 7,
+      "points": [
+        {
+          "text": "Shape number: hiệu sai bậc một có độ lớn nhỏ nhất của mã chuỗi Freeman",
+          "say": "Số hình dạng, shape number, dựa trên mã chuỗi Freeman bốn hướng, và được định nghĩa là hiệu sai bậc một có độ lớn nhỏ nhất của mã chuỗi."
+        },
+        {
+          "text": "Biên là số phức s(k) = x(k) + j·y(k), lấy DFT → a(u)",
+          "say": "Đặc trưng Fourier biểu diễn mỗi điểm biên như một số phức, s k bằng x k cộng j nhân y k. Lấy DFT của chuỗi này, các hệ số phức a u chính là đặc trưng Fourier."
+        },
+        {
+          "text": "Biến đổi có quy luật khi xoay, tịnh tiến, co giãn → chuẩn hóa được",
+          "say": "Khi biên bị xoay, tịnh tiến, co giãn hay đổi điểm bắt đầu, các hệ số Fourier thay đổi theo quy luật đơn giản, nên ta chuẩn hóa được để đạt tính bất biến. Ngoài ra, giữ vài hệ số đầu đã đủ mô tả hình dạng tổng thể."
+        },
+        {
+          "text": "Hiệu sai bậc một → bất biến xoay; chọn hoán vị nhỏ nhất → bất biến điểm đầu",
+          "say": "Vì sao shape number lại dùng hiệu sai bậc một? Vì hiệu giữa hai hướng liên tiếp không đổi khi ta xoay hình một góc chín mươi độ, nên đạt bất biến xoay. Còn việc chọn hoán vị vòng có giá trị nhỏ nhất giúp kết quả không phụ thuộc điểm bắt đầu."
+        },
+        {
+          "text": "Giữ vài hệ số Fourier đầu → dạng tổng thể; bỏ hệ số cao → mất góc nhọn",
+          "say": "Với đặc trưng Fourier, nếu chỉ giữ vài hệ số tần số thấp và biến đổi ngược, ta được hình dạng tổng thể đã làm tròn. Thêm dần hệ số tần số cao thì các góc nhọn và chi tiết nhỏ dần xuất hiện. Đây là cách mô tả hình dạng rất gọn."
+        },
+        {
+          "text": "Bất biến: bỏ a(0) cho tịnh tiến, chia |a(1)| cho co giãn, dùng biên độ cho xoay",
+          "say": "Cách chuẩn hóa cụ thể: tịnh tiến chỉ ảnh hưởng đến hệ số a không, nên bỏ hệ số này đi. Co giãn nhân mọi hệ số với cùng một hằng số, nên chia cho độ lớn của a một. Xoay và đổi điểm đầu chỉ thay đổi pha, nên dùng biên độ của các hệ số."
+        }
+      ]
+    },
+    {
+      "title": "Đặc trưng vùng: hình dạng",
+      "slide": 12,
+      "points": [
+        {
+          "text": "Diện tích A, chu vi p; compactness = p²/A, độ tròn",
+          "say": "Chuyển sang đặc trưng mô tả vùng. Diện tích A và chu vi p thường chỉ có ý nghĩa khi chuẩn hóa, ví dụ độ compact bằng p bình phương chia A, hay độ tròn."
+        },
+        {
+          "text": "Độ lệch tâm: so với ellipse cùng moment trung tâm bậc hai",
+          "say": "Độ lệch tâm, eccentricity, được định nghĩa so với một ellipse có cùng moment trung tâm bậc hai với vùng, và tính qua trị riêng của ma trận hiệp phương sai."
+        },
+        {
+          "text": "Compactness nhỏ nhất với hình tròn; hình càng méo, càng dài thì càng lớn",
+          "say": "Độ compact, chu vi bình phương chia diện tích, đạt giá trị nhỏ nhất với hình tròn, bằng bốn pi. Hình càng dài, càng nhiều răng cưa thì chỉ số này càng lớn. Ưu điểm là nó không đổi khi tịnh tiến, xoay và co giãn."
+        },
+        {
+          "text": "Eccentricity: 0 với hình tròn, tiến tới 1 với hình dài",
+          "say": "Độ lệch tâm bằng không với hình tròn và tiến dần tới một khi hình càng dài. Nó được tính từ tỉ số giữa trị riêng lớn và nhỏ của ma trận hiệp phương sai các tọa độ điểm trong vùng."
+        }
+      ]
+    },
+    {
+      "title": "Đặc trưng kết cấu (texture)",
+      "slide": 15,
+      "points": [
+        {
+          "text": "Moment histogram: bậc 2 tương phản, bậc 3 skewness, bậc 4 độ phẳng",
+          "say": "Đặc trưng kết cấu đo độ mịn, độ thô và độ đều. Dùng moment của histogram cường độ chuẩn hóa: moment bậc hai đo độ tương phản, dùng để mô tả độ mịn; bậc ba đo độ lệch, skewness; bậc bốn đo độ phẳng tương đối. Ngoài ra còn có độ đồng nhất và entropy."
+        },
+        {
+          "text": "Ma trận đồng hiện (co-occurrence): đếm cặp mức xám theo vị trí Q",
+          "say": "Ma trận đồng hiện mức xám, co-occurrence matrix, dùng một toán tử Q xác định vị trí tương đối của hai pixel, rồi đếm tần suất các cặp mức xám xuất hiện cùng nhau theo vị trí đó. Từ ma trận này tính được nhiều đặc trưng kết cấu."
+        },
+        {
+          "text": "Phổ Fourier S(r,θ): đỉnh cho hướng và chu kỳ của mẫu lặp",
+          "say": "Phương pháp phổ dùng phổ Fourier để mô tả các mẫu tuần hoàn. Đỉnh nổi bật cho biết hướng chính, vị trí đỉnh cho biết chu kỳ. Biểu diễn trong tọa độ cực S r theta: cố định theta để xem hành vi theo bán kính, cố định r để xem hành vi theo đường tròn."
+        },
+        {
+          "text": "Ví dụ: vùng mịn → moment bậc 2 nhỏ, uniformity cao, entropy thấp",
+          "say": "Thử áp dụng vào ví dụ. Một vùng da mịn có histogram hẹp, nên moment bậc hai nhỏ, độ đồng nhất cao và entropy thấp. Một vùng cỏ rậm có histogram rộng, moment bậc hai lớn, độ đồng nhất thấp và entropy cao."
+        },
+        {
+          "text": "Đặc trưng từ GLCM: tương phản, tương quan, năng lượng, đồng nhất",
+          "say": "Từ ma trận đồng hiện, người ta tính các đặc trưng như độ tương phản, độ tương quan, năng lượng và độ đồng nhất. Khác với moment histogram, ma trận đồng hiện có thông tin về vị trí tương đối, nên phân biệt được kết cấu sọc ngang với sọc dọc."
+        }
+      ]
+    },
+    {
+      "title": "Moment bất biến",
+      "slide": 22,
+      "points": [
+        {
+          "text": "Moment bậc (p+q), moment trung tâm, moment trung tâm chuẩn hóa",
+          "say": "Moment bất biến là đặc trưng hình dạng kinh điển. Ta có moment hai chiều bậc p cộng q, moment trung tâm bằng cách trừ đi tọa độ trọng tâm, và moment trung tâm chuẩn hóa."
+        },
+        {
+          "text": "7 moment bất biến với tịnh tiến, co giãn, xoay, phản chiếu (đổi dấu)",
+          "say": "Từ các moment trung tâm chuẩn hóa bậc hai và bậc ba, suy ra bộ bảy moment bất biến, không đổi khi tịnh tiến, co giãn, xoay, và phản chiếu gương chỉ sai một dấu. Con số bảy này rất hay được hỏi."
+        }
+      ]
+    },
+    {
+      "title": "PCA và đặc trưng toàn ảnh",
+      "slide": 24,
+      "points": [
+        {
+          "text": "n ảnh đã đăng ký → vector n chiều cho mỗi vị trí pixel",
+          "say": "Thành phần chính làm đặc trưng: với n ảnh đã đăng ký khớp nhau, các pixel cùng vị trí trên mọi ảnh tạo thành một vector n chiều."
+        },
+        {
+          "text": "Ma trận hiệp phương sai → vector riêng làm ma trận biến đổi A",
+          "say": "Tính vector trung bình và ma trận hiệp phương sai, lấy các vector riêng làm ma trận biến đổi A để chiếu sang không gian thành phần chính. Đây là PCA, giúp giảm chiều mà vẫn giữ phần lớn phương sai."
+        },
+        {
+          "text": "Toàn ảnh: góc Harris–Stephens, vùng ổn định MSER",
+          "say": "Đặc trưng toàn ảnh có hai hướng: phát hiện góc, tiêu biểu là bộ dò góc Harris Stephens, và phát hiện vùng, tiêu biểu là MSER, các vùng cực trị ổn định qua nhiều mức ngưỡng, dùng cho đối sánh ảnh."
+        },
+        {
+          "text": "Harris: góc là nơi cường độ thay đổi mạnh theo mọi hướng",
+          "say": "Ý tưởng của bộ dò góc Harris: trượt một cửa sổ nhỏ quanh một điểm. Ở vùng phẳng, cường độ gần như không đổi theo mọi hướng. Ở cạnh, cường độ chỉ đổi khi trượt vuông góc với cạnh. Còn ở góc, cường độ thay đổi mạnh theo mọi hướng. Harris đo điều này qua ma trận gradient và trị riêng của nó."
+        }
+      ]
+    },
+    {
+      "title": "Đặc trưng học được",
+      "slide": 29,
+      "points": [
+        {
+          "text": "CNN như VGG16 tự học feature map ở nhiều mức trừu tượng",
+          "say": "Cuối cùng là đặc trưng dựa trên học máy. Thay vì tự thiết kế descriptor như Fourier, moment hay ma trận đồng hiện, ta dùng các lớp tích chập của một mạng CNN huấn luyện sẵn như VGG16 để tự học ra các bản đồ đặc trưng ở nhiều mức trừu tượng."
+        },
+        {
+          "text": "Từ hand-crafted sang learned features",
+          "say": "Đây là bước chuyển quan trọng từ đặc trưng thủ công sang đặc trưng học được, làm nền cho phát hiện đối tượng và phân loại ở hai chương cuối."
+        }
+      ]
+    },
+    {
+      "title": "Tính bất biến của đặc trưng",
+      "points": [
+        {
+          "text": "Đặc trưng tốt: bất biến với tịnh tiến, xoay, co giãn; ổn định với nhiễu",
+          "say": "Trước khi tổng kết, chúng ta cùng nhìn lại tiêu chí của một đặc trưng tốt. Nó nên bất biến với tịnh tiến, xoay và co giãn, ổn định khi có nhiễu, phân biệt được các lớp khác nhau, và có số chiều nhỏ."
+        },
+        {
+          "text": "Bất biến sẵn: compactness, eccentricity, 7 moment Hu; cần chuẩn hóa: Fourier",
+          "say": "Một số đặc trưng bất biến sẵn, như độ compact, độ lệch tâm, và bảy moment bất biến. Một số khác cần chuẩn hóa thêm mới bất biến, như đặc trưng Fourier hay shape number. Còn độ dài biên và diện tích thì thay đổi theo tỉ lệ, nên chỉ dùng khi kích thước vật đã được cố định."
+        }
+      ]
+    },
+    {
+      "title": "Tổng kết chương 10",
+      "points": [
+        {
+          "text": "Biên: độ dài, đường kính, độ cong, shape number, Fourier descriptors",
+          "say": "Tổng kết chương mười. Đặc trưng biên gồm độ dài, đường kính với trục chính và trục phụ, độ cong, shape number và đặc trưng Fourier."
+        },
+        {
+          "text": "Vùng: compactness, eccentricity, texture, co-occurrence, phổ",
+          "say": "Đặc trưng vùng gồm độ compact, độ lệch tâm, kết cấu qua moment histogram, ma trận đồng hiện và phương pháp phổ."
+        },
+        {
+          "text": "7 moment bất biến; PCA; Harris, MSER",
+          "say": "Bảy moment bất biến là đặc trưng hình dạng mạnh, PCA giảm chiều, Harris và MSER cho đặc trưng toàn ảnh."
+        },
+        {
+          "text": "CNN học đặc trưng tự động",
+          "say": "Và CNN cho phép học đặc trưng tự động. Hẹn gặp các bạn ở chương mười một: phát hiện đối tượng."
+        }
+      ]
+    }
+  ]
+}

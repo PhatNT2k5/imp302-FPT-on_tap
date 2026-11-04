@@ -1,0 +1,361 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:06.118 line:98%,end
+Chào các bạn, chúng ta đến với chương ba: suy giảm, phục hồi và tái tạo ảnh.
+
+00:00:06.068 --> 00:00:09.333 line:98%,end
+Đây là chương dài và nặng lý thuyết nhất của môn học,
+
+00:00:09.333 --> 00:00:11.797 line:98%,end
+nhưng ý tưởng cốt lõi lại rất trực quan.
+
+00:00:12.406 --> 00:00:17.994 line:98%,end
+Chúng ta có một ảnh đã bị suy giảm chất lượng, có thể do bị mờ, bị nhiễu.
+
+00:00:17.944 --> 00:00:20.148 line:98%,end
+Nhiệm vụ là ước lượng lại ảnh gốc,
+
+00:00:20.148 --> 00:00:23.908 line:98%,end
+bằng cách mô hình hóa quá trình suy giảm rồi đảo ngược nó.
+
+00:00:23.908 --> 00:00:26.421 line:98%,end
+Đây gọi là bài toán ngược.
+
+00:00:27.940 --> 00:00:30.445 line:98%,end
+Khác với tăng cường ảnh mang tính chủ quan,
+
+00:00:30.445 --> 00:00:34.348 line:98%,end
+phục hồi ảnh dựa trên kiến thức tiên nghiệm về hiện tượng suy giảm.
+
+00:00:34.298 --> 00:00:38.126 line:98%,end
+Ta cải thiện ảnh theo một tiêu chí khách quan đã định trước.
+
+00:00:38.734 --> 00:00:40.989 line:98%,end
+Mô hình rất đơn giản.
+
+00:00:40.939 --> 00:00:45.978 line:98%,end
+Ảnh gốc f đi qua hàm suy giảm h, có thể là kênh truyền hoặc hệ thống thu nhận,
+
+00:00:45.978 --> 00:00:49.983 line:98%,end
+rồi cộng thêm nhiễu, cho ra ảnh quan sát g. Trong miền tần số,
+
+00:00:49.983 --> 00:00:52.631 line:98%,end
+quan hệ này thành G bằng H nhân F cộng N.
+
+00:00:53.248 --> 00:00:55.938 line:98%,end
+Bài toán phục hồi là: từ ảnh quan sát g,
+
+00:00:55.938 --> 00:00:59.233 line:98%,end
+cùng với hiểu biết về hàm suy giảm h và về nhiễu,
+
+00:00:59.233 --> 00:01:02.729 line:98%,end
+hãy ước lượng một ảnh gần với ảnh gốc f nhất có thể.
+
+00:01:04.198 --> 00:01:08.432 line:98%,end
+Nhiễu chủ yếu phát sinh trong quá trình thu nhận và truyền dẫn ảnh.
+
+00:01:08.382 --> 00:01:14.007 line:98%,end
+Khi phổ Fourier của nhiễu là hằng số trên mọi tần số, ta gọi đó là nhiễu trắng.
+
+00:01:14.007 --> 00:01:18.707 line:98%,end
+Nhiễu thường được coi là độc lập với tọa độ và không tương quan với ảnh.
+
+00:01:19.312 --> 00:01:24.367 line:98%,end
+Các hàm mật độ xác suất mô tả nhiễu thường gặp gồm: Gauss, phổ biến nhất,
+
+00:01:24.367 --> 00:01:30.877 line:98%,end
+đặc trưng bởi trung bình và độ lệch chuẩn; Rayleigh; Erlang hay Gamma; hàm mũ; và phân bố đều.
+
+00:01:31.426 --> 00:01:35.560 line:98%,end
+Và đặc biệt là nhiễu muối tiêu, salt and pepper, tức nhiễu xung,
+
+00:01:35.560 --> 00:01:39.306 line:98%,end
+biến một số pixel ngẫu nhiên thành cực đen hoặc cực trắng.
+
+00:01:39.256 --> 00:01:44.191 line:98%,end
+Mỗi loại nhiễu có đặc trưng thống kê riêng, và quyết định loại bộ lọc phù hợp.
+
+00:01:45.712 --> 00:01:49.972 line:98%,end
+Trong miền không gian có một nhóm bộ lọc trung bình rất hay ra đề.
+
+00:01:49.922 --> 00:01:55.365 line:98%,end
+Thứ nhất, arithmetic mean, trung bình cộng, làm mượt nhưng làm mờ chi tiết.
+
+00:01:55.978 --> 00:01:58.602 line:98%,end
+Thứ hai, geometric mean, trung bình nhân,
+
+00:01:58.602 --> 00:02:02.699 line:98%,end
+làm mượt tương đương trung bình cộng nhưng giữ chi tiết tốt hơn.
+
+00:02:03.268 --> 00:02:08.040 line:98%,end
+Thứ ba, harmonic mean, trung bình điều hòa, hiệu quả với nhiễu muối,
+
+00:02:08.040 --> 00:02:13.374 line:98%,end
+tức điểm trắng, và nhiễu Gauss, nhưng thất bại với nhiễu tiêu, tức điểm đen.
+
+00:02:13.942 --> 00:02:19.744 line:98%,end
+Thứ tư, contraharmonic mean, với tham số bậc Q. Q dương thì loại tốt nhiễu tiêu,
+
+00:02:19.744 --> 00:02:21.848 line:98%,end
+Q âm thì loại tốt nhiễu muối.
+
+00:02:21.798 --> 00:02:26.056 line:98%,end
+Nhưng với cùng một dấu Q, không thể loại cả hai cùng lúc.
+
+00:02:26.056 --> 00:02:30.444 line:98%,end
+Các bạn nhớ kỹ: Q dương diệt tiêu, Q âm diệt muối.
+
+00:02:31.048 --> 00:02:35.842 line:98%,end
+Bên cạnh các bộ lọc trung bình, còn có các bộ lọc thống kê thứ tự.
+
+00:02:35.792 --> 00:02:38.487 line:98%,end
+Median dùng giá trị giữa.
+
+00:02:38.487 --> 00:02:43.461 line:98%,end
+Bộ lọc max chọn giá trị lớn nhất nên xóa được điểm đen, tức nhiễu tiêu.
+
+00:02:43.461 --> 00:02:48.448 line:98%,end
+Bộ lọc min chọn giá trị nhỏ nhất nên xóa được điểm trắng, tức nhiễu muối.
+
+00:02:49.966 --> 00:02:54.434 line:98%,end
+Với nhiễu tuần hoàn, lọc trong miền tần số đặc biệt hiệu quả.
+
+00:02:54.384 --> 00:02:59.579 line:98%,end
+Lý do là nhiễu tuần hoàn biểu hiện thành các đốm năng lượng tập trung trong phổ Fourier,
+
+00:02:59.579 --> 00:03:01.350 line:98%,end
+tại đúng các tần số của nhiễu.
+
+00:03:01.960 --> 00:03:04.592 line:98%,end
+Công cụ chính là bộ lọc notch.
+
+00:03:04.542 --> 00:03:10.787 line:98%,end
+Notch reject được xây dựng như tích của các hàm truyền thông cao có tâm dời đến đúng vị trí các đốm nhiễu,
+
+00:03:10.787 --> 00:03:11.730 line:98%,end
+để xóa chúng đi.
+
+00:03:11.730 --> 00:03:14.842 line:98%,end
+Notch pass là phần bù của notch reject.
+
+00:03:16.366 --> 00:03:18.878 line:98%,end
+Với suy giảm tuyến tính và bất biến vị trí,
+
+00:03:18.878 --> 00:03:23.667 line:98%,end
+ảnh đầu ra không nhiễu là tích chập giữa ảnh gốc và đáp ứng xung của hàm suy giảm,
+
+00:03:23.667 --> 00:03:26.121 line:98%,end
+biểu diễn qua tích phân Fredholm loại một.
+
+00:03:26.071 --> 00:03:28.870 line:98%,end
+Có nhiễu thì cộng thêm N.
+
+00:03:29.488 --> 00:03:32.420 line:98%,end
+Có ba cách ước lượng hàm suy giảm.
+
+00:03:32.370 --> 00:03:35.299 line:98%,end
+Một, quan sát trực tiếp từ ảnh.
+
+00:03:35.299 --> 00:03:41.172 line:98%,end
+Hai, thực nghiệm, ví dụ chụp một xung sáng có cường độ A đã biết để đo đáp ứng.
+
+00:03:41.172 --> 00:03:42.784 line:98%,end
+Ba, mô hình hóa toán học,
+
+00:03:42.784 --> 00:03:47.812 line:98%,end
+ví dụ nhiễu loạn khí quyển được mô hình gần giống một bộ lọc thông thấp Gauss.
+
+00:03:48.418 --> 00:03:54.046 line:98%,end
+Quá trình phục hồi khi hàm suy giảm phải ước lượng như vậy đôi khi được gọi là giải chập mù,
+
+00:03:54.046 --> 00:03:55.269 line:98%,end
+blind deconvolution.
+
+00:03:56.728 --> 00:03:59.897 line:98%,end
+Biến đổi wavelet rời rạc là biểu diễn đa phân giải,
+
+00:03:59.897 --> 00:04:02.694 line:98%,end
+triển khai bằng bộ lọc băng con hai kênh lặp.
+
+00:04:02.644 --> 00:04:05.339 line:98%,end
+Khử nhiễu wavelet gồm ba bước.
+
+00:04:05.339 --> 00:04:10.401 line:98%,end
+Bước một, phân rã ảnh thành nhiều mức hệ số: thành phần xấp xỉ tần số thấp,
+
+00:04:10.401 --> 00:04:12.696 line:98%,end
+và thành phần chi tiết tần số cao.
+
+00:04:13.306 --> 00:04:16.420 line:98%,end
+Bước hai, ngưỡng hóa các hệ số.
+
+00:04:16.370 --> 00:04:20.211 line:98%,end
+Ngưỡng mềm giảm đều tất cả hệ số theo giá trị ngưỡng.
+
+00:04:20.211 --> 00:04:25.289 line:98%,end
+Ngưỡng cứng chỉ đưa các hệ số nhỏ hơn ngưỡng về không, còn lại giữ nguyên.
+
+00:04:25.900 --> 00:04:26.440 line:98%,end
+Bước ba,
+
+00:04:26.440 --> 00:04:32.308 line:98%,end
+áp dụng biến đổi wavelet ngược lên các hệ số đã ngưỡng hóa để tái tạo ảnh đã khử nhiễu.
+
+00:04:33.778 --> 00:04:41.017 line:98%,end
+Cách phục hồi đơn giản nhất là bộ lọc nghịch đảo: chia phổ ảnh quan sát cho hàm truyền H. Nhưng tại các tần số mà H gần bằng không,
+
+00:04:41.017 --> 00:04:43.559 line:98%,end
+phép chia sẽ khuếch đại nhiễu lên khủng khiếp.
+
+00:04:44.116 --> 00:04:49.673 line:98%,end
+Bộ lọc Wiener, còn gọi là bộ lọc bình phương trung bình tối thiểu, MMSE,
+
+00:04:49.673 --> 00:04:51.371 line:98%,end
+giải quyết vấn đề này.
+
+00:04:51.321 --> 00:04:56.059 line:98%,end
+Mục tiêu là tìm ước lượng sao cho sai số bình phương trung bình với ảnh gốc là nhỏ nhất,
+
+00:04:56.059 --> 00:05:00.097 line:98%,end
+với giả định nhiễu và ảnh không tương quan và đều có trung bình bằng không.
+
+00:05:00.618 --> 00:05:05.350 line:98%,end
+Wiener đưa thêm thông tin về tỉ lệ công suất nhiễu trên tín hiệu vào công thức,
+
+00:05:05.350 --> 00:05:07.626 line:98%,end
+nhờ đó tránh khuếch đại nhiễu quá mức.
+
+00:05:07.626 --> 00:05:13.266 line:98%,end
+Hiệu năng phục hồi thường được đo bằng SNR và sai số bình phương trung bình.
+
+00:05:13.816 --> 00:05:17.246 line:98%,end
+Một nhận xét hay được hỏi: nếu công suất nhiễu bằng không,
+
+00:05:17.246 --> 00:05:21.325 line:98%,end
+thành phần tỉ lệ nhiễu trên tín hiệu trong công thức Wiener biến mất,
+
+00:05:21.325 --> 00:05:24.105 line:98%,end
+và bộ lọc Wiener trở về đúng bộ lọc nghịch đảo.
+
+00:05:24.055 --> 00:05:25.824 line:98%,end
+Ngược lại, khi nhiễu lớn,
+
+00:05:25.824 --> 00:05:30.213 line:98%,end
+Wiener tự động giảm khuếch đại ở những tần số bị nhiễu lấn át.
+
+00:05:31.726 --> 00:05:36.191 line:98%,end
+Wiener có hai khó khăn: cần biết phổ công suất của ảnh gốc chưa suy giảm,
+
+00:05:36.191 --> 00:05:38.944 line:98%,end
+và chỉ tối ưu theo nghĩa trung bình thống kê,
+
+00:05:38.944 --> 00:05:41.207 line:98%,end
+chứ không tối ưu cho từng ảnh cụ thể.
+
+00:05:41.776 --> 00:05:45.529 line:98%,end
+Lọc bình phương tối thiểu có ràng buộc, constrained least square,
+
+00:05:45.529 --> 00:05:50.494 line:98%,end
+tối thiểu hóa một hàm tiêu chí C dựa trên toán tử Laplacian để giảm độ nhạy với nhiễu,
+
+00:05:50.494 --> 00:05:52.976 line:98%,end
+kèm theo một ràng buộc về sai số khôi phục.
+
+00:05:53.530 --> 00:05:56.796 line:98%,end
+Lời giải trong miền tần số phụ thuộc vào tham số gamma,
+
+00:05:56.796 --> 00:06:01.605 line:98%,end
+và gamma được điều chỉnh lặp đi lặp lại cho đến khi thỏa mãn ràng buộc mong muốn.
+
+00:06:03.064 --> 00:06:08.457 line:98%,end
+Phần tái tạo ảnh từ phép chiếu là nền tảng của chụp cắt lớp vi tính, CT.
+
+00:06:08.407 --> 00:06:11.907 line:98%,end
+Tia X được chiếu qua vật thể theo nhiều hướng khác nhau,
+
+00:06:11.907 --> 00:06:14.657 line:98%,end
+và ta đo được các profile hấp thụ một chiều.
+
+00:06:15.274 --> 00:06:20.289 line:98%,end
+Kỹ thuật chiếu ngược, backprojection, tái tạo ảnh từ các profile đó.
+
+00:06:20.239 --> 00:06:25.252 line:98%,end
+Càng kết hợp nhiều góc chiếu thì ảnh càng chính xác, slide minh họa với một,
+
+00:06:25.252 --> 00:06:28.221 line:98%,end
+hai, ba, bốn và ba mươi hai phép chiếu ngược.
+
+00:06:28.221 --> 00:06:33.052 line:98%,end
+CT thu được các lát cắt, rồi chồng lại để tạo biểu diễn ba chiều.
+
+00:06:34.576 --> 00:06:38.889 line:98%,end
+Với ảnh đa kênh như ảnh màu, khung hình video hay ảnh vệ tinh đa phổ,
+
+00:06:38.889 --> 00:06:41.578 line:98%,end
+ta khai thác thêm tương quan giữa các kênh,
+
+00:06:41.578 --> 00:06:44.266 line:98%,end
+nên phục hồi tốt hơn xử lý riêng từng kênh.
+
+00:06:44.216 --> 00:06:48.714 line:98%,end
+Hai phương pháp chính là LMMSE dựa trên ma trận hiệp phương sai,
+
+00:06:48.714 --> 00:06:54.268 line:98%,end
+và RWLS có thêm tham số điều chỉnh để cân bằng giữa độ khớp dữ liệu và độ mượt.
+
+00:06:54.874 --> 00:06:59.046 line:98%,end
+Phát hiện chuyển động xác định vùng chuyển động giữa hai thời điểm,
+
+00:06:59.046 --> 00:07:00.540 line:98%,end
+chủ yếu cho camera tĩnh.
+
+00:07:00.490 --> 00:07:03.461 line:98%,end
+Vì cường độ có thể thay đổi do nhiễu hay ánh sáng,
+
+00:07:03.461 --> 00:07:07.560 line:98%,end
+người ta dùng kiểm định giả thuyết với ngưỡng cố định hoặc thích ứng.
+
+00:07:08.164 --> 00:07:13.023 line:98%,end
+Ước lượng chuyển động quan trọng cho cả nén video và xử lý video.
+
+00:07:12.973 --> 00:07:16.161 line:98%,end
+Một thuật toán cần ba yếu tố: mô hình chuyển động,
+
+00:07:16.161 --> 00:07:21.072 line:98%,end
+tiêu chí ước lượng trong miền pixel hoặc miền tần số, và chiến lược tìm kiếm.
+
+00:07:21.072 --> 00:07:23.243 line:98%,end
+Với video, vì dữ liệu rất lớn,
+
+00:07:23.243 --> 00:07:27.947 line:98%,end
+các phương pháp phục hồi cần độ phức tạp vừa phải và bán tự động.
+
+00:07:29.458 --> 00:07:31.400 line:98%,end
+Tổng kết chương ba.
+
+00:07:31.350 --> 00:07:34.756 line:98%,end
+Mô hình suy giảm là g bằng h tích chập f cộng nhiễu,
+
+00:07:34.756 --> 00:07:37.835 line:98%,end
+và mỗi loại nhiễu có hàm mật độ xác suất riêng.
+
+00:07:38.452 --> 00:07:43.017 line:98%,end
+Bộ lọc contraharmonic với Q dương diệt nhiễu tiêu, Q âm diệt nhiễu muối,
+
+00:07:43.017 --> 00:07:45.681 line:98%,end
+còn nhiễu tuần hoàn thì dùng bộ lọc notch.
+
+00:07:46.246 --> 00:07:51.275 line:98%,end
+Lọc nghịch đảo nhạy nhiễu, Wiener khắc phục bằng tỉ lệ nhiễu trên tín hiệu,
+
+00:07:51.275 --> 00:07:53.956 line:98%,end
+và CLS bỏ được yêu cầu biết phổ ảnh gốc.
+
+00:07:54.520 --> 00:07:58.534 line:98%,end
+Khử nhiễu wavelet gồm phân rã, ngưỡng hóa và tái tạo,
+
+00:07:58.534 --> 00:08:00.655 line:98%,end
+còn CT dựa trên chiếu ngược.
+
+00:08:00.605 --> 00:08:04.524 line:98%,end
+Hẹn gặp các bạn ở chương bốn về các phép biến đổi ảnh.

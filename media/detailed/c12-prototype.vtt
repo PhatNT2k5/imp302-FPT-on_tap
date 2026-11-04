@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Đặc trưng và nguyên mẫu. Hai lớp có nguyên mẫu μA=(2,2), μB=(7,6). Mẫu cần gán nhãn là x=(3,4).
+
+00:08.000 --> 00:16.000
+Bước 2: Tính khoảng cách tới A. Chênh tọa độ là (1,2). Tổng bình phương bằng 5.
+
+00:16.000 --> 00:24.000
+Bước 3: Tính khoảng cách tới B. Chênh tọa độ là (−4,−2). Tổng bình phương bằng 20.
+
+00:24.000 --> 00:32.000
+Bước 4: Chọn lớp gần hơn. Vì √5 < √20, mẫu được gán vào A. Có thể so sánh trực tiếp bình phương khoảng cách.
+
+00:32.000 --> 00:40.000
+Bước 5: Kiểm tra thang đặc trưng. Một đặc trưng có thang số quá lớn có thể chi phối Euclid. Cần cân nhắc chuẩn hóa phù hợp.

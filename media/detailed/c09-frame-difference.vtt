@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Chụp hai khung liên tiếp. Nền đứng yên, một khối sáng di chuyển. Camera cố định trong ví dụ này.
+
+00:08.000 --> 00:16.000
+Bước 2: Trừ hai khung. Lấy trị tuyệt đối của hiệu để ghi nhận cả vùng vật thể rời đi và vùng mới tới.
+
+00:16.000 --> 00:24.000
+Bước 3: Ngưỡng hóa ảnh sai khác. Giữ pixel có thay đổi lớn hơn T. Sai khác nhỏ bị coi là không chuyển động.
+
+00:24.000 --> 00:32.000
+Bước 4: Làm sạch mặt nạ. Opening có thể loại các chấm nhiễu nhỏ; phải kiểm tra không xóa vật thể nhỏ cần giữ.
+
+00:32.000 --> 00:40.000
+Bước 5: Đọc đúng vùng phát hiện. Mask thường chứa cả vị trí cũ lẫn mới. Camera rung hay đổi sáng cũng tạo sai khác.

@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Lấy ảnh chuẩn và ảnh lỗi. Ảnh x và y phải cùng kích thước, cùng thang giá trị trước khi so sánh.
+
+00:08.000 --> 00:16.000
+Bước 2: Bình phương sai số. Với mỗi pixel, lấy x−y rồi bình phương; sai số âm và dương đều đóng góp.
+
+00:16.000 --> 00:24.000
+Bước 3: Lấy trung bình. Cộng sai số bình phương rồi chia số pixel để được MSE.
+
+00:24.000 --> 00:32.000
+Bước 4: Đổi sang PSNR. Ví dụ sai lệch +10 trên mọi pixel không clipping cho MSE=100 và PSNR≈28,13 dB.
+
+00:32.000 --> 00:40.000
+Bước 5: Nhận ra giới hạn. Chỉ số tổng hợp không hiểu nội dung. Cùng mức sai số có thể gây cảm nhận khác nhau.

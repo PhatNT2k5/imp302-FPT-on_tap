@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Đọc xác suất ký hiệu. Nguồn có A:0,4; B:0,3; C:0,2; D:0,1. Mã cố định cho 4 ký hiệu cần 2 bit.
+
+00:08.000 --> 00:16.000
+Bước 2: Ghép hai xác suất nhỏ nhất. Ghép C và D thành một nút có trọng số 0,3. Lặp với các nút còn lại.
+
+00:16.000 --> 00:24.000
+Bước 3: Hoàn thành cây nhị phân. Ghép hai nút trọng số 0,3 thành 0,6; ghép tiếp với A có trọng số 0,4.
+
+00:24.000 --> 00:32.000
+Bước 4: Gán bit trên nhánh. Một cách gán hợp lệ: A=0, B=10, C=110, D=111. Không mã nào là tiền tố của mã khác.
+
+00:32.000 --> 00:40.000
+Bước 5: Tính độ dài trung bình. Ký hiệu hay gặp được mã ngắn hơn. Trung bình 1,9 bit/ký hiệu, chưa tính chi phí lưu bảng mã.

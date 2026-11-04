@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Gradient nhiều mức xám. Ảnh gốc biến thiên mượt từ đen tới trắng. Thiết bị chỉ cho phép bật hoặc tắt điểm ảnh.
+
+00:08.000 --> 00:16.000
+Bước 2: Ngưỡng cố định. So với cùng một T làm gradient bị chia thành hai vùng lớn, mất cảm giác chuyển sắc.
+
+00:16.000 --> 00:24.000
+Bước 3: Dùng ma trận ngưỡng. Ordered dithering lặp một mẫu Bayer 4×4; mỗi vị trí dùng một ngưỡng khác nhau.
+
+00:24.000 --> 00:32.000
+Bước 4: Quan sát mật độ chấm. Vùng sáng có nhiều chấm trắng hơn; vùng tối ít chấm trắng hơn. Mỗi pixel vẫn chỉ có hai mức.
+
+00:32.000 --> 00:40.000
+Bước 5: Nhìn ở hai tỉ lệ. Phóng to thấy mẫu chấm; thu nhỏ mắt tích hợp các điểm thành cảm giác sắc độ.

@@ -1,0 +1,206 @@
+{
+  "title": "Nén ảnh",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {
+          "text": "Mở đầu",
+          "say": "Chào các bạn, chương năm là nén ảnh, một chương có rất nhiều câu hỏi trong đề thi. Mỗi ngày các bạn gửi hàng trăm tấm ảnh JPEG mà không để ý, và chương này sẽ giải thích chuyện gì xảy ra bên trong."
+        },
+        {
+          "text": "Hai nhánh",
+          "say": "Nén ảnh chia làm hai nhánh: nén không mất dữ liệu, lossless, và nén có mất dữ liệu, lossy. Chúng ta sẽ đi qua mã Huffman, mã số học, BTC, lượng tử hóa vector, wavelet, chuẩn JPEG, và cuối cùng là nén bằng học sâu."
+        }
+      ]
+    },
+    {
+      "title": "Nén không mất dữ liệu",
+      "slide": 5,
+      "points": [
+        {
+          "text": "Khai thác dư thừa: tương quan không gian giữa pixel, thời gian giữa khung",
+          "say": "Nén không mất dữ liệu giảm số bit mà không mất bất kỳ thông tin nào. Nó khả thi nhờ dư thừa trong tín hiệu: các pixel lân cận có tương quan không gian rất cao, và trong video còn có tương quan thời gian giữa các khung hình."
+        },
+        {
+          "text": "Ảnh giải mã giống hệt ảnh gốc → tỉ lệ nén chỉ khoảng 2 đến 3 lần",
+          "say": "Ảnh giải mã phải giống hệt ảnh gốc cả về số liệu, nên tỉ lệ nén bị giới hạn chỉ khoảng hai đến ba lần."
+        },
+        {
+          "text": "Perceptually lossless: bỏ cả thông tin mắt không cảm nhận được",
+          "say": "Để nén nhiều hơn, có khái niệm không mất dữ liệu theo cảm nhận, perceptually lossless. Ta bỏ cả thông tin dư thừa lẫn thông tin mắt người không nhận ra, miễn là ảnh trông giống hệt, dù về số liệu không còn giống hệt."
+        }
+      ]
+    },
+    {
+      "title": "Hệ thống mã hóa và entropy",
+      "slide": 6,
+      "points": [
+        {
+          "text": "3 khối: biến đổi → ánh xạ thành ký hiệu → mã hóa ký hiệu",
+          "say": "Một hệ thống mã hóa không mất dữ liệu gồm ba khối: biến đổi, ví dụ dự đoán vi phân hay DCT, để đưa dữ liệu về dạng dễ nén; ánh xạ dữ liệu thành ký hiệu; và mã hóa ký hiệu, gán từ mã nhị phân cho mỗi ký hiệu."
+        },
+        {
+          "text": "Chọn phương pháp: tỉ lệ nén, độ trễ, độ phức tạp, chống lỗi, khả mở",
+          "say": "Khi chọn phương pháp mã hóa, ta cân nhắc tỉ lệ nén, độ trễ mã hóa, độ phức tạp triển khai, khả năng chịu lỗi, và khả năng mở rộng theo lớp."
+        },
+        {
+          "text": "Entropy nguồn = cận dưới của tốc độ bit trung bình",
+          "say": "Từ lý thuyết thông tin, thông tin tự thân của một ký hiệu tỉ lệ nghịch với logarit xác suất của nó: ký hiệu càng hiếm thì càng mang nhiều thông tin. Entropy nguồn là kỳ vọng của thông tin tự thân, và đó là cận dưới lý thuyết cho tốc độ bit trung bình của mọi mã không mất dữ liệu."
+        }
+      ]
+    },
+    {
+      "title": "Mã hóa cắt khối (BTC)",
+      "slide": 12,
+      "points": [
+        {
+          "text": "Nén mất dữ liệu, độ dài cố định, lượng tử từng khối",
+          "say": "Mã hóa cắt khối, BTC, là kỹ thuật nén có mất dữ liệu với độ dài cố định. Nó dùng bộ lượng tử hóa để lượng tử từng vùng cục bộ của ảnh."
+        },
+        {
+          "text": "Bảo toàn trung bình và độ lệch chuẩn của khối n×n",
+          "say": "Điểm đặc trưng: BTC bảo toàn các moment thống kê của vùng, dạng đơn giản nhất là bảo toàn trung bình mẫu và độ lệch chuẩn mẫu."
+        },
+        {
+          "text": "1 bit/pixel + hai mức a, b tính từ hai moment",
+          "say": "Với bộ lượng tử hai mức, mỗi pixel chỉ cần một bit cho biết nó lớn hay nhỏ hơn trung bình, và hai giá trị độ chói a và b dùng để giải mã được tính từ trung bình và độ lệch chuẩn của khối."
+        }
+      ]
+    },
+    {
+      "title": "Lượng tử hóa vector (VQ)",
+      "slide": 21,
+      "points": [
+        {
+          "text": "Lượng tử hóa: ánh xạ tập giá trị lớn sang tập nhỏ",
+          "say": "Lượng tử hóa là ánh xạ một tập giá trị lớn sang một tập nhỏ hơn. Lượng tử hóa vector, VQ, lượng tử cả một khối mẫu cùng lúc thay vì từng mẫu riêng lẻ."
+        },
+        {
+          "text": "Then chốt: thiết kế codebook",
+          "say": "Yếu tố then chốt khi thiết kế VQ là xây dựng bộ mã, codebook. Mỗi khối ảnh sẽ được thay bằng chỉ số của vector mã gần nhất trong codebook."
+        },
+        {
+          "text": "LBG: khởi tạo → gán theo lân cận gần nhất → tính lại tâm → lặp",
+          "say": "Thuật toán kinh điển là Linde Buzo Gray, LBG. Chọn ngẫu nhiên N vector mã ban đầu từ tập huấn luyện, gán mỗi vector huấn luyện vào vector mã gần nhất, tính lại tâm của mỗi cụm, rồi cập nhật codebook và lặp đến khi hội tụ. Các bạn sẽ thấy nó rất giống K-means."
+        }
+      ]
+    },
+    {
+      "title": "Mã Huffman",
+      "slide": 23,
+      "points": [
+        {
+          "text": "Số ký hiệu mã trung bình nhỏ nhất khi mã từng ký hiệu riêng",
+          "say": "Mã Huffman cho số ký hiệu mã trung bình nhỏ nhất có thể, và là tối ưu với ràng buộc mỗi ký hiệu nguồn được mã hóa riêng biệt."
+        },
+        {
+          "text": "Bước 1: rút gọn nguồn – gộp hai ký hiệu xác suất nhỏ nhất",
+          "say": "Thuật toán gồm hai bước. Bước một, rút gọn nguồn: sắp xếp xác suất, gộp hai ký hiệu có xác suất nhỏ nhất thành một, rồi lặp lại cho đến khi chỉ còn hai ký hiệu."
+        },
+        {
+          "text": "Bước 2: gán mã từ nguồn nhỏ nhất ngược về nguồn ban đầu",
+          "say": "Bước hai, gán mã cho từng nguồn đã rút gọn, bắt đầu từ nguồn nhỏ nhất và quay ngược về nguồn ban đầu, mỗi lần tách ra thì thêm bit 0 và bit 1. Kết quả là ký hiệu hay gặp có mã ngắn, ký hiệu hiếm có mã dài."
+        },
+        {
+          "text": "Ví dụ: A 0.4, B 0.3, C 0.2, D 0.1 → A=0, B=10, C=110, D=111",
+          "say": "Lấy một ví dụ. Bốn ký hiệu A, B, C, D có xác suất không phẩy bốn, không phẩy ba, không phẩy hai và không phẩy một. Gộp C và D thành không phẩy ba, rồi gộp với B thành không phẩy sáu, cuối cùng gộp với A. Gán mã ngược lại, ta được A là không, B là một không, C là một một không, D là một một một. Độ dài trung bình là một phẩy chín bit, so với hai bit nếu dùng mã độ dài cố định."
+        },
+        {
+          "text": "Mã tiền tố: không từ mã nào là tiền tố của từ mã khác",
+          "say": "Mã Huffman là mã tiền tố: không có từ mã nào là phần đầu của từ mã khác. Nhờ vậy, bộ giải mã đọc từng bit và giải mã ngay lập tức mà không cần dấu phân cách."
+        }
+      ]
+    },
+    {
+      "title": "Mã hóa số học",
+      "slide": 34,
+      "points": [
+        {
+          "text": "Mã không khối: cả thông điệp ↦ một khoảng trong [0, 1)",
+          "say": "Khác với Huffman là mã khối, mã hóa số học tạo ra mã không khối. Toàn bộ một chuỗi ký hiệu được gán một từ mã duy nhất, chính là một khoảng số thực trong đoạn từ không đến một."
+        },
+        {
+          "text": "Mỗi ký hiệu thu hẹp khoảng theo đúng xác suất của nó",
+          "say": "Mỗi ký hiệu thu hẹp khoảng theo đúng xác suất xuất hiện của nó. Thông điệp càng dài thì khoảng càng hẹp, và càng cần nhiều bit để biểu diễn khoảng đó. Ưu điểm là không bị ràng buộc mỗi ký hiệu phải có số bit nguyên như Huffman."
+        }
+      ]
+    },
+    {
+      "title": "Nén ảnh bằng wavelet",
+      "slide": 28,
+      "points": [
+        {
+          "text": "Hệ số đã giải tương quan nén tốt hơn pixel gốc",
+          "say": "Nén wavelet dựa trên ý tưởng: các hệ số của một phép biến đổi giải tương quan được mã hóa hiệu quả hơn chính các pixel. Nếu wavelet dồn thông tin quan trọng vào ít hệ số, các hệ số còn lại có thể lượng tử thô hoặc cắt về không."
+        },
+        {
+          "text": "Yếu tố: loại wavelet, số mức phân rã, thiết kế bộ lượng tử",
+          "say": "Ba yếu tố ảnh hưởng đến nén: loại hàm wavelet, số mức phân rã, và thiết kế bộ lượng tử. Thường dùng lượng tử đều, cải thiện bằng một khoảng lượng tử lớn hơn quanh không, gọi là dead zone, và thay đổi bước lượng tử theo từng tỉ lệ."
+        }
+      ]
+    },
+    {
+      "title": "Chuẩn JPEG",
+      "slide": 40,
+      "points": [
+        {
+          "text": "Chia ảnh thành khối 8×8 → DCT từng khối",
+          "say": "Bây giờ là phần quan trọng nhất: JPEG. Quy trình cổ điển như sau. Chia ảnh thành các khối tám nhân tám pixel, rồi biến đổi DCT từng khối."
+        },
+        {
+          "text": "Lượng tử bằng bảng Q(u,v) dùng chung → nguồn gốc méo khối",
+          "say": "Sau đó lượng tử hóa các hệ số DCT bằng một bảng lượng tử Q u v, giống nhau cho mọi khối. Chính việc lượng tử độc lập từng khối là nguồn gốc của hiện tượng méo khối, blocking, ở tỉ lệ nén cao."
+        },
+        {
+          "text": "Mã hóa Huffman; giải mã làm ngược: Huffman → giải lượng tử → IDCT",
+          "say": "Các hệ số đã lượng tử được mã hóa không mất dữ liệu bằng Huffman. Phía nhận làm ngược lại: giải mã Huffman, giải lượng tử, rồi IDCT từng khối."
+        },
+        {
+          "text": "Chế độ: tuần tự, lũy tiến, phân cấp; 8 đến 12 bit",
+          "say": "JPEG có chế độ mã hóa tuần tự, quét một lượt từ trái sang phải từ trên xuống, và chế độ lũy tiến, mã hóa thô trước rồi tinh dần ở các lượt sau. Ngoài ra còn có chế độ phân cấp đa độ phân giải, và hỗ trợ độ sâu từ tám đến mười hai bit."
+        }
+      ]
+    },
+    {
+      "title": "Ảnh đa phổ, hậu xử lý và học sâu",
+      "slide": 52,
+      "points": [
+        {
+          "text": "Ảnh đa phổ: chiều phổ khác bản chất → biến đổi phổ-không gian",
+          "say": "Ảnh đa phổ, như ảnh vệ tinh hay ảnh y tế đa phương thức, là dữ liệu ba chiều mà chiều phổ khác bản chất với hai chiều không gian. Các bộ mã dựa trên biến đổi chia thành: phổ không gian, áp dụng biến đổi KL trên chiều phổ trước; không gian phổ, biến đổi không gian trước; và biến đổi phức khi các mặt phẳng ảnh không khớp nhau."
+        },
+        {
+          "text": "Hậu xử lý giảm méo ringing và blocking",
+          "say": "Hậu xử lý ảnh nén nhằm giảm hai loại méo: ringing, gợn sóng ở tỉ lệ nén cao do bản chất thông thấp, và blocking, méo khối do lượng tử độc lập các hệ số DCT."
+        },
+        {
+          "text": "Nén bằng học sâu: CNN, RNN, GAN",
+          "say": "Cuối cùng là nén bằng học sâu với ba hướng: CNN, ví dụ CAS-CNN khử artefact nén; RNN cho nén ảnh độ phân giải đầy đủ; và GAN cho nén thích ứng. Chúng thay dần pipeline biến đổi, lượng tử, mã entropy bằng mạng học end to end."
+        }
+      ]
+    },
+    {
+      "title": "Tổng kết chương 5",
+      "points": [
+        {
+          "text": "Lossless ~2–3 lần; entropy là cận dưới tốc độ bit",
+          "say": "Tổng kết chương năm. Nén không mất dữ liệu chỉ đạt khoảng hai đến ba lần, và entropy là cận dưới của tốc độ bit trung bình."
+        },
+        {
+          "text": "Huffman: gộp 2 xác suất nhỏ nhất; Arithmetic: một khoảng [0,1)",
+          "say": "Huffman gộp hai ký hiệu xác suất nhỏ nhất, còn mã số học biểu diễn cả thông điệp bằng một khoảng."
+        },
+        {
+          "text": "BTC giữ trung bình & độ lệch chuẩn; VQ dùng codebook LBG",
+          "say": "BTC giữ trung bình và độ lệch chuẩn của khối, VQ dùng codebook thiết kế bằng LBG."
+        },
+        {
+          "text": "JPEG: 8×8 → DCT → lượng tử Q(u,v) → Huffman; blocking & ringing",
+          "say": "JPEG gồm khối tám nhân tám, DCT, lượng tử và Huffman, với hai loại méo là blocking và ringing. Hẹn gặp các bạn ở chương sáu: nén video."
+        }
+      ]
+    }
+  ]
+}

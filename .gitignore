@@ -1,0 +1,7 @@
+# video build tooling: keep scripts and lecture sources, drop the heavy generated parts
+_video-build/.venv/
+_video-build/cache/
+_video-build/slide_titles.txt
+_video-build/lessons.txt
+__pycache__/
+.vercel/

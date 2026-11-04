@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Ảnh tương phản thấp. Ảnh thử chỉ dùng mức xám 80–160 nên các vùng sáng tối khó phân biệt.
+
+00:08.000 --> 00:16.000
+Bước 2: Đếm số pixel. Gom các pixel có cùng độ sáng vào từng cột. Histogram không lưu vị trí của pixel.
+
+00:16.000 --> 00:24.000
+Bước 3: Tính ánh xạ tuyến tính. Đưa 80 về 0 và 160 về 255. Mức xám ở giữa được ánh xạ theo cùng một đường thẳng.
+
+00:24.000 --> 00:32.000
+Bước 4: Áp dụng lên toàn ảnh. Pixel 120 trở thành khoảng 128. Dải sáng rộng hơn giúp nhìn cấu trúc rõ hơn.
+
+00:32.000 --> 00:40.000
+Bước 5: So sánh trước và sau. Kéo giãn làm tăng tương phản nhưng không tạo chi tiết mới hay sửa được mọi loại nhiễu.

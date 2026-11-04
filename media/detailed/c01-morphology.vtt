@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Ảnh và phần tử cấu trúc. Ảnh nhị phân có khối chính, chấm nhiễu và lỗ nhỏ. Dùng cửa sổ vuông 3×3.
+
+00:08.000 --> 00:16.000
+Bước 2: Erosion: co vật thể. Pixel chỉ còn trắng khi toàn bộ cửa sổ thuộc vật thể. Biên lùi vào, chấm nhỏ biến mất.
+
+00:16.000 --> 00:24.000
+Bước 3: Dilation: giãn vật thể. Pixel thành trắng nếu cửa sổ chạm vật thể. Biên mở rộng; lỗ nhỏ có thể bị lấp.
+
+00:24.000 --> 00:32.000
+Bước 4: Opening: co rồi giãn. Co trước loại chấm nhỏ; giãn sau phục hồi phần lớn kích thước khối còn lại.
+
+00:32.000 --> 00:40.000
+Bước 5: Closing: giãn rồi co. Giãn trước nối khe hoặc lấp lỗ nhỏ; co sau thu biên về gần ban đầu.

@@ -1,0 +1,113 @@
+{
+  "title": "Xử lý ảnh cơ bản",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {"text": "Mở đầu", "say": "Xin chào các bạn, chào mừng các bạn đến với chương một của môn xử lý ảnh và video, IMP302. Chương này có tên là xử lý ảnh cơ bản. Đây là chương đặt nền móng cho toàn bộ môn học, vì gần như mọi kỹ thuật phức tạp mà chúng ta học sau này, như lọc ảnh, phục hồi ảnh, nén ảnh hay phân đoạn ảnh, đều được xây dựng từ những phép toán rất đơn giản áp dụng lên từng điểm ảnh."},
+        {"text": "Lộ trình", "say": "Chương được chia thành hai phần lớn. Phần thứ nhất là xử lý ảnh mức xám, gồm histogram, các phép toán điểm, phép toán số học và phép toán hình học. Phần thứ hai là xử lý ảnh nhị phân, gồm ngưỡng hóa, phương pháp Otsu, gán nhãn vùng và hình thái học. Nào, chúng ta cùng bắt đầu nhé."}
+      ]
+    },
+    {
+      "title": "Ba nhóm phép toán trên ảnh mức xám",
+      "slide": 3,
+      "points": [
+        {"text": "Phép toán điểm: chỉ nhìn giá trị của từng pixel, không quan tâm hàng xóm", "say": "Đầu tiên, các bạn cần phân biệt rõ ba nhóm phép toán. Nhóm thứ nhất là phép toán điểm. Phép toán điểm chỉ nhìn vào giá trị cường độ của một pixel duy nhất để tính ra giá trị mới, hoàn toàn không quan tâm đến các pixel lân cận. Công cụ quan trọng nhất của nhóm này là histogram."},
+        {"text": "Phép toán số học: cộng, trừ, nhân, chia giữa nhiều ảnh cùng kích thước", "say": "Nhóm thứ hai là phép toán số học. Ở đây chúng ta thực hiện cộng, trừ, nhân hoặc chia giữa nhiều ảnh có cùng kích thước, theo từng vị trí pixel tương ứng. Ví dụ, trừ hai khung hình liên tiếp để phát hiện chuyển động, hoặc lấy trung bình nhiều ảnh để giảm nhiễu."},
+        {"text": "Phép toán hình học: dời vị trí pixel, không đổi giá trị cường độ", "say": "Nhóm thứ ba là phép toán hình học, như tịnh tiến hay xoay ảnh. Điểm mấu chốt cần nhớ là phép toán hình học thay đổi vị trí không gian của pixel, chứ không thay đổi giá trị cường độ. Đây là một ý rất hay xuất hiện trong câu hỏi trắc nghiệm."}
+      ]
+    },
+    {
+      "title": "Histogram ảnh",
+      "slide": 4,
+      "points": [
+        {"text": "Histogram đếm số pixel có mỗi mức xám k từ 0 đến K-1", "say": "Bây giờ chúng ta nói về histogram. Histogram của một ảnh là một hàm một chiều. Với mỗi mức xám k, từ 0 cho đến K trừ 1, histogram cho biết có bao nhiêu pixel trong ảnh mang đúng mức xám đó. Nói đơn giản, histogram là một bảng đếm tần suất."},
+        {"text": "Histogram mất thông tin vị trí: nhiều ảnh khác nhau có thể cùng histogram", "say": "Các bạn hãy chú ý điểm này. Histogram chỉ đếm, nó không lưu lại pixel nằm ở đâu. Vì vậy, hai ảnh trông hoàn toàn khác nhau, ví dụ một ảnh bàn cờ và một ảnh chia đôi trắng đen, vẫn có thể có cùng một histogram. Đây là sự mất thông tin cố hữu của histogram."},
+        {"text": "AOD: chỉ số đơn giản ước lượng tâm của phân bố mức xám", "say": "Một ứng dụng thực tế của histogram là tính AOD, viết tắt của Average Optical Density, tức mật độ quang trung bình. Đây là một chỉ số đơn giản giúp ước lượng tâm của phân bố mức xám, tức là ảnh nhìn chung đang sáng hay tối."}
+      ]
+    },
+    {
+      "title": "Phép toán điểm tuyến tính",
+      "slide": 6,
+      "points": [
+        {"text": "Pixel mới = P × pixel cũ + L (P: hệ số nhân, L: offset)", "say": "Phép toán điểm tuyến tính biến mỗi pixel thành một hàm tuyến tính của pixel gốc. Công thức rất quen thuộc: pixel mới bằng P nhân pixel cũ, cộng L. Trong đó L là offset, hay hệ số cộng, còn P là hệ số nhân."},
+        {"text": "Offset L dịch độ sáng; P > 1 giãn histogram, P < 1 nén histogram", "say": "Offset L dùng để dịch toàn bộ ảnh sáng lên hoặc tối đi, đưa ảnh về một mức sáng trung bình mong muốn. Còn hệ số P thì ảnh hưởng đến độ tương phản. Nếu P lớn hơn 1, histogram bị giãn ra, ảnh tương phản hơn. Nếu P nhỏ hơn 1, histogram bị nén lại, ảnh trở nên nhạt hơn."},
+        {"text": "FSHS: kéo giãn dải mức xám hiện có ra phủ kín 0 đến K-1", "say": "Một trường hợp đặc biệt rất quan trọng là FSHS, Full Scale Histogram Stretch. Ý tưởng là lấy dải mức xám mà ảnh đang có, ví dụ từ 80 đến 150, rồi kéo giãn nó ra phủ kín toàn bộ dải từ 0 đến 255. Nhờ vậy, độ tương phản được tăng lên một cách tự động."}
+      ]
+    },
+    {
+      "title": "Phép toán điểm phi tuyến và cân bằng histogram",
+      "slide": 10,
+      "points": [
+        {"text": "Phép logarit: nén vùng sáng, giãn vùng tối, hợp với ảnh dải động lớn", "say": "Tiếp theo là các phép toán điểm phi tuyến. Phép logarit nén vùng sáng cao và giãn vùng tối. Nó đặc biệt hữu ích khi ảnh có dải động rất lớn, điển hình là khi các bạn hiển thị phổ Fourier, nơi có vài giá trị cực lớn lấn át tất cả phần còn lại."},
+        {"text": "Cân bằng histogram: chuẩn hóa → tích lũy → dùng làm hàm ánh xạ", "say": "Kỹ thuật quan trọng nhất ở đây là cân bằng histogram. Quy trình gồm ba bước. Bước một, chuẩn hóa histogram bằng cách chia cho tổng số pixel. Bước hai, tính histogram tích lũy chuẩn hóa. Bước ba, dùng chính hàm tích lũy đó làm hàm ánh xạ để tính mức xám mới."},
+        {"text": "Kết quả: histogram gần đồng đều, tăng tương phản không cần chọn tham số", "say": "Kết quả là một ảnh có histogram trải đều hơn, nhờ đó độ tương phản tổng thể tăng lên. Ưu điểm lớn là hoàn toàn tự động, các bạn không cần phải chọn tham số thủ công như phép tuyến tính."}
+      ]
+    },
+    {
+      "title": "Phép toán số học: trung bình hóa để giảm nhiễu",
+      "slide": 11,
+      "points": [
+        {"text": "Nguồn nhiễu: tán xạ, cảm biến, kênh truyền, lỗi bit sau số hóa", "say": "Bây giờ chúng ta chuyển sang phép toán số học giữa các ảnh. Trong thực tế, nhiễu đến từ rất nhiều nguồn: tán xạ bức xạ trước khi tới cảm biến, nhiễu điện tử trong camera, nhiễu kênh truyền, và cả lỗi bit sau khi số hóa."},
+        {"text": "Trung bình nhiều ảnh nhiễu của cùng một cảnh: nhiễu triệt tiêu, tín hiệu giữ nguyên", "say": "Một kỹ thuật cổ điển để giảm nhiễu là trung bình hóa ảnh. Giả sử chúng ta chụp cùng một cảnh nhiều lần. Tín hiệu ảnh thì không đổi qua các lần chụp, còn nhiễu thì ngẫu nhiên và độc lập. Khi lấy trung bình theo từng pixel, phần nhiễu sẽ triệt tiêu dần, còn tín hiệu thì được giữ lại."},
+        {"text": "Điều kiện: nhiễu có trung bình bằng 0 và độc lập giữa các lần chụp", "say": "Các bạn nhớ điều kiện để kỹ thuật này hoạt động: nhiễu phải có trung bình bằng không và độc lập giữa các lần chụp. Càng nhiều ảnh được lấy trung bình thì nhiễu càng giảm."}
+      ]
+    },
+    {
+      "title": "Phép toán hình học",
+      "slide": 14,
+      "points": [
+        {"text": "Bước 1: ánh xạ tọa độ từ ảnh gốc f sang ảnh mới g", "say": "Phép toán hình học thay đổi quan hệ không gian giữa các pixel, ví dụ xoay, tịnh tiến hay biến đổi phối cảnh. Nó gồm hai bước. Bước thứ nhất là ánh xạ tọa độ, tức là tính xem mỗi pixel của ảnh gốc f sẽ đi đến vị trí nào trong ảnh mới g."},
+        {"text": "Bước 2: nội suy tọa độ không nguyên về lưới pixel nguyên", "say": "Vấn đề là sau khi xoay chẳng hạn, tọa độ mới thường không phải số nguyên. Vì vậy cần bước thứ hai là nội suy, đưa các tọa độ lẻ đó về lưới hàng cột chuẩn của ảnh."},
+        {"text": "Nearest neighbor: làm tròn về tọa độ nguyên gần nhất, đơn giản nhất", "say": "Cách nội suy đơn giản nhất là nội suy lân cận gần nhất, nearest neighbor. Tọa độ sau biến đổi được làm tròn về tọa độ nguyên gần nhất. Cách này rất nhanh, nhưng ảnh có thể bị răng cưa ở các cạnh."}
+      ]
+    },
+    {
+      "title": "Ảnh nhị phân và ngưỡng hóa",
+      "slide": 19,
+      "points": [
+        {"text": "Ảnh nhị phân: chỉ 2 mức 0 và 1, mỗi pixel 1 bit, xử lý bằng phép logic", "say": "Chúng ta chuyển sang phần thứ hai: ảnh nhị phân. Ảnh nhị phân chỉ có hai mức là 0 và 1, mỗi pixel chỉ cần một bit. Nhờ vậy có thể xử lý cực nhanh bằng các toán tử logic. Ảnh nhị phân thường biểu diễn thông tin cốt lõi, như vị trí và biên của đối tượng."},
+        {"text": "Ngưỡng hóa: pixel > T thì gán 1, ngược lại gán 0", "say": "Cách đơn giản nhất để tạo ảnh nhị phân là ngưỡng hóa. Ta so sánh mỗi pixel với một ngưỡng T. Nếu lớn hơn T thì gán 1, còn lại gán 0. Việc chọn T là quyết định quan trọng nhất, vì nó kiểm soát thông tin nào được giữ lại."},
+        {"text": "Ưu: gọn, đơn giản hóa xử lý sau. Nhược: mất chi tiết, nhạy với T", "say": "Ưu điểm của ngưỡng hóa là giảm mạnh dung lượng, đơn giản hóa dữ liệu cho các bước sau như phát hiện biên hay nhận dạng, và làm nổi bật vật thể so với nền. Nhược điểm là mất nhiều chi tiết gradient của ảnh xám, rất nhạy với việc chọn ngưỡng, và không hiệu quả khi cường độ thay đổi từ từ."}
+      ]
+    },
+    {
+      "title": "Phương pháp Otsu",
+      "slide": 21,
+      "points": [
+        {"text": "Otsu tự động chọn ngưỡng tối ưu từ histogram", "say": "Vậy làm sao chọn ngưỡng T một cách tự động? Câu trả lời là phương pháp Otsu. Otsu bắt đầu bằng việc tính histogram và xác suất của từng mức cường độ."},
+        {"text": "Thử mọi ngưỡng t, chia ảnh thành hai lớp: nền và vật thể", "say": "Sau đó, với mỗi ngưỡng khả dĩ t, thuật toán chia các pixel thành hai lớp: lớp nền và lớp vật thể, rồi tính phương sai của hai lớp đó."},
+        {"text": "Ngưỡng tối ưu = ngưỡng làm phương sai giữa hai lớp lớn nhất", "say": "Ngưỡng tối ưu là ngưỡng làm cho phương sai giữa hai lớp, between class variance, đạt giá trị lớn nhất. Nói cách khác, đó là ngưỡng tách hai lớp ra xa nhau nhất. Các bạn nhớ kỹ chữ lớn nhất, giữa hai lớp nhé, vì đề thi rất hay hỏi chỗ này."}
+      ]
+    },
+    {
+      "title": "Gán nhãn vùng",
+      "slide": 25,
+      "points": [
+        {"text": "Mục đích: tìm và đánh số các nhóm pixel liên thông, ví dụ để đếm vật thể", "say": "Sau khi có ảnh nhị phân, chúng ta thường muốn biết có bao nhiêu đối tượng. Đó là nhiệm vụ của gán nhãn vùng, region labeling. Thuật toán tìm các nhóm pixel liên thông có cùng giá trị và gán cho mỗi nhóm một nhãn riêng."},
+        {"text": "Quét trái sang phải, trên xuống dưới; xét pixel bên trái và bên trên", "say": "Thuật toán quét ảnh từ trái sang phải, từ trên xuống dưới. Với mỗi pixel có giá trị 1, ta nhìn pixel bên trái và pixel bên trên. Nếu cả hai đều là nền, ta gán một nhãn mới. Nếu chỉ một bên có nhãn, pixel hiện tại kế thừa nhãn đó."},
+        {"text": "Hai nhãn khác nhau gặp nhau: ghi nhận là tương đương", "say": "Trường hợp đặc biệt là khi cả hai bên đều có nhãn nhưng lại khác nhau. Lúc đó ta ghi nhận hai nhãn này là tương đương, vì thực chất chúng thuộc cùng một đối tượng nối liền, chỉ là được phát hiện từ hai nhánh khác nhau."}
+      ]
+    },
+    {
+      "title": "Hình thái học ảnh nhị phân",
+      "slide": 28,
+      "points": [
+        {"text": "Dùng phép logic NOT, AND, OR, MAJ qua một cửa sổ trượt", "say": "Phần cuối của chương là hình thái học ảnh nhị phân. Đây là nhóm phép toán thay đổi hình dạng đối tượng, dựa trên các toán tử logic như NOT, AND, OR và MAJ, tức là phép đa số, áp dụng qua một cửa sổ trượt trên ảnh."},
+        {"text": "Erosion: co đối tượng lại. Dilation: giãn đối tượng ra", "say": "Có bốn phép toán nền tảng. Erosion, tức là co, loại bỏ các pixel biên làm đối tượng nhỏ đi. Dilation, tức là giãn, thêm pixel vào biên làm đối tượng to ra."},
+        {"text": "Opening = Erosion rồi Dilation: xóa nhiễu nhỏ", "say": "Opening là erosion trước rồi dilation sau. Erosion xóa sạch các đốm nhiễu nhỏ, sau đó dilation khôi phục lại kích thước cho các đối tượng lớn. Kết quả là nhiễu nhỏ biến mất, còn đối tượng chính vẫn giữ hình dạng."},
+        {"text": "Closing = Dilation rồi Erosion: lấp lỗ và khe nhỏ", "say": "Ngược lại, closing là dilation trước rồi erosion sau. Dilation lấp đầy các lỗ hổng và khe nhỏ, rồi erosion đưa đối tượng về kích thước ban đầu. Mẹo nhớ: Opening mở ra để xóa đốm, Closing đóng lại để lấp lỗ."}
+      ]
+    },
+    {
+      "title": "Tổng kết chương 1",
+      "points": [
+        {"text": "Ba nhóm phép toán: điểm, số học, hình học", "say": "Chúng ta cùng tổng kết lại chương một. Có ba nhóm phép toán trên ảnh xám: phép toán điểm chỉ nhìn từng pixel, phép toán số học kết hợp nhiều ảnh, và phép toán hình học dời vị trí pixel."},
+        {"text": "Histogram, FSHS, cân bằng histogram để tăng tương phản", "say": "Histogram là công cụ trung tâm, và từ đó chúng ta có FSHS và cân bằng histogram để tăng tương phản một cách tự động."},
+        {"text": "Ngưỡng hóa, Otsu (max between-class variance), gán nhãn vùng", "say": "Với ảnh nhị phân, ngưỡng hóa là bước đầu tiên, Otsu chọn ngưỡng làm phương sai giữa hai lớp lớn nhất, và gán nhãn vùng giúp đếm đối tượng."},
+        {"text": "Erosion, Dilation, Opening xóa đốm, Closing lấp lỗ", "say": "Cuối cùng là bốn phép hình thái học: erosion, dilation, opening và closing. Cảm ơn các bạn đã theo dõi. Hãy làm thử các câu hỏi ôn tập của chương một để củng cố kiến thức nhé."}
+      ]
+    }
+  ]
+}

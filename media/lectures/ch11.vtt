@@ -1,0 +1,343 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.428 line:98%,end
+Chào các bạn, chương mười một là phát hiện đối tượng, object detection.
+
+00:00:05.378 --> 00:00:07.947 line:98%,end
+Đây là công nghệ đứng sau xe tự lái,
+
+00:00:07.947 --> 00:00:11.302 line:98%,end
+nhận diện khuôn mặt và camera giám sát an ninh.
+
+00:00:11.926 --> 00:00:15.496 line:98%,end
+Phát hiện đối tượng trả lời cùng lúc hai câu hỏi.
+
+00:00:15.446 --> 00:00:18.428 line:98%,end
+Đây là gì, tức phân loại ảnh.
+
+00:00:18.428 --> 00:00:24.053 line:98%,end
+Và nó ở đâu, tức định vị đối tượng, thường bằng một hộp bao, bounding box.
+
+00:00:24.053 --> 00:00:28.677 line:98%,end
+Chúng ta sẽ học các độ đo, bộ dữ liệu, phương pháp truyền thống,
+
+00:00:28.677 --> 00:00:30.628 line:98%,end
+rồi các họ mô hình học sâu.
+
+00:00:32.140 --> 00:00:37.155 line:98%,end
+Độ đo đầu tiên là IoU, Intersection over Union.
+
+00:00:37.105 --> 00:00:40.470 line:98%,end
+Lấy diện tích phần giao giữa hộp dự đoán và hộp thật,
+
+00:00:40.470 --> 00:00:42.248 line:98%,end
+chia cho diện tích phần hợp.
+
+00:00:42.248 --> 00:00:46.597 line:98%,end
+IoU càng gần một, hộp dự đoán càng khớp với vật thể thật.
+
+00:00:47.206 --> 00:00:53.002 line:98%,end
+mAP, mean average precision, là trung bình của AP trên toàn bộ K lớp.
+
+00:00:52.952 --> 00:00:58.603 line:98%,end
+Trong đó AP được tính từ đường cong precision recall tại các mức recall khác nhau.
+
+00:00:59.224 --> 00:01:03.633 line:98%,end
+mAR, mean average recall, là trung bình recall trên K lớp,
+
+00:01:03.633 --> 00:01:07.130 line:98%,end
+một độ đo bổ sung để so sánh các bộ phát hiện.
+
+00:01:07.690 --> 00:01:11.885 line:98%,end
+Ví dụ, hai hộp cùng kích thước chồng lên nhau đúng một nửa.
+
+00:01:11.835 --> 00:01:15.597 line:98%,end
+Phần giao bằng nửa hộp, phần hợp bằng một phẩy năm hộp,
+
+00:01:15.597 --> 00:01:18.059 line:98%,end
+nên IoU chỉ khoảng không phẩy ba ba.
+
+00:01:18.059 --> 00:01:18.907 line:98%,end
+Thông thường,
+
+00:01:18.907 --> 00:01:23.541 line:98%,end
+một dự đoán được tính là đúng khi IoU lớn hơn hoặc bằng không phẩy năm.
+
+00:01:24.148 --> 00:01:29.703 line:98%,end
+Nhắc lại hai khái niệm: precision là tỉ lệ dự đoán đúng trên tổng số dự đoán,
+
+00:01:29.703 --> 00:01:31.507 line:98%,end
+đo mức độ không báo nhầm.
+
+00:01:31.457 --> 00:01:35.825 line:98%,end
+Recall là tỉ lệ vật thể được tìm thấy trên tổng số vật thể thật,
+
+00:01:35.825 --> 00:01:37.394 line:98%,end
+đo mức độ không bỏ sót.
+
+00:01:38.914 --> 00:01:42.718 line:98%,end
+Có bốn bộ dữ liệu chuẩn các bạn cần nhớ con số.
+
+00:01:42.668 --> 00:01:46.444 line:98%,end
+PASCAL VOC có khoảng mười nghìn ảnh với hai mươi lớp.
+
+00:01:47.044 --> 00:01:52.671 line:98%,end
+COCO, Common Objects in Context, có khoảng hai trăm nghìn ảnh với tám mươi lớp.
+
+00:01:53.230 --> 00:01:57.715 line:98%,end
+ImageNet, cuộc thi ILSVRC, có khoảng mười bốn triệu ảnh,
+
+00:01:57.715 --> 00:02:00.198 line:98%,end
+phần phát hiện có hai trăm lớp.
+
+00:02:00.148 --> 00:02:04.289 line:98%,end
+Và Open Images có khoảng chín triệu ảnh với sáu trăm lớp.
+
+00:02:04.289 --> 00:02:11.138 line:98%,end
+Mẹo nhớ: VOC hai mươi, COCO tám mươi, ImageNet hai trăm, Open Images sáu trăm.
+
+00:02:12.652 --> 00:02:17.962 line:98%,end
+Pipeline truyền thống gồm ba bước: chọn các vị trí có khả năng chứa thông tin,
+
+00:02:17.962 --> 00:02:22.524 line:98%,end
+trích đặc trưng như SIFT, HOG hay contour, rồi phân loại đối tượng.
+
+00:02:23.086 --> 00:02:26.994 line:98%,end
+Vì đối tượng có thể ở bất kỳ vị trí, kích thước và tỉ lệ khung nào,
+
+00:02:26.994 --> 00:02:31.427 line:98%,end
+phương pháp truyền thống phải quét toàn ảnh bằng cửa sổ trượt ở nhiều tỉ lệ,
+
+00:02:31.427 --> 00:02:34.052 line:98%,end
+rất tốn kém và sinh ra nhiều ứng viên vô ích.
+
+00:02:34.624 --> 00:02:38.577 line:98%,end
+Dòng thời gian: bộ phân loại nhị phân năm hai nghìn lẻ một,
+
+00:02:38.577 --> 00:02:43.467 line:98%,end
+HOG năm hai nghìn lẻ năm, và Deformable Part Model năm hai nghìn lẻ chín.
+
+00:02:44.026 --> 00:02:49.476 line:98%,end
+Bộ phân loại nhị phân năm hai nghìn lẻ một nổi tiếng nhất là bộ phát hiện khuôn mặt Viola Jones,
+
+00:02:49.476 --> 00:02:52.372 line:98%,end
+dùng đặc trưng Haar, tính nhanh bằng ảnh tích phân,
+
+00:02:52.372 --> 00:02:54.018 line:98%,end
+chọn đặc trưng bằng AdaBoost,
+
+00:02:54.018 --> 00:02:56.971 line:98%,end
+và xếp tầng các bộ phân loại để loại nhanh vùng nền.
+
+00:02:56.921 --> 00:03:00.580 line:98%,end
+Đây là bộ phát hiện khuôn mặt thời gian thực đầu tiên.
+
+00:03:01.180 --> 00:03:06.097 line:98%,end
+HOG chia ảnh thành các ô nhỏ, tính histogram hướng gradient trong mỗi ô,
+
+00:03:06.097 --> 00:03:08.760 line:98%,end
+rất hiệu quả cho phát hiện người đi bộ.
+
+00:03:08.710 --> 00:03:15.455 line:98%,end
+DPM mở rộng ý tưởng này bằng cách mô hình vật thể như một tập bộ phận có thể dịch chuyển tương đối với nhau.
+
+00:03:16.954 --> 00:03:18.016 line:98%,end
+Bước sang học sâu,
+
+00:03:18.016 --> 00:03:24.330 line:98%,end
+nhóm đầu tiên là phương pháp dựa trên anchor: định nghĩa trước một tập dày đặc các hộp neo với nhiều tỉ lệ,
+
+00:03:24.330 --> 00:03:28.401 line:98%,end
+chia thành mẫu dương và âm, rồi dự đoán độ lệch vị trí cho mẫu dương.
+
+00:03:28.972 --> 00:03:32.383 line:98%,end
+R-CNN sinh nhiều hộp ứng viên bằng selective search,
+
+00:03:32.383 --> 00:03:35.007 line:98%,end
+đưa từng hộp qua CNN để trích đặc trưng,
+
+00:03:35.007 --> 00:03:39.534 line:98%,end
+rồi dùng SVM để phân loại và hồi quy tuyến tính để tinh chỉnh vị trí.
+
+00:03:39.484 --> 00:03:41.789 line:98%,end
+Đơn giản nhưng rất chậm.
+
+00:03:42.406 --> 00:03:47.673 line:98%,end
+Fast R-CNN cải thiện độ chính xác mười một phẩy năm phần trăm và nhanh hơn hơn hai trăm lần,
+
+00:03:47.673 --> 00:03:51.165 line:98%,end
+nhờ lớp RoI pooling đưa mọi kích thước về kích thước cố định,
+
+00:03:51.165 --> 00:03:54.257 line:98%,end
+và mô hình đa nhiệm kết hợp phân loại với hồi quy hộp.
+
+00:03:54.808 --> 00:03:59.780 line:98%,end
+Faster R-CNN thay selective search bằng mạng đề xuất vùng, RPN,
+
+00:03:59.780 --> 00:04:02.701 line:98%,end
+chia sẻ đặc trưng với mạng phát hiện.
+
+00:04:02.651 --> 00:04:07.299 line:98%,end
+Toàn bộ pipeline nằm trong một mạng duy nhất, học end to end.
+
+00:04:07.906 --> 00:04:13.247 line:98%,end
+Một bước hậu xử lý chung cho hầu hết bộ phát hiện là non maximum suppression.
+
+00:04:13.197 --> 00:04:16.608 line:98%,end
+Mạng thường sinh ra nhiều hộp chồng lên cùng một vật.
+
+00:04:16.608 --> 00:04:21.931 line:98%,end
+Ta giữ hộp có điểm cao nhất, loại các hộp khác có IoU với nó vượt ngưỡng,
+
+00:04:21.931 --> 00:04:22.806 line:98%,end
+rồi lặp lại.
+
+00:04:23.428 --> 00:04:28.716 line:98%,end
+Họ R-CNN được gọi là bộ phát hiện hai giai đoạn: giai đoạn một đề xuất vùng,
+
+00:04:28.716 --> 00:04:31.360 line:98%,end
+giai đoạn hai phân loại và tinh chỉnh.
+
+00:04:31.310 --> 00:04:35.442 line:98%,end
+Nhìn chung, hai giai đoạn chính xác hơn còn một giai đoạn nhanh hơn,
+
+00:04:35.442 --> 00:04:37.690 line:98%,end
+dù khoảng cách này ngày càng thu hẹp.
+
+00:04:39.202 --> 00:04:42.941 line:98%,end
+Họ mô hình một giai đoạn bỏ hẳn bước đề xuất vùng.
+
+00:04:42.891 --> 00:04:44.617 line:98%,end
+YOLO, You Only Look Once,
+
+00:04:44.617 --> 00:04:48.690 line:98%,end
+dự đoán trực tiếp hộp và lớp trong một lần truyền qua mạng,
+
+00:04:48.690 --> 00:04:51.797 line:98%,end
+đổi lấy tốc độ rất nhanh, gần thời gian thực.
+
+00:04:52.396 --> 00:04:54.154 line:98%,end
+SSD, Single Shot Detector,
+
+00:04:54.154 --> 00:04:58.009 line:98%,end
+dự đoán điểm lớp và độ lệch hộp cho một tập hộp mặc định,
+
+00:04:58.009 --> 00:05:01.526 line:98%,end
+bằng các bộ lọc tích chập nhỏ trên bản đồ đặc trưng.
+
+00:05:01.476 --> 00:05:07.478 line:98%,end
+Độ chính xác cao nhờ dự đoán ở nhiều tỉ lệ từ các bản đồ đặc trưng có độ phân giải khác nhau.
+
+00:05:08.086 --> 00:05:08.583 line:98%,end
+Cụ thể,
+
+00:05:08.583 --> 00:05:15.393 line:98%,end
+YOLO chia ảnh thành lưới S nhân S. Ô nào chứa tâm vật thể thì chịu trách nhiệm phát hiện vật đó.
+
+00:05:15.343 --> 00:05:20.434 line:98%,end
+Mỗi ô dự đoán một số hộp kèm độ tin cậy, cùng với xác suất các lớp.
+
+00:05:20.434 --> 00:05:24.197 line:98%,end
+Tất cả được tính trong một lần truyền, nên rất nhanh.
+
+00:05:24.808 --> 00:05:25.321 line:98%,end
+Với SSD,
+
+00:05:25.321 --> 00:05:30.320 line:98%,end
+các bản đồ đặc trưng có độ phân giải cao ở các lớp đầu giúp phát hiện vật nhỏ,
+
+00:05:30.320 --> 00:05:34.550 line:98%,end
+còn các bản đồ độ phân giải thấp ở lớp sâu giúp phát hiện vật lớn.
+
+00:05:34.500 --> 00:05:38.484 line:98%,end
+Đây là ý tưởng đa tỉ lệ được dùng rộng rãi về sau.
+
+00:05:40.006 --> 00:05:46.265 line:98%,end
+Phương pháp anchor có ba hạn chế: thiết kế kích thước và tỉ lệ anchor là siêu tham số thủ công,
+
+00:05:46.265 --> 00:05:49.164 line:98%,end
+dễ kém tổng quát; phần lớn anchor là mẫu âm,
+
+00:05:49.164 --> 00:05:53.315 line:98%,end
+gây mất cân bằng; và hộp vuông vẫn mơ hồ vị trí, lẫn nhiễu nền.
+
+00:05:53.872 --> 00:05:57.845 line:98%,end
+Phương pháp dựa trên điểm góc biểu diễn hộp bằng các góc thưa.
+
+00:05:57.795 --> 00:06:00.066 line:98%,end
+CornerNet giới thiệu corner pooling,
+
+00:06:00.066 --> 00:06:04.293 line:98%,end
+một lớp pooling mới giúp mạng định vị góc của bounding box tốt hơn.
+
+00:06:04.906 --> 00:06:07.169 line:98%,end
+FCOS, Fully Convolutional One Stage,
+
+00:06:07.169 --> 00:06:10.061 line:98%,end
+là đại diện của phương pháp dựa trên điểm neo,
+
+00:06:10.061 --> 00:06:15.090 line:98%,end
+dự đoán trực tiếp tại từng vị trí trên bản đồ đặc trưng mà không cần anchor box.
+
+00:06:16.552 --> 00:06:21.854 line:98%,end
+CNN trích đặc trưng bằng các cửa sổ cục bộ, nên khó nắm thông tin toàn cục.
+
+00:06:21.804 --> 00:06:26.218 line:98%,end
+Transformer bắt được phụ thuộc tầm xa và dễ thu thông tin toàn cục.
+
+00:06:26.818 --> 00:06:32.290 line:98%,end
+DETR, DEtection TRansformer, dùng CNN backbone học biểu diễn hai chiều,
+
+00:06:32.290 --> 00:06:37.146 line:98%,end
+làm phẳng và thêm mã hóa vị trí, đưa vào bộ mã hóa transformer.
+
+00:06:37.096 --> 00:06:42.546 line:98%,end
+Bộ giải mã nhận một số cố định các embedding đã học, gọi là object queries,
+
+00:06:42.546 --> 00:06:44.726 line:98%,end
+và chú ý đến đầu ra bộ mã hóa.
+
+00:06:45.340 --> 00:06:46.961 line:98%,end
+ViT, Vision Transformer,
+
+00:06:46.961 --> 00:06:54.457 line:98%,end
+và các biến thể như ViT FRCNN là những hướng dùng kiến trúc transformer thuần cho bài toán phát hiện đối tượng.
+
+00:06:55.006 --> 00:07:00.867 line:98%,end
+Điểm đặc biệt của DETR là bỏ được cả anchor lẫn non maximum suppression.
+
+00:07:00.817 --> 00:07:04.607 line:98%,end
+Mỗi object query dự đoán tối đa một vật, và trong huấn luyện,
+
+00:07:04.607 --> 00:07:09.515 line:98%,end
+dự đoán được ghép cặp một một với nhãn thật bằng thuật toán ghép cặp Hungarian.
+
+00:07:09.515 --> 00:07:14.828 line:98%,end
+Đổi lại, DETR huấn luyện lâu hơn và kém hơn với vật nhỏ.
+
+00:07:16.348 --> 00:07:18.499 line:98%,end
+Tổng kết chương mười một.
+
+00:07:18.449 --> 00:07:21.808 line:98%,end
+Phát hiện đối tượng là phân loại cộng định vị.
+
+00:07:22.414 --> 00:07:26.075 line:98%,end
+Độ đo gồm IoU, mAP và mAR.
+
+00:07:26.025 --> 00:07:31.406 line:98%,end
+Bộ dữ liệu: VOC hai mươi lớp, COCO tám mươi, ImageNet hai trăm,
+
+00:07:31.406 --> 00:07:33.199 line:98%,end
+Open Images sáu trăm.
+
+00:07:33.808 --> 00:07:43.849 line:98%,end
+Họ R-CNN đi từ R-CNN, sang Fast R-CNN với RoI pooling, rồi Faster R-CNN với RPN.
+
+00:07:43.799 --> 00:07:47.823 line:98%,end
+YOLO và SSD là mô hình một giai đoạn.
+
+00:07:48.442 --> 00:07:54.681 line:98%,end
+Không dùng anchor có CornerNet và FCOS, còn dựa trên transformer có DETR.
+
+00:07:54.631 --> 00:07:58.511 line:98%,end
+Hẹn gặp các bạn ở chương cuối cùng: phân loại ảnh.

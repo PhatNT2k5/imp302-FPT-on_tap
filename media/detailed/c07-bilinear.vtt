@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Bốn điểm quanh vị trí mới. Các góc có giá trị 20, 100, 60, 180. Cần tính tại x=0,25 và y=0,75 trong ô.
+
+00:08.000 --> 00:16.000
+Bước 2: Nội suy hàng trên. Đi một phần tư từ 20 đến 100: giá trị trung gian là 40.
+
+00:16.000 --> 00:24.000
+Bước 3: Nội suy hàng dưới. Đi một phần tư từ 60 đến 180: giá trị trung gian là 90.
+
+00:24.000 --> 00:32.000
+Bước 4: Nội suy theo chiều dọc. Đi ba phần tư từ hàng trên tới hàng dưới: kết quả 77,5.
+
+00:32.000 --> 00:40.000
+Bước 5: So với nearest neighbor. Nearest chọn góc gần nhất là 60 trong ví dụ. Bilinear kết hợp bốn góc nên chuyển tiếp mượt hơn.

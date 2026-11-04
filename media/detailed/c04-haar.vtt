@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Ghép cặp hai mẫu. Với cặp (a,b), lấy tổng và hiệu có chuẩn hóa. Ví dụ (10,14) cho tổng lớn, hiệu nhỏ.
+
+00:08.000 --> 00:16.000
+Bước 2: Xử lý theo hàng. Mỗi hàng được tách thành thành phần mượt và thành phần thay đổi theo chiều ngang.
+
+00:16.000 --> 00:24.000
+Bước 3: Xử lý tiếp theo cột. Tách theo cột tạo bốn băng: xấp xỉ và ba nhóm chi tiết định hướng.
+
+00:24.000 --> 00:32.000
+Bước 4: Phân rã đa tỉ lệ. Tiếp tục phân rã riêng băng LL. Chi tiết thô và chi tiết nhỏ nằm ở các mức khác nhau.
+
+00:32.000 --> 00:40.000
+Bước 5: Tái tạo bằng phép ngược. Nếu giữ tất cả hệ số, cộng/trừ ngược sẽ khôi phục ảnh ban đầu.

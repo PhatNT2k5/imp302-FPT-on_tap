@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Ảnh sạch làm tham chiếu. Dùng một ảnh thử có vùng phẳng, cạnh và vạch mảnh để quan sát nhiễu.
+
+00:08.000 --> 00:16.000
+Bước 2: Thêm nhiễu Gaussian. Nhiễu cộng tạo dao động nhỏ trên nhiều pixel. Clip dùng trung bình 0, độ lệch chuẩn 20.
+
+00:16.000 --> 00:24.000
+Bước 3: Thêm nhiễu xung. Một số pixel bị thay bằng 0 hoặc 255, tạo chấm đen trắng rõ rệt.
+
+00:24.000 --> 00:32.000
+Bước 4: Lọc theo loại nhiễu. Làm mượt có thể giảm dao động Gaussian; median thường xử lý tốt chấm nhiễu xung.
+
+00:32.000 --> 00:40.000
+Bước 5: Kiểm tra phần đánh đổi. Khử nhiễu và giữ cạnh thường đánh đổi với nhau. So sánh cả vùng phẳng lẫn chi tiết.

@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Hai hộp 100×100. Hộp thật và hộp dự đoán có cùng kích thước; bắt đầu không chồng lấn.
+
+00:08.000 --> 00:16.000
+Bước 2: Tìm vùng giao. Khi hộp dự đoán lệch ngang 50, phần giao rộng 50 và cao 100.
+
+00:16.000 --> 00:24.000
+Bước 3: Tính vùng hợp. Cộng diện tích hai hộp rồi trừ phần giao để không đếm hai lần.
+
+00:24.000 --> 00:32.000
+Bước 4: Chia giao cho hợp. Tỉ lệ trong ví dụ là 1/3. IoU không phải phần trăm diện tích chỉ của hộp thật.
+
+00:32.000 --> 00:40.000
+Bước 5: Đưa hai hộp trùng nhau. Khi giao bằng hợp, IoU=1. Hộp không chạm có IoU=0.

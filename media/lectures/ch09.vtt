@@ -1,0 +1,319 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.347 line:98%,end
+Chào các bạn, chương chín là phân đoạn ảnh và video.
+
+00:00:04.297 --> 00:00:08.405 line:98%,end
+Phân đoạn là chia ảnh thành các vùng thỏa mãn những điều kiện nhất định,
+
+00:00:08.405 --> 00:00:12.057 line:98%,end
+ví dụ tách người ra khỏi nền, hay tách từng chiếc xe trên đường.
+
+00:00:12.670 --> 00:00:16.787 line:98%,end
+Các thuật toán phân đoạn ảnh xám dựa trên một trong hai đặc tính.
+
+00:00:16.737 --> 00:00:21.971 line:98%,end
+Sự gián đoạn, discontinuity, tức là tìm biên nơi cường độ thay đổi đột ngột,
+
+00:00:21.971 --> 00:00:24.106 line:98%,end
+gọi là phân đoạn dựa trên cạnh.
+
+00:00:24.106 --> 00:00:29.293 line:98%,end
+Và sự tương đồng, similarity, tức là gom các vùng giống nhau theo tiêu chí,
+
+00:00:29.293 --> 00:00:31.437 line:98%,end
+gọi là phân đoạn dựa trên vùng.
+
+00:00:31.437 --> 00:00:35.122 line:98%,end
+Câu này xuất hiện ngay trong những câu đầu của bộ đề.
+
+00:00:36.628 --> 00:00:39.911 line:98%,end
+Cách đầu tiên là phân cụm bằng K-means.
+
+00:00:39.861 --> 00:00:42.618 line:98%,end
+Mỗi pixel, hay vector đặc trưng của nó,
+
+00:00:42.618 --> 00:00:46.435 line:98%,end
+được coi là một quan sát: một số vô hướng với ảnh xám,
+
+00:00:46.435 --> 00:00:48.768 line:98%,end
+hoặc vector ba chiều với ảnh màu.
+
+00:00:49.390 --> 00:00:53.746 line:98%,end
+Thuật toán khởi tạo k tâm cụm, gán mỗi mẫu vào cụm có tâm gần nhất,
+
+00:00:53.746 --> 00:00:57.582 line:98%,end
+cập nhật tâm bằng trung bình các mẫu được gán, rồi lặp lại.
+
+00:00:58.144 --> 00:01:00.076 line:98%,end
+Thuật toán dừng khi sai số dư,
+
+00:01:00.076 --> 00:01:03.361 line:98%,end
+tức tổng khoảng cách Euclid giữa tâm cụm mới và cũ,
+
+00:01:03.361 --> 00:01:05.229 line:98%,end
+nhỏ hơn một ngưỡng cho trước.
+
+00:01:05.794 --> 00:01:09.129 line:98%,end
+K-means có ba hạn chế các bạn cần biết.
+
+00:01:09.079 --> 00:01:15.421 line:98%,end
+Phải chọn trước số cụm k. Kết quả phụ thuộc vào khởi tạo nên có thể rơi vào cực tiểu cục bộ.
+
+00:01:15.421 --> 00:01:18.607 line:98%,end
+Và nếu chỉ dùng màu, K-means không xét vị trí,
+
+00:01:18.607 --> 00:01:23.871 line:98%,end
+nên các pixel cùng màu ở hai góc ảnh vẫn chung một cụm, tạo ra vùng rời rạc.
+
+00:01:25.384 --> 00:01:27.152 line:98%,end
+Siêu điểm ảnh, superpixel,
+
+00:01:27.152 --> 00:01:32.795 line:98%,end
+gom các pixel thành những vùng sơ khai có ý nghĩa cảm nhận hơn từng pixel riêng lẻ.
+
+00:01:32.745 --> 00:01:34.671 line:98%,end
+Mục tiêu là giảm tải tính toán,
+
+00:01:34.671 --> 00:01:38.214 line:98%,end
+đồng thời vẫn phải giữ được ranh giới thực giữa các vùng.
+
+00:01:38.818 --> 00:01:42.515 line:98%,end
+Thuật toán SLIC, Simple Linear Iterative Clustering,
+
+00:01:42.515 --> 00:01:49.198 line:98%,end
+là một biến thể của K-means dùng vector năm chiều: ba thành phần màu và hai tọa độ không gian.
+
+00:01:49.756 --> 00:01:52.025 line:98%,end
+SLIC khởi tạo tâm trên lưới đều,
+
+00:01:52.025 --> 00:01:57.271 line:98%,end
+rồi dời mỗi tâm đến vị trí có gradient thấp nhất trong lân cận ba nhân ba.
+
+00:01:57.221 --> 00:02:01.509 line:98%,end
+Sau đó mỗi pixel chỉ được so với các tâm trong vùng hai s nhân hai s,
+
+00:02:01.509 --> 00:02:05.424 line:98%,end
+chứ không phải toàn ảnh, nên nhanh hơn K-means chuẩn rất nhiều.
+
+00:02:06.046 --> 00:02:13.730 line:98%,end
+Khoảng cách D trong SLIC kết hợp khoảng cách màu và khoảng cách không gian với hằng số c. c lớn ưu tiên siêu điểm ảnh gọn và đều,
+
+00:02:13.730 --> 00:02:17.363 line:98%,end
+c nhỏ giúp bám sát ranh giới ảnh hơn nhưng hình dạng kém đều.
+
+00:02:18.820 --> 00:02:23.340 line:98%,end
+Phương pháp cắt đồ thị biểu diễn mỗi pixel là một nút của đồ thị.
+
+00:02:23.290 --> 00:02:27.991 line:98%,end
+Trọng số cạnh w i j tỉ lệ thuận với độ tương đồng giữa hai nút.
+
+00:02:27.991 --> 00:02:32.223 line:98%,end
+Mục tiêu là chia nút thành các nhóm sao cho trong nhóm thì giống nhau,
+
+00:02:32.223 --> 00:02:33.915 line:98%,end
+giữa các nhóm thì khác nhau.
+
+00:02:34.534 --> 00:02:38.082 line:98%,end
+Người ta thêm hai nút đặc biệt là source và sink,
+
+00:02:38.082 --> 00:02:40.617 line:98%,end
+đại diện cho tiền cảnh và hậu cảnh.
+
+00:02:40.567 --> 00:02:42.389 line:98%,end
+Cắt cực tiểu, minimum cut,
+
+00:02:42.389 --> 00:02:47.715 line:98%,end
+là tập cạnh có tổng trọng số nhỏ nhất mà khi bỏ đi sẽ tách source khỏi sink.
+
+00:02:48.328 --> 00:02:52.355 line:98%,end
+Cắt đồ thị thường cho kết quả vượt trội so với các phương pháp khác,
+
+00:02:52.355 --> 00:02:55.908 line:98%,end
+nhưng cái giá là độ phức tạp cao và thời gian chạy chậm hơn.
+
+00:02:56.458 --> 00:03:01.786 line:98%,end
+Ứng dụng quen thuộc của cắt đồ thị là tách vật thể khỏi nền trong các phần mềm chỉnh ảnh.
+
+00:03:01.736 --> 00:03:06.397 line:98%,end
+Người dùng chỉ cần vẽ vài nét đánh dấu đâu là vật, đâu là nền.
+
+00:03:06.397 --> 00:03:09.412 line:98%,end
+Các nét này gắn chặt pixel với source hoặc sink,
+
+00:03:09.412 --> 00:03:13.181 line:98%,end
+và thuật toán min cut tự tìm đường biên tốt nhất giữa chúng.
+
+00:03:14.704 --> 00:03:19.576 line:98%,end
+Dùng trực tiếp tổng trọng số cắt thường thiên vị việc cắt ra các vùng rất nhỏ.
+
+00:03:19.526 --> 00:03:22.260 line:98%,end
+Vì vậy người ta dùng Normalized Cut, Ncut,
+
+00:03:22.260 --> 00:03:26.362 line:98%,end
+tính chi phí cắt như một phần của tổng kết nối đến toàn bộ nút.
+
+00:03:26.962 --> 00:03:29.235 line:98%,end
+Thuật toán: xây dựng ma trận W và D,
+
+00:03:29.235 --> 00:03:32.709 line:98%,end
+giải bài toán trị riêng D trừ W nhân y bằng lambda D y,
+
+00:03:32.709 --> 00:03:38.266 line:98%,end
+lấy vector riêng ứng với trị riêng nhỏ thứ hai để chia đôi đồ thị sao cho Ncut nhỏ nhất,
+
+00:03:38.266 --> 00:03:40.792 line:98%,end
+rồi chia đệ quy nếu cần thêm phân hoạch.
+
+00:03:42.256 --> 00:03:45.748 line:98%,end
+Chuyển động cũng là một gợi ý mạnh để phân đoạn.
+
+00:03:45.698 --> 00:03:50.737 line:98%,end
+Kỹ thuật không gian đơn giản nhất là so sánh trực tiếp hai khung để có ảnh sai khác.
+
+00:03:50.737 --> 00:03:52.666 line:98%,end
+Ảnh sai khác tích lũy, ADI,
+
+00:03:52.666 --> 00:03:57.026 line:98%,end
+so sánh một ảnh tham chiếu với mọi ảnh tiếp theo trong chuỗi.
+
+00:03:57.634 --> 00:04:02.334 line:98%,end
+Kỹ thuật miền tần số: nếu vật thể đi một pixel mỗi khung theo một hướng cố định,
+
+00:04:02.334 --> 00:04:07.975 line:98%,end
+phép chiếu tổng cường độ qua các khung sẽ tạo ra một sóng sin phức với tần số tỉ lệ với vận tốc.
+
+00:04:07.925 --> 00:04:11.245 line:98%,end
+Tìm đỉnh trong phổ Fourier là biết vận tốc.
+
+00:04:11.860 --> 00:04:17.199 line:98%,end
+Ngoài ra có phương pháp thống kê với bốn nhóm đặc trưng: thống kê Gauss đo biến thiên theo hướng,
+
+00:04:17.199 --> 00:04:19.951 line:98%,end
+thống kê Fourier đo năng lượng trong một băng tần,
+
+00:04:19.951 --> 00:04:22.868 line:98%,end
+thống kê hiệp phương sai đo tương quan giữa các kênh,
+
+00:04:22.868 --> 00:04:24.740 line:98%,end
+và thống kê nhãn đo mức đồng nhất.
+
+00:04:26.194 --> 00:04:29.022 line:98%,end
+Phân đoạn video có nhiều dạng.
+
+00:04:28.972 --> 00:04:32.452 line:98%,end
+Phát hiện thay đổi cảnh là phân đoạn một chiều theo thời gian,
+
+00:04:32.452 --> 00:04:35.651 line:98%,end
+tìm các điểm có khác biệt lớn trong không gian đặc trưng.
+
+00:04:35.651 --> 00:04:40.317 line:98%,end
+Có thể bền vững hơn bằng cách chia khung thành khối, lọc thông thấp trước,
+
+00:04:40.317 --> 00:04:42.839 line:98%,end
+hoặc so histogram thay vì so từng pixel.
+
+00:04:43.444 --> 00:04:50.362 line:98%,end
+Phát hiện thay đổi không gian thời gian tách khung thành vùng thay đổi và vùng nền bằng cách ngưỡng hóa ảnh sai khác giữa các khung,
+
+00:04:50.362 --> 00:04:54.292 line:98%,end
+có thể cải thiện bằng kim tự tháp Gauss đa phân giải và tích hợp thời gian.
+
+00:04:54.862 --> 00:04:59.135 line:98%,end
+Phân đoạn chuyển động gán nhãn các pixel theo các chuyển động độc lập.
+
+00:04:59.085 --> 00:05:03.466 line:98%,end
+Ta tìm vector tịnh tiến trội, đăng ký hai ảnh theo chuyển động trội,
+
+00:05:03.466 --> 00:05:08.233 line:98%,end
+tìm vùng tĩnh, rồi ước lượng mô hình bậc cao hơn như affine hay phối cảnh,
+
+00:05:08.233 --> 00:05:08.942 line:98%,end
+và lặp lại.
+
+00:05:10.344 --> 00:05:13.968 line:98%,end
+Theo dõi vật thể cứng hai chiều có bốn nhóm:
+
+00:05:13.968 --> 00:05:18.168 line:98%,end
+dựa trên vùng, đường biên, đặc trưng và mẫu.
+
+00:05:18.168 --> 00:05:22.740 line:98%,end
+Theo dõi Bayes lan truyền hậu nghiệm từ bước trước bằng mô hình hệ thống,
+
+00:05:22.740 --> 00:05:24.744 line:98%,end
+rồi cập nhật bằng định lý Bayes.
+
+00:05:25.294 --> 00:05:29.744 line:98%,end
+Theo dõi vật thể cứng ba chiều ước lượng sáu tham số gồm vị trí và hướng,
+
+00:05:29.744 --> 00:05:32.731 line:98%,end
+ứng dụng tiêu biểu là ước lượng tư thế đầu người.
+
+00:05:33.304 --> 00:05:37.812 line:98%,end
+Về mạng nơ-ron cổ điển có ANN truyền thẳng, mạng RBF,
+
+00:05:37.812 --> 00:05:41.470 line:98%,end
+và SAWTA dùng bộ lọc Gabor cho ảnh kết cấu.
+
+00:05:41.420 --> 00:05:45.143 line:98%,end
+Với học sâu, phân đoạn ngữ nghĩa chia theo mức giám sát,
+
+00:05:45.143 --> 00:05:50.261 line:98%,end
+phân đoạn thực thể chia theo kiến trúc, và Mask R-CNN là kiến trúc tiêu biểu.
+
+00:05:51.766 --> 00:05:55.570 line:98%,end
+Trước khi tổng kết, hãy xem nên chọn phương pháp nào.
+
+00:05:55.520 --> 00:05:58.199 line:98%,end
+Ngưỡng hóa và K-means nhanh, đơn giản,
+
+00:05:58.199 --> 00:06:02.148 line:98%,end
+phù hợp khi vật và nền khác biệt rõ về màu hay cường độ.
+
+00:06:02.148 --> 00:06:08.072 line:98%,end
+SLIC là bước tiền xử lý tốt, giảm hàng triệu pixel xuống vài trăm siêu điểm ảnh.
+
+00:06:08.680 --> 00:06:13.716 line:98%,end
+Cắt đồ thị cho đường biên chính xác và có thể kết hợp tương tác với người dùng,
+
+00:06:13.716 --> 00:06:14.672 line:98%,end
+nhưng chậm hơn.
+
+00:06:15.226 --> 00:06:18.965 line:98%,end
+Với video, chuyển động là gợi ý mạnh nhất.
+
+00:06:18.915 --> 00:06:22.387 line:98%,end
+Còn khi cần vùng có ý nghĩa ngữ nghĩa như người, xe, cây,
+
+00:06:22.387 --> 00:06:26.529 line:98%,end
+các phương pháp học sâu như Mask R-CNN gần như là lựa chọn bắt buộc,
+
+00:06:26.529 --> 00:06:31.402 line:98%,end
+vì phân đoạn thuần túy theo màu hay chuyển động không đảm bảo ý nghĩa ngữ nghĩa.
+
+00:06:32.920 --> 00:06:34.862 line:98%,end
+Tổng kết chương chín.
+
+00:06:34.812 --> 00:06:39.799 line:98%,end
+Phân đoạn dựa trên cạnh tìm gián đoạn, phân đoạn dựa trên vùng tìm tương đồng.
+
+00:06:40.402 --> 00:06:42.147 line:98%,end
+K-means gom cụm pixel,
+
+00:06:42.147 --> 00:06:47.383 line:98%,end
+SLIC dùng vector năm chiều và chỉ tìm trong vùng hai s nhân hai s.
+
+00:06:47.956 --> 00:06:49.621 line:98%,end
+Cắt đồ thị dùng min cut,
+
+00:06:49.621 --> 00:06:53.922 line:98%,end
+và Normalized Cut dùng vector riêng của trị riêng nhỏ thứ hai.
+
+00:06:54.478 --> 00:06:57.646 line:98%,end
+Với video có ADI, phát hiện thay đổi cảnh,
+
+00:06:57.646 --> 00:07:00.964 line:98%,end
+phân đoạn chuyển động và theo dõi đối tượng.
+
+00:07:00.914 --> 00:07:04.717 line:98%,end
+Hẹn gặp các bạn ở chương mười: trích xuất đặc trưng.

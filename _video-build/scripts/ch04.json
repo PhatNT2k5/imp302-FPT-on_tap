@@ -1,0 +1,219 @@
+{
+  "title": "Các phép biến đổi",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {
+          "text": "Mở đầu",
+          "say": "Chào các bạn, chúng ta đến với chương bốn: phân tích ảnh và video, với trọng tâm là các phép biến đổi ảnh. Chương này giải thích vì sao JPEG dùng DCT, vì sao wavelet lại mạnh như vậy, và các biến đổi khác nhau ở điểm nào."
+        },
+        {
+          "text": "Ý tưởng chung",
+          "say": "Một phép biến đổi ảnh phân tách ảnh thành tổng có trọng số của các hàm cơ sở trực giao. Mọi phép biến đổi của cùng một ảnh đều chứa cùng lượng thông tin và tổng năng lượng, đều khả nghịch. Chúng chỉ khác nhau ở cách phân bố năng lượng giữa các hệ số."
+        }
+      ]
+    },
+    {
+      "title": "Biến đổi Hartley rời rạc (DHT)",
+      "slide": 5,
+      "points": [
+        {
+          "text": "Đầu ra luôn là số thực, đơn giản hơn DFT (số phức)",
+          "say": "Đầu tiên là biến đổi Hartley rời rạc, DHT. Điểm nổi bật nhất: đầu ra của DHT luôn là số thực, trong khi DFT cho ra số phức. Điều này giúp tính toán đơn giản hơn."
+        },
+        {
+          "text": "Đối xứng H(u,v) = H(−u,−v), bảo toàn năng lượng",
+          "say": "DHT có tính đối xứng, H tại u v bằng H tại trừ u trừ v, và bảo toàn năng lượng tín hiệu giống như DFT."
+        },
+        {
+          "text": "Ma trận biến đổi: thực, trực giao, đối xứng",
+          "say": "Ma trận biến đổi của DHT là ma trận thực, trực giao và đối xứng. Ba tính chất này các bạn nên thuộc lòng."
+        },
+        {
+          "text": "Liên hệ với DFT: H = Re(F) − Im(F)",
+          "say": "Một cách hiểu nhanh DHT: dùng hàm cas, tức cos cộng sin, thay cho e mũ trừ j. Hệ quả là DHT liên hệ trực tiếp với DFT: hệ số Hartley bằng phần thực trừ phần ảo của hệ số Fourier. Vì vậy từ DHT có thể suy ra DFT và ngược lại, nhưng mọi phép tính trung gian đều là số thực."
+        },
+        {
+          "text": "Biến đổi ngược giống biến đổi thuận (chỉ khác hệ số chuẩn hóa)",
+          "say": "Thêm một tính chất tiện lợi: biến đổi Hartley ngược có cùng dạng với biến đổi thuận, chỉ khác hệ số chuẩn hóa. Nghĩa là cùng một đoạn chương trình có thể dùng cho cả hai chiều."
+        }
+      ]
+    },
+    {
+      "title": "Biến đổi Cosin rời rạc (DCT)",
+      "slide": 8,
+      "points": [
+        {
+          "text": "Độ phân giải tần số gấp đôi DFT",
+          "say": "Tiếp theo là DCT, biến đổi cosin rời rạc, ngôi sao của nén ảnh. DCT có phổ tương tự DFT và DHT nhưng độ phân giải tần số gấp đôi."
+        },
+        {
+          "text": "Giả định tuần hoàn chu kỳ 2N và đối xứng chẵn",
+          "say": "Điểm khác biệt then chốt: DFT giả định tín hiệu tuần hoàn chu kỳ N, không có tính đối xứng. Còn DCT giả định tín hiệu tuần hoàn chu kỳ hai N và đối xứng chẵn."
+        },
+        {
+          "text": "→ giảm gián đoạn tại biên, ít nhiễu tần số cao → dùng trong JPEG",
+          "say": "Nhờ đối xứng chẵn, khi lặp tín hiệu sẽ không có bước nhảy ở biên, nên giảm thiểu gián đoạn và nhiễu tần số cao đi kèm. Đây chính là lý do DCT được chọn cho JPEG."
+        },
+        {
+          "text": "Compaction: năng lượng dồn về góc trên-trái (tần số thấp)",
+          "say": "Tính chất quan trọng nhất của DCT với ảnh tự nhiên là khả năng dồn năng lượng. Sau khi biến đổi một khối tám nhân tám, phần lớn năng lượng tập trung ở vài hệ số góc trên bên trái, tức tần số thấp. Hệ số đầu tiên chính là hệ số DC, tỉ lệ với độ sáng trung bình của khối."
+        },
+        {
+          "text": "Hệ số tần số cao nhỏ → lượng tử thô hoặc bỏ đi mà mắt khó nhận ra",
+          "say": "Các hệ số tần số cao thường rất nhỏ, và mắt người lại kém nhạy với chi tiết tần số cao. Vì vậy ta có thể lượng tử chúng thật thô, thậm chí bỏ đi, mà ảnh vẫn trông gần như cũ. Đây là toàn bộ bí mật của nén JPEG mà chúng ta sẽ gặp lại ở chương năm."
+        }
+      ]
+    },
+    {
+      "title": "Biến đổi Sin rời rạc (DST)",
+      "slide": 10,
+      "points": [
+        {
+          "text": "Cũng gấp đôi độ phân giải, nhưng không có thành phần DC",
+          "say": "Biến đổi sin rời rạc, DST, cũng có độ phân giải tần số gấp đôi DFT. Nhưng DST không có thành phần một chiều DC tại u bằng không."
+        },
+        {
+          "text": "Chu kỳ 2(N+1), đối xứng lẻ → không giảm gián đoạn biên như DCT",
+          "say": "Lý do là DST giả định tín hiệu tuần hoàn chu kỳ hai nhân N cộng một và đối xứng lẻ, nên giá trị trung bình bằng không. Hệ quả là DST không giảm được gián đoạn biên như DCT. Câu so sánh DCT với DST này xuất hiện khá thường xuyên."
+        }
+      ]
+    },
+    {
+      "title": "Biến đổi Walsh-Hadamard (WHT)",
+      "slide": 13,
+      "points": [
+        {
+          "text": "Biến đổi phi sin: hàm cơ sở hình chữ nhật chỉ nhận +1 hoặc −1",
+          "say": "Biến đổi Walsh Hadamard là một biến đổi phi sin. Thay vì dùng sóng sin cos, nó dùng các hàm cơ sở hình chữ nhật, gọi là hàm Walsh, chỉ nhận giá trị cộng một hoặc trừ một."
+        },
+        {
+          "text": "Biến đổi ngược giống hệt biến đổi thuận; lossless, khả nghịch",
+          "say": "Biến đổi ngược của WHT giống hệt biến đổi thuận, nên tái tạo ảnh rất đơn giản. Biến đổi này không mất mát và khả nghịch hoàn toàn."
+        },
+        {
+          "text": "Chỉ cộng/trừ, không nhân; FWHT có độ phức tạp O(NM log NM)",
+          "say": "Ưu điểm lớn: chỉ dùng phép cộng và trừ, không cần phép nhân, nên rất nhanh. Phiên bản nhanh FWHT đạt độ phức tạp N M log N M, tương đương FFT."
+        },
+        {
+          "text": "Ứng dụng: nén ảnh, nhận dạng mẫu, xử lý tín hiệu",
+          "say": "Ứng dụng gồm nén ảnh, vì nó dồn năng lượng vào một số ít hệ số giống DCT nhưng tính toán đơn giản hơn, cùng với nhận dạng mẫu và xử lý tín hiệu số."
+        },
+        {
+          "text": "Ma trận Hadamard H2 = [[1,1],[1,−1]], ghép đệ quy H2N từ HN",
+          "say": "Ma trận Hadamard được xây dựng đệ quy rất đẹp. Bắt đầu với ma trận hai nhân hai gồm một, một ở hàng trên và một, trừ một ở hàng dưới. Ma trận cấp hai N được ghép từ bốn bản sao của ma trận cấp N, trong đó bản ở góc dưới bên phải mang dấu trừ. Kích thước vì thế luôn là lũy thừa của hai."
+        },
+        {
+          "text": "Sequency: số lần đổi dấu, tương tự khái niệm tần số",
+          "say": "Với hàm Walsh, thay cho khái niệm tần số người ta dùng sequency, tức số lần hàm đổi dấu trên một chu kỳ. Hàm đổi dấu càng nhiều lần thì tương ứng với thành phần càng chi tiết, giống như tần số cao trong Fourier."
+        }
+      ]
+    },
+    {
+      "title": "Biến đổi wavelet và đa phân giải",
+      "slide": 18,
+      "points": [
+        {
+          "text": "Nền tảng của lý thuyết đa phân giải",
+          "say": "Bây giờ đến biến đổi wavelet, nền tảng của lý thuyết đa phân giải. Lý thuyết này hợp nhất mã hóa băng con, lọc gương cầu phương trong xử lý tiếng nói, và xử lý ảnh dạng kim tự tháp. Ý tưởng là phân tích ảnh ở nhiều mức độ phân giải khác nhau."
+        },
+        {
+          "text": "Hàm tỉ lệ cha (father) và wavelet mẹ (mother)",
+          "say": "DWT dựa trên hai hàm: hàm tỉ lệ cha, trực giao với các phép tịnh tiến nguyên của chính nó, và hàm wavelet mẹ. DWT phân rã tín hiệu thành hệ số xấp xỉ và hệ số chi tiết ở mỗi mức tỉ lệ j."
+        },
+        {
+          "text": "Fourier biết 'tần số nào', wavelet biết cả 'tần số nào, ở đâu'",
+          "say": "Vì sao cần wavelet khi đã có Fourier? Hàm cơ sở của Fourier là sóng sin kéo dài vô hạn, nên Fourier cho biết ảnh có những tần số nào, nhưng không cho biết chúng nằm ở đâu. Wavelet là những sóng nhỏ, có độ dài hữu hạn, nên nó cho biết cả tần số lẫn vị trí. Đây là lợi thế định vị không gian và tần số đồng thời."
+        },
+        {
+          "text": "Phân rã nhiều mức: chỉ tiếp tục chia phần xấp xỉ",
+          "say": "Trong phân rã nhiều mức, ở mỗi mức ta tách tín hiệu thành phần xấp xỉ và phần chi tiết, rồi chỉ tiếp tục phân rã phần xấp xỉ. Kết quả là một kim tự tháp: các mức thô chứa cấu trúc lớn, các mức mịn chứa chi tiết nhỏ."
+        },
+        {
+          "text": "CWT: tỉ lệ và vị trí liên tục, dư thừa, dùng để phân tích",
+          "say": "Ngoài DWT còn có biến đổi wavelet liên tục, CWT, nơi tỉ lệ và vị trí thay đổi liên tục. CWT cho biểu diễn rất dư thừa, phù hợp để phân tích và quan sát tín hiệu, trong khi DWT gọn và khả nghịch, phù hợp cho nén và khử nhiễu."
+        }
+      ]
+    },
+    {
+      "title": "Wavelet hai chiều",
+      "slide": 22,
+      "points": [
+        {
+          "text": "1 hàm tỉ lệ 2D + 3 hàm wavelet 2D tách được",
+          "say": "Trong không gian hai chiều, ta cần một hàm tỉ lệ hai chiều và ba hàm wavelet hai chiều tách được."
+        },
+        {
+          "text": "Nhạy hướng: theo cột, theo hàng và theo đường chéo",
+          "say": "Ba hàm wavelet này có tính nhạy hướng: chúng đo sự biến thiên cường độ theo ba hướng khác nhau là theo cột, theo hàng, và theo đường chéo. Đó là lý do một mức phân rã wavelet hai chiều cho ra bốn băng con."
+        },
+        {
+          "text": "Fast Wavelet Transform: tích chập với các bộ lọc",
+          "say": "Biến đổi wavelet nhanh và biến đổi ngược được triển khai bằng tích chập với các bộ lọc tương ứng, rất hiệu quả."
+        },
+        {
+          "text": "4 băng con: LL (xấp xỉ), LH, HL, HH (chi tiết theo 3 hướng)",
+          "say": "Cụ thể, sau một mức phân rã hai chiều, ảnh được tách thành bốn băng con. Băng LL là ảnh xấp xỉ thu nhỏ một nửa mỗi chiều. Ba băng còn lại, thường ký hiệu LH, HL và HH, chứa chi tiết theo phương ngang, phương dọc và phương chéo. Muốn phân rã tiếp thì ta lại tách băng LL."
+        },
+        {
+          "text": "Tổng số hệ số bằng số pixel: không tăng dữ liệu",
+          "say": "Một điểm đáng chú ý: tổng số hệ số của bốn băng con đúng bằng số pixel của ảnh gốc, nên biến đổi wavelet không làm tăng lượng dữ liệu. Nhưng phần lớn hệ số chi tiết lại rất gần không, và đó là cơ hội để nén."
+        }
+      ]
+    },
+    {
+      "title": "Học máy trong phân tích ảnh",
+      "slide": 26,
+      "points": [
+        {
+          "text": "Deep learning thay thế hoặc bổ trợ biến đổi cổ điển",
+          "say": "Phần cuối chương giới thiệu xu hướng dùng mô hình học sâu để thay thế hoặc bổ trợ các phép biến đổi toán học cổ điển. Thay vì chọn cơ sở cố định như cosin hay wavelet, mạng nơ-ron học trực tiếp biểu diễn từ dữ liệu. Đây là cầu nối sang các chương phân đoạn, phát hiện và phân loại."
+        }
+      ]
+    },
+    {
+      "title": "So sánh nhanh các phép biến đổi",
+      "points": [
+        {
+          "text": "DFT: số phức, giả định chu kỳ N; nền tảng lọc tần số",
+          "say": "Trước khi tổng kết, chúng ta đặt các phép biến đổi cạnh nhau để so sánh. DFT cho hệ số phức, giả định tín hiệu tuần hoàn chu kỳ N, và là nền tảng của lọc trong miền tần số."
+        },
+        {
+          "text": "DHT: số thực, ma trận thực–trực giao–đối xứng",
+          "say": "DHT cho hệ số thực, ma trận biến đổi thực, trực giao và đối xứng, mang thông tin tương đương DFT nhưng tính toán đơn giản hơn."
+        },
+        {
+          "text": "DCT: số thực, 2N đối xứng chẵn, dồn năng lượng tốt nhất trong thực tế",
+          "say": "DCT cho hệ số thực, giả định chu kỳ hai N đối xứng chẵn, dồn năng lượng rất tốt nên là lựa chọn số một cho nén ảnh."
+        },
+        {
+          "text": "WHT: ±1, chỉ cộng trừ; Wavelet: định vị cả không gian và tần số",
+          "say": "WHT chỉ dùng cộng một và trừ một nên tính cực nhanh, còn wavelet là biến đổi đa phân giải, định vị được cả không gian lẫn tần số, là nền tảng của JPEG hai nghìn."
+        }
+      ]
+    },
+    {
+      "title": "Tổng kết chương 4",
+      "points": [
+        {
+          "text": "Mọi biến đổi: cùng thông tin, khả nghịch, khác cách phân bố năng lượng",
+          "say": "Tổng kết chương bốn. Mọi phép biến đổi đều giữ nguyên thông tin và năng lượng, đều khả nghịch, chỉ khác cách phân bố năng lượng."
+        },
+        {
+          "text": "DHT: số thực, ma trận thực–trực giao–đối xứng",
+          "say": "DHT cho đầu ra số thực với ma trận thực, trực giao và đối xứng."
+        },
+        {
+          "text": "DCT: chu kỳ 2N, đối xứng chẵn, dùng cho JPEG; DST: không có DC",
+          "say": "DCT giả định chu kỳ hai N và đối xứng chẵn nên giảm gián đoạn biên, dùng trong JPEG. DST đối xứng lẻ và không có thành phần DC."
+        },
+        {
+          "text": "WHT: ±1, chỉ cộng trừ; Wavelet 2D: 3 hướng",
+          "say": "WHT chỉ dùng cộng một trừ một nên rất nhanh, và wavelet hai chiều nhạy theo ba hướng. Hẹn gặp các bạn ở chương năm: nén ảnh."
+        }
+      ]
+    }
+  ]
+}

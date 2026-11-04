@@ -1,0 +1,224 @@
+{
+  "title": "Phục hồi ảnh",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {
+          "text": "Mở đầu",
+          "say": "Chào các bạn, chúng ta đến với chương ba: suy giảm, phục hồi và tái tạo ảnh. Đây là chương dài và nặng lý thuyết nhất của môn học, nhưng ý tưởng cốt lõi lại rất trực quan."
+        },
+        {
+          "text": "Bài toán ngược",
+          "say": "Chúng ta có một ảnh đã bị suy giảm chất lượng, có thể do bị mờ, bị nhiễu. Nhiệm vụ là ước lượng lại ảnh gốc, bằng cách mô hình hóa quá trình suy giảm rồi đảo ngược nó. Đây gọi là bài toán ngược."
+        }
+      ]
+    },
+    {
+      "title": "Mô hình suy giảm và phục hồi",
+      "slide": 4,
+      "points": [
+        {
+          "text": "Phục hồi dựa trên kiến thức tiên nghiệm về hiện tượng suy giảm",
+          "say": "Khác với tăng cường ảnh mang tính chủ quan, phục hồi ảnh dựa trên kiến thức tiên nghiệm về hiện tượng suy giảm. Ta cải thiện ảnh theo một tiêu chí khách quan đã định trước."
+        },
+        {
+          "text": "g = h * f + nhiễu  ⇔  G = H·F + N",
+          "say": "Mô hình rất đơn giản. Ảnh gốc f đi qua hàm suy giảm h, có thể là kênh truyền hoặc hệ thống thu nhận, rồi cộng thêm nhiễu, cho ra ảnh quan sát g. Trong miền tần số, quan hệ này thành G bằng H nhân F cộng N."
+        },
+        {
+          "text": "Mục tiêu: ước lượng ảnh gần f nhất từ g và hiểu biết về h",
+          "say": "Bài toán phục hồi là: từ ảnh quan sát g, cùng với hiểu biết về hàm suy giảm h và về nhiễu, hãy ước lượng một ảnh gần với ảnh gốc f nhất có thể."
+        }
+      ]
+    },
+    {
+      "title": "Các mô hình nhiễu",
+      "slide": 7,
+      "points": [
+        {
+          "text": "Nhiễu sinh ra khi thu nhận và truyền dẫn; nhiễu trắng có phổ hằng số",
+          "say": "Nhiễu chủ yếu phát sinh trong quá trình thu nhận và truyền dẫn ảnh. Khi phổ Fourier của nhiễu là hằng số trên mọi tần số, ta gọi đó là nhiễu trắng. Nhiễu thường được coi là độc lập với tọa độ và không tương quan với ảnh."
+        },
+        {
+          "text": "Gaussian, Rayleigh, Erlang (Gamma), Exponential, Uniform",
+          "say": "Các hàm mật độ xác suất mô tả nhiễu thường gặp gồm: Gauss, phổ biến nhất, đặc trưng bởi trung bình và độ lệch chuẩn; Rayleigh; Erlang hay Gamma; hàm mũ; và phân bố đều."
+        },
+        {
+          "text": "Salt-and-pepper: nhiễu xung, pixel thành đen hoặc trắng tuyệt đối",
+          "say": "Và đặc biệt là nhiễu muối tiêu, salt and pepper, tức nhiễu xung, biến một số pixel ngẫu nhiên thành cực đen hoặc cực trắng. Mỗi loại nhiễu có đặc trưng thống kê riêng, và quyết định loại bộ lọc phù hợp."
+        }
+      ]
+    },
+    {
+      "title": "Các bộ lọc trung bình khử nhiễu",
+      "slide": 14,
+      "points": [
+        {
+          "text": "Arithmetic mean: trung bình cộng, mượt nhưng làm mờ",
+          "say": "Trong miền không gian có một nhóm bộ lọc trung bình rất hay ra đề. Thứ nhất, arithmetic mean, trung bình cộng, làm mượt nhưng làm mờ chi tiết."
+        },
+        {
+          "text": "Geometric mean: mượt tương đương nhưng giữ chi tiết tốt hơn",
+          "say": "Thứ hai, geometric mean, trung bình nhân, làm mượt tương đương trung bình cộng nhưng giữ chi tiết tốt hơn."
+        },
+        {
+          "text": "Harmonic mean: tốt với salt và Gaussian, thất bại với pepper",
+          "say": "Thứ ba, harmonic mean, trung bình điều hòa, hiệu quả với nhiễu muối, tức điểm trắng, và nhiễu Gauss, nhưng thất bại với nhiễu tiêu, tức điểm đen."
+        },
+        {
+          "text": "Contraharmonic bậc Q: Q > 0 diệt pepper, Q < 0 diệt salt",
+          "say": "Thứ tư, contraharmonic mean, với tham số bậc Q. Q dương thì loại tốt nhiễu tiêu, Q âm thì loại tốt nhiễu muối. Nhưng với cùng một dấu Q, không thể loại cả hai cùng lúc. Các bạn nhớ kỹ: Q dương diệt tiêu, Q âm diệt muối."
+        },
+        {
+          "text": "Bộ lọc thống kê thứ tự: median, max (diệt pepper), min (diệt salt)",
+          "say": "Bên cạnh các bộ lọc trung bình, còn có các bộ lọc thống kê thứ tự. Median dùng giá trị giữa. Bộ lọc max chọn giá trị lớn nhất nên xóa được điểm đen, tức nhiễu tiêu. Bộ lọc min chọn giá trị nhỏ nhất nên xóa được điểm trắng, tức nhiễu muối."
+        }
+      ]
+    },
+    {
+      "title": "Nhiễu tuần hoàn và bộ lọc notch",
+      "slide": 19,
+      "points": [
+        {
+          "text": "Nhiễu tuần hoàn hiện thành các đốm sáng trong phổ Fourier",
+          "say": "Với nhiễu tuần hoàn, lọc trong miền tần số đặc biệt hiệu quả. Lý do là nhiễu tuần hoàn biểu hiện thành các đốm năng lượng tập trung trong phổ Fourier, tại đúng các tần số của nhiễu."
+        },
+        {
+          "text": "Notch reject: tích các bộ lọc thông cao dời tâm đến các đốm nhiễu",
+          "say": "Công cụ chính là bộ lọc notch. Notch reject được xây dựng như tích của các hàm truyền thông cao có tâm dời đến đúng vị trí các đốm nhiễu, để xóa chúng đi. Notch pass là phần bù của notch reject."
+        }
+      ]
+    },
+    {
+      "title": "Hàm suy giảm và cách ước lượng",
+      "slide": 26,
+      "points": [
+        {
+          "text": "Suy giảm tuyến tính, bất biến vị trí: G = H·F + N",
+          "say": "Với suy giảm tuyến tính và bất biến vị trí, ảnh đầu ra không nhiễu là tích chập giữa ảnh gốc và đáp ứng xung của hàm suy giảm, biểu diễn qua tích phân Fredholm loại một. Có nhiễu thì cộng thêm N."
+        },
+        {
+          "text": "Ba cách ước lượng h: quan sát, thực nghiệm, mô hình hóa",
+          "say": "Có ba cách ước lượng hàm suy giảm. Một, quan sát trực tiếp từ ảnh. Hai, thực nghiệm, ví dụ chụp một xung sáng có cường độ A đã biết để đo đáp ứng. Ba, mô hình hóa toán học, ví dụ nhiễu loạn khí quyển được mô hình gần giống một bộ lọc thông thấp Gauss."
+        },
+        {
+          "text": "Phục hồi khi h phải ước lượng: blind deconvolution",
+          "say": "Quá trình phục hồi khi hàm suy giảm phải ước lượng như vậy đôi khi được gọi là giải chập mù, blind deconvolution."
+        }
+      ]
+    },
+    {
+      "title": "Khử nhiễu bằng wavelet",
+      "slide": 31,
+      "points": [
+        {
+          "text": "Bước 1: phân rã ảnh thành hệ số xấp xỉ và chi tiết",
+          "say": "Biến đổi wavelet rời rạc là biểu diễn đa phân giải, triển khai bằng bộ lọc băng con hai kênh lặp. Khử nhiễu wavelet gồm ba bước. Bước một, phân rã ảnh thành nhiều mức hệ số: thành phần xấp xỉ tần số thấp, và thành phần chi tiết tần số cao."
+        },
+        {
+          "text": "Bước 2: ngưỡng hóa hệ số – soft giảm đều, hard chỉ xóa hệ số nhỏ",
+          "say": "Bước hai, ngưỡng hóa các hệ số. Ngưỡng mềm giảm đều tất cả hệ số theo giá trị ngưỡng. Ngưỡng cứng chỉ đưa các hệ số nhỏ hơn ngưỡng về không, còn lại giữ nguyên."
+        },
+        {
+          "text": "Bước 3: biến đổi wavelet ngược để tái tạo ảnh",
+          "say": "Bước ba, áp dụng biến đổi wavelet ngược lên các hệ số đã ngưỡng hóa để tái tạo ảnh đã khử nhiễu."
+        }
+      ]
+    },
+    {
+      "title": "Lọc nghịch đảo và lọc Wiener",
+      "slide": 33,
+      "points": [
+        {
+          "text": "Inverse filter: F̂ = G / H, rất nhạy nhiễu khi H gần 0",
+          "say": "Cách phục hồi đơn giản nhất là bộ lọc nghịch đảo: chia phổ ảnh quan sát cho hàm truyền H. Nhưng tại các tần số mà H gần bằng không, phép chia sẽ khuếch đại nhiễu lên khủng khiếp."
+        },
+        {
+          "text": "Wiener (MMSE): tối thiểu sai số bình phương trung bình",
+          "say": "Bộ lọc Wiener, còn gọi là bộ lọc bình phương trung bình tối thiểu, MMSE, giải quyết vấn đề này. Mục tiêu là tìm ước lượng sao cho sai số bình phương trung bình với ảnh gốc là nhỏ nhất, với giả định nhiễu và ảnh không tương quan và đều có trung bình bằng không."
+        },
+        {
+          "text": "Dùng tỉ lệ công suất nhiễu / tín hiệu để không khuếch đại nhiễu",
+          "say": "Wiener đưa thêm thông tin về tỉ lệ công suất nhiễu trên tín hiệu vào công thức, nhờ đó tránh khuếch đại nhiễu quá mức. Hiệu năng phục hồi thường được đo bằng SNR và sai số bình phương trung bình."
+        },
+        {
+          "text": "Khi nhiễu = 0, Wiener trở thành lọc nghịch đảo",
+          "say": "Một nhận xét hay được hỏi: nếu công suất nhiễu bằng không, thành phần tỉ lệ nhiễu trên tín hiệu trong công thức Wiener biến mất, và bộ lọc Wiener trở về đúng bộ lọc nghịch đảo. Ngược lại, khi nhiễu lớn, Wiener tự động giảm khuếch đại ở những tần số bị nhiễu lấn át."
+        }
+      ]
+    },
+    {
+      "title": "Lọc bình phương tối thiểu có ràng buộc",
+      "slide": 35,
+      "points": [
+        {
+          "text": "Wiener cần phổ công suất ảnh gốc, chỉ tối ưu trung bình",
+          "say": "Wiener có hai khó khăn: cần biết phổ công suất của ảnh gốc chưa suy giảm, và chỉ tối ưu theo nghĩa trung bình thống kê, chứ không tối ưu cho từng ảnh cụ thể."
+        },
+        {
+          "text": "CLS: tối thiểu hàm tiêu chí C dựa trên Laplacian, có ràng buộc",
+          "say": "Lọc bình phương tối thiểu có ràng buộc, constrained least square, tối thiểu hóa một hàm tiêu chí C dựa trên toán tử Laplacian để giảm độ nhạy với nhiễu, kèm theo một ràng buộc về sai số khôi phục."
+        },
+        {
+          "text": "Tham số γ được điều chỉnh lặp đến khi thỏa ràng buộc",
+          "say": "Lời giải trong miền tần số phụ thuộc vào tham số gamma, và gamma được điều chỉnh lặp đi lặp lại cho đến khi thỏa mãn ràng buộc mong muốn."
+        }
+      ]
+    },
+    {
+      "title": "Tái tạo ảnh từ phép chiếu (CT)",
+      "slide": 41,
+      "points": [
+        {
+          "text": "CT: chiếu tia X qua vật thể theo nhiều hướng",
+          "say": "Phần tái tạo ảnh từ phép chiếu là nền tảng của chụp cắt lớp vi tính, CT. Tia X được chiếu qua vật thể theo nhiều hướng khác nhau, và ta đo được các profile hấp thụ một chiều."
+        },
+        {
+          "text": "Backprojection: càng nhiều góc chiếu, ảnh tái tạo càng chính xác",
+          "say": "Kỹ thuật chiếu ngược, backprojection, tái tạo ảnh từ các profile đó. Càng kết hợp nhiều góc chiếu thì ảnh càng chính xác, slide minh họa với một, hai, ba, bốn và ba mươi hai phép chiếu ngược. CT thu được các lát cắt, rồi chồng lại để tạo biểu diễn ba chiều."
+        }
+      ]
+    },
+    {
+      "title": "Phục hồi đa kênh và chuyển động",
+      "slide": 47,
+      "points": [
+        {
+          "text": "Đa kênh: khai thác tương quan giữa các kênh – LMMSE, RWLS",
+          "say": "Với ảnh đa kênh như ảnh màu, khung hình video hay ảnh vệ tinh đa phổ, ta khai thác thêm tương quan giữa các kênh, nên phục hồi tốt hơn xử lý riêng từng kênh. Hai phương pháp chính là LMMSE dựa trên ma trận hiệp phương sai, và RWLS có thêm tham số điều chỉnh để cân bằng giữa độ khớp dữ liệu và độ mượt."
+        },
+        {
+          "text": "Phát hiện chuyển động: kiểm định giả thuyết với ngưỡng",
+          "say": "Phát hiện chuyển động xác định vùng chuyển động giữa hai thời điểm, chủ yếu cho camera tĩnh. Vì cường độ có thể thay đổi do nhiễu hay ánh sáng, người ta dùng kiểm định giả thuyết với ngưỡng cố định hoặc thích ứng."
+        },
+        {
+          "text": "Ước lượng chuyển động: mô hình, tiêu chí, chiến lược tìm kiếm",
+          "say": "Ước lượng chuyển động quan trọng cho cả nén video và xử lý video. Một thuật toán cần ba yếu tố: mô hình chuyển động, tiêu chí ước lượng trong miền pixel hoặc miền tần số, và chiến lược tìm kiếm. Với video, vì dữ liệu rất lớn, các phương pháp phục hồi cần độ phức tạp vừa phải và bán tự động."
+        }
+      ]
+    },
+    {
+      "title": "Tổng kết chương 3",
+      "points": [
+        {
+          "text": "Mô hình g = h*f + n; nhiều loại nhiễu với PDF riêng",
+          "say": "Tổng kết chương ba. Mô hình suy giảm là g bằng h tích chập f cộng nhiễu, và mỗi loại nhiễu có hàm mật độ xác suất riêng."
+        },
+        {
+          "text": "Contraharmonic: Q dương diệt pepper, Q âm diệt salt; notch cho nhiễu tuần hoàn",
+          "say": "Bộ lọc contraharmonic với Q dương diệt nhiễu tiêu, Q âm diệt nhiễu muối, còn nhiễu tuần hoàn thì dùng bộ lọc notch."
+        },
+        {
+          "text": "Inverse nhạy nhiễu → Wiener (MMSE) → CLS với γ",
+          "say": "Lọc nghịch đảo nhạy nhiễu, Wiener khắc phục bằng tỉ lệ nhiễu trên tín hiệu, và CLS bỏ được yêu cầu biết phổ ảnh gốc."
+        },
+        {
+          "text": "Wavelet denoising: phân rã, ngưỡng, tái tạo; CT dùng backprojection",
+          "say": "Khử nhiễu wavelet gồm phân rã, ngưỡng hóa và tái tạo, còn CT dựa trên chiếu ngược. Hẹn gặp các bạn ở chương bốn về các phép biến đổi ảnh."
+        }
+      ]
+    }
+  ]
+}

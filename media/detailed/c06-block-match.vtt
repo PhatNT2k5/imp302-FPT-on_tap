@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Hai khung liên tiếp. Một khối sáng dịch ngang trên nền tối. Chọn khung trước làm tham chiếu.
+
+00:08.000 --> 00:16.000
+Bước 2: Thử một vị trí. Dịch khối tham chiếu theo một vector ứng viên rồi so với khối hiện tại.
+
+00:16.000 --> 00:24.000
+Bước 3: Tìm ứng viên tốt nhất. Quét các độ dịch trong vùng tìm kiếm; giữ vector làm SAD nhỏ nhất.
+
+00:24.000 --> 00:32.000
+Bước 4: Bù chuyển động. Dùng vector tìm được tạo khung dự đoán. Ví dụ chỉ có tịnh tiến nên có thể khớp hoàn toàn.
+
+00:32.000 --> 00:40.000
+Bước 5: Mã hóa phần dư. Encoder còn cần gửi vector và phần dư. Che khuất hoặc đổi sáng thường làm phần dư khác 0.

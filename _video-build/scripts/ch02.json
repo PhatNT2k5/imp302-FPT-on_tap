@@ -1,0 +1,228 @@
+{
+  "title": "Lọc ảnh",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {
+          "text": "Mở đầu",
+          "say": "Chào các bạn, chúng ta đến với chương hai: lọc ảnh. Lọc ảnh là nền tảng của tăng cường ảnh, khử nhiễu, làm nét và trích xuất đặc trưng. Hầu như bài toán xử lý ảnh nào cũng có ít nhất một bước lọc ở đâu đó."
+        },
+        {
+          "text": "Lộ trình",
+          "say": "Chương này đi qua hai miền chính: miền không gian và miền tần số. Chúng ta sẽ học lọc tuyến tính, lọc phi tuyến như bộ lọc trung vị, lọc hình thái học, lọc không gian với kernel, và cuối cùng là lọc trong miền tần số bằng biến đổi Fourier."
+        }
+      ]
+    },
+    {
+      "title": "Hệ tuyến tính bất biến không gian (LSI)",
+      "slide": 5,
+      "points": [
+        {
+          "text": "Hệ tuyến tính: thỏa tính cộng và tính đồng nhất",
+          "say": "Lý thuyết hệ thống tuyến tính là nền tảng của xử lý ảnh số. Một hệ hai chiều được gọi là tuyến tính nếu nó thỏa hai tính chất: tính cộng và tính đồng nhất. Nói đơn giản, đầu vào là tổng có trọng số thì đầu ra cũng là tổng có trọng số tương ứng."
+        },
+        {
+          "text": "LSI: đầu ra = tích chập giữa ảnh vào và đáp ứng xung",
+          "say": "Nếu hệ còn bất biến theo không gian, ta gọi là hệ LSI, linear space invariant. Với hệ LSI, đầu ra chính là tích chập giữa ảnh đầu vào và đáp ứng xung của hệ. Đáp ứng xung mô tả hoàn toàn hành vi của bộ lọc."
+        },
+        {
+          "text": "Tích chập trong không gian = phép nhân trong miền tần số",
+          "say": "Một kết quả cực kỳ quan trọng: tích chập trong miền không gian tương ứng với phép nhân trong miền tần số. Vì vậy, chuyển sang miền tần số bằng biến đổi Fourier giúp phân tích và thiết kế bộ lọc dễ dàng hơn rất nhiều."
+        }
+      ]
+    },
+    {
+      "title": "Lọc thông thấp lý tưởng và lọc Gauss",
+      "slide": 8,
+      "points": [
+        {
+          "text": "Ideal low-pass: ép tần số ngoài ngưỡng cắt về 0",
+          "say": "Bộ lọc thông thấp lý tưởng giữ nguyên các tần số bên trong một tần số cắt, và ép toàn bộ tần số bên ngoài về không. Vùng giữ lại có thể là hình tròn, đối xứng theo bán kính, hoặc hình chữ nhật."
+        },
+        {
+          "text": "Bước cắt đột ngột gây hiện tượng gợn sóng (ringing)",
+          "say": "Vấn đề là bước cắt quá đột ngột trong miền tần số lại gây ra hiện tượng gợn sóng, gọi là ringing, trong miền không gian. Các bạn sẽ thấy những đường viền lặp lại quanh các cạnh trong ảnh."
+        },
+        {
+          "text": "Gaussian filter: đáp ứng tần số cũng là Gauss, mượt, không ringing",
+          "say": "Giải pháp là bộ lọc Gauss. Đáp ứng tần số của nó cũng có dạng Gauss, giảm dần một cách mượt mà, nên tránh được hiện tượng ringing. Đây là lý do bộ lọc Gauss được dùng rất phổ biến."
+        },
+        {
+          "text": "Tham số σ: σ lớn → lọc mạnh, ảnh mờ hơn",
+          "say": "Với bộ lọc Gauss, tham số sigma quyết định mức độ làm mượt. Sigma càng lớn thì vùng ảnh hưởng càng rộng, các tần số cao bị cắt nhiều hơn, và ảnh càng mờ. Sigma nhỏ thì chỉ khử được nhiễu hạt mịn mà vẫn giữ chi tiết."
+        }
+      ]
+    },
+    {
+      "title": "Lọc trung vị và trung vị có trọng số",
+      "slide": 12,
+      "points": [
+        {
+          "text": "Lọc phi tuyến giữ cạnh tốt hơn, ít bị nhiễu ảnh hưởng",
+          "say": "Bây giờ chuyển sang lọc phi tuyến. Ưu điểm lớn của lọc phi tuyến là bảo toàn cạnh và chi tiết tốt hơn, và ít bị ảnh hưởng bởi nhiễu so với lọc tuyến tính."
+        },
+        {
+          "text": "Median: thay pixel bằng trung vị trong cửa sổ, rất mạnh với nhiễu xung",
+          "say": "Đại diện tiêu biểu là bộ lọc trung vị. Ta lấy các giá trị trong cửa sổ, sắp xếp, rồi chọn giá trị ở giữa. Bộ lọc trung vị cực kỳ hiệu quả với nhiễu xung, hay nhiễu muối tiêu, vì các giá trị ngoại lai nằm ở hai đầu dãy sắp xếp và không bao giờ được chọn, khác hẳn với trung bình cộng."
+        },
+        {
+          "text": "Weighted median: ngưỡng = nửa tổng trọng số, cộng dồn từ mẫu lớn nhất",
+          "say": "Bộ lọc trung vị có trọng số gán cho mỗi mẫu một trọng số. Thuật toán tính ngưỡng bằng một nửa tổng trọng số, sắp xếp các mẫu, rồi cộng dồn trọng số từ mẫu lớn nhất trở xuống. Mẫu tại đó tổng vượt ngưỡng chính là đầu ra."
+        },
+        {
+          "text": "Ứng dụng: phóng to ảnh ít bị khối, làm nét ảnh",
+          "say": "Trung vị có trọng số có hai ứng dụng được nhắc trong slide: phóng to ảnh, cho kết quả giữ cạnh tốt và ít bị hiện tượng khối hơn nội suy tuyến tính, và làm nét ảnh bằng một mặt nạ trung vị có trọng số."
+        },
+        {
+          "text": "Ví dụ: cửa sổ {10, 12, 11, 255, 13} → trung vị 12, trung bình 60",
+          "say": "Lấy một ví dụ nhỏ. Cửa sổ có năm giá trị: mười, mười hai, mười một, hai trăm năm mươi lăm và mười ba. Giá trị hai trăm năm mươi lăm là một điểm nhiễu muối. Nếu lấy trung bình cộng, ta được khoảng sáu mươi, ảnh bị lem một đốm sáng. Nhưng sắp xếp lại rồi chọn giá trị giữa, ta được mười hai, hoàn toàn bỏ qua điểm nhiễu. Đó là sức mạnh của lọc trung vị."
+        }
+      ]
+    },
+    {
+      "title": "Lọc hình thái học",
+      "slide": 22,
+      "points": [
+        {
+          "text": "Dựa trên lý thuyết tập hợp, mô tả cấu trúc hình học của vật thể",
+          "say": "Hình thái học toán học là một phương pháp phi tuyến dựa trên lý thuyết tập hợp. Nó mô tả định lượng cấu trúc hình học của đối tượng, khắc phục hạn chế của phương pháp tuyến tính khi gặp các bài toán mang tính hình học."
+        },
+        {
+          "text": "Structuring Element: Erosion cần toàn bộ là 1, Dilation chỉ cần một pixel là 1",
+          "say": "Các phép toán dùng một phần tử cấu trúc, structuring element. Với erosion, ta đặt phần tử cấu trúc lên từng vị trí, và chỉ giữ giá trị 1 nếu toàn bộ vùng bên dưới đều là 1. Với dilation, chỉ cần có ít nhất một pixel bên dưới là 1."
+        },
+        {
+          "text": "Opening loại nhiễu nhỏ; Closing lấp lỗ, nối chỗ đứt gãy",
+          "say": "Từ đó, opening bằng erosion rồi dilation, giúp loại nhiễu nhỏ mà vẫn giữ hình dạng tổng thể. Closing bằng dilation rồi erosion, giúp lấp các lỗ nhỏ và nối lại những phần bị đứt gãy."
+        }
+      ]
+    },
+    {
+      "title": "Lọc không gian: tương quan và tích chập",
+      "slide": 28,
+      "points": [
+        {
+          "text": "Thay mỗi pixel bằng hàm của chính nó và các pixel lân cận",
+          "say": "Tiếp theo là lọc không gian. Lọc không gian thay giá trị mỗi pixel bằng một hàm của chính pixel đó và các pixel lân cận. Nếu hàm này tuyến tính thì ta có lọc không gian tuyến tính."
+        },
+        {
+          "text": "Tương quan: trượt kernel, tính tổng tích tại mỗi vị trí",
+          "say": "Lọc tuyến tính thực hiện phép tổng tích giữa ảnh và một kernel. Phép tương quan không gian trượt tâm kernel qua ảnh và tính tổng các tích tại mỗi vị trí."
+        },
+        {
+          "text": "Tích chập: giống tương quan nhưng kernel xoay 180 độ",
+          "say": "Phép tích chập không gian giống hệt, chỉ khác là kernel được xoay một trăm tám mươi độ trước khi trượt. Khi kernel đối xứng qua tâm, hai phép toán cho kết quả giống nhau. Câu này rất hay được hỏi."
+        }
+      ]
+    },
+    {
+      "title": "Lọc làm mượt và lọc làm nét",
+      "slide": 34,
+      "points": [
+        {
+          "text": "Box filter: trung bình cộng, kernel chuẩn hóa tổng bằng 1",
+          "say": "Bộ lọc làm mượt đơn giản nhất là box filter, lấy trung bình cộng các pixel trong cửa sổ. Kernel được chuẩn hóa sao cho tổng hệ số bằng 1, để không làm thay đổi độ sáng tổng thể của ảnh."
+        },
+        {
+          "text": "Đạo hàm bậc 1: khác 0 tại đầu bước nhảy và dọc độ dốc",
+          "say": "Bộ lọc làm nét thì dựa trên đạo hàm. Đạo hàm bậc một bằng không ở vùng cường độ hằng số, và khác không tại điểm bắt đầu bước nhảy cũng như dọc theo độ dốc."
+        },
+        {
+          "text": "Đạo hàm bậc 2: khác 0 tại đầu và cuối bước nhảy, bằng 0 dọc ramp → Laplacian",
+          "say": "Đạo hàm bậc hai bằng không ở vùng hằng số, khác không tại cả điểm bắt đầu và kết thúc bước nhảy, nhưng lại bằng không dọc theo độ dốc tuyến tính. Chính tính chất này giúp toán tử Laplacian phát hiện cạnh và làm nét ảnh."
+        }
+      ]
+    },
+    {
+      "title": "Unsharp masking và highboost",
+      "slide": 37,
+      "points": [
+        {
+          "text": "Bước 1: làm mờ ảnh gốc",
+          "say": "Một kỹ thuật làm nét rất kinh điển là unsharp masking. Bước thứ nhất, ta làm mờ ảnh gốc, ví dụ bằng bộ lọc Gauss."
+        },
+        {
+          "text": "Bước 2: mask = ảnh gốc − ảnh mờ (giữ thành phần tần số cao)",
+          "say": "Bước thứ hai, lấy ảnh gốc trừ đi ảnh mờ. Kết quả là một mặt nạ, mask, chỉ còn lại các thành phần tần số cao, tức là các cạnh và chi tiết nhỏ."
+        },
+        {
+          "text": "Bước 3: cộng mask trở lại ảnh gốc; hệ số > 1 là highboost",
+          "say": "Bước thứ ba, cộng mặt nạ này trở lại ảnh gốc để tăng cường cạnh. Nếu ta nhân mặt nạ với một hệ số lớn hơn 1 trước khi cộng, ta có highboost filtering, làm nét mạnh hơn."
+        }
+      ]
+    },
+    {
+      "title": "Biến đổi Fourier rời rạc 2 chiều",
+      "slide": 41,
+      "points": [
+        {
+          "text": "DFT và IDFT chuyển ảnh qua lại giữa không gian và tần số",
+          "say": "Bây giờ chúng ta sang miền tần số. Biến đổi Fourier rời rạc hai chiều, DFT, và biến đổi ngược, IDFT, cho phép chuyển ảnh qua lại giữa miền không gian và miền tần số."
+        },
+        {
+          "text": "Dạng cực: phổ biên độ và góc pha; phổ công suất = biên độ bình phương",
+          "say": "Khi biểu diễn dưới dạng cực, ta có phổ Fourier, tức biên độ, và góc pha. Phổ công suất chính là bình phương của phổ biên độ. Các bạn nhớ định nghĩa này nhé."
+        },
+        {
+          "text": "Tâm phổ = tần số thấp (vùng mượt); ra xa tâm = tần số cao (cạnh, nhiễu)",
+          "say": "Khi nhìn phổ Fourier đã dời tâm, các bạn hãy nhớ quy tắc: phần gần tâm là tần số thấp, tương ứng các vùng biến thiên chậm, mượt mà trong ảnh. Càng ra xa tâm là tần số càng cao, tương ứng với cạnh, chi tiết nhỏ và nhiễu. Lọc thông thấp giữ phần giữa, lọc thông cao giữ phần rìa."
+        }
+      ]
+    },
+    {
+      "title": "Các bước lọc trong miền tần số",
+      "slide": 42,
+      "points": [
+        {
+          "text": "Đệm ảnh (padding) để tránh hiệu ứng wrap-around",
+          "say": "Quy trình lọc trong miền tần số gồm nhiều bước. Đầu tiên, đệm ảnh, bằng số không, phản chiếu hoặc lặp biên, để tránh hiệu ứng bao quanh khi tích chập tuần hoàn."
+        },
+        {
+          "text": "Nhân với (−1)^(x+y) để dời tâm phổ, rồi tính DFT",
+          "say": "Tiếp theo, nhân ảnh với trừ một mũ x cộng y để dời tâm phổ Fourier về giữa, rồi tính DFT."
+        },
+        {
+          "text": "G(u,v) = H(u,v)·F(u,v), lấy IDFT rồi cắt lại kích thước M×N",
+          "say": "Sau đó xây dựng hàm truyền H của bộ lọc, đối xứng quanh tâm, và nhân từng phần tử: G bằng H nhân F. Cuối cùng lấy IDFT, rồi trích ra phần M nhân N tương ứng với ảnh gốc."
+        }
+      ]
+    },
+    {
+      "title": "Bộ lọc thông thấp và thông cao trong miền tần số",
+      "slide": 44,
+      "points": [
+        {
+          "text": "Thông thấp: Ideal, Gaussian, Butterworth",
+          "say": "Có ba bộ lọc thông thấp phổ biến trong miền tần số: lý tưởng, Gauss, và Butterworth. Butterworth có một tham số bậc điều khiển độ dốc chuyển tiếp, nên nó là sự cân bằng giữa lọc lý tưởng và lọc Gauss."
+        },
+        {
+          "text": "Thông cao: Ideal, Gaussian, Butterworth, Laplacian để làm nét",
+          "say": "Tương tự, có các bộ lọc thông cao lý tưởng, Gauss, Butterworth và Laplacian trong miền tần số. Chúng dùng để làm nét ảnh, hoặc loại bỏ nhiễu tuần hoàn và nền biến thiên chậm."
+        }
+      ]
+    },
+    {
+      "title": "Tổng kết chương 2",
+      "points": [
+        {
+          "text": "Hệ LSI: tích chập trong không gian ⇔ nhân trong tần số",
+          "say": "Tổng kết chương hai. Hệ tuyến tính bất biến không gian cho đầu ra là tích chập, và tích chập trong không gian tương đương phép nhân trong tần số."
+        },
+        {
+          "text": "Ideal gây ringing; Gauss mượt; Butterworth cân bằng",
+          "say": "Lọc lý tưởng gây ringing, lọc Gauss mượt và không ringing, còn Butterworth là sự cân bằng giữa hai loại."
+        },
+        {
+          "text": "Median diệt nhiễu xung; tích chập = tương quan với kernel xoay 180°",
+          "say": "Lọc trung vị rất mạnh với nhiễu xung. Tích chập giống tương quan nhưng kernel xoay một trăm tám mươi độ."
+        },
+        {
+          "text": "Laplacian và unsharp masking để làm nét",
+          "say": "Cuối cùng, Laplacian dựa trên đạo hàm bậc hai và unsharp masking là hai công cụ làm nét quan trọng. Hẹn gặp lại các bạn ở chương ba: phục hồi ảnh."
+        }
+      ]
+    }
+  ]
+}

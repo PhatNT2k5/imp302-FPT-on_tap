@@ -1,0 +1,337 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.764 line:98%,end
+Chào các bạn, chúng ta đến với chương sáu: nén video.
+
+00:00:04.714 --> 00:00:09.948 line:98%,end
+Video thực chất là một chuỗi ảnh, nên mọi thứ ở chương nén ảnh vẫn dùng được.
+
+00:00:09.948 --> 00:00:12.850 line:98%,end
+Nhưng video có thêm một chiều mới là thời gian,
+
+00:00:12.850 --> 00:00:15.938 line:98%,end
+và các khung hình liên tiếp thường rất giống nhau.
+
+00:00:15.938 --> 00:00:20.221 line:98%,end
+Khai thác sự giống nhau đó chính là chìa khóa của nén video.
+
+00:00:20.830 --> 00:00:27.067 line:98%,end
+Chúng ta sẽ học các khái niệm cơ bản và chuẩn H.261, mã hóa wavelet khả mở,
+
+00:00:27.067 --> 00:00:31.808 line:98%,end
+chuyển mã video, chuẩn MPEG-1 và MPEG-2 với cấu trúc GOP,
+
+00:00:31.808 --> 00:00:33.970 line:98%,end
+và nén video bằng học sâu.
+
+00:00:35.428 --> 00:00:40.925 line:98%,end
+Nén video là thiết yếu để truyền tải và lưu trữ video số với băng thông thấp.
+
+00:00:40.875 --> 00:00:46.799 line:98%,end
+Nó đóng vai trò cốt lõi trong truyền thông, lưu trữ, xử lý và hiển thị video.
+
+00:00:47.422 --> 00:00:48.607 line:98%,end
+Khi chọn bộ mã hóa,
+
+00:00:48.607 --> 00:00:52.722 line:98%,end
+ngoài hiệu suất nén ta còn phải cân nhắc: tỉ lệ bit so với độ méo,
+
+00:00:52.722 --> 00:00:55.528 line:98%,end
+độ phức tạp thuật toán, đặc tính kênh truyền,
+
+00:00:55.528 --> 00:00:59.207 line:98%,end
+tính đối xứng giữa mã hóa và giải mã, thống kê nguồn video,
+
+00:00:59.207 --> 00:01:03.323 line:98%,end
+mã hóa tốc độ cố định hay thay đổi, và khả năng tương thích chuẩn.
+
+00:01:04.780 --> 00:01:10.413 line:98%,end
+Một hệ thống nén video tổng quát gồm các khối: dự đoán trong khung và liên khung,
+
+00:01:10.413 --> 00:01:14.795 line:98%,end
+biến đổi, lượng tử hóa, mã hóa entropy, và định dạng chuỗi bit.
+
+00:01:15.358 --> 00:01:19.472 line:98%,end
+Toán tử không gian là một phép biến đổi tuyến tính đơn vị hai chiều,
+
+00:01:19.472 --> 00:01:24.071 line:98%,end
+dồn phần lớn năng lượng vào một số ít hệ số, tức là giải tương quan dữ liệu.
+
+00:01:24.640 --> 00:01:31.478 line:98%,end
+Bộ ước lượng chuyển động dựa trên giả định rằng sự khác biệt giữa các khung liên tiếp chủ yếu do chuyển động của vật thể cứng.
+
+00:01:31.428 --> 00:01:34.670 line:98%,end
+Nó tìm vector chuyển động cho từng khối.
+
+00:01:35.290 --> 00:01:42.128 line:98%,end
+Bộ bù chuyển động dùng vector chuyển động cùng với khung đã tái tạo trước đó để tạo ra dự đoán cho khung hiện tại.
+
+00:01:42.078 --> 00:01:47.469 line:98%,end
+Khi đó ta chỉ cần mã hóa phần sai khác, nhỏ hơn rất nhiều so với cả khung.
+
+00:01:48.076 --> 00:01:53.000 line:98%,end
+Cách ước lượng chuyển động phổ biến nhất là so khớp khối, block matching.
+
+00:01:52.950 --> 00:01:57.377 line:98%,end
+Khung hiện tại được chia thành các khối, thường mười sáu nhân mười sáu.
+
+00:01:57.377 --> 00:01:58.193 line:98%,end
+Với mỗi khối,
+
+00:01:58.193 --> 00:02:02.459 line:98%,end
+ta tìm trong một cửa sổ tìm kiếm ở khung tham chiếu khối giống nhất,
+
+00:02:02.459 --> 00:02:04.968 line:98%,end
+theo tiêu chí như tổng sai số tuyệt đối.
+
+00:02:04.968 --> 00:02:08.653 line:98%,end
+Độ dời giữa hai khối chính là vector chuyển động.
+
+00:02:09.262 --> 00:02:14.290 line:98%,end
+Một chi tiết tinh tế: bộ mã hóa luôn chứa một bộ giải mã bên trong.
+
+00:02:14.240 --> 00:02:17.164 line:98%,end
+Lý do là dự đoán phải dựa trên khung đã tái tạo,
+
+00:02:17.164 --> 00:02:21.245 line:98%,end
+giống hệt khung mà phía nhận có được, chứ không dựa trên khung gốc.
+
+00:02:21.245 --> 00:02:26.649 line:98%,end
+Nếu không, sai số sẽ tích lũy dần qua các khung, gọi là hiện tượng trôi.
+
+00:02:28.156 --> 00:02:33.744 line:98%,end
+MC-EZBC là một họ bộ mã hóa băng con wavelet có bù chuyển động.
+
+00:02:33.694 --> 00:02:36.100 line:98%,end
+Nó vừa khai thác tương quan thời gian,
+
+00:02:36.100 --> 00:02:40.026 line:98%,end
+vừa khả mở hoàn toàn theo ba chiều: chất lượng hay tốc độ bit,
+
+00:02:40.026 --> 00:02:42.939 line:98%,end
+độ phân giải không gian, và tốc độ khung hình.
+
+00:02:43.558 --> 00:02:47.617 line:98%,end
+Thành phần thiết yếu là bộ lọc thời gian có bù chuyển động, MCTF,
+
+00:02:47.617 --> 00:02:50.115 line:98%,end
+thường triển khai bằng kỹ thuật lifting,
+
+00:02:50.115 --> 00:02:53.612 line:98%,end
+tạo ra các hệ số thông thấp và thông cao theo thời gian.
+
+00:02:53.562 --> 00:02:59.096 line:98%,end
+MCTF ảnh hưởng đến cả hiệu suất mã hóa lẫn khả năng khả mở theo thời gian.
+
+00:03:00.604 --> 00:03:05.008 line:98%,end
+Chuyển mã video là chuyển video từ một định dạng nén sang định dạng nén khác,
+
+00:03:05.008 --> 00:03:09.070 line:98%,end
+để thích ứng với băng thông kênh truyền hoặc yêu cầu của thiết bị nhận.
+
+00:03:09.622 --> 00:03:11.984 line:98%,end
+Ứng dụng chính gồm: giảm tốc độ bit,
+
+00:03:11.984 --> 00:03:16.707 line:98%,end
+giảm độ phân giải không gian hoặc thời gian, và chuyển đổi chuẩn mã hóa.
+
+00:03:17.272 --> 00:03:19.883 line:98%,end
+Chuyển mã dị thể, heterogeneous transcoding,
+
+00:03:19.883 --> 00:03:25.165 line:98%,end
+cho phép truy cập đa phương tiện phổ quát khi tồn tại nhiều chuẩn và nhiều loại thiết bị.
+
+00:03:25.115 --> 00:03:28.904 line:98%,end
+Nó đòi hỏi vòng lặp giải mã và mã hóa riêng biệt.
+
+00:03:29.506 --> 00:03:33.991 line:98%,end
+Cách đơn giản nhất để chuyển mã là giải mã hoàn toàn rồi mã hóa lại,
+
+00:03:33.991 --> 00:03:35.706 line:98%,end
+gọi là chuyển mã nối tầng.
+
+00:03:35.656 --> 00:03:38.534 line:98%,end
+Cách này linh hoạt nhưng tốn tính toán.
+
+00:03:38.534 --> 00:03:42.909 line:98%,end
+Các kiến trúc tối ưu hơn tái sử dụng thông tin có sẵn trong luồng gốc,
+
+00:03:42.909 --> 00:03:45.409 line:98%,end
+như vector chuyển động, để giảm chi phí.
+
+00:03:46.012 --> 00:03:47.899 line:98%,end
+Với chuyển mã giảm tốc độ bit,
+
+00:03:47.899 --> 00:03:52.428 line:98%,end
+kỹ thuật cơ bản là lượng tử lại các hệ số DCT với bước lượng tử lớn hơn,
+
+00:03:52.428 --> 00:03:55.636 line:98%,end
+làm luồng nhỏ đi mà không cần tính lại chuyển động.
+
+00:03:57.106 --> 00:03:59.150 line:98%,end
+MPEG, Moving Picture Experts Group,
+
+00:03:59.150 --> 00:04:02.246 line:98%,end
+phát triển chuẩn theo ba giai đoạn: xác định yêu cầu,
+
+00:04:02.246 --> 00:04:06.861 line:98%,end
+cạnh tranh công nghệ để thu thập những gì tốt nhất từ học thuật và công nghiệp,
+
+00:04:06.861 --> 00:04:11.184 line:98%,end
+và hội tụ thành một giải pháp thống nhất với bộ mã hóa giải mã tham chiếu.
+
+00:04:11.740 --> 00:04:15.113 line:98%,end
+MPEG-1 cho phép dự đoán bù chuyển động hai chiều,
+
+00:04:15.113 --> 00:04:18.279 line:98%,end
+tức là dùng cả khung tương lai làm tham chiếu.
+
+00:04:18.229 --> 00:04:22.371 line:98%,end
+Điều này giúp dự đoán tốt các vùng bị che khuất vừa mới xuất hiện,
+
+00:04:22.371 --> 00:04:24.505 line:98%,end
+vì chúng chỉ có ở khung tương lai.
+
+00:04:24.505 --> 00:04:27.070 line:98%,end
+Nó cũng hỗ trợ giảm nhiễu.
+
+00:04:27.670 --> 00:04:32.380 line:98%,end
+MPEG-1 còn cho phép vector chuyển động có độ chính xác nửa pixel,
+
+00:04:32.380 --> 00:04:35.133 line:98%,end
+tốt hơn so với ước lượng nguyên pixel.
+
+00:04:35.704 --> 00:04:40.576 line:98%,end
+MPEG-1 được thiết kế cho tốc độ khoảng một phẩy năm megabit một giây,
+
+00:04:40.576 --> 00:04:45.094 line:98%,end
+đủ cho chất lượng tương đương băng VHS, và là chuẩn của đĩa VCD.
+
+00:04:45.044 --> 00:04:50.943 line:98%,end
+Định dạng âm thanh MP3 nổi tiếng cũng chính là lớp ba của MPEG-1.
+
+00:04:52.462 --> 00:04:55.355 line:98%,end
+Đây là phần cực kỳ hay ra đề.
+
+00:04:55.305 --> 00:04:59.680 line:98%,end
+Video MPEG-1 chia thành các nhóm ảnh, GOP.
+
+00:04:59.680 --> 00:05:03.529 line:98%,end
+Khung I được mã hóa độc lập, không tham chiếu khung nào khác,
+
+00:05:03.529 --> 00:05:07.505 line:98%,end
+nên nó là điểm truy cập ngẫu nhiên, nơi ta có thể nhảy vào xem.
+
+00:05:08.128 --> 00:05:12.127 line:98%,end
+Khung P được dự đoán tiến từ khung I hoặc P trước đó.
+
+00:05:12.077 --> 00:05:15.958 line:98%,end
+Nhờ bù chuyển động, khung P nén tốt hơn khung I.
+
+00:05:16.570 --> 00:05:21.203 line:98%,end
+Khung B được dự đoán hai chiều, từ cả khung quá khứ và khung tương lai,
+
+00:05:21.203 --> 00:05:23.421 line:98%,end
+nên thường đạt tỉ lệ nén cao nhất.
+
+00:05:23.980 --> 00:05:29.524 line:98%,end
+Khung D chỉ mã hóa hệ số DC của DCT, độ phân giải rất thấp, hiếm khi dùng,
+
+00:05:29.524 --> 00:05:32.146 line:98%,end
+chủ yếu phục vụ tua tìm kiếm nhanh.
+
+00:05:32.710 --> 00:05:40.499 line:98%,end
+Một GOP điển hình có dạng: I, B, B, P, B, B, P, và cứ thế.
+
+00:05:40.449 --> 00:05:43.372 line:98%,end
+Vì khung B cần khung tương lai để giải mã,
+
+00:05:43.372 --> 00:05:46.087 line:98%,end
+nên thứ tự truyền khác thứ tự hiển thị.
+
+00:05:46.087 --> 00:05:50.553 line:98%,end
+Ví dụ khung P thứ tư phải được gửi trước hai khung B đứng trước nó.
+
+00:05:51.160 --> 00:05:54.040 line:98%,end
+Cấu trúc GOP là một sự đánh đổi.
+
+00:05:53.990 --> 00:05:58.579 line:98%,end
+GOP dài, ít khung I, thì nén tốt hơn, nhưng tua và chuyển kênh chậm hơn,
+
+00:05:58.579 --> 00:06:04.380 line:98%,end
+và một lỗi ở khung I hay P sẽ lan đến các khung phụ thuộc phía sau cho đến khung I kế tiếp.
+
+00:06:04.380 --> 00:06:06.633 line:98%,end
+GOP ngắn thì ngược lại.
+
+00:06:08.134 --> 00:06:14.037 line:98%,end
+MPEG-2 hướng tới các ứng dụng chất lượng cao hơn: video theo yêu cầu,
+
+00:06:14.037 --> 00:06:18.657 line:98%,end
+truyền hình số, DVD, HDTV, truyền hình cáp và vệ tinh.
+
+00:06:18.607 --> 00:06:23.034 line:98%,end
+Yêu cầu chuyển kênh nhanh được đáp ứng nhờ các khung I đặt đều trong GOP.
+
+00:06:23.656 --> 00:06:31.571 line:98%,end
+Cuối chương là nén video bằng học sâu: dùng mạng nơ-ron thay thế hoặc bổ trợ từng thành phần như ước lượng chuyển động,
+
+00:06:31.571 --> 00:06:35.429 line:98%,end
+biến đổi, lượng tử, mã entropy, hoặc nén video end to end.
+
+00:06:36.886 --> 00:06:41.198 line:98%,end
+Hãy cùng tổng hợp lại vì sao video nén được nhiều đến vậy.
+
+00:06:41.148 --> 00:06:43.518 line:98%,end
+Có bốn loại dư thừa.
+
+00:06:43.518 --> 00:06:48.544 line:98%,end
+Dư thừa không gian giữa các pixel trong một khung, khai thác bằng DCT.
+
+00:06:48.544 --> 00:06:52.802 line:98%,end
+Dư thừa thời gian giữa các khung, khai thác bằng bù chuyển động.
+
+00:06:52.802 --> 00:06:57.502 line:98%,end
+Dư thừa thống kê giữa các ký hiệu, khai thác bằng mã entropy.
+
+00:06:57.502 --> 00:07:03.023 line:98%,end
+Và dư thừa tâm sinh lý, những gì mắt không thấy, khai thác bằng lượng tử hóa.
+
+00:07:03.640 --> 00:07:07.942 line:98%,end
+Để thấy quy mô, một video thô Full HD, ba mươi khung một giây,
+
+00:07:07.942 --> 00:07:12.731 line:98%,end
+hai mươi bốn bit mỗi pixel, cần khoảng một phẩy năm gigabit mỗi giây.
+
+00:07:12.681 --> 00:07:17.224 line:98%,end
+Sau khi nén bằng các chuẩn hiện đại, chỉ còn vài megabit mỗi giây,
+
+00:07:17.224 --> 00:07:19.634 line:98%,end
+tức tỉ lệ nén lên tới vài trăm lần.
+
+00:07:21.142 --> 00:07:23.110 line:98%,end
+Tổng kết chương sáu.
+
+00:07:23.060 --> 00:07:27.700 line:98%,end
+Nén video khai thác tương quan thời gian bằng ước lượng và bù chuyển động,
+
+00:07:27.700 --> 00:07:29.519 line:98%,end
+rồi chỉ mã hóa phần sai khác.
+
+00:07:30.136 --> 00:07:37.000 line:98%,end
+MC-EZBC với MCTF cho khả năng khả mở theo chất lượng, không gian và thời gian.
+
+00:07:37.570 --> 00:07:39.789 line:98%,end
+Chuyển mã giúp thích ứng bitrate,
+
+00:07:39.789 --> 00:07:42.950 line:98%,end
+độ phân giải và chuẩn mã hóa cho từng thiết bị.
+
+00:07:43.516 --> 00:07:49.959 line:98%,end
+Và nhớ kỹ cấu trúc GOP: I mã độc lập, P dự đoán tiến, B dự đoán hai chiều,
+
+00:07:49.959 --> 00:07:51.526 line:98%,end
+D chỉ có hệ số DC.
+
+00:07:51.476 --> 00:07:55.122 line:98%,end
+Hẹn gặp các bạn ở chương bảy: thu nhận ảnh.

@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Đám mây dữ liệu 2D. Các điểm tạo thành đám mây kéo dài theo một hướng. Ta muốn giữ thông tin bằng ít tọa độ hơn.
+
+00:08.000 --> 00:16.000
+Bước 2: Trừ trung bình. Đưa tâm dữ liệu về gốc trước khi tính hiệp phương sai.
+
+00:16.000 --> 00:24.000
+Bước 3: Tìm hướng riêng lớn nhất. Vector riêng có trị riêng lớn nhất là hướng phương sai lớn nhất của dữ liệu.
+
+00:24.000 --> 00:32.000
+Bước 4: Chiếu lên trục đầu tiên. Mỗi điểm được thay bằng tọa độ vô hướng trên v1. Một phần biến thiên ở trục còn lại bị mất.
+
+00:32.000 --> 00:40.000
+Bước 5: Tái tạo xấp xỉ. Chiếu ngược cho điểm nằm trên trục chính. Clip hiển thị phần trăm phương sai giữ lại.

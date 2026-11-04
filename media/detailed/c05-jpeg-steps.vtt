@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Chọn khối và dịch mức. Lấy khối ảnh xám 8×8, trừ 128 để đưa các giá trị quanh 0.
+
+00:08.000 --> 00:16.000
+Bước 2: Tính DCT. Biểu diễn khối bằng các hệ số tần số. Chưa bỏ hệ số ở bước này.
+
+00:16.000 --> 00:24.000
+Bước 3: Lượng tử hóa. Chia hệ số cho bảng lượng tử và làm tròn. Nhiều hệ số nhỏ trở thành 0.
+
+00:24.000 --> 00:32.000
+Bước 4: Mã hóa chuỗi hệ số. Zigzag và mã entropy khai thác các số 0. Mã entropy không tạo thêm sai số lượng tử.
+
+00:32.000 --> 00:40.000
+Bước 5: Giải lượng tử và IDCT. Nhân lại Q rồi IDCT, cộng 128. Sai lệch so với ảnh gốc vẫn còn vì đã làm tròn.

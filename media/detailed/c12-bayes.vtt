@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Hai lớp Gaussian. Hai phân bố có trung bình −1 và +1, cùng độ lệch chuẩn 1. Quan sát x=0,2.
+
+00:08.000 --> 00:16.000
+Bước 2: Tiên nghiệm bằng nhau. Với P(A)=P(B)=0,5, B có likelihood lớn hơn tại x=0,2 nên được ưu tiên.
+
+00:16.000 --> 00:24.000
+Bước 3: Đổi xác suất tiên nghiệm. Nếu A phổ biến hơn, đặt P(A)=0,8 và P(B)=0,2. Likelihood của x không đổi.
+
+00:24.000 --> 00:32.000
+Bước 4: Chuẩn hóa thành hậu nghiệm. Chia các score cho tổng để được P(A
+
+00:32.000 --> 00:40.000
+Bước 5: Gắn với hàm mất mát. Chọn hậu nghiệm lớn nhất ứng với mất mát 0–1. Nếu chi phí sai khác nhau, phải tối thiểu hóa rủi ro.

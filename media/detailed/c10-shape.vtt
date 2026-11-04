@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Một vùng nhị phân. Xét hình elip mẫu. Diện tích xấp xỉ bằng số pixel thuộc vật thể.
+
+00:08.000 --> 00:16.000
+Bước 2: Tìm hộp bao theo trục ảnh. Lấy min/max tọa độ x,y. Hộp bao trục ảnh thay đổi khi xoay vật thể.
+
+00:16.000 --> 00:24.000
+Bước 3: Tìm hai trục chính. Hiệp phương sai tọa độ vùng cho các hướng riêng; hướng phương sai lớn là trục chính.
+
+00:24.000 --> 00:32.000
+Bước 4: Xoay hình mẫu. Xoay làm hộp bao trục ảnh đổi, nhưng diện tích và độ dài hai trục chính lý tưởng giữ nguyên.
+
+00:32.000 --> 00:40.000
+Bước 5: Chọn đặc trưng phù hợp. Diện tích và tỉ lệ trục mô tả hình dạng; hộp bao bổ sung vị trí và phạm vi.

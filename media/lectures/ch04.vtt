@@ -1,0 +1,382 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.685 line:98%,end
+Chào các bạn, chúng ta đến với chương bốn: phân tích ảnh và video,
+
+00:00:04.685 --> 00:00:07.394 line:98%,end
+với trọng tâm là các phép biến đổi ảnh.
+
+00:00:07.344 --> 00:00:12.765 line:98%,end
+Chương này giải thích vì sao JPEG dùng DCT, vì sao wavelet lại mạnh như vậy,
+
+00:00:12.765 --> 00:00:15.404 line:98%,end
+và các biến đổi khác nhau ở điểm nào.
+
+00:00:16.006 --> 00:00:21.425 line:98%,end
+Một phép biến đổi ảnh phân tách ảnh thành tổng có trọng số của các hàm cơ sở trực giao.
+
+00:00:21.375 --> 00:00:26.402 line:98%,end
+Mọi phép biến đổi của cùng một ảnh đều chứa cùng lượng thông tin và tổng năng lượng,
+
+00:00:26.402 --> 00:00:27.299 line:98%,end
+đều khả nghịch.
+
+00:00:27.299 --> 00:00:31.479 line:98%,end
+Chúng chỉ khác nhau ở cách phân bố năng lượng giữa các hệ số.
+
+00:00:32.980 --> 00:00:37.097 line:98%,end
+Đầu tiên là biến đổi Hartley rời rạc, DHT.
+
+00:00:37.047 --> 00:00:43.544 line:98%,end
+Điểm nổi bật nhất: đầu ra của DHT luôn là số thực, trong khi DFT cho ra số phức.
+
+00:00:43.544 --> 00:00:46.513 line:98%,end
+Điều này giúp tính toán đơn giản hơn.
+
+00:00:47.134 --> 00:00:51.531 line:98%,end
+DHT có tính đối xứng, H tại u v bằng H tại trừ u trừ v,
+
+00:00:51.531 --> 00:00:55.209 line:98%,end
+và bảo toàn năng lượng tín hiệu giống như DFT.
+
+00:00:55.768 --> 00:01:01.004 line:98%,end
+Ma trận biến đổi của DHT là ma trận thực, trực giao và đối xứng.
+
+00:01:00.954 --> 00:01:03.988 line:98%,end
+Ba tính chất này các bạn nên thuộc lòng.
+
+00:01:04.594 --> 00:01:08.652 line:98%,end
+Một cách hiểu nhanh DHT: dùng hàm cas, tức cos cộng sin,
+
+00:01:08.652 --> 00:01:17.422 line:98%,end
+thay cho e mũ trừ j. Hệ quả là DHT liên hệ trực tiếp với DFT: hệ số Hartley bằng phần thực trừ phần ảo của hệ số Fourier.
+
+00:01:17.372 --> 00:01:20.849 line:98%,end
+Vì vậy từ DHT có thể suy ra DFT và ngược lại,
+
+00:01:20.849 --> 00:01:24.403 line:98%,end
+nhưng mọi phép tính trung gian đều là số thực.
+
+00:01:25.012 --> 00:01:30.312 line:98%,end
+Thêm một tính chất tiện lợi: biến đổi Hartley ngược có cùng dạng với biến đổi thuận,
+
+00:01:30.312 --> 00:01:31.889 line:98%,end
+chỉ khác hệ số chuẩn hóa.
+
+00:01:31.839 --> 00:01:36.019 line:98%,end
+Nghĩa là cùng một đoạn chương trình có thể dùng cho cả hai chiều.
+
+00:01:37.522 --> 00:01:43.084 line:98%,end
+Tiếp theo là DCT, biến đổi cosin rời rạc, ngôi sao của nén ảnh.
+
+00:01:43.034 --> 00:01:49.102 line:98%,end
+DCT có phổ tương tự DFT và DHT nhưng độ phân giải tần số gấp đôi.
+
+00:01:49.708 --> 00:01:54.673 line:98%,end
+Điểm khác biệt then chốt: DFT giả định tín hiệu tuần hoàn chu kỳ N,
+
+00:01:54.673 --> 00:01:56.377 line:98%,end
+không có tính đối xứng.
+
+00:01:56.327 --> 00:02:01.874 line:98%,end
+Còn DCT giả định tín hiệu tuần hoàn chu kỳ hai N và đối xứng chẵn.
+
+00:02:02.494 --> 00:02:06.741 line:98%,end
+Nhờ đối xứng chẵn, khi lặp tín hiệu sẽ không có bước nhảy ở biên,
+
+00:02:06.741 --> 00:02:10.139 line:98%,end
+nên giảm thiểu gián đoạn và nhiễu tần số cao đi kèm.
+
+00:02:10.089 --> 00:02:14.516 line:98%,end
+Đây chính là lý do DCT được chọn cho JPEG.
+
+00:02:15.136 --> 00:02:20.320 line:98%,end
+Tính chất quan trọng nhất của DCT với ảnh tự nhiên là khả năng dồn năng lượng.
+
+00:02:20.270 --> 00:02:22.731 line:98%,end
+Sau khi biến đổi một khối tám nhân tám,
+
+00:02:22.731 --> 00:02:27.588 line:98%,end
+phần lớn năng lượng tập trung ở vài hệ số góc trên bên trái, tức tần số thấp.
+
+00:02:27.588 --> 00:02:33.109 line:98%,end
+Hệ số đầu tiên chính là hệ số DC, tỉ lệ với độ sáng trung bình của khối.
+
+00:02:33.730 --> 00:02:36.271 line:98%,end
+Các hệ số tần số cao thường rất nhỏ,
+
+00:02:36.271 --> 00:02:39.800 line:98%,end
+và mắt người lại kém nhạy với chi tiết tần số cao.
+
+00:02:39.750 --> 00:02:43.976 line:98%,end
+Vì vậy ta có thể lượng tử chúng thật thô, thậm chí bỏ đi,
+
+00:02:43.976 --> 00:02:46.052 line:98%,end
+mà ảnh vẫn trông gần như cũ.
+
+00:02:46.052 --> 00:02:51.403 line:98%,end
+Đây là toàn bộ bí mật của nén JPEG mà chúng ta sẽ gặp lại ở chương năm.
+
+00:02:52.912 --> 00:02:59.086 line:98%,end
+Biến đổi sin rời rạc, DST, cũng có độ phân giải tần số gấp đôi DFT.
+
+00:02:59.036 --> 00:03:03.658 line:98%,end
+Nhưng DST không có thành phần một chiều DC tại u bằng không.
+
+00:03:04.158 --> 00:03:10.134 line:98%,end
+Lý do là DST giả định tín hiệu tuần hoàn chu kỳ hai nhân N cộng một và đối xứng lẻ,
+
+00:03:10.134 --> 00:03:12.582 line:98%,end
+nên giá trị trung bình bằng không.
+
+00:03:12.582 --> 00:03:17.526 line:98%,end
+Hệ quả là DST không giảm được gián đoạn biên như DCT.
+
+00:03:17.526 --> 00:03:22.518 line:98%,end
+Câu so sánh DCT với DST này xuất hiện khá thường xuyên.
+
+00:03:23.968 --> 00:03:27.668 line:98%,end
+Biến đổi Walsh Hadamard là một biến đổi phi sin.
+
+00:03:27.618 --> 00:03:31.747 line:98%,end
+Thay vì dùng sóng sin cos, nó dùng các hàm cơ sở hình chữ nhật,
+
+00:03:31.747 --> 00:03:35.483 line:98%,end
+gọi là hàm Walsh, chỉ nhận giá trị cộng một hoặc trừ một.
+
+00:03:36.082 --> 00:03:41.930 line:98%,end
+Biến đổi ngược của WHT giống hệt biến đổi thuận, nên tái tạo ảnh rất đơn giản.
+
+00:03:41.880 --> 00:03:45.435 line:98%,end
+Biến đổi này không mất mát và khả nghịch hoàn toàn.
+
+00:03:46.036 --> 00:03:51.702 line:98%,end
+Ưu điểm lớn: chỉ dùng phép cộng và trừ, không cần phép nhân, nên rất nhanh.
+
+00:03:51.652 --> 00:03:59.035 line:98%,end
+Phiên bản nhanh FWHT đạt độ phức tạp N M log N M, tương đương FFT.
+
+00:03:59.638 --> 00:04:01.039 line:98%,end
+Ứng dụng gồm nén ảnh,
+
+00:04:01.039 --> 00:04:06.378 line:98%,end
+vì nó dồn năng lượng vào một số ít hệ số giống DCT nhưng tính toán đơn giản hơn,
+
+00:04:06.378 --> 00:04:09.315 line:98%,end
+cùng với nhận dạng mẫu và xử lý tín hiệu số.
+
+00:04:09.880 --> 00:04:13.307 line:98%,end
+Ma trận Hadamard được xây dựng đệ quy rất đẹp.
+
+00:04:13.257 --> 00:04:17.976 line:98%,end
+Bắt đầu với ma trận hai nhân hai gồm một, một ở hàng trên và một,
+
+00:04:17.976 --> 00:04:19.428 line:98%,end
+trừ một ở hàng dưới.
+
+00:04:19.428 --> 00:04:23.697 line:98%,end
+Ma trận cấp hai N được ghép từ bốn bản sao của ma trận cấp N,
+
+00:04:23.697 --> 00:04:26.915 line:98%,end
+trong đó bản ở góc dưới bên phải mang dấu trừ.
+
+00:04:26.915 --> 00:04:30.275 line:98%,end
+Kích thước vì thế luôn là lũy thừa của hai.
+
+00:04:30.898 --> 00:04:35.381 line:98%,end
+Với hàm Walsh, thay cho khái niệm tần số người ta dùng sequency,
+
+00:04:35.381 --> 00:04:38.114 line:98%,end
+tức số lần hàm đổi dấu trên một chu kỳ.
+
+00:04:38.064 --> 00:04:42.334 line:98%,end
+Hàm đổi dấu càng nhiều lần thì tương ứng với thành phần càng chi tiết,
+
+00:04:42.334 --> 00:04:44.470 line:98%,end
+giống như tần số cao trong Fourier.
+
+00:04:45.976 --> 00:04:50.900 line:98%,end
+Bây giờ đến biến đổi wavelet, nền tảng của lý thuyết đa phân giải.
+
+00:04:50.850 --> 00:04:53.411 line:98%,end
+Lý thuyết này hợp nhất mã hóa băng con,
+
+00:04:53.411 --> 00:04:58.272 line:98%,end
+lọc gương cầu phương trong xử lý tiếng nói, và xử lý ảnh dạng kim tự tháp.
+
+00:04:58.272 --> 00:05:02.425 line:98%,end
+Ý tưởng là phân tích ảnh ở nhiều mức độ phân giải khác nhau.
+
+00:05:03.034 --> 00:05:05.765 line:98%,end
+DWT dựa trên hai hàm: hàm tỉ lệ cha,
+
+00:05:05.765 --> 00:05:11.226 line:98%,end
+trực giao với các phép tịnh tiến nguyên của chính nó, và hàm wavelet mẹ.
+
+00:05:11.176 --> 00:05:17.348 line:98%,end
+DWT phân rã tín hiệu thành hệ số xấp xỉ và hệ số chi tiết ở mỗi mức tỉ lệ j.
+
+00:05:17.956 --> 00:05:21.278 line:98%,end
+Vì sao cần wavelet khi đã có Fourier?
+
+00:05:21.228 --> 00:05:24.433 line:98%,end
+Hàm cơ sở của Fourier là sóng sin kéo dài vô hạn,
+
+00:05:24.433 --> 00:05:27.376 line:98%,end
+nên Fourier cho biết ảnh có những tần số nào,
+
+00:05:27.376 --> 00:05:29.796 line:98%,end
+nhưng không cho biết chúng nằm ở đâu.
+
+00:05:29.796 --> 00:05:33.276 line:98%,end
+Wavelet là những sóng nhỏ, có độ dài hữu hạn,
+
+00:05:33.276 --> 00:05:36.137 line:98%,end
+nên nó cho biết cả tần số lẫn vị trí.
+
+00:05:36.137 --> 00:05:40.265 line:98%,end
+Đây là lợi thế định vị không gian và tần số đồng thời.
+
+00:05:40.870 --> 00:05:42.410 line:98%,end
+Trong phân rã nhiều mức,
+
+00:05:42.410 --> 00:05:46.388 line:98%,end
+ở mỗi mức ta tách tín hiệu thành phần xấp xỉ và phần chi tiết,
+
+00:05:46.388 --> 00:05:48.763 line:98%,end
+rồi chỉ tiếp tục phân rã phần xấp xỉ.
+
+00:05:48.713 --> 00:05:52.823 line:98%,end
+Kết quả là một kim tự tháp: các mức thô chứa cấu trúc lớn,
+
+00:05:52.823 --> 00:05:54.950 line:98%,end
+các mức mịn chứa chi tiết nhỏ.
+
+00:05:55.552 --> 00:05:59.696 line:98%,end
+Ngoài DWT còn có biến đổi wavelet liên tục, CWT,
+
+00:05:59.696 --> 00:06:02.976 line:98%,end
+nơi tỉ lệ và vị trí thay đổi liên tục.
+
+00:06:02.926 --> 00:06:08.221 line:98%,end
+CWT cho biểu diễn rất dư thừa, phù hợp để phân tích và quan sát tín hiệu,
+
+00:06:08.221 --> 00:06:12.718 line:98%,end
+trong khi DWT gọn và khả nghịch, phù hợp cho nén và khử nhiễu.
+
+00:06:14.230 --> 00:06:15.922 line:98%,end
+Trong không gian hai chiều,
+
+00:06:15.922 --> 00:06:20.248 line:98%,end
+ta cần một hàm tỉ lệ hai chiều và ba hàm wavelet hai chiều tách được.
+
+00:06:20.800 --> 00:06:27.473 line:98%,end
+Ba hàm wavelet này có tính nhạy hướng: chúng đo sự biến thiên cường độ theo ba hướng khác nhau là theo cột,
+
+00:06:27.473 --> 00:06:29.344 line:98%,end
+theo hàng, và theo đường chéo.
+
+00:06:29.294 --> 00:06:34.124 line:98%,end
+Đó là lý do một mức phân rã wavelet hai chiều cho ra bốn băng con.
+
+00:06:34.738 --> 00:06:40.504 line:98%,end
+Biến đổi wavelet nhanh và biến đổi ngược được triển khai bằng tích chập với các bộ lọc tương ứng,
+
+00:06:40.504 --> 00:06:41.277 line:98%,end
+rất hiệu quả.
+
+00:06:41.836 --> 00:06:47.138 line:98%,end
+Cụ thể, sau một mức phân rã hai chiều, ảnh được tách thành bốn băng con.
+
+00:06:47.088 --> 00:06:51.358 line:98%,end
+Băng LL là ảnh xấp xỉ thu nhỏ một nửa mỗi chiều.
+
+00:06:51.358 --> 00:06:57.472 line:98%,end
+Ba băng còn lại, thường ký hiệu LH, HL và HH, chứa chi tiết theo phương ngang,
+
+00:06:57.472 --> 00:06:59.509 line:98%,end
+phương dọc và phương chéo.
+
+00:06:59.509 --> 00:07:03.416 line:98%,end
+Muốn phân rã tiếp thì ta lại tách băng LL.
+
+00:07:04.030 --> 00:07:09.191 line:98%,end
+Một điểm đáng chú ý: tổng số hệ số của bốn băng con đúng bằng số pixel của ảnh gốc,
+
+00:07:09.191 --> 00:07:12.300 line:98%,end
+nên biến đổi wavelet không làm tăng lượng dữ liệu.
+
+00:07:12.250 --> 00:07:17.693 line:98%,end
+Nhưng phần lớn hệ số chi tiết lại rất gần không, và đó là cơ hội để nén.
+
+00:07:19.204 --> 00:07:25.860 line:98%,end
+Phần cuối chương giới thiệu xu hướng dùng mô hình học sâu để thay thế hoặc bổ trợ các phép biến đổi toán học cổ điển.
+
+00:07:25.810 --> 00:07:29.100 line:98%,end
+Thay vì chọn cơ sở cố định như cosin hay wavelet,
+
+00:07:29.100 --> 00:07:32.255 line:98%,end
+mạng nơ-ron học trực tiếp biểu diễn từ dữ liệu.
+
+00:07:32.255 --> 00:07:36.773 line:98%,end
+Đây là cầu nối sang các chương phân đoạn, phát hiện và phân loại.
+
+00:07:38.290 --> 00:07:43.019 line:98%,end
+Trước khi tổng kết, chúng ta đặt các phép biến đổi cạnh nhau để so sánh.
+
+00:07:42.969 --> 00:07:47.263 line:98%,end
+DFT cho hệ số phức, giả định tín hiệu tuần hoàn chu kỳ N,
+
+00:07:47.263 --> 00:07:50.351 line:98%,end
+và là nền tảng của lọc trong miền tần số.
+
+00:07:50.856 --> 00:07:55.386 line:98%,end
+DHT cho hệ số thực, ma trận biến đổi thực, trực giao và đối xứng,
+
+00:07:55.386 --> 00:07:59.568 line:98%,end
+mang thông tin tương đương DFT nhưng tính toán đơn giản hơn.
+
+00:08:00.118 --> 00:08:04.174 line:98%,end
+DCT cho hệ số thực, giả định chu kỳ hai N đối xứng chẵn,
+
+00:08:04.174 --> 00:08:08.375 line:98%,end
+dồn năng lượng rất tốt nên là lựa chọn số một cho nén ảnh.
+
+00:08:08.944 --> 00:08:12.517 line:98%,end
+WHT chỉ dùng cộng một và trừ một nên tính cực nhanh,
+
+00:08:12.517 --> 00:08:17.740 line:98%,end
+còn wavelet là biến đổi đa phân giải, định vị được cả không gian lẫn tần số,
+
+00:08:17.740 --> 00:08:19.871 line:98%,end
+là nền tảng của JPEG hai nghìn.
+
+00:08:21.334 --> 00:08:23.263 line:98%,end
+Tổng kết chương bốn.
+
+00:08:23.213 --> 00:08:27.643 line:98%,end
+Mọi phép biến đổi đều giữ nguyên thông tin và năng lượng, đều khả nghịch,
+
+00:08:27.643 --> 00:08:29.645 line:98%,end
+chỉ khác cách phân bố năng lượng.
+
+00:08:30.256 --> 00:08:35.414 line:98%,end
+DHT cho đầu ra số thực với ma trận thực, trực giao và đối xứng.
+
+00:08:35.986 --> 00:08:41.474 line:98%,end
+DCT giả định chu kỳ hai N và đối xứng chẵn nên giảm gián đoạn biên,
+
+00:08:41.474 --> 00:08:42.785 line:98%,end
+dùng trong JPEG.
+
+00:08:42.735 --> 00:08:46.797 line:98%,end
+DST đối xứng lẻ và không có thành phần DC.
+
+00:08:47.404 --> 00:08:50.583 line:98%,end
+WHT chỉ dùng cộng một trừ một nên rất nhanh,
+
+00:08:50.583 --> 00:08:53.474 line:98%,end
+và wavelet hai chiều nhạy theo ba hướng.
+
+00:08:53.424 --> 00:08:56.887 line:98%,end
+Hẹn gặp các bạn ở chương năm: nén ảnh.

@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Đầu vào và hai loại đầu ra. Object detection dự đoán cả vị trí hộp và lớp. Chỉ nói có vật thể gì chưa đủ.
+
+00:08.000 --> 00:16.000
+Bước 2: Two-stage: sinh đề xuất vùng. Một nhánh đề xuất các vùng có khả năng chứa vật thể từ đặc trưng ảnh.
+
+00:16.000 --> 00:24.000
+Bước 3: Two-stage: xử lý từng vùng. Đặc trưng vùng được dùng để phân loại và tinh chỉnh tọa độ hộp.
+
+00:24.000 --> 00:32.000
+Bước 4: One-stage: dự đoán trực tiếp. Họ one-stage dự đoán hộp và lớp trực tiếp từ các feature map mà không có pha RoI riêng.
+
+00:32.000 --> 00:40.000
+Bước 5: So sánh theo mục tiêu. Không có kết luận mọi one-stage luôn nhanh hoặc mọi two-stage luôn chính xác hơn. Cần đo trên cùng điều kiện.

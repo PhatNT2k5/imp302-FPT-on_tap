@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Tạo ảnh bị suy giảm. Làm mờ ảnh bằng hàm H rồi cộng nhiễu nhỏ. Trong clip, H được biết trước.
+
+00:08.000 --> 00:16.000
+Bước 2: Nguy cơ của lọc ngược. Chia cho H rất nhỏ có thể phóng đại thành phần nhiễu và gây kết quả dao động mạnh.
+
+00:16.000 --> 00:24.000
+Bước 3: Thêm điều chuẩn. Wiener dùng hệ số giảm khuếch đại nơi tín hiệu kém tin cậy. Clip dùng K hằng để minh họa.
+
+00:24.000 --> 00:32.000
+Bước 4: Thử nhiều giá trị K. K nhỏ dễ còn nhiễu; K lớn làm mượt mạnh hơn. Quan sát độ rõ và độ hạt cùng lúc.
+
+00:32.000 --> 00:40.000
+Bước 5: Đọc giới hạn ví dụ. Ảnh gốc chỉ dùng để so sánh. Thực tế phải ước lượng H và phổ nhiễu, không luôn biết sẵn.

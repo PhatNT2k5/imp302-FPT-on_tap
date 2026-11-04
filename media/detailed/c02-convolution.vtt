@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Chọn vùng lân cận. Cửa sổ 3×3 lấy chín giá trị quanh pixel đang xét. Đây là xử lý theo lân cận.
+
+00:08.000 --> 00:16.000
+Bước 2: Đặt kernel. Bộ lọc trung bình dùng chín hệ số bằng 1/9. Tổng hệ số bằng 1 nên giữ vùng sáng đều.
+
+00:16.000 --> 00:24.000
+Bước 3: Nhân từng cặp. Nhân mỗi giá trị pixel với hệ số tương ứng trong kernel.
+
+00:24.000 --> 00:32.000
+Bước 4: Cộng các tích. Tổng chín tích là giá trị mới tại tâm. Trong ví dụ, tổng cửa sổ là 450.
+
+00:32.000 --> 00:40.000
+Bước 5: Trượt và lặp. Lặp cho các vị trí còn lại. Với kernel đối xứng này, correlation và convolution trùng nhau.

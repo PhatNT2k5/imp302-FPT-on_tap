@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Thứ tự cần hiển thị. Ví dụ đơn giản gồm I0, B1, B2, P3. Đây là vị trí các khung khi xem video.
+
+00:08.000 --> 00:16.000
+Bước 2: Khung I độc lập. I0 dùng dự đoán trong khung, không cần khung trước hoặc sau để tái tạo trong ví dụ.
+
+00:16.000 --> 00:24.000
+Bước 3: Khung P tham chiếu quá khứ. P3 dùng I0 làm tham chiếu trong sơ đồ đơn giản. Giải mã P3 trước khi dựng các B giữa chúng.
+
+00:24.000 --> 00:32.000
+Bước 4: Khung B dùng hai phía. B1 và B2 có thể dự đoán từ I0 và P3. Vì thế P3 cần sẵn dù được hiển thị sau.
+
+00:32.000 --> 00:40.000
+Bước 5: Thứ tự giải mã có thể khác. Một thứ tự hợp lệ cho ví dụ là I0, P3, B1, B2. Cấu trúc codec thực có thể phức tạp hơn.

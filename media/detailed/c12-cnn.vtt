@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Ảnh đầu vào và kernel. Dùng ma trận nhỏ và một kernel phát hiện biến thiên dọc. Trọng số được đặt tay để minh họa.
+
+00:08.000 --> 00:16.000
+Bước 2: Tạo feature map. Kernel trượt trên ảnh, lấy tổng tích tại từng vị trí. Dùng valid nên kích thước nhỏ đi.
+
+00:16.000 --> 00:24.000
+Bước 3: Áp dụng ReLU. Giữ số dương và thay số âm bằng 0. Đây là phép phi tuyến sau convolution.
+
+00:24.000 --> 00:32.000
+Bước 4: Max pooling 2×2. Mỗi ô 2×2 giữ giá trị lớn nhất với stride 2. Map 4×4 trở thành 2×2.
+
+00:32.000 --> 00:40.000
+Bước 5: Từ đặc trưng tới nhãn. Mạng hoàn chỉnh cần thêm các lớp và trọng số học từ dữ liệu. Clip dừng ở đặc trưng, chưa tạo nhãn dự đoán.

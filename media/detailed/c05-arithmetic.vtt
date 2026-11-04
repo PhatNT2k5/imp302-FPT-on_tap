@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Chia khoảng ban đầu. A chiếm [0;0,5), B chiếm [0,5;0,8), C chiếm [0,8;1). Dùng cùng mô hình khi giải mã.
+
+00:08.000 --> 00:16.000
+Bước 2: Đọc ký hiệu B. Chọn đoạn của B trong khoảng hiện tại [0;1). Khoảng mới là [0,5;0,8).
+
+00:16.000 --> 00:24.000
+Bước 3: Đọc tiếp A. Lấy nửa đầu của khoảng rộng 0,3. Khoảng BA là [0,5;0,65).
+
+00:24.000 --> 00:32.000
+Bước 4: Đọc tiếp C. Lấy phần từ 0,8 đến 1 của khoảng BA. Thu được [0,62;0,65).
+
+00:32.000 --> 00:40.000
+Bước 5: Chọn số đại diện. 0,63 nằm trong khoảng cuối. Giải mã cần cùng xác suất và biết độ dài chuỗi hoặc ký hiệu kết thúc.

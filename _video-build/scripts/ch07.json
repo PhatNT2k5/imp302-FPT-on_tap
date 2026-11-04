@@ -1,0 +1,206 @@
+{
+  "title": "Thu nhận ảnh",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {
+          "text": "Mở đầu",
+          "say": "Chào các bạn, chương bảy đưa chúng ta quay về điểm khởi đầu của toàn bộ pipeline: thu nhận ảnh và video. Đây là quá trình biến thế giới thực liên tục thành dữ liệu số rời rạc trong máy tính."
+        },
+        {
+          "text": "Lộ trình",
+          "say": "Chúng ta sẽ tìm hiểu lấy mẫu và lượng tử hóa, phân tích Fourier của tín hiệu lấy mẫu và hiện tượng răng cưa, chuyển đổi tốc độ lấy mẫu, các phương pháp nội suy, rồi đến lấy mẫu video và chuyển đổi tốc độ khung hình."
+        }
+      ]
+    },
+    {
+      "title": "Lấy mẫu và lượng tử hóa",
+      "slide": 3,
+      "points": [
+        {
+          "text": "Từ miền liên tục sang miền rời rạc, biên độ lượng tử hóa",
+          "say": "Thu nhận ảnh đưa ta từ miền tham số liên tục của thế giới thực sang miền tham số rời rạc với biên độ đã lượng tử hóa trong thiết bị số."
+        },
+        {
+          "text": "Lấy mẫu (sampling): rời rạc hóa tọa độ → mảng số",
+          "say": "Lấy mẫu là rời rạc hóa tọa độ: biến ảnh có tham số liên tục thành một mảng số. Nói cách khác, lấy mẫu quyết định ảnh có bao nhiêu pixel."
+        },
+        {
+          "text": "Lượng tử hóa (quantization): rời rạc hóa biên độ → tập hữu hạn mức",
+          "say": "Lượng tử hóa là rời rạc hóa biên độ: biến giá trị cường độ liên tục thành một trong một tập hữu hạn các mức, ví dụ hai trăm năm mươi sáu mức xám. Các bạn đừng nhầm hai khái niệm này: lấy mẫu là theo tọa độ, lượng tử là theo biên độ."
+        },
+        {
+          "text": "Ví dụ: ảnh 1920×1080 là kết quả lấy mẫu; 8 bit = 256 mức là lượng tử",
+          "say": "Một ví dụ cụ thể: một ảnh một nghìn chín trăm hai mươi nhân một nghìn không trăm tám mươi pixel cho biết kết quả của bước lấy mẫu. Còn việc mỗi pixel dùng tám bit, tức hai trăm năm mươi sáu mức xám, là kết quả của bước lượng tử hóa."
+        },
+        {
+          "text": "Lấy mẫu thưa → mất chi tiết, răng cưa; lượng tử ít mức → viền giả (false contour)",
+          "say": "Mỗi bước gây ra một kiểu lỗi riêng. Lấy mẫu quá thưa làm mất chi tiết và gây răng cưa. Lượng tử quá ít mức thì những vùng chuyển sắc mượt, như bầu trời, sẽ bị phân thành từng dải với các đường viền giả, gọi là false contouring."
+        }
+      ]
+    },
+    {
+      "title": "Phân tích Fourier và răng cưa",
+      "slide": 6,
+      "points": [
+        {
+          "text": "CSFT: chu kỳ/đơn vị khoảng cách; DSFT: chu kỳ/pixel",
+          "say": "Về mặt Fourier, biến đổi Fourier không gian liên tục, CSFT, có đơn vị tần số là chu kỳ trên đơn vị khoảng cách. Còn biến đổi Fourier không gian rời rạc, DSFT, có đơn vị là chu kỳ trên pixel."
+        },
+        {
+          "text": "Phổ tín hiệu lấy mẫu = phổ liên tục lặp lại theo chu kỳ lấy mẫu",
+          "say": "Khi lấy mẫu, phổ của tín hiệu rời rạc chính là phổ liên tục bị lặp lại tuần hoàn theo chu kỳ lấy mẫu."
+        },
+        {
+          "text": "Lấy mẫu quá thưa (vi phạm Nyquist) → các bản sao chồng lên nhau → aliasing",
+          "say": "Nếu lấy mẫu không đủ dày, vi phạm định lý Nyquist, các bản sao phổ sẽ chồng lên nhau và gây ra hiện tượng răng cưa, aliasing. Ví dụ quen thuộc là vân moiré khi chụp màn hình hoặc áo kẻ sọc."
+        },
+        {
+          "text": "Nyquist: tần số lấy mẫu ≥ 2 lần tần số cao nhất của tín hiệu",
+          "say": "Nhắc lại định lý lấy mẫu Nyquist: để khôi phục được tín hiệu, tần số lấy mẫu phải lớn hơn hoặc bằng hai lần tần số cao nhất có trong tín hiệu. Với ảnh, điều này có nghĩa là chi tiết nhỏ nhất phải được phủ bởi ít nhất hai mẫu."
+        },
+        {
+          "text": "Ví dụ: bánh xe quay ngược trong phim là aliasing theo thời gian",
+          "say": "Răng cưa không chỉ xảy ra trong không gian mà cả theo thời gian. Hiện tượng bánh xe ô tô trong phim trông như đang quay ngược chính là răng cưa thời gian: tốc độ khung hình quá thấp so với tốc độ quay của bánh xe."
+        }
+      ]
+    },
+    {
+      "title": "Giảm mẫu (downsampling)",
+      "slide": 10,
+      "points": [
+        {
+          "text": "Giữ lại mỗi mẫu thứ C theo m và thứ D theo n",
+          "say": "Chuyển đổi tốc độ lấy mẫu gồm hai chiều. Giảm mẫu, downsampling, giảm tốc độ lấy mẫu theo hệ số nguyên C nhân D, bằng cách chỉ giữ lại mỗi mẫu thứ C theo hướng m và thứ D theo hướng n."
+        },
+        {
+          "text": "DSFT bị giãn ra theo hệ số C và D → có thể gây aliasing",
+          "say": "Hệ quả trong miền tần số là DSFT bị giãn ra theo hệ số C và D. Nếu ảnh gốc có năng lượng ở tần số cao hơn ngưỡng Nyquist mới, ta sẽ bị răng cưa."
+        },
+        {
+          "text": "Lọc thông thấp trước (prefilter) + giảm mẫu = decimator",
+          "say": "Để tránh điều đó, ảnh cần được lọc thông thấp trước khi giảm mẫu. Bộ lọc kết hợp với bộ giảm mẫu được gọi là decimator."
+        },
+        {
+          "text": "Ví dụ: thu nhỏ ảnh áo kẻ sọc không lọc trước → vân moiré",
+          "say": "Ví dụ trực quan: nếu thu nhỏ một ảnh có áo kẻ sọc dày bằng cách bỏ bớt pixel mà không lọc trước, các sọc sẽ biến thành những vân lượn sóng lạ, gọi là moiré. Nếu làm mờ nhẹ trước rồi mới bỏ pixel, vân này biến mất."
+        }
+      ]
+    },
+    {
+      "title": "Tăng mẫu và nội suy",
+      "slide": 17,
+      "points": [
+        {
+          "text": "Chèn C−1 và D−1 số 0 giữa các mẫu",
+          "say": "Chiều ngược lại là tăng mẫu, upsampling. Ta chèn thêm C trừ một và D trừ một số không vào giữa các mẫu."
+        },
+        {
+          "text": "Phổ co lại, không gây aliasing vì không mất thông tin",
+          "say": "Tăng mẫu làm phổ tần số co lại, và không gây răng cưa vì không mất thông tin nào. Tuy nhiên nó tạo ra các bản sao phổ dư thừa."
+        },
+        {
+          "text": "Tăng mẫu + bộ lọc loại bản sao phổ = interpolator",
+          "say": "Vì vậy ta kết hợp bộ tăng mẫu với một bộ lọc để loại các bản sao phổ đó và làm mượt tín hiệu. Tổ hợp này gọi là interpolator, bộ nội suy. Các bạn nhớ cặp đôi: decimator cho giảm mẫu, interpolator cho tăng mẫu."
+        },
+        {
+          "text": "Ví dụ hệ số 2: [a, b] → [a, 0, b, 0] → lọc → [a, (a+b)/2, b, …]",
+          "say": "Lấy ví dụ tăng mẫu một chiều với hệ số hai. Dãy a, b sau khi chèn số không thành a, không, b, không. Qua bộ lọc nội suy tuyến tính, các số không được thay bằng trung bình hai mẫu kề, ta được a, a cộng b chia hai, b, và cứ thế."
+        }
+      ]
+    },
+    {
+      "title": "Các phương pháp nội suy ảnh",
+      "slide": 19,
+      "points": [
+        {
+          "text": "Nearest neighbor (bậc 0): lặp lại giá trị pixel gần nhất",
+          "say": "Nội suy lân cận gần nhất, còn gọi là nội suy bậc không, là phương pháp đơn giản nhất về tính toán: chỉ lặp lại giá trị của pixel gần nhất. Kết quả có thể bị khối và răng cưa."
+        },
+        {
+          "text": "Bilinear: mở rộng 2D của nội suy tuyến tính, mượt hơn",
+          "say": "Nội suy song tuyến, bilinear, là mở rộng hai chiều của nội suy tuyến tính. Nó nội suy tuyến tính giữa các mẫu lân cận theo cả hai hướng, nên cho kết quả mượt hơn."
+        },
+        {
+          "text": "Bilinear dùng 4 pixel lân cận; bicubic dùng 16 pixel, sắc nét hơn",
+          "say": "Nội suy song tuyến dùng bốn pixel lân cận, nội suy theo hàng rồi theo cột. Nâng cao hơn là nội suy song khối, bicubic, dùng mười sáu pixel lân cận, cho ảnh sắc nét hơn nhưng tốn tính toán hơn."
+        },
+        {
+          "text": "Đánh đổi: nhanh và khối (nearest) ↔ mượt nhưng hơi mờ (bilinear)",
+          "say": "Tóm lại có một sự đánh đổi. Nearest neighbor nhanh nhất nhưng cho ảnh bị khối, răng cưa. Bilinear mượt hơn nhưng làm cạnh hơi mờ. Tùy ứng dụng mà ta chọn phương pháp phù hợp."
+        }
+      ]
+    },
+    {
+      "title": "Lấy mẫu video và cấu trúc lưới",
+      "slide": 22,
+      "points": [
+        {
+          "text": "Thu nhận = lọc trước không gian–thời gian + lấy mẫu lý tưởng",
+          "say": "Với video, bước thu nhận ban đầu đặc biệt quan trọng vì nó quyết định thông tin nào có trong dữ liệu. Quá trình này được mô hình hóa như một bộ lọc trước theo không gian và thời gian, rồi lấy mẫu lý tưởng trên một cấu trúc lấy mẫu."
+        },
+        {
+          "text": "Cấu trúc lấy mẫu quyết định lượng thông tin; bộ lọc trước hạn chế aliasing",
+          "say": "Cấu trúc lấy mẫu quyết định lượng thông tin không gian thời gian mà tín hiệu có thể mang, còn bộ lọc trước giới hạn lượng răng cưa."
+        },
+        {
+          "text": "Lưới (lattice): tổ hợp nguyên của các vector độc lập; quét xen kẽ là lưới 2D",
+          "say": "Cấu trúc này được mô tả bằng lưới, lattice: một tập điểm rời rạc là tổ hợp tuyến tính với hệ số nguyên của các vector độc lập tuyến tính. Lấy mẫu thời gian một chiều có lưới xác định bởi chu kỳ khung T, còn quét xen kẽ, interlaced, là một lưới hai chiều theo chiều dọc và thời gian."
+        },
+        {
+          "text": "Progressive: quét toàn bộ dòng; interlaced: hai trường chẵn–lẻ xen kẽ",
+          "say": "Có hai kiểu quét video. Quét liên tục, progressive, ghi toàn bộ các dòng của mỗi khung. Quét xen kẽ, interlaced, chia mỗi khung thành hai trường: một trường gồm các dòng lẻ, một trường gồm các dòng chẵn, ghi xen kẽ theo thời gian. Quét xen kẽ giảm một nửa băng thông nhưng gây răng lược khi có chuyển động nhanh."
+        },
+        {
+          "text": "Deinterlacing: chuyển xen kẽ sang liên tục cũng là một bài toán nội suy",
+          "say": "Việc chuyển video xen kẽ sang liên tục, gọi là deinterlacing, thực chất cũng là một bài toán nội suy không gian và thời gian, và cũng hưởng lợi từ bù chuyển động."
+        }
+      ]
+    },
+    {
+      "title": "Chuyển đổi tốc độ khung hình",
+      "slide": 29,
+      "points": [
+        {
+          "text": "Nội suy thời gian thuần túy: ví dụ 24 → 48 hoặc 60 khung/giây",
+          "say": "Cuối cùng là chuyển đổi tốc độ khung hình. Nội suy thời gian thuần túy dùng để tăng tốc độ khung, ví dụ phim điện ảnh từ hai mươi tư lên bốn mươi tám hoặc sáu mươi khung một giây cho chuyển động mượt hơn. Nếu tín hiệu thỏa Nyquist theo thời gian, có thể dùng nội suy sinc lý tưởng."
+        },
+        {
+          "text": "Không xét chuyển động → nhòe, bóng mờ (ghosting)",
+          "say": "Nhưng nội suy thuần thời gian không quan tâm đến chuyển động, nên khi vật thể di chuyển nhanh sẽ xuất hiện hiện tượng nhòe và bóng mờ, gọi là ghosting."
+        },
+        {
+          "text": "Motion-compensated interpolation: nội suy dọc theo quỹ đạo chuyển động",
+          "say": "Giải pháp là nội suy có bù chuyển động: ước lượng vật thể đi đâu, rồi nội suy dọc theo quỹ đạo chuyển động đó. Đây là kỹ thuật được dùng trong các tivi có chế độ làm mượt chuyển động."
+        },
+        {
+          "text": "Cách thô: lặp hoặc bỏ khung → giật; trộn hai khung → bóng mờ",
+          "say": "Hai cách thô sơ nhất để đổi tốc độ khung là lặp lại hoặc bỏ bớt khung, gây giật hình, và trộn trung bình hai khung kề nhau, gây bóng mờ. Nội suy có bù chuyển động khắc phục cả hai, nhưng nếu ước lượng chuyển động sai thì sẽ xuất hiện các mảnh vỡ hình."
+        }
+      ]
+    },
+    {
+      "title": "Tổng kết chương 7",
+      "points": [
+        {
+          "text": "Sampling = rời rạc tọa độ; Quantization = rời rạc biên độ",
+          "say": "Tổng kết chương bảy. Lấy mẫu là rời rạc hóa tọa độ, còn lượng tử hóa là rời rạc hóa biên độ."
+        },
+        {
+          "text": "Lấy mẫu thưa → phổ chồng lấn → aliasing",
+          "say": "Lấy mẫu quá thưa khiến các bản sao phổ chồng lấn và gây răng cưa."
+        },
+        {
+          "text": "Decimator = prefilter + giảm mẫu; Interpolator = tăng mẫu + lọc",
+          "say": "Decimator gồm lọc trước rồi giảm mẫu, interpolator gồm tăng mẫu rồi lọc."
+        },
+        {
+          "text": "Nearest neighbor, bilinear; nội suy bù chuyển động tránh ghosting",
+          "say": "Nội suy ảnh có nearest neighbor và bilinear, còn với video, nội suy có bù chuyển động giúp tránh bóng mờ. Hẹn gặp các bạn ở chương tám: hiển thị và đánh giá chất lượng ảnh."
+        }
+      ]
+    }
+  ]
+}

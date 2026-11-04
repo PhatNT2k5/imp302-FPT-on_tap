@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Hai kiểu kết cấu. Một ảnh gồm các dải lớn, ảnh kia gồm ô xen kẽ. Dùng hai mức xám 0 và 1.
+
+00:08.000 --> 00:16.000
+Bước 2: Chọn quan hệ láng giềng. Với mỗi pixel, xét pixel ngay bên phải; không đếm vòng từ cuối hàng về đầu hàng.
+
+00:16.000 --> 00:24.000
+Bước 3: Đếm cặp vào ma trận. Cặp (0,1) tăng ô hàng 0 cột 1. Tương tự cho (0,0), (1,0), (1,1).
+
+00:24.000 --> 00:32.000
+Bước 4: Chuẩn hóa và tính tương phản. Chia mỗi ô cho tổng số cặp, rồi nhân với bình phương chênh mức xám.
+
+00:32.000 --> 00:40.000
+Bước 5: So sánh hai texture. Ô xen kẽ có nhiều cặp khác mức nên contrast lớn hơn ở offset đang chọn.

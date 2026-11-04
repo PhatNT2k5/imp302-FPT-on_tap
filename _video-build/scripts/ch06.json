@@ -1,0 +1,203 @@
+{
+  "title": "Nén video",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {
+          "text": "Mở đầu",
+          "say": "Chào các bạn, chúng ta đến với chương sáu: nén video. Video thực chất là một chuỗi ảnh, nên mọi thứ ở chương nén ảnh vẫn dùng được. Nhưng video có thêm một chiều mới là thời gian, và các khung hình liên tiếp thường rất giống nhau. Khai thác sự giống nhau đó chính là chìa khóa của nén video."
+        },
+        {
+          "text": "Lộ trình",
+          "say": "Chúng ta sẽ học các khái niệm cơ bản và chuẩn H.261, mã hóa wavelet khả mở, chuyển mã video, chuẩn MPEG-1 và MPEG-2 với cấu trúc GOP, và nén video bằng học sâu."
+        }
+      ]
+    },
+    {
+      "title": "Yếu tố khi chọn bộ mã hóa video",
+      "slide": 4,
+      "points": [
+        {
+          "text": "Nén video thiết yếu cho truyền tải và lưu trữ với băng thông thấp",
+          "say": "Nén video là thiết yếu để truyền tải và lưu trữ video số với băng thông thấp. Nó đóng vai trò cốt lõi trong truyền thông, lưu trữ, xử lý và hiển thị video."
+        },
+        {
+          "text": "Cân nhắc: tỉ lệ bit–méo, độ phức tạp, kênh truyền, tính đối xứng…",
+          "say": "Khi chọn bộ mã hóa, ngoài hiệu suất nén ta còn phải cân nhắc: tỉ lệ bit so với độ méo, độ phức tạp thuật toán, đặc tính kênh truyền, tính đối xứng giữa mã hóa và giải mã, thống kê nguồn video, mã hóa tốc độ cố định hay thay đổi, và khả năng tương thích chuẩn."
+        }
+      ]
+    },
+    {
+      "title": "Sơ đồ hệ thống nén video",
+      "slide": 7,
+      "points": [
+        {
+          "text": "Dự đoán intra/inter → biến đổi → lượng tử → mã entropy → bitstream",
+          "say": "Một hệ thống nén video tổng quát gồm các khối: dự đoán trong khung và liên khung, biến đổi, lượng tử hóa, mã hóa entropy, và định dạng chuỗi bit."
+        },
+        {
+          "text": "Biến đổi không gian: dồn năng lượng vào ít hệ số",
+          "say": "Toán tử không gian là một phép biến đổi tuyến tính đơn vị hai chiều, dồn phần lớn năng lượng vào một số ít hệ số, tức là giải tương quan dữ liệu."
+        },
+        {
+          "text": "Motion estimation: vật thể cứng chuyển động gây khác biệt giữa khung",
+          "say": "Bộ ước lượng chuyển động dựa trên giả định rằng sự khác biệt giữa các khung liên tiếp chủ yếu do chuyển động của vật thể cứng. Nó tìm vector chuyển động cho từng khối."
+        },
+        {
+          "text": "Motion compensation: dùng vector + khung trước để dự đoán khung hiện tại",
+          "say": "Bộ bù chuyển động dùng vector chuyển động cùng với khung đã tái tạo trước đó để tạo ra dự đoán cho khung hiện tại. Khi đó ta chỉ cần mã hóa phần sai khác, nhỏ hơn rất nhiều so với cả khung."
+        },
+        {
+          "text": "Block matching: tìm khối giống nhất trong cửa sổ tìm kiếm, tiêu chí SAD/MSE",
+          "say": "Cách ước lượng chuyển động phổ biến nhất là so khớp khối, block matching. Khung hiện tại được chia thành các khối, thường mười sáu nhân mười sáu. Với mỗi khối, ta tìm trong một cửa sổ tìm kiếm ở khung tham chiếu khối giống nhất, theo tiêu chí như tổng sai số tuyệt đối. Độ dời giữa hai khối chính là vector chuyển động."
+        },
+        {
+          "text": "Bộ mã hóa chứa bộ giải mã bên trong để dự đoán từ khung đã tái tạo",
+          "say": "Một chi tiết tinh tế: bộ mã hóa luôn chứa một bộ giải mã bên trong. Lý do là dự đoán phải dựa trên khung đã tái tạo, giống hệt khung mà phía nhận có được, chứ không dựa trên khung gốc. Nếu không, sai số sẽ tích lũy dần qua các khung, gọi là hiện tượng trôi."
+        }
+      ]
+    },
+    {
+      "title": "Mã hóa wavelet khả mở: MC-EZBC",
+      "slide": 15,
+      "points": [
+        {
+          "text": "MC-EZBC: wavelet có bù chuyển động, khả mở hoàn toàn",
+          "say": "MC-EZBC là một họ bộ mã hóa băng con wavelet có bù chuyển động. Nó vừa khai thác tương quan thời gian, vừa khả mở hoàn toàn theo ba chiều: chất lượng hay tốc độ bit, độ phân giải không gian, và tốc độ khung hình."
+        },
+        {
+          "text": "MCTF qua kỹ thuật lifting: hệ số thông thấp và thông cao theo thời gian",
+          "say": "Thành phần thiết yếu là bộ lọc thời gian có bù chuyển động, MCTF, thường triển khai bằng kỹ thuật lifting, tạo ra các hệ số thông thấp và thông cao theo thời gian. MCTF ảnh hưởng đến cả hiệu suất mã hóa lẫn khả năng khả mở theo thời gian."
+        }
+      ]
+    },
+    {
+      "title": "Chuyển mã video (Transcoding)",
+      "slide": 18,
+      "points": [
+        {
+          "text": "Đổi từ định dạng nén này sang định dạng nén khác",
+          "say": "Chuyển mã video là chuyển video từ một định dạng nén sang định dạng nén khác, để thích ứng với băng thông kênh truyền hoặc yêu cầu của thiết bị nhận."
+        },
+        {
+          "text": "Ứng dụng: giảm bitrate, giảm độ phân giải, đổi chuẩn mã hóa",
+          "say": "Ứng dụng chính gồm: giảm tốc độ bit, giảm độ phân giải không gian hoặc thời gian, và chuyển đổi chuẩn mã hóa."
+        },
+        {
+          "text": "Chuyển mã dị thể: cần vòng giải mã và mã hóa riêng biệt",
+          "say": "Chuyển mã dị thể, heterogeneous transcoding, cho phép truy cập đa phương tiện phổ quát khi tồn tại nhiều chuẩn và nhiều loại thiết bị. Nó đòi hỏi vòng lặp giải mã và mã hóa riêng biệt."
+        },
+        {
+          "text": "Cách đơn giản: giải mã hoàn toàn rồi mã hóa lại (cascaded)",
+          "say": "Cách đơn giản nhất để chuyển mã là giải mã hoàn toàn rồi mã hóa lại, gọi là chuyển mã nối tầng. Cách này linh hoạt nhưng tốn tính toán. Các kiến trúc tối ưu hơn tái sử dụng thông tin có sẵn trong luồng gốc, như vector chuyển động, để giảm chi phí."
+        },
+        {
+          "text": "Giảm bitrate: lượng tử lại hệ số DCT với bước lớn hơn",
+          "say": "Với chuyển mã giảm tốc độ bit, kỹ thuật cơ bản là lượng tử lại các hệ số DCT với bước lượng tử lớn hơn, làm luồng nhỏ đi mà không cần tính lại chuyển động."
+        }
+      ]
+    },
+    {
+      "title": "MPEG và MPEG-1",
+      "slide": 24,
+      "points": [
+        {
+          "text": "MPEG: yêu cầu → cạnh tranh công nghệ → hội tụ",
+          "say": "MPEG, Moving Picture Experts Group, phát triển chuẩn theo ba giai đoạn: xác định yêu cầu, cạnh tranh công nghệ để thu thập những gì tốt nhất từ học thuật và công nghiệp, và hội tụ thành một giải pháp thống nhất với bộ mã hóa giải mã tham chiếu."
+        },
+        {
+          "text": "Dự đoán hai chiều: dùng cả khung tương lai (backward prediction)",
+          "say": "MPEG-1 cho phép dự đoán bù chuyển động hai chiều, tức là dùng cả khung tương lai làm tham chiếu. Điều này giúp dự đoán tốt các vùng bị che khuất vừa mới xuất hiện, vì chúng chỉ có ở khung tương lai. Nó cũng hỗ trợ giảm nhiễu."
+        },
+        {
+          "text": "Vector chuyển động chính xác nửa pixel",
+          "say": "MPEG-1 còn cho phép vector chuyển động có độ chính xác nửa pixel, tốt hơn so với ước lượng nguyên pixel."
+        },
+        {
+          "text": "MPEG-1: khoảng 1,5 Mbit/s, chất lượng VCD",
+          "say": "MPEG-1 được thiết kế cho tốc độ khoảng một phẩy năm megabit một giây, đủ cho chất lượng tương đương băng VHS, và là chuẩn của đĩa VCD. Định dạng âm thanh MP3 nổi tiếng cũng chính là lớp ba của MPEG-1."
+        }
+      ]
+    },
+    {
+      "title": "Cấu trúc GOP: khung I, P, B, D",
+      "slide": 27,
+      "points": [
+        {
+          "text": "I: mã độc lập, là điểm truy cập ngẫu nhiên",
+          "say": "Đây là phần cực kỳ hay ra đề. Video MPEG-1 chia thành các nhóm ảnh, GOP. Khung I được mã hóa độc lập, không tham chiếu khung nào khác, nên nó là điểm truy cập ngẫu nhiên, nơi ta có thể nhảy vào xem."
+        },
+        {
+          "text": "P: dự đoán tiến từ khung I hoặc P trước đó",
+          "say": "Khung P được dự đoán tiến từ khung I hoặc P trước đó. Nhờ bù chuyển động, khung P nén tốt hơn khung I."
+        },
+        {
+          "text": "B: dự đoán hai chiều từ quá khứ và tương lai",
+          "say": "Khung B được dự đoán hai chiều, từ cả khung quá khứ và khung tương lai, nên thường đạt tỉ lệ nén cao nhất."
+        },
+        {
+          "text": "D: chỉ hệ số DC, độ phân giải thấp, để tìm kiếm nhanh",
+          "say": "Khung D chỉ mã hóa hệ số DC của DCT, độ phân giải rất thấp, hiếm khi dùng, chủ yếu phục vụ tua tìm kiếm nhanh."
+        },
+        {
+          "text": "Ví dụ GOP: I B B P B B P …; thứ tự truyền khác thứ tự hiển thị",
+          "say": "Một GOP điển hình có dạng: I, B, B, P, B, B, P, và cứ thế. Vì khung B cần khung tương lai để giải mã, nên thứ tự truyền khác thứ tự hiển thị. Ví dụ khung P thứ tư phải được gửi trước hai khung B đứng trước nó."
+        },
+        {
+          "text": "Lỗi ở I lan cả GOP; GOP dài nén tốt hơn nhưng truy cập chậm hơn",
+          "say": "Cấu trúc GOP là một sự đánh đổi. GOP dài, ít khung I, thì nén tốt hơn, nhưng tua và chuyển kênh chậm hơn, và một lỗi ở khung I hay P sẽ lan đến các khung phụ thuộc phía sau cho đến khung I kế tiếp. GOP ngắn thì ngược lại."
+        }
+      ]
+    },
+    {
+      "title": "MPEG-2 và nén video bằng học sâu",
+      "slide": 33,
+      "points": [
+        {
+          "text": "MPEG-2: VOD, truyền hình số, DVD, HDTV, cáp và vệ tinh",
+          "say": "MPEG-2 hướng tới các ứng dụng chất lượng cao hơn: video theo yêu cầu, truyền hình số, DVD, HDTV, truyền hình cáp và vệ tinh. Yêu cầu chuyển kênh nhanh được đáp ứng nhờ các khung I đặt đều trong GOP."
+        },
+        {
+          "text": "Học sâu thay thế từng khối hoặc nén end-to-end",
+          "say": "Cuối chương là nén video bằng học sâu: dùng mạng nơ-ron thay thế hoặc bổ trợ từng thành phần như ước lượng chuyển động, biến đổi, lượng tử, mã entropy, hoặc nén video end to end."
+        }
+      ]
+    },
+    {
+      "title": "Vì sao video nén được nhiều đến vậy",
+      "points": [
+        {
+          "text": "Dư thừa không gian, thời gian, thống kê và tâm sinh lý thị giác",
+          "say": "Hãy cùng tổng hợp lại vì sao video nén được nhiều đến vậy. Có bốn loại dư thừa. Dư thừa không gian giữa các pixel trong một khung, khai thác bằng DCT. Dư thừa thời gian giữa các khung, khai thác bằng bù chuyển động. Dư thừa thống kê giữa các ký hiệu, khai thác bằng mã entropy. Và dư thừa tâm sinh lý, những gì mắt không thấy, khai thác bằng lượng tử hóa."
+        },
+        {
+          "text": "Ví dụ: video thô 1080p ≈ 1,5 Gbit/s; sau nén chỉ vài Mbit/s",
+          "say": "Để thấy quy mô, một video thô Full HD, ba mươi khung một giây, hai mươi bốn bit mỗi pixel, cần khoảng một phẩy năm gigabit mỗi giây. Sau khi nén bằng các chuẩn hiện đại, chỉ còn vài megabit mỗi giây, tức tỉ lệ nén lên tới vài trăm lần."
+        }
+      ]
+    },
+    {
+      "title": "Tổng kết chương 6",
+      "points": [
+        {
+          "text": "Khai thác tương quan thời gian bằng ước lượng + bù chuyển động",
+          "say": "Tổng kết chương sáu. Nén video khai thác tương quan thời gian bằng ước lượng và bù chuyển động, rồi chỉ mã hóa phần sai khác."
+        },
+        {
+          "text": "MC-EZBC & MCTF: khả mở theo chất lượng, không gian, thời gian",
+          "say": "MC-EZBC với MCTF cho khả năng khả mở theo chất lượng, không gian và thời gian."
+        },
+        {
+          "text": "Transcoding: đổi bitrate, độ phân giải, chuẩn",
+          "say": "Chuyển mã giúp thích ứng bitrate, độ phân giải và chuẩn mã hóa cho từng thiết bị."
+        },
+        {
+          "text": "GOP: I độc lập, P dự đoán tiến, B hai chiều, D chỉ DC",
+          "say": "Và nhớ kỹ cấu trúc GOP: I mã độc lập, P dự đoán tiến, B dự đoán hai chiều, D chỉ có hệ số DC. Hẹn gặp các bạn ở chương bảy: thu nhận ảnh."
+        }
+      ]
+    }
+  ]
+}

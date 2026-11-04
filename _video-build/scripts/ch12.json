@@ -1,0 +1,198 @@
+{
+  "title": "Phân loại ảnh",
+  "scenes": [
+    {
+      "kind": "intro",
+      "title": "Giới thiệu chương",
+      "points": [
+        {
+          "text": "Mở đầu",
+          "say": "Chào các bạn, chúng ta đến với chương cuối cùng: phân loại mẫu ảnh. Đây là bước sau cùng của pipeline nhận dạng: gán một nhãn, một lớp, cho mẫu dựa trên các đặc trưng đã trích xuất ở chương mười."
+        },
+        {
+          "text": "Lộ trình",
+          "say": "Chúng ta sẽ đi qua khái niệm mẫu và lớp mẫu, phân loại bằng đối sánh nguyên mẫu, bộ phân loại Bayes tối ưu, perceptron và mạng nơ-ron, và cuối cùng là các kiến trúc CNN kinh điển: LeNet, AlexNet, VGG và ResNet."
+        }
+      ]
+    },
+    {
+      "title": "Khái niệm nền tảng",
+      "slide": 4,
+      "points": [
+        {
+          "text": "Mẫu: sắp xếp không gian của các đặc trưng; lớp mẫu: tập mẫu có chung tính chất",
+          "say": "Trong nhận dạng ảnh, một mẫu là một sự sắp xếp không gian của các đặc trưng. Một lớp mẫu là tập hợp các mẫu có chung một số tính chất."
+        },
+        {
+          "text": "4 giai đoạn: cảm biến → tiền xử lý → trích đặc trưng → phân loại",
+          "say": "Nhận dạng gồm bốn giai đoạn: cảm biến sinh tín hiệu, tiền xử lý để giảm nhiễu, tăng cường, phân đoạn, trích đặc trưng, và cuối cùng là phân loại."
+        },
+        {
+          "text": "3 hướng: đối sánh nguyên mẫu, thống kê tối ưu, mạng nơ-ron",
+          "say": "Có ba hướng tiếp cận phân loại chính: đối sánh với nguyên mẫu định sẵn, bộ phân loại thống kê tối ưu, và mạng nơ-ron."
+        }
+      ]
+    },
+    {
+      "title": "Vector mẫu và mẫu cấu trúc",
+      "slide": 7,
+      "points": [
+        {
+          "text": "x = (x1, …, xn): xi là descriptor thứ i, n descriptor",
+          "say": "Một vector mẫu x gồm các thành phần x một đến x n, trong đó x i là descriptor đặc trưng thứ i, và n là tổng số descriptor."
+        },
+        {
+          "text": "Đặc trưng cấu trúc (chuỗi ký hiệu) → dùng mẫu cấu trúc",
+          "say": "Với các ứng dụng mà đối tượng được biểu diễn bằng đặc trưng cấu trúc, ví dụ một chuỗi ký hiệu, vector mẫu không còn phù hợp, và ta dùng mẫu cấu trúc thay thế."
+        }
+      ]
+    },
+    {
+      "title": "Phân loại khoảng cách tối thiểu",
+      "slide": 10,
+      "points": [
+        {
+          "text": "Nguyên mẫu mỗi lớp = vector trung bình mj",
+          "say": "Bộ phân loại khoảng cách tối thiểu dùng nguyên mẫu của mỗi lớp, thường là vector trung bình m j của lớp đó."
+        },
+        {
+          "text": "Gán mẫu vào lớp có nguyên mẫu gần nhất",
+          "say": "Với một mẫu chưa biết, ta tính khoảng cách đến nguyên mẫu của từng lớp, và gán mẫu vào lớp có nguyên mẫu gần nhất."
+        },
+        {
+          "text": "Euclid: khoảng cách nhỏ nhất ⇔ hàm quyết định lớn nhất",
+          "say": "Nếu dùng khoảng cách Euclid, chọn khoảng cách nhỏ nhất tương đương với việc đánh giá các hàm quyết định và chọn lớp có giá trị hàm quyết định lớn nhất. Hai cách phát biểu này tương đương về mặt toán học."
+        },
+        {
+          "text": "Đối sánh tương quan = template matching",
+          "say": "Một cách khác là đối sánh tương quan: tính hệ số tương quan giữa mẫu chưa biết và một mẫu mô hình w. Phương pháp này còn gọi là template matching."
+        },
+        {
+          "text": "Ví dụ: m1 = (1,1), m2 = (5,5), x = (2,3) → gần m1 → lớp 1",
+          "say": "Ví dụ, lớp một có vector trung bình là một, một, lớp hai là năm, năm. Mẫu chưa biết x là hai, ba. Khoảng cách từ x đến m một khoảng hai phẩy hai, đến m hai khoảng ba phẩy sáu. Vậy x được gán vào lớp một. Biên quyết định giữa hai lớp là đường trung trực của đoạn nối hai trung bình."
+        }
+      ]
+    },
+    {
+      "title": "Bộ phân loại Bayes",
+      "slide": 15,
+      "points": [
+        {
+          "text": "Tổn thất Lij khi gán nhầm; rủi ro trung bình có điều kiện",
+          "say": "Bây giờ là bộ phân loại thống kê tối ưu. Xác suất mẫu x đến từ lớp w i là P của w i khi biết x. Nếu ta quyết định x thuộc lớp w i mà thực tế thuộc w j, ta chịu tổn thất L i j. Tổn thất trung bình khi gán x vào lớp w i gọi là rủi ro trung bình có điều kiện."
+        },
+        {
+          "text": "Tổn thất 0-1 → chọn lớp có p(x|wi)·P(wi) lớn nhất",
+          "say": "Bộ phân loại tối thiểu hóa tổng tổn thất trung bình gọi là bộ phân loại Bayes. Với hàm tổn thất không một, đúng thì không, sai thì một, quy tắc trở thành: gán x vào lớp có tích p x khi biết w i nhân P w i lớn nhất."
+        },
+        {
+          "text": "Hạn chế: phải biết PDF của từng lớp và xác suất tiên nghiệm",
+          "say": "Hạn chế lớn nhất trong thực tế: để tối ưu, ta phải biết hàm mật độ xác suất của mẫu trong mỗi lớp và xác suất xuất hiện của mỗi lớp. Những thông tin này thường phải ước lượng từ dữ liệu huấn luyện."
+        },
+        {
+          "text": "Lớp Gauss: lấy logarit → hàm quyết định là siêu mặt bậc hai",
+          "say": "Với các lớp có phân phối Gauss, lấy logarit tự nhiên và bỏ các hằng số chung, ta thấy hàm quyết định là các siêu mặt bậc hai, hyperquadrics. Đây là kết quả kinh điển của phân loại thống kê."
+        },
+        {
+          "text": "Hai lớp Gauss cùng hiệp phương sai → biên quyết định tuyến tính",
+          "say": "Một trường hợp đặc biệt cần nhớ: nếu các lớp Gauss có cùng ma trận hiệp phương sai, các thành phần bậc hai triệt tiêu, và biên quyết định trở thành tuyến tính. Thêm nữa, nếu hiệp phương sai là ma trận đơn vị và xác suất tiên nghiệm bằng nhau, Bayes trở thành bộ phân loại khoảng cách tối thiểu."
+        }
+      ]
+    },
+    {
+      "title": "Perceptron và mạng nơ-ron",
+      "slide": 22,
+      "points": [
+        {
+          "text": "Perceptron: học siêu phẳng tách hai lớp khả phân tuyến tính",
+          "say": "Perceptron đơn học một biên tuyến tính, một siêu phẳng, để tách hai lớp mẫu khả phân tuyến tính. Trọng số được cập nhật từng bước với hệ số học alpha dương, dựa trên việc mẫu hiện tại bị phân loại đúng hay sai."
+        },
+        {
+          "text": "Định lý hội tụ: hội tụ sau hữu hạn bước nếu khả phân tuyến tính",
+          "say": "Định lý hội tụ perceptron khẳng định: nếu hai lớp thực sự khả phân tuyến tính, thuật toán chắc chắn hội tụ về một siêu mặt phân tách sau hữu hạn bước."
+        },
+        {
+          "text": "Nơ-ron: tổng có trọng số + bias → hàm kích hoạt",
+          "say": "Mở rộng ra, mạng nơ-ron nhiều lớp gồm các nơ-ron tính tổng có trọng số của đầu vào cộng bias, rồi đưa qua hàm kích hoạt."
+        },
+        {
+          "text": "Backprop: đưa mẫu → lan truyền tiến → lan truyền ngược sai số → cập nhật",
+          "say": "Huấn luyện bằng lan truyền ngược gồm bốn bước: đưa vector mẫu vào mạng, lan truyền tiến để phân loại và tính sai số, lan truyền ngược sai số qua mạng, rồi cập nhật trọng số và bias. Đây là thuật toán nền tảng của mọi mạng nơ-ron sâu."
+        },
+        {
+          "text": "XOR không khả phân tuyến tính → perceptron đơn thất bại → cần nhiều lớp",
+          "say": "Giới hạn kinh điển của perceptron đơn là bài toán XOR: bốn điểm mà không đường thẳng nào tách được hai lớp. Perceptron đơn không thể học XOR, và đây là lý do cần mạng nhiều lớp với hàm kích hoạt phi tuyến."
+        }
+      ]
+    },
+    {
+      "title": "LeNet-5 và AlexNet",
+      "slide": 30,
+      "points": [
+        {
+          "text": "LeNet-5: khối tích chập–pooling lặp lại, tách trích đặc trưng và phân loại",
+          "say": "Bây giờ đến các kiến trúc CNN kinh điển. LeNet năm là CNN đầu tiên: ảnh đầu vào kích thước cố định, các khối tích chập và pooling lặp lại, số filter tăng dần theo chiều sâu, và tách rõ phần trích đặc trưng với phần phân loại."
+        },
+        {
+          "text": "AlexNet: ReLU, softmax, Max Pooling, Dropout, data augmentation",
+          "say": "AlexNet có năm điểm mới cần nhớ: dùng hàm kích hoạt ReLU và softmax ở đầu ra; dùng max pooling thay average pooling; dùng dropout để chính quy hóa giữa các lớp kết nối đầy đủ; cho phép hai lớp tích chập nối liền nhau; và dùng tăng cường dữ liệu."
+        },
+        {
+          "text": "LeNet-5 (1998): nhận dạng chữ số viết tay; AlexNet (2012) thắng ImageNet",
+          "say": "Về bối cảnh, LeNet năm ra đời năm một nghìn chín trăm chín mươi tám để nhận dạng chữ số viết tay trên séc ngân hàng. AlexNet năm hai nghìn không trăm mười hai chiến thắng áp đảo cuộc thi ImageNet, mở ra kỷ nguyên học sâu trong thị giác máy tính, một phần nhờ huấn luyện trên GPU."
+        },
+        {
+          "text": "ReLU tránh bão hòa của sigmoid/tanh → huấn luyện nhanh hơn",
+          "say": "Vì sao ReLU quan trọng? Hàm sigmoid và tanh bị bão hòa ở hai đầu, gradient gần bằng không, làm mạng sâu học rất chậm. ReLU bằng chính đầu vào khi dương và bằng không khi âm, không bị bão hòa ở phía dương, nên huấn luyện nhanh hơn nhiều."
+        }
+      ]
+    },
+    {
+      "title": "VGG16 và ResNet50",
+      "slide": 34,
+      "points": [
+        {
+          "text": "VGG16: filter 3×3 và 1×1, stride 1; max pooling 2×2; 16 và 19 lớp",
+          "say": "VGG16 dùng các bộ lọc rất nhỏ, ba nhân ba và một nhân một, với stride một, max pooling hai nhân hai, xếp chồng nhiều lớp tích chập trước mỗi lớp pooling thành một khối, và lặp lại khối đó để tạo các mạng rất sâu, mười sáu và mười chín lớp."
+        },
+        {
+          "text": "ResNet50: kết nối tắt (skip), khối residual, sâu đến 152 lớp",
+          "say": "ResNet dùng kết nối tắt, skip connection, cho phép gradient đi thẳng qua nhiều lớp, và lặp lại các khối residual. Nhờ đó có thể huấn luyện mạng cực sâu, lên đến một trăm năm mươi hai lớp."
+        },
+        {
+          "text": "Giải quyết vanishing gradient khi mạng quá sâu",
+          "say": "Đây là bước đột phá giải quyết vấn đề suy giảm gradient, vanishing gradient, khi mạng quá sâu. Ý tưởng residual learning này đến nay vẫn có mặt trong hầu hết các kiến trúc hiện đại."
+        },
+        {
+          "text": "Hai lớp 3×3 có vùng nhìn như một lớp 5×5 nhưng ít tham số hơn",
+          "say": "Vì sao VGG chỉ dùng bộ lọc ba nhân ba? Hai lớp ba nhân ba chồng lên nhau có vùng nhìn tương đương một lớp năm nhân năm, nhưng ít tham số hơn và có thêm một hàm kích hoạt phi tuyến ở giữa, giúp mạng biểu diễn tốt hơn."
+        },
+        {
+          "text": "Khối residual: y = F(x) + x, học phần dư thay vì toàn bộ ánh xạ",
+          "say": "Khối residual tính đầu ra bằng F của x cộng với chính x. Mạng chỉ cần học phần dư F, phần chênh lệch so với đầu vào. Nếu lớp đó không cần thiết, mạng chỉ cần học F bằng không, rất dễ. Đồng thời đường tắt cộng x cho phép gradient chảy thẳng về các lớp đầu."
+        }
+      ]
+    },
+    {
+      "title": "Tổng kết chương 12",
+      "points": [
+        {
+          "text": "Cảm biến → tiền xử lý → đặc trưng → phân loại",
+          "say": "Tổng kết chương mười hai. Nhận dạng gồm cảm biến, tiền xử lý, trích đặc trưng và phân loại."
+        },
+        {
+          "text": "Minimum distance ⇔ hàm quyết định lớn nhất; template matching",
+          "say": "Bộ phân loại khoảng cách tối thiểu tương đương chọn hàm quyết định lớn nhất, và đối sánh tương quan chính là template matching."
+        },
+        {
+          "text": "Bayes: max p(x|wi)P(wi); lớp Gauss → siêu mặt bậc hai",
+          "say": "Bayes chọn lớp có p x khi biết w i nhân P w i lớn nhất, và với lớp Gauss thì biên quyết định là siêu mặt bậc hai."
+        },
+        {
+          "text": "Perceptron hội tụ nếu khả phân; LeNet, AlexNet, VGG, ResNet",
+          "say": "Perceptron hội tụ nếu dữ liệu khả phân tuyến tính, và bốn kiến trúc CNN kinh điển là LeNet, AlexNet, VGG và ResNet. Chúc mừng các bạn đã hoàn thành toàn bộ mười hai chương của IMP302. Hãy luyện thêm các bộ câu hỏi để thật vững kiến thức trước kỳ thi nhé. Chúc các bạn thi tốt!"
+        }
+      ]
+    }
+  ]
+}

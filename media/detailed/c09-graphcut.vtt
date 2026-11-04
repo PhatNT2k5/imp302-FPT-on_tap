@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Lưới 3×3 thành đồ thị. Mỗi pixel là nút. Cạnh nối các láng giềng ngang dọc; hai nhãn là nền và vật thể.
+
+00:08.000 --> 00:16.000
+Bước 2: Chi phí dữ liệu. Pixel sáng được ưu tiên làm vật thể, pixel tối ưu tiên làm nền. Chọn nhãn trái ưu tiên có chi phí.
+
+00:16.000 --> 00:24.000
+Bước 3: Chi phí ranh giới. Phạt hai pixel láng giềng khác nhãn, nhất là khi độ sáng của chúng giống nhau.
+
+00:24.000 --> 00:32.000
+Bước 4: Tìm cách chia nhỏ nhất. Clip duyệt đủ 512 cách gán để kiểm tra nghiệm tối ưu của ví dụ, thay vì triển khai thuật toán max-flow.
+
+00:32.000 --> 00:40.000
+Bước 5: Phân biệt với normalized cut. Năng lượng nhị phân có source/sink trong clip khác tiêu chí Ncut và lời giải trị riêng.

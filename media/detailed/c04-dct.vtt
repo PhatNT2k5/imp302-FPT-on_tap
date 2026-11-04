@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Chọn khối ảnh 8×8. Một khối có 64 pixel được biểu diễn bằng tổ hợp của 64 mẫu cosine cơ sở.
+
+00:08.000 --> 00:16.000
+Bước 2: Biến đổi sang hệ số. DCT trực chuẩn thay đổi cách biểu diễn, chưa tự làm mất thông tin.
+
+00:16.000 --> 00:24.000
+Bước 3: Chỉ giữ DC. Giữ hệ số góc trên trái, đặt phần còn lại bằng 0. Khối tái tạo trở thành gần như một màu.
+
+00:24.000 --> 00:32.000
+Bước 4: Thêm tần số thấp. Giữ một miền nhỏ ở góc trên trái cho hình dạng thô; thêm hệ số giúp tái tạo chi tiết.
+
+00:32.000 --> 00:40.000
+Bước 5: Giữ đủ hệ số. Dùng đủ 8×8 hệ số khôi phục khối ban đầu, sai số chỉ do tính toán số học.

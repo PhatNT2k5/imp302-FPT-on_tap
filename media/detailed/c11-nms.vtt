@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Nhiều hộp cho cùng đối tượng. Mô hình có thể đề xuất nhiều hộp gần nhau. Clip dùng hộp và confidence tạo sẵn.
+
+00:08.000 --> 00:16.000
+Bước 2: Sắp theo confidence. Chọn hộp A có điểm 0,95 trước. Điểm cao nhất được giữ lại trong vòng này.
+
+00:16.000 --> 00:24.000
+Bước 3: Tính IoU với hộp đang giữ. B chồng mạnh với A, còn C nằm ở vùng khác. So sánh với ngưỡng NMS 0,5.
+
+00:24.000 --> 00:32.000
+Bước 4: Lặp với hộp còn lại. Giữ C vì ít chồng lấn với A. Kết quả còn hai hộp thay vì ba.
+
+00:32.000 --> 00:40.000
+Bước 5: Nhận ra giới hạn. NMS cứng có thể loại nhầm hộp của hai vật thể cùng lớp đứng sát nhau.

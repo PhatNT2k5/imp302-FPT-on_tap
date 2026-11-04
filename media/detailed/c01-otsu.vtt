@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+Bước 1: Hai nhóm độ sáng. Ảnh thử gồm nền tối và vật thể sáng. Histogram xuất hiện hai nhóm chính.
+
+00:08.000 --> 00:16.000
+Bước 2: Thử một ngưỡng thấp. Với T thấp, nhiều pixel nền vẫn bị gán thành vật thể. Chia lớp chưa tốt.
+
+00:16.000 --> 00:24.000
+Bước 3: Tính độ tách lớp. Với mỗi T, tính trọng số và trung bình hai lớp, rồi đo khoảng cách giữa chúng.
+
+00:24.000 --> 00:32.000
+Bước 4: Chọn ngưỡng tối ưu. Quét T từ 0 đến 255, chọn T làm phương sai giữa hai lớp lớn nhất.
+
+00:32.000 --> 00:40.000
+Bước 5: Đọc kết quả đúng cách. Otsu tách theo cường độ, không hiểu vật thể. Ánh sáng không đều có thể làm kết quả kém.
