@@ -1,373 +1,676 @@
 WEBVTT
 
-00:00:00.100 --> 00:00:00.864 line:98%,end
-Chào các bạn,
+00:00:00.100 --> 00:00:05.063 line:98%,end
+Chào các bạn, chương tám nói về hai việc ở cuối đường ống xử lý ảnh.
 
-00:00:00.864 --> 00:00:08.098 line:98%,end
-chương tám bàn về giai đoạn cuối của pipeline: hiển thị và in ảnh trên những thiết bị có giới hạn về số mức xám hay số màu,
+00:00:05.013 --> 00:00:11.185 line:98%,end
+Việc thứ nhất: hiển thị hoặc in một bức ảnh trên thiết bị chỉ có rất ít mức xám hay rất ít màu.
 
-00:00:08.098 --> 00:00:11.508 line:98%,end
-và làm sao để đánh giá chất lượng ảnh một cách khách quan.
+00:00:11.185 --> 00:00:16.706 line:98%,end
+Việc thứ hai: đo xem một bức ảnh sau xử lý đẹp hay xấu theo cách con người cảm nhận.
 
-00:00:12.070 --> 00:00:16.870 line:98%,end
-Chúng ta sẽ học halftoning với ordered dithering và error diffusion,
+00:00:17.326 --> 00:00:22.215 line:98%,end
+Phần một gồm halftoning với ordered dithering và error diffusion,
 
-00:00:16.870 --> 00:00:22.517 line:98%,end
-lượng tử hóa màu với thuật toán median cut, các tiêu chí cảm nhận của mắt người,
+00:00:22.215 --> 00:00:24.997 line:98%,end
+rồi lượng tử hóa màu bằng median cut.
 
-00:00:22.517 --> 00:00:24.494 line:98%,end
-và cuối cùng là chỉ số SSIM.
+00:00:24.947 --> 00:00:31.054 line:98%,end
+Phần hai gồm đặc tính của mắt người, độ đo Minkowski và chỉ số SSIM.
 
-00:00:25.948 --> 00:00:30.758 line:98%,end
-Bài toán đặt ra: ảnh có mỗi pixel trong khoảng từ không đến D trừ một,
+00:00:31.054 --> 00:00:34.817 line:98%,end
+Mỗi kỹ thuật đều có một ví dụ nhỏ tính bằng tay.
 
-00:00:30.758 --> 00:00:33.850 line:98%,end
-và ta cần lượng tử về K mức, với K nhỏ hơn D,
+00:00:36.340 --> 00:00:38.347 line:98%,end
+Nhắc lại ba điều.
 
-00:00:33.850 --> 00:00:36.393 line:98%,end
-sao cho một tiêu chí méo là nhỏ nhất.
+00:00:38.297 --> 00:00:43.219 line:98%,end
+Ở chương bảy, lượng tử hóa là đưa biên độ về một tập hữu hạn mức.
 
-00:00:36.958 --> 00:00:39.599 line:98%,end
-Trường hợp K bằng hai chính là halftoning,
+00:00:43.219 --> 00:00:47.280 line:98%,end
+Hôm nay ta lượng tử hóa cực mạnh: chỉ còn hai mức để in,
 
-00:00:39.599 --> 00:00:45.007 line:98%,end
-dùng cho máy in laser hay máy in phun chỉ có hai trạng thái: có mực hoặc không có mực.
+00:00:47.280 --> 00:00:49.456 line:98%,end
+hoặc vài trăm màu để hiển thị.
 
-00:00:45.568 --> 00:00:50.102 line:98%,end
-Halftoning biến ảnh liên tục nhiều mức, ví dụ hai trăm năm mươi sáu mức,
+00:00:50.062 --> 00:00:50.847 line:98%,end
+Ở chương một,
 
-00:00:50.102 --> 00:00:54.763 line:98%,end
-thành ảnh hai mức, sao cho khi nhìn từ xa, mắt ta thấy hai ảnh giống nhau.
+00:00:50.847 --> 00:00:55.194 line:98%,end
+ngưỡng hóa biến ảnh xám thành ảnh nhị phân nhưng làm mất các chuyển sắc.
 
-00:00:54.713 --> 00:00:58.554 line:98%,end
-Mắt tự trung bình hóa các chấm nhỏ thành sắc độ xám.
+00:00:55.144 --> 00:01:00.613 line:98%,end
+Halftoning cũng tạo ảnh nhị phân, nhưng tìm cách giữ lại cảm giác về sắc độ.
 
-00:00:59.170 --> 00:01:04.394 line:98%,end
-Các bạn có thể thấy halftoning ở khắp nơi: ảnh trên báo giấy, trên tờ rơi,
+00:01:01.216 --> 00:01:06.101 line:98%,end
+Ở chương năm, nén có mất dữ liệu sinh ra méo khối và gợn sóng.
 
-00:01:04.394 --> 00:01:06.724 line:98%,end
-hay khi in bằng máy in đen trắng.
+00:01:06.051 --> 00:01:09.241 line:98%,end
+Vậy làm sao chấm điểm một ảnh bị méo?
 
-00:01:06.674 --> 00:01:07.878 line:98%,end
-Nếu nhìn thật gần,
+00:01:09.241 --> 00:01:12.392 line:98%,end
+Đó là nội dung nửa sau của chương này.
 
-00:01:07.878 --> 00:01:12.026 line:98%,end
-ảnh chỉ là những chấm đen trên nền trắng với mật độ khác nhau.
+00:01:13.894 --> 00:01:18.076 line:98%,end
+Hãy cầm một tờ báo giấy và nhìn thật gần vào một bức ảnh.
 
-00:01:12.026 --> 00:01:15.003 line:98%,end
-Mắt chúng ta hoạt động như một bộ lọc thông thấp,
+00:01:18.026 --> 00:01:22.102 line:98%,end
+Các bạn sẽ thấy chỉ có những chấm mực đen trên nền giấy trắng,
 
-00:01:15.003 --> 00:01:17.677 line:98%,end
-tự trung bình hóa các chấm thành sắc độ xám.
+00:01:22.102 --> 00:01:23.416 line:98%,end
+không hề có màu xám.
 
-00:01:18.292 --> 00:01:22.344 line:98%,end
-Tại sao không đơn giản ngưỡng hóa ở mức một trăm hai mươi tám?
+00:01:23.416 --> 00:01:27.271 line:98%,end
+Nhưng nhìn từ xa, ta vẫn thấy đủ các sắc xám.
 
-00:01:22.294 --> 00:01:25.382 line:98%,end
-Vì như vậy mọi vùng xám nhạt đều thành trắng tinh,
+00:01:27.880 --> 00:01:30.330 line:98%,end
+Bí mật nằm ở mắt người.
 
-00:01:25.382 --> 00:01:29.768 line:98%,end
-mọi vùng xám đậm thành đen kịt, ta mất hoàn toàn các sắc độ trung gian.
+00:01:30.280 --> 00:01:32.813 line:98%,end
+Mắt hoạt động như một bộ lọc thông thấp,
 
-00:01:29.768 --> 00:01:34.728 line:98%,end
-Halftoning giải quyết bằng cách thay đổi mật độ chấm thay vì thay đổi độ đậm.
+00:01:32.813 --> 00:01:35.410 line:98%,end
+nó tự lấy trung bình trên những vùng nhỏ.
 
-00:01:36.250 --> 00:01:42.291 line:98%,end
-Có ba nhóm phương pháp halftoning theo độ phức tạp tăng dần: ordered dithering đơn giản nhất,
+00:01:35.410 --> 00:01:40.254 line:98%,end
+Vùng nào nhiều chấm đen thì trông tối, vùng nào ít chấm thì trông sáng.
 
-00:01:42.291 --> 00:01:46.513 line:98%,end
+00:01:40.858 --> 00:01:43.788 line:98%,end
+Halftoning chính là việc chuyển một ảnh nhiều mức,
+
+00:01:43.788 --> 00:01:47.188 line:98%,end
+ví dụ hai trăm năm mươi sáu mức, thành ảnh chỉ có hai mức,
+
+00:01:47.188 --> 00:01:49.766 line:98%,end
+sao cho nhìn từ xa hai ảnh trông giống nhau.
+
+00:01:50.332 --> 00:01:51.820 line:98%,end
+Có ba nhóm phương pháp,
+
+00:01:51.820 --> 00:01:56.544 line:98%,end
+xếp theo độ phức tạp tính toán tăng dần: ordered dithering đơn giản nhất,
+
+00:01:56.544 --> 00:02:00.751 line:98%,end
 rồi error diffusion, và phức tạp nhất là các kỹ thuật tối ưu hóa.
 
-00:01:47.068 --> 00:01:51.692 line:98%,end
-Ordered dithering so sánh giá trị pixel với một ma trận ngưỡng cố định,
+00:02:02.218 --> 00:02:07.975 line:98%,end
+Phát biểu chính thức trong slide: ảnh có mỗi pixel nhận giá trị từ không đến D trừ một.
 
-00:01:51.692 --> 00:01:55.403 line:98%,end
-dither matrix, để quyết định bật hay tắt điểm ảnh đầu ra.
+00:02:07.925 --> 00:02:12.407 line:98%,end
+Ta cần lượng tử mỗi pixel về K mức đầu ra, với K nhỏ hơn D,
 
-00:01:55.966 --> 00:01:58.537 line:98%,end
-Error diffusion cho chất lượng cao hơn,
+00:02:12.407 --> 00:02:15.217 line:98%,end
+sao cho một tiêu chí méo là nhỏ nhất.
 
-00:01:58.537 --> 00:02:02.361 line:98%,end
-đặc biệt hợp với thiết bị độ phân giải thấp và trung bình.
+00:02:15.820 --> 00:02:18.457 line:98%,end
+Trường hợp K bằng hai chính là halftoning,
 
-00:02:02.311 --> 00:02:04.535 line:98%,end
-Tại mỗi pixel, sai số lượng tử hóa,
+00:02:18.457 --> 00:02:23.856 line:98%,end
+dùng cho máy in laser hay máy in phun chỉ có hai trạng thái: có mực hoặc không có mực.
 
-00:02:04.535 --> 00:02:08.157 line:98%,end
-tức hiệu giữa giá trị đầu vào và giá trị nhị phân đầu ra,
+00:02:23.806 --> 00:02:27.139 line:98%,end
+Hai mức đầu ra là không và D trừ một.
 
-00:02:08.157 --> 00:02:12.858 line:98%,end
-được khuếch tán sang các pixel lân cận chưa xử lý qua một nhân khuếch tán.
+00:02:27.742 --> 00:02:33.343 line:98%,end
+Tiêu chí méo quen thuộc nhất là sai số bình phương trung bình giữa ảnh gốc và ảnh đã lượng tử.
 
-00:02:12.858 --> 00:02:16.882 line:98%,end
-Nhờ vậy sai số trung bình về lâu dài xấp xỉ bằng không.
+00:02:33.293 --> 00:02:36.783 line:98%,end
+Lát nữa ta sẽ thấy tiêu chí này chưa đủ tốt.
 
-00:02:17.488 --> 00:02:20.928 line:98%,end
-Ma trận dither kinh điển là ma trận Bayer.
+00:02:38.284 --> 00:02:39.727 line:98%,end
+Xét một vùng ảnh phẳng,
 
-00:02:20.878 --> 00:02:23.921 line:98%,end
-Mỗi vị trí trong ma trận có một ngưỡng khác nhau,
+00:02:39.727 --> 00:02:44.119 line:98%,end
+cả bốn pixel đều có mức xám một trăm trên thang hai trăm năm mươi lăm.
 
-00:02:23.921 --> 00:02:27.089 line:98%,end
-và ma trận được lặp lại như lát gạch trên toàn ảnh.
+00:02:44.069 --> 00:02:47.922 line:98%,end
+Nếu dùng ngưỡng hóa thường với ngưỡng một trăm hai mươi tám,
 
-00:02:27.089 --> 00:02:32.245 line:98%,end
-Một vùng xám năm mươi phần trăm sẽ bật đúng một nửa số chấm theo một mẫu đều đặn.
+00:02:47.922 --> 00:02:49.655 line:98%,end
+cả bốn pixel đều thành đen.
 
-00:02:32.245 --> 00:02:36.021 line:98%,end
-Nhược điểm là có thể thấy rõ các hoa văn lặp lại.
+00:02:49.655 --> 00:02:52.806 line:98%,end
+Một vùng xám vừa phải biến thành đen kịt.
 
-00:02:36.634 --> 00:02:40.777 line:98%,end
-Nhân khuếch tán sai số nổi tiếng nhất là Floyd Steinberg.
+00:02:52.806 --> 00:02:54.603 line:98%,end
+Sai rất nhiều.
 
-00:02:40.727 --> 00:02:46.946 line:98%,end
-Sai số tại một pixel được chia cho bốn pixel lân cận chưa xử lý: bảy phần mười sáu cho pixel bên phải,
+00:02:55.222 --> 00:02:59.508 line:98%,end
+Ordered dithering thay một ngưỡng duy nhất bằng một ma trận ngưỡng.
 
-00:02:46.946 --> 00:02:49.446 line:98%,end
-ba phần mười sáu cho pixel dưới bên trái,
+00:02:59.458 --> 00:03:03.969 line:98%,end
+Mỗi vị trí có một ngưỡng riêng: ba mươi hai, một trăm năm mươi chín,
 
-00:02:49.446 --> 00:02:52.006 line:98%,end
-năm phần mười sáu cho pixel ngay bên dưới,
+00:03:03.969 --> 00:03:06.489 line:98%,end
+hai trăm hai mươi ba và chín mươi sáu.
 
-00:02:52.006 --> 00:02:54.750 line:98%,end
-và một phần mười sáu cho pixel dưới bên phải.
+00:03:06.489 --> 00:03:10.448 line:98%,end
+Ma trận nhỏ này được lặp lại như lát gạch trên khắp ảnh.
 
-00:02:54.750 --> 00:02:57.094 line:98%,end
-Tổng các trọng số bằng một.
+00:03:10.448 --> 00:03:14.783 line:98%,end
+Đó là ý nghĩa của phép chia lấy dư trong sơ đồ của slide.
 
-00:02:57.700 --> 00:02:59.642 line:98%,end
-So với ordered dithering,
+00:03:15.400 --> 00:03:18.436 line:98%,end
+So từng pixel với ngưỡng của nó.
 
-00:02:59.642 --> 00:03:04.226 line:98%,end
-error diffusion cho ít hoa văn lặp và giữ chi tiết tốt hơn.
+00:03:18.386 --> 00:03:21.485 line:98%,end
+Một trăm lớn hơn ba mươi hai, bật.
 
-00:03:04.176 --> 00:03:04.731 line:98%,end
-Đổi lại,
+00:03:21.485 --> 00:03:24.831 line:98%,end
+Một trăm nhỏ hơn một trăm năm mươi chín, tắt.
 
-00:03:04.731 --> 00:03:10.773 line:98%,end
-nó phải xử lý tuần tự từng pixel vì mỗi pixel phụ thuộc vào sai số của các pixel trước,
+00:03:24.831 --> 00:03:27.891 line:98%,end
+Nhỏ hơn hai trăm hai mươi ba, tắt.
 
-00:03:10.773 --> 00:03:13.134 line:98%,end
-nên khó song song hóa và chậm hơn.
+00:03:27.891 --> 00:03:30.613 line:98%,end
+Lớn hơn chín mươi sáu, bật.
 
-00:03:14.650 --> 00:03:18.686 line:98%,end
-Lượng tử hóa màu giải bài toán hiển thị ảnh màu K bit,
+00:03:31.234 --> 00:03:34.556 line:98%,end
+Kết quả: hai trong bốn pixel sáng.
 
-00:03:18.686 --> 00:03:24.366 line:98%,end
-ví dụ hai mươi tư bit RGB, trên thiết bị chỉ hỗ trợ L bit, tức hai mũ L màu.
+00:03:34.506 --> 00:03:39.285 line:98%,end
+Nhìn từ xa, mắt lấy trung bình và thấy mức khoảng một trăm hai mươi bảy.
 
-00:03:24.316 --> 00:03:28.717 line:98%,end
-Ta cần thiết kế bảng màu và cách ánh xạ mỗi pixel vào bảng.
+00:03:39.285 --> 00:03:43.621 line:98%,end
+Con số đó gần với một trăm hơn rất nhiều so với màu đen.
 
-00:03:29.332 --> 00:03:35.779 line:98%,end
-Thuật toán median cut thiết kế bảng màu sao cho mỗi màu trong bảng đại diện cho số lượng pixel gần bằng nhau.
+00:03:43.621 --> 00:03:48.751 line:98%,end
+Vùng càng sáng thì càng nhiều pixel vượt ngưỡng, nên sắc độ được giữ lại.
 
-00:03:36.334 --> 00:03:40.313 line:98%,end
-Các bước như sau: tính histogram màu, tiền lượng tử xuống mười lăm bit,
+00:03:50.272 --> 00:03:52.556 line:98%,end
+Error diffusion cho chất lượng cao,
 
-00:03:40.313 --> 00:03:43.003 line:98%,end
-tức ba mươi hai nghìn bảy trăm sáu mươi tám màu,
+00:03:52.556 --> 00:03:56.407 line:98%,end
+đặc biệt hợp với thiết bị độ phân giải thấp đến trung bình.
 
-00:03:43.003 --> 00:03:46.086 line:98%,end
-tìm hộp chữ nhật bao khít các màu trong không gian màu,
+00:03:56.357 --> 00:04:01.730 line:98%,end
+Ý tưởng giống như trả tiền thiếu: lần này làm tròn thiếu bao nhiêu thì ghi nợ,
 
-00:03:46.086 --> 00:03:49.784 line:98%,end
-cắt hộp tại điểm trung vị để mỗi nửa chứa khoảng một nửa số pixel,
+00:04:01.730 --> 00:04:02.763 line:98%,end
+lần sau bù lại.
 
-00:03:49.784 --> 00:03:52.026 line:98%,end
-rồi lặp lại đến khi đủ số màu mong muốn.
+00:04:02.763 --> 00:04:08.297 line:98%,end
+Mỗi pixel trước khi lượng tử được cộng thêm phần sai số mà các pixel trước chuyển sang.
 
-00:03:52.576 --> 00:03:56.216 line:98%,end
-Một ví dụ thực tế của lượng tử hóa màu là định dạng GIF,
+00:04:08.297 --> 00:04:13.037 line:98%,end
+Giá trị sau khi cộng gọi là đầu vào đã điều chỉnh, ký hiệu u.
 
-00:03:56.216 --> 00:03:59.727 line:98%,end
-chỉ cho phép tối đa hai trăm năm mươi sáu màu mỗi ảnh.
+00:04:13.642 --> 00:04:19.543 line:98%,end
+Sau đó u được ngưỡng hóa thành đầu ra nhị phân b. Sai số lượng tử e bằng u trừ b.
 
-00:03:59.677 --> 00:04:04.075 line:98%,end
-Để ảnh chụp chuyển sang GIF vẫn đẹp, ta cần chọn bảng màu thật khéo,
+00:04:20.092 --> 00:04:23.676 line:98%,end
+Sai số này được chia cho các pixel lân cận chưa xử lý,
 
-00:04:04.075 --> 00:04:07.762 line:98%,end
-và median cut là một thuật toán kinh điển để làm việc đó.
+00:04:23.676 --> 00:04:27.659 line:98%,end
+theo các trọng số của một nhân khuếch tán sai số, ký hiệu h.
 
-00:04:08.386 --> 00:04:13.068 line:98%,end
-Khi cắt hộp, người ta thường chọn trục có độ trải màu lớn nhất, tức kênh đỏ,
+00:04:28.222 --> 00:04:31.415 line:98%,end
+Nhờ vậy sai số không bị vứt đi mà được bù dần,
 
-00:04:13.068 --> 00:04:17.750 line:98%,end
-lục hoặc lam có khoảng giá trị rộng nhất, rồi cắt tại trung vị theo trục đó.
+00:04:31.415 --> 00:04:34.539 line:98%,end
+và sai số trung bình về lâu dài xấp xỉ không.
 
-00:04:17.700 --> 00:04:22.505 line:98%,end
-Mỗi hộp cuối cùng được đại diện bằng màu trung bình của các pixel bên trong.
+00:04:36.004 --> 00:04:40.615 line:98%,end
+Lấy lại vùng xám một trăm, lần này là một hàng bốn pixel.
 
-00:04:22.505 --> 00:04:27.518 line:98%,end
-Có thể kết hợp với error diffusion để giảm hiện tượng phân dải màu.
+00:04:40.565 --> 00:04:41.371 line:98%,end
+Để dễ tính,
 
-00:04:29.032 --> 00:04:32.797 line:98%,end
-Phần tiếp theo là đánh giá chất lượng ảnh theo cảm nhận.
+00:04:41.371 --> 00:04:46.646 line:98%,end
+ta dùng nhân đơn giản nhất: toàn bộ sai số được đẩy sang pixel bên phải.
 
-00:04:32.747 --> 00:04:37.713 line:98%,end
-Các mô hình cảm nhận dựa trên đặc tính của hệ thị giác: hàm độ nhạy tương phản,
+00:04:46.646 --> 00:04:48.579 line:98%,end
+Pixel một có u bằng một trăm,
 
-00:04:37.713 --> 00:04:40.416 line:98%,end
-thích nghi ánh sáng, và hiện tượng che lấp.
+00:04:48.579 --> 00:04:52.245 line:98%,end
+nhỏ hơn ngưỡng một trăm hai mươi tám nên xuất ra không.
 
-00:04:41.026 --> 00:04:46.575 line:98%,end
-Hàm độ nhạy tương phản, CSF, mô tả đáp ứng tần số của mắt người.
+00:04:52.245 --> 00:04:57.401 line:98%,end
+Sai số là cộng một trăm, nghĩa là ta đang nợ một trăm đơn vị độ sáng.
 
-00:04:46.525 --> 00:04:49.728 line:98%,end
-Có thể coi nó như một bộ lọc thông dải, bandpass,
+00:04:58.006 --> 00:05:02.904 line:98%,end
+Pixel hai nhận món nợ đó: một trăm cộng một trăm bằng hai trăm.
 
-00:04:49.728 --> 00:04:53.127 line:98%,end
-được đo bằng ngưỡng nhìn thấy của các lưới sóng sin.
+00:05:02.854 --> 00:05:06.500 line:98%,end
+Hai trăm vượt ngưỡng nên xuất ra hai trăm năm mươi lăm.
 
-00:04:53.740 --> 00:05:00.864 line:98%,end
-Che lấp tương phản là hiện tượng một thành phần ảnh trở nên khó thấy khi có một thành phần khác cùng vị trí và tần số tương tự.
+00:05:06.500 --> 00:05:10.536 line:98%,end
+Lần này ta trả dư, sai số là âm năm mươi lăm.
 
-00:05:00.814 --> 00:05:03.444 line:98%,end
-Với video, che lấp thời gian rất quan trọng,
+00:05:11.152 --> 00:05:16.009 line:98%,end
+Pixel ba: một trăm trừ năm mươi lăm còn bốn mươi lăm, dưới ngưỡng,
 
-00:05:03.444 --> 00:05:08.822 line:98%,end
-và cảm nhận vật thể chuyển động phụ thuộc vào việc mắt có đang bám theo vật thể hay không.
+00:05:16.009 --> 00:05:17.040 line:98%,end
+xuất ra không.
 
-00:05:09.430 --> 00:05:14.596 line:98%,end
-Một độ đo chất lượng cảm nhận cần ba yếu tố: hiệu chỉnh, calibration; đăng ký,
+00:05:16.990 --> 00:05:19.463 line:98%,end
+Sai số cộng bốn mươi lăm.
 
-00:05:14.596 --> 00:05:19.829 line:98%,end
-registration, tức sự tương ứng điểm với điểm giữa hai ảnh; và mô hình hiển thị,
+00:05:20.074 --> 00:05:25.107 line:98%,end
+Pixel bốn: một trăm cộng bốn mươi lăm bằng một trăm bốn mươi lăm, vượt ngưỡng,
 
-00:05:19.829 --> 00:05:23.273 line:98%,end
-vì mắt chỉ thấy được những gì màn hình tái tạo được.
+00:05:25.107 --> 00:05:27.042 line:98%,end
+xuất ra hai trăm năm mươi lăm.
 
-00:05:23.824 --> 00:05:25.505 line:98%,end
-Vì CSF có dạng thông dải,
+00:05:26.992 --> 00:05:29.718 line:98%,end
+Kết quả cả hàng là đen, trắng, đen, trắng,
 
-00:05:25.505 --> 00:05:29.339 line:98%,end
-mắt người nhạy nhất với các chi tiết ở tần số trung bình,
+00:05:29.718 --> 00:05:32.314 line:98%,end
+trung bình khoảng một trăm hai mươi bảy,
 
-00:05:29.339 --> 00:05:33.240 line:98%,end
-và kém nhạy với những thay đổi rất chậm hoặc rất nhỏ, mịn.
+00:05:32.314 --> 00:05:35.234 line:98%,end
+trong khi ngưỡng hóa thường cho toàn màu đen.
 
-00:05:33.190 --> 00:05:38.620 line:98%,end
-Đó là lý do JPEG có thể bỏ bớt tần số cao mà ta khó nhận ra.
+00:05:35.234 --> 00:05:38.693 line:98%,end
+Sai số còn lại tiếp tục được chuyển cho các pixel sau,
 
-00:05:39.226 --> 00:05:44.489 line:98%,end
-Thích nghi ánh sáng nghĩa là mắt cảm nhận độ tương phản tương đối chứ không phải tuyệt đối.
+00:05:38.693 --> 00:05:41.510 line:98%,end
+nên càng đi xa trung bình càng sát một trăm.
 
-00:05:44.439 --> 00:05:49.178 line:98%,end
-Cùng một mức chênh lệch độ sáng sẽ dễ thấy trên nền tối hơn trên nền sáng.
+00:05:43.024 --> 00:05:45.070 line:98%,end
+Viết thành mã giả.
 
-00:05:49.178 --> 00:05:52.030 line:98%,end
-Đây là nội dung của luật Weber.
+00:05:45.020 --> 00:05:48.276 line:98%,end
+Ta đi qua từng pixel theo thứ tự quét.
 
-00:05:53.536 --> 00:05:59.941 line:98%,end
-Độ đo Minkowski giữa ảnh tham chiếu và ảnh méo đơn giản là chuẩn Lp của hiệu số từng điểm,
+00:05:48.276 --> 00:05:53.231 line:98%,end
+Trước hết cộng vào pixel phần sai số mà các pixel trước đã chuyển sang,
 
-00:05:59.941 --> 00:06:01.507 line:98%,end
-MSE là một trường hợp.
+00:05:53.231 --> 00:05:54.278 line:98%,end
+được giá trị u.
 
-00:06:01.457 --> 00:06:08.514 line:98%,end
-Nhưng nó không phản ánh tốt cảm nhận của con người: hai ảnh có cùng MSE vẫn có thể trông khác nhau rất nhiều.
+00:05:54.898 --> 00:06:00.707 line:98%,end
+Tiếp theo ngưỡng hóa u để có đầu ra nhị phân, rồi tính sai số bằng u trừ đầu ra.
 
-00:06:09.130 --> 00:06:14.236 line:98%,end
-Chỉ số tương đồng cấu trúc SSIM khắc phục điều đó bằng ba thành phần.
+00:06:01.276 --> 00:06:07.650 line:98%,end
+Cuối cùng chia sai số cho các hàng xóm chưa xử lý theo trọng số của nhân h. Vì chỉ chia cho pixel chưa xử lý,
 
-00:06:14.186 --> 00:06:18.665 line:98%,end
-Một, so sánh độ chói, ước lượng bằng cường độ trung bình.
+00:06:07.650 --> 00:06:10.106 line:98%,end
+thuật toán chỉ cần quét ảnh đúng một lượt.
 
-00:06:18.665 --> 00:06:23.197 line:98%,end
-Hai, so sánh độ tương phản, ước lượng bằng độ lệch chuẩn.
+00:06:11.578 --> 00:06:13.637 line:98%,end
+Chuyển sang ảnh màu.
 
-00:06:23.197 --> 00:06:28.613 line:98%,end
-Ba, so sánh cấu trúc, sau khi chuẩn hóa tín hiệu về độ lệch chuẩn đơn vị.
+00:06:13.587 --> 00:06:17.821 line:98%,end
+Mỗi pixel có K bit, ví dụ hai mươi bốn bit cho RGB,
 
-00:06:29.236 --> 00:06:30.211 line:98%,end
-Trong thực tế,
+00:06:17.821 --> 00:06:22.220 line:98%,end
+nhưng thiết bị chỉ hỗ trợ L bit, tức là hai mũ L màu.
 
-00:06:30.211 --> 00:06:35.157 line:98%,end
-SSIM được tính cục bộ qua một cửa sổ Gauss đối xứng tròn trượt qua ảnh,
+00:06:22.220 --> 00:06:24.966 line:98%,end
+Có hai việc phải làm: thiết kế bảng màu,
 
-00:06:35.157 --> 00:06:36.899 line:98%,end
-tạo ra bản đồ chất lượng,
+00:06:24.966 --> 00:06:28.262 line:98%,end
+và quyết định mỗi pixel dùng màu nào trong bảng.
 
-00:06:36.899 --> 00:06:41.009 line:98%,end
-rồi lấy trung bình có trọng số để ra chỉ số SSIM cuối cùng.
+00:06:28.876 --> 00:06:36.443 line:98%,end
+Thuật toán median cut thiết kế bảng màu theo nguyên tắc công bằng: mỗi màu trong bảng đại diện cho một số lượng pixel gần bằng nhau.
 
-00:06:40.959 --> 00:06:46.870 line:98%,end
-Đây cũng là cơ sở của hàm mất mát SSIM trong các mô hình phục hồi ảnh hiện đại.
+00:06:36.393 --> 00:06:40.469 line:98%,end
+Vùng màu nào có nhiều pixel thì được chia nhiều màu hơn.
 
-00:06:47.494 --> 00:06:52.645 line:98%,end
-Độ đo phổ biến dựa trên MSE là PSNR, tỉ số tín hiệu cực đại trên nhiễu,
+00:06:41.086 --> 00:06:46.635 line:98%,end
+Các bước: tính histogram màu, ảnh hai mươi bốn bit có tối đa mười sáu triệu màu.
 
-00:06:52.645 --> 00:06:58.376 line:98%,end
-bằng mười nhân logarit cơ số mười của giá trị cực đại bình phương chia cho MSE,
+00:06:46.585 --> 00:06:49.738 line:98%,end
+Tiền lượng tử xuống mười lăm bit, mỗi kênh năm bit,
 
-00:06:58.376 --> 00:06:59.827 line:98%,end
-tính bằng đề xi ben.
+00:06:49.738 --> 00:06:52.705 line:98%,end
+còn ba mươi hai nghìn bảy trăm sáu mươi tám màu.
 
-00:06:59.777 --> 00:07:04.503 line:98%,end
-PSNR càng cao thì ảnh càng giống ảnh gốc về mặt số liệu.
+00:06:52.705 --> 00:06:56.572 line:98%,end
+Rồi tìm một hộp chữ nhật bao khít mọi màu có trong ảnh.
 
-00:07:05.004 --> 00:07:08.116 line:98%,end
-SSIM nằm trong khoảng từ trừ một đến một,
+00:06:57.184 --> 00:07:02.824 line:98%,end
+Sau đó cắt hộp tại điểm trung vị, sao cho mỗi nửa chứa khoảng một nửa số pixel.
 
-00:07:08.116 --> 00:07:11.076 line:98%,end
-và bằng một khi hai ảnh giống hệt nhau.
+00:07:02.774 --> 00:07:07.175 line:98%,end
+Lặp lại việc cắt cho đến khi có đủ số hộp bằng số màu mong muốn.
 
-00:07:11.076 --> 00:07:15.421 line:98%,end
-Khác với PSNR, SSIM phạt nặng các méo làm thay đổi cấu trúc,
+00:07:08.686 --> 00:07:13.076 line:98%,end
+Để tính tay, ta chỉ xét một kênh màu với tám pixel.
 
-00:07:15.421 --> 00:07:20.635 line:98%,end
-như mờ hay méo khối, và phạt nhẹ các thay đổi đều như tăng giảm độ sáng,
+00:07:13.026 --> 00:07:16.229 line:98%,end
+Sắp xếp các giá trị từ nhỏ đến lớn.
 
-00:07:20.635 --> 00:07:23.532 line:98%,end
-nên khớp với cảm nhận của con người hơn.
+00:07:16.840 --> 00:07:20.683 line:98%,end
+Cắt lần một tại trung vị, mỗi bên bốn pixel.
 
-00:07:24.982 --> 00:07:29.151 line:98%,end
-Trước khi tổng kết, cần phân biệt hai cách đánh giá chất lượng.
+00:07:20.633 --> 00:07:23.875 line:98%,end
+Chú ý điểm cắt không nằm giữa dải giá trị.
 
-00:07:29.101 --> 00:07:34.464 line:98%,end
-Đánh giá chủ quan cho nhiều người xem chấm điểm, rồi lấy điểm trung bình,
+00:07:23.875 --> 00:07:27.678 line:98%,end
+Giữa dải từ mười đến hai trăm hai mươi là khoảng một trăm mười lăm,
 
-00:07:34.464 --> 00:07:35.273 line:98%,end
-gọi là MOS.
+00:07:27.678 --> 00:07:30.119 line:98%,end
+nhưng ta cắt giữa hai mươi hai và một trăm,
 
-00:07:35.273 --> 00:07:39.543 line:98%,end
-Cách này phản ánh đúng cảm nhận nhưng tốn thời gian và chi phí.
+00:07:30.119 --> 00:07:33.355 line:98%,end
+vì cắt theo số lượng pixel chứ không theo khoảng giá trị.
 
-00:07:40.168 --> 00:07:42.722 line:98%,end
-Đánh giá khách quan dùng công thức.
+00:07:33.970 --> 00:07:38.451 line:98%,end
+Cắt lần hai, mỗi hộp lại được chia đôi tại trung vị của nó.
 
-00:07:42.672 --> 00:07:47.525 line:98%,end
-Có ba loại theo mức tham chiếu: tham chiếu đầy đủ, khi có ảnh gốc,
+00:07:38.401 --> 00:07:42.112 line:98%,end
+Ta có bốn hộp, mỗi hộp đúng hai pixel.
 
-00:07:47.525 --> 00:07:50.026 line:98%,end
-như PSNR và SSIM; tham chiếu giảm,
+00:07:42.724 --> 00:07:47.400 line:98%,end
+Màu đại diện của mỗi hộp là trung bình của hộp: mười một, hai mươi mốt,
 
-00:07:50.026 --> 00:07:55.394 line:98%,end
-chỉ có một số đặc trưng của ảnh gốc; và không tham chiếu, chỉ có ảnh méo.
+00:07:47.400 --> 00:07:49.705 line:98%,end
+một trăm linh năm và hai trăm mười.
 
-00:07:55.394 --> 00:08:00.979 line:98%,end
-Mục tiêu của mọi độ đo khách quan là tương quan càng cao càng tốt với điểm MOS.
+00:07:49.655 --> 00:07:53.288 line:98%,end
+Vùng tối có nhiều pixel nên được hẳn hai màu.
 
-00:08:02.494 --> 00:08:04.449 line:98%,end
+00:07:53.288 --> 00:07:57.070 line:98%,end
+Sau khi có bảng màu, mỗi pixel được ánh xạ về màu gần nhất,
+
+00:07:57.070 --> 00:08:02.455 line:98%,end
+hoặc dùng error diffusion với bảng màu đóng vai trò codebook để chuyển sắc mượt hơn.
+
+00:08:03.970 --> 00:08:07.136 line:98%,end
+Sang phần hai: đánh giá chất lượng.
+
+00:08:07.086 --> 00:08:10.459 line:98%,end
+Muốn đo theo cảm nhận thì phải hiểu mắt người.
+
+00:08:10.459 --> 00:08:14.821 line:98%,end
+Đặc tính đầu tiên là hàm độ nhạy tương phản, CSF.
+
+00:08:14.821 --> 00:08:17.425 line:98%,end
+Nó mô tả đáp ứng tần số của hệ thị giác,
+
+00:08:17.425 --> 00:08:21.787 line:98%,end
+và có dạng một bộ lọc thông dải: mắt nhạy nhất với chi tiết cỡ vừa,
+
+00:08:21.787 --> 00:08:24.651 line:98%,end
+kém nhạy với thay đổi quá chậm hoặc quá mịn.
+
+00:08:24.651 --> 00:08:28.636 line:98%,end
+CSF được đo bằng ngưỡng nhìn thấy các lưới sóng sin.
+
+00:08:29.260 --> 00:08:34.331 line:98%,end
+Đặc tính thứ hai là thích nghi ánh sáng: mắt cảm nhận độ tương phản so với nền,
+
+00:08:34.331 --> 00:08:36.450 line:98%,end
+không cảm nhận độ sáng tuyệt đối.
+
+00:08:37.006 --> 00:08:39.677 line:98%,end
+Thứ ba là che lấp tương phản.
+
+00:08:39.627 --> 00:08:45.604 line:98%,end
+Một thành phần ảnh khó thấy hơn khi có một thành phần khác ở cùng vị trí và có tần số tương tự.
+
+00:08:45.604 --> 00:08:48.556 line:98%,end
+Ví dụ, nhiễu trên bầu trời phẳng rất dễ thấy,
+
+00:08:48.556 --> 00:08:52.362 line:98%,end
+nhưng cùng lượng nhiễu đó trên bãi cỏ thì gần như vô hình.
+
+00:08:52.984 --> 00:08:57.257 line:98%,end
+Thứ tư là che lấp thời gian, quan trọng với video.
+
+00:08:57.207 --> 00:09:02.702 line:98%,end
+Cảm nhận về một vật chuyển động phụ thuộc nhiều vào việc mắt có đang bám theo vật đó hay không.
+
+00:09:04.222 --> 00:09:10.227 line:98%,end
+Mục tiêu của một độ đo cảm nhận là tìm ra khác biệt giữa hai ảnh mà mắt người thật sự nhận thấy.
+
+00:09:10.177 --> 00:09:12.807 line:98%,end
+Slide nêu ba điều kiện cần.
+
+00:09:12.807 --> 00:09:17.905 line:98%,end
+Một là hiệu chỉnh: ảnh có thể đến từ nhiều thiết bị và qua nhiều phép biến đổi,
+
+00:09:17.905 --> 00:09:20.099 line:98%,end
+nên phải quy về cùng một thang đo.
+
+00:09:20.704 --> 00:09:24.534 line:98%,end
+Hai là đăng ký: hai ảnh phải khớp nhau từng điểm.
+
+00:09:24.484 --> 00:09:29.315 line:98%,end
+Chỉ cần lệch một pixel thì mọi phép so sánh theo pixel đều vô nghĩa.
+
+00:09:29.914 --> 00:09:35.077 line:98%,end
+Ba là mô hình hiển thị: mắt chỉ thấy những gì màn hình hay máy in tái tạo được,
+
+00:09:35.077 --> 00:09:37.234 line:98%,end
+nên độ đo phải tính đến thiết bị.
+
+00:09:38.704 --> 00:09:41.961 line:98%,end
+Độ đo đơn giản nhất là Minkowski.
+
+00:09:41.911 --> 00:09:46.495 line:98%,end
+Ta có ảnh tham chiếu, coi như hoàn hảo, và ảnh bị méo.
+
+00:09:46.495 --> 00:09:52.270 line:98%,end
+Với mỗi pixel, lấy độ chênh lệch, nâng lên lũy thừa p, cộng tất cả lại,
+
+00:09:52.270 --> 00:09:53.734 line:98%,end
+rồi lấy căn bậc p.
+
+00:09:54.346 --> 00:09:57.525 line:98%,end
+Số mũ p nằm từ một đến vô cùng.
+
+00:09:57.475 --> 00:10:00.548 line:98%,end
+P bằng một là tổng sai khác tuyệt đối.
+
+00:10:00.548 --> 00:10:04.415 line:98%,end
+P bằng hai gắn liền với sai số bình phương trung bình.
+
+00:10:04.415 --> 00:10:08.295 line:98%,end
+P càng lớn thì những lỗi lớn càng chi phối kết quả.
+
+00:10:08.908 --> 00:10:12.621 line:98%,end
+Slide hỏi: độ đo này có thật sự tốt không?
+
+00:10:12.571 --> 00:10:14.824 line:98%,end
+Câu trả lời là không.
+
+00:10:14.824 --> 00:10:19.563 line:98%,end
+Nó coi mỗi pixel là độc lập và không biết gì về cấu trúc của ảnh.
+
+00:10:19.563 --> 00:10:24.042 line:98%,end
+Hai ảnh méo có cùng sai số có thể trông khác nhau một trời một vực.
+
+00:10:24.042 --> 00:10:28.131 line:98%,end
+Ta sẽ thấy bằng số ngay sau khi học SSIM.
+
+00:10:29.650 --> 00:10:34.131 line:98%,end
+SSIM tách sự giống nhau thành ba câu hỏi gần như độc lập.
+
+00:10:34.081 --> 00:10:38.209 line:98%,end
+Câu một, độ chói: hai ảnh có sáng như nhau không?
+
+00:10:38.209 --> 00:10:41.685 line:98%,end
+Độ chói được ước lượng bằng cường độ trung bình.
+
+00:10:42.292 --> 00:10:46.799 line:98%,end
+Câu hai, tương phản: hai ảnh có độ tương phản như nhau không?
+
+00:10:46.749 --> 00:10:49.900 line:98%,end
+Tương phản được ước lượng bằng độ lệch chuẩn.
+
+00:10:50.518 --> 00:10:54.793 line:98%,end
+Câu ba, cấu trúc: sau khi trừ trung bình và chia cho độ lệch chuẩn,
+
+00:10:54.793 --> 00:10:57.473 line:98%,end
+hai tín hiệu có lên xuống cùng nhau không?
+
+00:10:57.423 --> 00:11:02.163 line:98%,end
+Nếu chỗ này sáng lên thì chỗ kia cũng sáng lên, cấu trúc được giữ.
+
+00:11:02.776 --> 00:11:05.903 line:98%,end
+Ba thành phần nhân lại thành một chỉ số.
+
+00:11:05.853 --> 00:11:11.559 line:98%,end
+Trong thực tế SSIM được tính cục bộ qua một cửa sổ Gauss đối xứng tròn trượt trên ảnh,
+
+00:11:11.559 --> 00:11:13.483 line:98%,end
+tạo ra một bản đồ chất lượng,
+
+00:11:13.483 --> 00:11:16.999 line:98%,end
+rồi lấy trung bình bản đồ đó làm điểm SSIM cuối cùng.
+
+00:11:18.502 --> 00:11:24.611 line:98%,end
+Ảnh gốc là một kết cấu sọc: một trăm, một trăm mười, một trăm, một trăm mười.
+
+00:11:24.561 --> 00:11:26.970 line:98%,end
+Ta làm méo theo hai cách.
+
+00:11:26.970 --> 00:11:31.605 line:98%,end
+Cách một, cộng mười vào mọi pixel, ảnh chỉ sáng hơn một chút.
+
+00:11:31.605 --> 00:11:36.963 line:98%,end
+Cách hai, pixel thứ nhất cộng mười, pixel thứ hai trừ mười, cứ thế xen kẽ,
+
+00:11:36.963 --> 00:11:40.004 line:98%,end
+khiến sọc sáng thành sọc tối và ngược lại.
+
+00:11:40.624 --> 00:11:43.334 line:98%,end
+Tính sai số bình phương trung bình.
+
+00:11:43.284 --> 00:11:46.637 line:98%,end
+Ở cả hai cách, mỗi pixel đều lệch đúng mười đơn vị,
+
+00:11:46.637 --> 00:11:50.055 line:98%,end
+nên sai số bình phương trung bình đều bằng một trăm.
+
+00:11:50.055 --> 00:11:53.714 line:98%,end
+Theo độ đo này, hai ảnh méo tệ như nhau.
+
+00:11:54.322 --> 00:11:59.077 line:98%,end
+Giờ tính SSIM, bỏ qua các hằng số nhỏ cho gọn.
+
+00:11:59.027 --> 00:12:03.842 line:98%,end
+Về độ chói, ảnh một có trung bình một trăm mười lăm so với một trăm linh năm,
+
+00:12:03.842 --> 00:12:06.657 line:98%,end
+nên điểm độ chói là không phẩy chín chín sáu.
+
+00:12:06.657 --> 00:12:10.928 line:98%,end
+Ảnh hai có cùng trung bình với ảnh gốc, điểm độ chói là một.
+
+00:12:11.548 --> 00:12:16.248 line:98%,end
+Về tương phản, cả hai ảnh méo đều dao động với biên độ y như ảnh gốc,
+
+00:12:16.248 --> 00:12:18.360 line:98%,end
+nên điểm tương phản đều là một.
+
+00:12:18.910 --> 00:12:21.373 line:98%,end
+Về cấu trúc thì khác hẳn.
+
+00:12:21.323 --> 00:12:25.568 line:98%,end
+Ảnh một lên xuống cùng nhịp với ảnh gốc, điểm cấu trúc là một.
+
+00:12:25.568 --> 00:12:29.878 line:98%,end
+Ảnh hai lên đúng lúc ảnh gốc xuống, điểm cấu trúc là âm một.
+
+00:12:30.496 --> 00:12:32.803 line:98%,end
+Nhân ba thành phần lại.
+
+00:12:32.753 --> 00:12:37.258 line:98%,end
+Ảnh một có SSIM xấp xỉ một, gần như hoàn hảo.
+
+00:12:37.258 --> 00:12:41.581 line:98%,end
+Ảnh hai có SSIM âm một, tệ nhất có thể.
+
+00:12:41.581 --> 00:12:44.134 line:98%,end
+Cùng một sai số bình phương trung bình,
+
+00:12:44.134 --> 00:12:48.521 line:98%,end
+nhưng SSIM phân biệt được ảnh chỉ sáng lên với ảnh bị phá cấu trúc.
+
+00:12:48.521 --> 00:12:53.078 line:98%,end
+Đó là lý do SSIM khớp với cảm nhận của mắt hơn.
+
+00:12:54.598 --> 00:12:57.347 line:98%,end
+So sánh ba nhóm halftoning.
+
+00:12:57.297 --> 00:13:01.847 line:98%,end
+Ordered dithering chỉ so mỗi pixel với một ma trận ngưỡng cố định,
+
+00:13:01.847 --> 00:13:04.811 line:98%,end
+mỗi pixel xử lý độc lập, nên đơn giản nhất.
+
+00:13:05.416 --> 00:13:10.001 line:98%,end
+Error diffusion ngưỡng hóa rồi khuếch tán sai số sang hàng xóm.
+
+00:13:09.951 --> 00:13:15.017 line:98%,end
+Pixel sau phụ thuộc pixel trước, phức tạp hơn nhưng chất lượng cao hơn.
+
+00:13:15.634 --> 00:13:22.329 line:98%,end
+Các kỹ thuật tối ưu hóa tìm trực tiếp ảnh halftone làm nhỏ nhất một tiêu chí méo giữa ảnh gốc và ảnh halftone.
+
+00:13:22.279 --> 00:13:25.742 line:98%,end
+Chúng cho kết quả tốt nhất nhưng tốn tính toán nhất.
+
+00:13:27.256 --> 00:13:29.094 line:98%,end
+Năm cái bẫy.
+
+00:13:29.044 --> 00:13:32.215 line:98%,end
+Một: halftoning là trường hợp K bằng hai,
+
+00:13:32.215 --> 00:13:35.385 line:98%,end
+với hai mức đầu ra là không và D trừ một.
+
+00:13:35.986 --> 00:13:41.997 line:98%,end
+Hai: thứ tự độ phức tạp tăng dần là ordered dithering, error diffusion,
+
+00:13:41.997 --> 00:13:43.267 line:98%,end
+rồi tối ưu hóa.
+
+00:13:43.828 --> 00:13:46.172 line:98%,end
+Ba: median cut cắt tại trung vị,
+
+00:13:46.172 --> 00:13:50.640 line:98%,end
+để mỗi màu trong bảng đại diện cho số pixel xấp xỉ bằng nhau.
+
+00:13:50.590 --> 00:13:53.481 line:98%,end
+Không phải cắt ở giữa dải giá trị.
+
+00:13:54.094 --> 00:13:57.561 line:98%,end
+Bốn: hàm độ nhạy tương phản có dạng bộ lọc thông dải,
+
+00:13:57.561 --> 00:13:59.916 line:98%,end
+không phải thông thấp hay thông cao.
+
+00:14:00.472 --> 00:14:06.356 line:98%,end
+Năm: SSIM gồm độ chói đo bằng trung bình, tương phản đo bằng độ lệch chuẩn,
+
+00:14:06.356 --> 00:14:07.297 line:98%,end
+và cấu trúc.
+
+00:14:07.247 --> 00:14:10.528 line:98%,end
+Ba thành phần này tương đối độc lập với nhau.
+
+00:14:12.046 --> 00:14:14.001 line:98%,end
 Tổng kết chương tám.
 
-00:08:04.399 --> 00:08:06.721 line:98%,end
-Halftoning là lượng tử về hai mức,
+00:14:13.951 --> 00:14:18.350 line:98%,end
+Halftoning đưa ảnh về hai mức mà nhìn từ xa vẫn giống ảnh gốc,
 
-00:08:06.721 --> 00:08:12.524 line:98%,end
-với ordered dithering dùng ma trận ngưỡng và error diffusion lan sai số sang lân cận.
+00:14:18.350 --> 00:14:22.324 line:98%,end
+bằng ordered dithering, error diffusion hoặc tối ưu hóa.
 
-00:08:13.144 --> 00:08:17.795 line:98%,end
-Median cut thiết kế bảng màu bằng cách cắt hộp màu tại điểm trung vị.
+00:14:22.936 --> 00:14:28.680 line:98%,end
+Lượng tử hóa màu dùng median cut để thiết kế bảng màu, cắt hộp màu tại trung vị.
 
-00:08:18.346 --> 00:08:23.066 line:98%,end
-Mắt người có hàm độ nhạy tương phản dạng thông dải, có hiện tượng che lấp,
+00:14:29.242 --> 00:14:32.524 line:98%,end
+Hệ thị giác có hàm độ nhạy tương phản dạng thông dải,
 
-00:08:23.066 --> 00:08:27.020 line:98%,end
-và độ đo cảm nhận cần hiệu chỉnh, đăng ký và mô hình hiển thị.
+00:14:32.524 --> 00:14:35.559 line:98%,end
+có thích nghi ánh sáng và các hiện tượng che lấp.
 
-00:08:27.580 --> 00:08:32.960 line:98%,end
-Cuối cùng, SSIM kết hợp độ chói, độ tương phản và cấu trúc.
+00:14:36.124 --> 00:14:41.388 line:98%,end
+Độ đo Minkowski không hiểu cấu trúc ảnh, còn SSIM kết hợp độ chói,
 
-00:08:32.910 --> 00:08:37.272 line:98%,end
-Hẹn gặp các bạn ở chương chín: phân đoạn ảnh và video.
+00:14:41.388 --> 00:14:43.222 line:98%,end
+tương phản và cấu trúc.
+
+00:14:43.172 --> 00:14:44.235 line:98%,end
+Sang chương chín,
+
+00:14:44.235 --> 00:14:49.800 line:98%,end
+ta bắt đầu phần phân tích ảnh với bài toán phân đoạn: chia ảnh thành các vùng có ý nghĩa.

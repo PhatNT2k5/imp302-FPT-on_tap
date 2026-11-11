@@ -1,343 +1,820 @@
 WEBVTT
 
-00:00:00.100 --> 00:00:02.618 line:98%,end
-Chào các bạn, chương năm là nén ảnh,
+00:00:00.100 --> 00:00:03.370 line:98%,end
+Chào các bạn, chương năm là nén ảnh.
 
-00:00:02.618 --> 00:00:05.766 line:98%,end
-một chương có rất nhiều câu hỏi trong đề thi.
+00:00:03.320 --> 00:00:06.631 line:98%,end
+Đây là chương có nhiều câu tính toán trong đề thi nhất,
 
-00:00:05.716 --> 00:00:09.479 line:98%,end
-Mỗi ngày các bạn gửi hàng trăm tấm ảnh JPEG mà không để ý,
+00:00:06.631 --> 00:00:10.665 line:98%,end
+nên lần này chúng ta sẽ đi chậm: mỗi kỹ thuật đều có ý tưởng trước,
 
-00:00:09.479 --> 00:00:13.047 line:98%,end
-và chương này sẽ giải thích chuyện gì xảy ra bên trong.
+00:00:10.665 --> 00:00:13.555 line:98%,end
+công thức sau, rồi một ví dụ tính tay từng bước.
 
-00:00:13.654 --> 00:00:18.378 line:98%,end
-Nén ảnh chia làm hai nhánh: nén không mất dữ liệu, lossless,
+00:00:14.158 --> 00:00:16.230 line:98%,end
+Lộ trình như sau.
 
-00:00:18.378 --> 00:00:20.661 line:98%,end
-và nén có mất dữ liệu, lossy.
+00:00:16.180 --> 00:00:21.779 line:98%,end
+Đầu tiên là nén không mất dữ liệu với entropy, mã Huffman và mã số học.
 
-00:00:20.611 --> 00:00:27.056 line:98%,end
-Chúng ta sẽ đi qua mã Huffman, mã số học, BTC, lượng tử hóa vector, wavelet,
+00:00:21.779 --> 00:00:27.113 line:98%,end
+Sau đó là nén có mất dữ liệu với BTC, lượng tử hóa vector,
 
-00:00:27.056 --> 00:00:30.872 line:98%,end
-chuẩn JPEG, và cuối cùng là nén bằng học sâu.
+00:00:27.113 --> 00:00:29.136 line:98%,end
+wavelet và chuẩn JPEG.
 
-00:00:32.380 --> 00:00:36.861 line:98%,end
-Nén không mất dữ liệu giảm số bit mà không mất bất kỳ thông tin nào.
+00:00:29.136 --> 00:00:33.251 line:98%,end
+Cuối chương là bảng so sánh và những câu hỏi đề thi hay gài.
 
-00:00:36.811 --> 00:00:42.196 line:98%,end
-Nó khả thi nhờ dư thừa trong tín hiệu: các pixel lân cận có tương quan không gian rất cao,
+00:00:34.756 --> 00:00:38.664 line:98%,end
+Trước khi vào bài, chúng ta nhặt lại ba thứ đã học.
 
-00:00:42.196 --> 00:00:45.965 line:98%,end
-và trong video còn có tương quan thời gian giữa các khung hình.
+00:00:38.614 --> 00:00:39.188 line:98%,end
+Thứ nhất,
 
-00:00:46.582 --> 00:00:49.881 line:98%,end
-Ảnh giải mã phải giống hệt ảnh gốc cả về số liệu,
+00:00:39.188 --> 00:00:45.112 line:98%,end
+từ chương một: histogram chia cho tổng số pixel chính là xác suất xuất hiện của từng mức xám.
 
-00:00:49.881 --> 00:00:53.381 line:98%,end
-nên tỉ lệ nén bị giới hạn chỉ khoảng hai đến ba lần.
+00:00:45.112 --> 00:00:49.708 line:98%,end
+Hôm nay xác suất đó sẽ quyết định mỗi ký hiệu được mã bằng bao nhiêu bit.
 
-00:00:53.944 --> 00:00:58.337 line:98%,end
-Để nén nhiều hơn, có khái niệm không mất dữ liệu theo cảm nhận,
+00:00:50.326 --> 00:00:50.839 line:98%,end
+Thứ hai,
 
-00:00:58.337 --> 00:00:59.871 line:98%,end
-perceptually lossless.
+00:00:50.839 --> 00:00:55.715 line:98%,end
+từ chương bốn: các phép biến đổi như DCT và wavelet không làm mất thông tin,
 
-00:00:59.821 --> 00:01:03.669 line:98%,end
-Ta bỏ cả thông tin dư thừa lẫn thông tin mắt người không nhận ra,
+00:00:55.715 --> 00:00:59.820 line:98%,end
+nhưng chúng dồn phần lớn năng lượng của ảnh vào một số ít hệ số.
 
-00:01:03.669 --> 00:01:07.399 line:98%,end
-miễn là ảnh trông giống hệt, dù về số liệu không còn giống hệt.
+00:00:59.770 --> 00:01:04.302 line:98%,end
+JPEG và nén wavelet hôm nay dùng lại đúng tính chất này.
 
-00:01:08.902 --> 00:01:13.111 line:98%,end
-Một hệ thống mã hóa không mất dữ liệu gồm ba khối: biến đổi,
+00:01:04.912 --> 00:01:10.409 line:98%,end
+Thứ ba, DCT giả định tín hiệu đối xứng chẵn nên ít bị gián đoạn ở biên.
 
-00:01:13.111 --> 00:01:15.216 line:98%,end
-ví dụ dự đoán vi phân hay DCT,
+00:01:10.359 --> 00:01:16.674 line:98%,end
+Đó là lý do JPEG chọn DCT chứ không chọn DFT để biến đổi từng khối ảnh.
 
-00:01:15.216 --> 00:01:20.758 line:98%,end
-để đưa dữ liệu về dạng dễ nén; ánh xạ dữ liệu thành ký hiệu; và mã hóa ký hiệu,
+00:01:18.190 --> 00:01:21.005 line:98%,end
+Hãy nghĩ đến lúc các bạn nhắn tin.
 
-00:01:20.758 --> 00:01:23.214 line:98%,end
-gán từ mã nhị phân cho mỗi ký hiệu.
+00:01:20.955 --> 00:01:25.564 line:98%,end
+Từ nào dùng nhiều thì các bạn viết tắt, từ hiếm thì viết đầy đủ.
 
-00:01:23.776 --> 00:01:28.279 line:98%,end
-Khi chọn phương pháp mã hóa, ta cân nhắc tỉ lệ nén, độ trễ mã hóa,
+00:01:25.564 --> 00:01:29.327 line:98%,end
+Tin nhắn ngắn đi mà người đọc vẫn hiểu đúng hoàn toàn.
 
-00:01:28.279 --> 00:01:33.192 line:98%,end
-độ phức tạp triển khai, khả năng chịu lỗi, và khả năng mở rộng theo lớp.
+00:01:29.327 --> 00:01:34.096 line:98%,end
+Nén không mất dữ liệu làm đúng việc đó: ký hiệu hay gặp nhận mã ngắn,
 
-00:01:33.754 --> 00:01:35.101 line:98%,end
-Từ lý thuyết thông tin,
+00:01:34.096 --> 00:01:35.824 line:98%,end
+ký hiệu hiếm nhận mã dài.
 
-00:01:35.101 --> 00:01:42.363 line:98%,end
-thông tin tự thân của một ký hiệu tỉ lệ nghịch với logarit xác suất của nó: ký hiệu càng hiếm thì càng mang nhiều thông tin.
+00:01:36.324 --> 00:01:39.324 line:98%,end
+Lý do thứ hai là dư thừa.
 
-00:01:42.313 --> 00:01:45.184 line:98%,end
-Entropy nguồn là kỳ vọng của thông tin tự thân,
+00:01:39.324 --> 00:01:44.388 line:98%,end
+Trong một bức ảnh bầu trời, pixel nào cũng gần giống pixel bên cạnh.
 
-00:01:45.184 --> 00:01:50.256 line:98%,end
-và đó là cận dưới lý thuyết cho tốc độ bit trung bình của mọi mã không mất dữ liệu.
+00:01:44.388 --> 00:01:47.124 line:98%,end
+Đó là tương quan không gian.
 
-00:01:51.760 --> 00:01:57.882 line:98%,end
-Mã hóa cắt khối, BTC, là kỹ thuật nén có mất dữ liệu với độ dài cố định.
+00:01:47.124 --> 00:01:51.756 line:98%,end
+Với video còn có tương quan thời gian giữa các khung hình liên tiếp.
 
-00:01:57.832 --> 00:02:02.337 line:98%,end
-Nó dùng bộ lượng tử hóa để lượng tử từng vùng cục bộ của ảnh.
+00:01:51.756 --> 00:01:54.924 line:98%,end
+Đã đoán được thì không cần gửi lại.
 
-00:02:02.938 --> 00:02:06.727 line:98%,end
-Điểm đặc trưng: BTC bảo toàn các moment thống kê của vùng,
+00:01:55.474 --> 00:02:00.266 line:98%,end
+Nén không mất dữ liệu bắt buộc ảnh giải mã giống hệt ảnh gốc đến từng con số,
 
-00:02:06.727 --> 00:02:11.104 line:98%,end
-dạng đơn giản nhất là bảo toàn trung bình mẫu và độ lệch chuẩn mẫu.
+00:02:00.266 --> 00:02:02.755 line:98%,end
+nên tỉ lệ nén chỉ khoảng hai đến ba lần.
 
-00:02:11.668 --> 00:02:13.119 line:98%,end
-Với bộ lượng tử hai mức,
+00:02:03.316 --> 00:02:04.550 line:98%,end
+Muốn nén nhiều hơn,
 
-00:02:13.119 --> 00:02:17.050 line:98%,end
-mỗi pixel chỉ cần một bit cho biết nó lớn hay nhỏ hơn trung bình,
+00:02:04.550 --> 00:02:08.709 line:98%,end
+ta chấp nhận bỏ thêm cả những thông tin mắt người không nhận ra.
 
-00:02:17.050 --> 00:02:22.855 line:98%,end
-và hai giá trị độ chói a và b dùng để giải mã được tính từ trung bình và độ lệch chuẩn của khối.
+00:02:08.659 --> 00:02:12.187 line:98%,end
+Ảnh nhìn vẫn giống hệt, dù số liệu đã khác.
 
-00:02:24.322 --> 00:02:29.025 line:98%,end
+00:02:12.187 --> 00:02:17.226 line:98%,end
+Slide gọi đó là không mất dữ liệu theo cảm nhận, perceptually lossless.
+
+00:02:18.730 --> 00:02:22.756 line:98%,end
+Một bộ mã hóa không mất dữ liệu gồm ba khối nối tiếp.
+
+00:02:22.706 --> 00:02:29.112 line:98%,end
+Khối một là biến đổi, ví dụ lấy hiệu giữa pixel và giá trị dự đoán, hoặc DCT.
+
+00:02:29.112 --> 00:02:34.607 line:98%,end
+Mục đích là đưa dữ liệu về dạng có nhiều giá trị lặp lại, tức là dễ nén hơn.
+
+00:02:35.212 --> 00:02:38.495 line:98%,end
+Khối hai ánh xạ dữ liệu thành các ký hiệu.
+
+00:02:38.445 --> 00:02:43.654 line:98%,end
+Ký hiệu có thể là một giá trị, hoặc một cặp như số lần lặp và giá trị.
+
+00:02:44.254 --> 00:02:47.759 line:98%,end
+Khối ba gán từ mã nhị phân cho mỗi ký hiệu.
+
+00:02:47.709 --> 00:02:51.810 line:98%,end
+Huffman và mã số học mà ta sắp học nằm ở khối này.
+
+00:02:52.432 --> 00:02:56.158 line:98%,end
+Khi chọn bộ mã, đừng chỉ nhìn tỉ lệ nén.
+
+00:02:56.108 --> 00:03:00.149 line:98%,end
+Slide liệt kê năm tiêu chí: hiệu suất nén, độ trễ mã hóa,
+
+00:03:00.149 --> 00:03:05.040 line:98%,end
+độ phức tạp triển khai, độ bền với lỗi, và khả năng mở rộng theo lớp.
+
+00:03:06.550 --> 00:03:10.172 line:98%,end
+Công thức này trông đáng sợ nhưng ý rất đơn giản.
+
+00:03:10.122 --> 00:03:13.572 line:98%,end
+Phần bên phải là lượng thông tin của một ký hiệu.
+
+00:03:13.572 --> 00:03:16.749 line:98%,end
+Tin càng bất ngờ thì càng nhiều thông tin.
+
+00:03:16.749 --> 00:03:21.541 line:98%,end
+Một ký hiệu xuất hiện bốn mươi phần trăm thời gian chỉ đáng khoảng một phẩy ba bit.
+
+00:03:21.541 --> 00:03:26.085 line:98%,end
+Một ký hiệu chỉ xuất hiện bốn phần trăm thì đáng tới bốn phẩy sáu bit.
+
+00:03:26.704 --> 00:03:32.188 line:98%,end
+Phần bên trái chỉ là phép lấy trung bình: ký hiệu nào hay gặp thì được tính nặng hơn.
+
+00:03:32.138 --> 00:03:37.685 line:98%,end
+Kết quả là entropy, tức số bit trung bình mà mỗi ký hiệu của nguồn thật sự chứa.
+
+00:03:38.290 --> 00:03:42.537 line:98%,end
+Điều cần nhớ để đi thi: entropy là cận dưới.
+
+00:03:42.487 --> 00:03:46.620 line:98%,end
+Không có bộ mã không mất dữ liệu nào, giải mã được duy nhất,
+
+00:03:46.620 --> 00:03:49.375 line:98%,end
+mà có số bit trung bình nhỏ hơn entropy.
+
+00:03:49.375 --> 00:03:53.359 line:98%,end
+Huffman và mã số học chỉ cố tiến sát con số này.
+
+00:03:54.880 --> 00:03:58.202 line:98%,end
+Bây giờ ta làm đúng ví dụ trong slide.
+
+00:03:58.152 --> 00:04:02.977 line:98%,end
+Nguồn có sáu ký hiệu với xác suất không phẩy bốn, không phẩy ba, không phẩy một,
+
+00:04:02.977 --> 00:04:06.655 line:98%,end
+không phẩy một, không phẩy không sáu và không phẩy không bốn.
+
+00:04:06.655 --> 00:04:10.639 line:98%,end
+Việc đầu tiên luôn là sắp xếp xác suất từ lớn đến nhỏ.
+
+00:04:11.242 --> 00:04:13.223 line:98%,end
+Lần gộp thứ nhất.
+
+00:04:13.173 --> 00:04:17.561 line:98%,end
+Lấy hai xác suất nhỏ nhất là không phẩy không sáu và không phẩy không bốn,
+
+00:04:17.561 --> 00:04:19.280 line:98%,end
+cộng lại được không phẩy một.
+
+00:04:19.280 --> 00:04:22.718 line:98%,end
+Hai ký hiệu đó giờ được coi như một ký hiệu.
+
+00:04:22.718 --> 00:04:25.061 line:98%,end
+Nguồn còn năm phần tử.
+
+00:04:25.660 --> 00:04:27.719 line:98%,end
+Lần gộp thứ hai.
+
+00:04:27.669 --> 00:04:31.757 line:98%,end
+Hai giá trị nhỏ nhất bây giờ là không phẩy một và không phẩy một,
+
+00:04:31.757 --> 00:04:33.581 line:98%,end
+cộng lại được không phẩy hai.
+
+00:04:33.581 --> 00:04:35.925 line:98%,end
+Nguồn còn bốn phần tử.
+
+00:04:36.526 --> 00:04:38.572 line:98%,end
+Lần gộp thứ ba.
+
+00:04:38.522 --> 00:04:42.198 line:98%,end
+Hai giá trị nhỏ nhất là không phẩy hai và không phẩy một,
+
+00:04:42.198 --> 00:04:44.004 line:98%,end
+cộng lại được không phẩy ba.
+
+00:04:44.004 --> 00:04:46.387 line:98%,end
+Nguồn còn ba phần tử.
+
+00:04:47.008 --> 00:04:49.093 line:98%,end
+Lần gộp thứ tư.
+
+00:04:49.043 --> 00:04:52.859 line:98%,end
+Gộp không phẩy ba với không phẩy ba thành không phẩy sáu.
+
+00:04:52.859 --> 00:04:57.194 line:98%,end
+Nguồn chỉ còn hai phần tử là không phẩy sáu và không phẩy bốn.
+
+00:04:57.194 --> 00:04:59.903 line:98%,end
+Khi còn hai phần tử thì dừng.
+
+00:05:01.414 --> 00:05:05.049 line:98%,end
+Bước hai đi ngược từ nguồn nhỏ nhất về nguồn ban đầu.
+
+00:05:04.999 --> 00:05:09.986 line:98%,end
+Ở nguồn cuối, không phẩy sáu nhận bit không, không phẩy bốn nhận bit một.
+
+00:05:09.986 --> 00:05:15.051 line:98%,end
+Không phẩy bốn chính là ký hiệu a hai, nên a hai có mã chỉ một bit.
+
+00:05:15.664 --> 00:05:19.690 line:98%,end
+Không phẩy sáu vốn do hai giá trị không phẩy ba gộp lại.
+
+00:05:19.640 --> 00:05:24.223 line:98%,end
+Tách nó ra, mỗi nhánh giữ bit không ở đầu rồi thêm một bit nữa.
+
+00:05:24.223 --> 00:05:28.350 line:98%,end
+Nhánh thứ nhất là ký hiệu a sáu, nhận mã không không.
+
+00:05:28.954 --> 00:05:32.602 line:98%,end
+Nhánh còn lại mang mã không một, tiếp tục được tách.
+
+00:05:32.552 --> 00:05:35.599 line:98%,end
+Mỗi lần tách, mã dài thêm một bit.
+
+00:05:35.599 --> 00:05:39.518 line:98%,end
+Vì thế a một có ba bit, a bốn có bốn bit.
+
+00:05:40.132 --> 00:05:46.040 line:98%,end
+Hai ký hiệu hiếm nhất, a ba và a năm, bị gộp sớm nhất nên nhận mã dài nhất,
+
+00:05:46.040 --> 00:05:46.671 line:98%,end
+năm bit.
+
+00:05:46.621 --> 00:05:51.009 line:98%,end
+Các bạn thấy quy luật chưa: gộp càng sớm thì mã càng dài.
+
+00:05:51.622 --> 00:05:56.075 line:98%,end
+Giờ tính độ dài trung bình: lấy xác suất nhân số bit rồi cộng lại,
+
+00:05:56.075 --> 00:05:58.369 line:98%,end
+được hai phẩy hai bit mỗi ký hiệu.
+
+00:05:58.319 --> 00:06:02.616 line:98%,end
+Nếu dùng mã độ dài cố định cho sáu ký hiệu thì cần ba bit.
+
+00:06:02.616 --> 00:06:06.535 line:98%,end
+Còn entropy của nguồn này là hai phẩy một bốn bit.
+
+00:06:06.535 --> 00:06:10.728 line:98%,end
+Huffman đã rất sát giới hạn, nhưng không thể thấp hơn.
+
+00:06:12.244 --> 00:06:14.473 line:98%,end
+Viết lại thành thuật toán.
+
+00:06:14.423 --> 00:06:17.626 line:98%,end
+Vòng lặp chạy cho đến khi chỉ còn một nút.
+
+00:06:17.626 --> 00:06:21.063 line:98%,end
+Mỗi vòng chọn ra hai nút có xác suất nhỏ nhất.
+
+00:06:21.063 --> 00:06:25.048 line:98%,end
+Đây chính là bước rút gọn nguồn mà ta vừa làm bốn lần.
+
+00:06:25.654 --> 00:06:29.745 line:98%,end
+Hai nút đó được thay bằng một nút cha có xác suất bằng tổng.
+
+00:06:29.695 --> 00:06:34.044 line:98%,end
+Lặp lại nhiều lần, ta dựng được một cái cây từ lá lên gốc.
+
+00:06:34.648 --> 00:06:39.689 line:98%,end
+Sau đó đi từ gốc xuống, mỗi lần rẽ nhánh thì ghi bit không hoặc bit một.
+
+00:06:39.639 --> 00:06:44.522 line:98%,end
+Từ mã của một ký hiệu là chuỗi bit trên đường đi từ gốc tới lá của nó.
+
+00:06:44.522 --> 00:06:49.978 line:98%,end
+Vì mọi ký hiệu đều nằm ở lá, không từ mã nào là phần đầu của từ mã khác.
+
+00:06:49.978 --> 00:06:55.147 line:98%,end
+Đó là tính chất mã tiền tố, giúp giải mã được ngay mà không cần dấu ngăn cách.
+
+00:06:56.662 --> 00:07:01.807 line:98%,end
+Huffman mã từng ký hiệu riêng, nên mỗi ký hiệu tốn ít nhất một bit nguyên.
+
+00:07:01.757 --> 00:07:08.125 line:98%,end
+Mã số học bỏ ràng buộc đó: cả thông điệp được biểu diễn bằng một khoảng số duy nhất nằm giữa không và một.
+
+00:07:08.125 --> 00:07:10.993 line:98%,end
+Ví dụ trong slide: nguồn có bốn ký hiệu,
+
+00:07:10.993 --> 00:07:15.512 line:98%,end
+a một và a hai có xác suất không phẩy hai, a ba không phẩy bốn,
+
+00:07:15.512 --> 00:07:17.018 line:98%,end
+a bốn không phẩy hai.
+
+00:07:17.018 --> 00:07:21.432 line:98%,end
+Mỗi ký hiệu sở hữu một đoạn con dài đúng bằng xác suất của nó.
+
+00:07:22.048 --> 00:07:27.649 line:98%,end
+Ta mã thông điệp a một, a hai, a ba, a ba, a bốn.
+
+00:07:27.599 --> 00:07:32.560 line:98%,end
+Ký hiệu đầu là a một, nó sở hữu đoạn từ không đến không phẩy hai.
+
+00:07:32.560 --> 00:07:35.503 line:98%,end
+Khoảng hiện tại thu về đúng đoạn đó.
+
+00:07:36.106 --> 00:07:38.895 line:98%,end
+Ký hiệu thứ hai là a hai.
+
+00:07:38.845 --> 00:07:43.061 line:98%,end
+Ta chia khoảng hiện tại theo đúng tỉ lệ cũ, rồi lấy phần của a hai,
+
+00:07:43.061 --> 00:07:46.397 line:98%,end
+tức là từ hai mươi đến bốn mươi phần trăm của khoảng.
+
+00:07:46.397 --> 00:07:47.979 line:98%,end
+Khoảng dài không phẩy hai,
+
+00:07:47.979 --> 00:07:51.813 line:98%,end
+nên được đoạn từ không phẩy không bốn đến không phẩy không tám.
+
+00:07:52.420 --> 00:07:56.849 line:98%,end
+Tiếp theo là a ba, chiếm từ bốn mươi đến tám mươi phần trăm.
+
+00:07:56.799 --> 00:07:59.169 line:98%,end
+Khoảng hiện tại dài không phẩy không bốn,
+
+00:07:59.169 --> 00:08:03.505 line:98%,end
+nên khoảng mới là từ không phẩy không năm sáu đến không phẩy không bảy hai.
+
+00:08:04.126 --> 00:08:06.264 line:98%,end
+Lại là a ba.
+
+00:08:06.214 --> 00:08:06.843 line:98%,end
+Làm y hệt,
+
+00:08:06.843 --> 00:08:11.878 line:98%,end
+ta được khoảng từ không phẩy không sáu hai bốn đến không phẩy không sáu tám tám.
+
+00:08:12.496 --> 00:08:16.365 line:98%,end
+Cuối cùng là a bốn, chiếm hai mươi phần trăm cuối.
+
+00:08:16.315 --> 00:08:21.576 line:98%,end
+Khoảng kết quả là từ không phẩy không sáu bảy năm hai đến không phẩy không sáu tám tám.
+
+00:08:21.576 --> 00:08:25.756 line:98%,end
+Bất kỳ số nào trong khoảng này, ví dụ không phẩy không sáu tám,
+
+00:08:25.756 --> 00:08:27.813 line:98%,end
+đều đại diện cho cả thông điệp.
+
+00:08:27.813 --> 00:08:32.748 line:98%,end
+Thông điệp càng dài, khoảng càng hẹp, và càng cần nhiều bit để ghi lại.
+
+00:08:34.246 --> 00:08:36.904 line:98%,end
+Chuyển sang nén có mất dữ liệu.
+
+00:08:36.854 --> 00:08:42.250 line:98%,end
+Mã hóa cắt khối, BTC, làm một việc rất mạnh tay: trong mỗi khối nhỏ,
+
+00:08:42.250 --> 00:08:44.472 line:98%,end
+nó chỉ giữ đúng hai mức xám.
+
+00:08:44.472 --> 00:08:47.361 line:98%,end
+Pixel nào tối hơn trung bình thì thành mức a,
+
+00:08:47.361 --> 00:08:50.956 line:98%,end
+pixel nào sáng hơn hoặc bằng trung bình thì thành mức b.
+
+00:08:51.568 --> 00:08:57.560 line:98%,end
+Để nhớ pixel nào thuộc mức nào, bộ mã gửi một bitmap, mỗi pixel đúng một bit.
+
+00:08:57.510 --> 00:09:02.640 line:98%,end
+Vì số bit của mỗi khối luôn như nhau nên BTC là nén độ dài cố định.
+
+00:09:03.250 --> 00:09:09.658 line:98%,end
+Còn a và b được chọn sao cho khối sau giải mã vẫn có đúng trung bình và đúng độ lệch chuẩn như khối gốc.
+
+00:09:09.608 --> 00:09:14.765 line:98%,end
+Trong công thức, k là số pixel của khối, q là số pixel sáng.
+
+00:09:14.765 --> 00:09:18.923 line:98%,end
+Nhìn vào công thức: a nằm dưới trung bình, b nằm trên trung bình,
+
+00:09:18.923 --> 00:09:22.186 line:98%,end
+và độ lệch chuẩn càng lớn thì hai mức càng xa nhau.
+
+00:09:23.704 --> 00:09:27.860 line:98%,end
+Lấy một khối bốn nhân bốn, tức là mười sáu pixel.
+
+00:09:27.810 --> 00:09:33.096 line:98%,end
+Bước một, tính trung bình của mười sáu giá trị, được chín mươi tám phẩy bảy lăm.
+
+00:09:33.096 --> 00:09:36.443 line:98%,end
+Độ lệch chuẩn là chín mươi hai phẩy chín lăm.
+
+00:09:36.443 --> 00:09:41.403 line:98%,end
+Độ lệch chuẩn lớn vì khối này vừa có vùng rất tối vừa có vùng rất sáng.
+
+00:09:42.010 --> 00:09:45.554 line:98%,end
+Bước hai, so từng pixel với trung bình.
+
+00:09:45.504 --> 00:09:48.837 line:98%,end
+Một trăm hai mươi mốt lớn hơn, ghi một.
+
+00:09:48.837 --> 00:09:51.897 line:98%,end
+Năm mươi sáu nhỏ hơn, ghi không.
+
+00:09:51.897 --> 00:09:55.517 line:98%,end
+Làm hết mười sáu pixel, ta có bitmap.
+
+00:09:55.517 --> 00:09:58.694 line:98%,end
+Đếm số bit một, được q bằng bảy.
+
+00:09:59.308 --> 00:10:02.240 line:98%,end
+Bước ba, thay số vào công thức.
+
+00:10:02.190 --> 00:10:07.060 line:98%,end
+Mức tối a ra khoảng mười bảy, mức sáng b ra khoảng hai trăm linh bốn.
+
+00:10:07.060 --> 00:10:12.554 line:98%,end
+Bộ giải mã chỉ việc đặt mười bảy vào chỗ bit không và hai trăm linh bốn vào chỗ bit một.
+
+00:10:12.554 --> 00:10:16.695 line:98%,end
+Trung bình của khối giải mã vẫn xấp xỉ chín mươi tám phẩy tám.
+
+00:10:17.302 --> 00:10:19.505 line:98%,end
+Cuối cùng là chi phí.
+
+00:10:19.455 --> 00:10:24.246 line:98%,end
+Bitmap tốn mười sáu bit, hai mức a và b tốn mỗi mức tám bit.
+
+00:10:24.246 --> 00:10:28.908 line:98%,end
+Tổng cộng ba mươi hai bit, so với một trăm hai mươi tám bit của khối gốc.
+
+00:10:28.908 --> 00:10:32.853 line:98%,end
+Tức là nén bốn lần, còn hai bit mỗi pixel.
+
+00:10:32.853 --> 00:10:36.694 line:98%,end
+Cái giá phải trả là mọi chi tiết bên trong khối đã mất.
+
+00:10:38.212 --> 00:10:42.941 line:98%,end
 Lượng tử hóa là ánh xạ một tập giá trị lớn sang một tập nhỏ hơn.
 
-00:02:28.975 --> 00:02:30.868 line:98%,end
+00:10:42.891 --> 00:10:44.727 line:98%,end
 Lượng tử hóa vector, VQ,
 
-00:02:30.868 --> 00:02:35.602 line:98%,end
-lượng tử cả một khối mẫu cùng lúc thay vì từng mẫu riêng lẻ.
+00:10:44.727 --> 00:10:49.701 line:98%,end
+không làm tròn từng pixel mà làm tròn cả một khối pixel cùng lúc.
 
-00:02:36.220 --> 00:02:41.222 line:98%,end
-Yếu tố then chốt khi thiết kế VQ là xây dựng bộ mã, codebook.
+00:10:49.701 --> 00:10:53.880 line:98%,end
+Hãy hình dung một bảng màu mẫu: thay vì mô tả chính xác từng màu,
 
-00:02:41.172 --> 00:02:46.250 line:98%,end
-Mỗi khối ảnh sẽ được thay bằng chỉ số của vector mã gần nhất trong codebook.
+00:10:53.880 --> 00:10:57.031 line:98%,end
+ta chỉ nói số thứ tự của màu gần nhất trong bảng.
 
-00:02:46.870 --> 00:02:51.273 line:98%,end
-Thuật toán kinh điển là Linde Buzo Gray, LBG.
+00:10:57.031 --> 00:11:02.240 line:98%,end
+Bảng đó gọi là codebook, và thiết kế codebook là việc quan trọng nhất.
 
-00:02:51.223 --> 00:02:54.706 line:98%,end
-Chọn ngẫu nhiên N vector mã ban đầu từ tập huấn luyện,
+00:11:02.854 --> 00:11:08.937 line:98%,end
+Thuật toán kinh điển để thiết kế codebook là Linde Buzo Gray, viết tắt LBG.
 
-00:02:54.706 --> 00:02:59.544 line:98%,end
-gán mỗi vector huấn luyện vào vector mã gần nhất, tính lại tâm của mỗi cụm,
+00:11:08.887 --> 00:11:14.473 line:98%,end
+Bắt đầu bằng cách chọn ngẫu nhiên N vector trong tập huấn luyện làm codebook ban đầu.
 
-00:02:59.544 --> 00:03:02.382 line:98%,end
-rồi cập nhật codebook và lặp đến khi hội tụ.
+00:11:15.088 --> 00:11:17.265 line:98%,end
+Sau đó lặp hai việc.
 
-00:03:02.382 --> 00:03:05.624 line:98%,end
-Các bạn sẽ thấy nó rất giống K-means.
+00:11:17.215 --> 00:11:21.541 line:98%,end
+Việc một, gán mỗi vector huấn luyện vào code vector gần nó nhất,
 
-00:03:07.132 --> 00:03:10.538 line:98%,end
-Mã Huffman cho số ký hiệu mã trung bình nhỏ nhất có thể,
+00:11:21.541 --> 00:11:23.569 line:98%,end
+theo quy tắc lân cận gần nhất.
 
-00:03:10.538 --> 00:03:14.673 line:98%,end
-và là tối ưu với ràng buộc mỗi ký hiệu nguồn được mã hóa riêng biệt.
+00:11:24.178 --> 00:11:29.258 line:98%,end
+Việc hai, dời mỗi code vector về tâm của nhóm vừa được gán cho nó.
 
-00:03:15.238 --> 00:03:17.454 line:98%,end
-Thuật toán gồm hai bước.
+00:11:29.208 --> 00:11:32.659 line:98%,end
+Lặp cho đến khi codebook gần như không đổi.
 
-00:03:17.404 --> 00:03:20.113 line:98%,end
-Bước một, rút gọn nguồn: sắp xếp xác suất,
+00:11:32.659 --> 00:11:37.359 line:98%,end
+Các bạn sẽ gặp lại đúng ý tưởng này ở chương chín với tên K-means.
 
-00:03:20.113 --> 00:03:23.146 line:98%,end
-gộp hai ký hiệu có xác suất nhỏ nhất thành một,
+00:11:37.972 --> 00:11:42.779 line:98%,end
+Khi nén, mỗi khối ảnh được thay bằng chỉ số của code vector gần nhất.
 
-00:03:23.146 --> 00:03:25.984 line:98%,end
-rồi lặp lại cho đến khi chỉ còn hai ký hiệu.
+00:11:42.729 --> 00:11:48.015 line:98%,end
+Bên giải mã có cùng codebook nên chỉ cần tra chỉ số là dựng lại được khối.
 
-00:03:26.584 --> 00:03:29.412 line:98%,end
-Bước hai, gán mã cho từng nguồn đã rút gọn,
+00:11:49.522 --> 00:11:54.226 line:98%,end
+Nén wavelet dựa trên điều ta đã nhắc ở phần recap: sau khi biến đổi,
 
-00:03:29.412 --> 00:03:33.161 line:98%,end
-bắt đầu từ nguồn nhỏ nhất và quay ngược về nguồn ban đầu,
+00:11:54.226 --> 00:11:56.855 line:98%,end
+thông tin quan trọng dồn vào ít hệ số.
 
-00:03:33.161 --> 00:03:35.792 line:98%,end
-mỗi lần tách ra thì thêm bit 0 và bit 1.
+00:11:56.805 --> 00:12:01.284 line:98%,end
+Mã hóa các hệ số đó hiệu quả hơn mã hóa trực tiếp pixel.
 
-00:03:35.742 --> 00:03:40.599 line:98%,end
-Kết quả là ký hiệu hay gặp có mã ngắn, ký hiệu hiếm có mã dài.
+00:12:01.284 --> 00:12:03.018 line:98%,end
+Các hệ số còn lại rất nhỏ,
 
-00:03:41.218 --> 00:03:43.225 line:98%,end
-Lấy một ví dụ.
+00:12:03.018 --> 00:12:07.352 line:98%,end
+có thể lượng tử thô hoặc cho bằng không mà ảnh gần như không đổi.
 
-00:03:43.175 --> 00:03:48.392 line:98%,end
-Bốn ký hiệu A, B, C, D có xác suất không phẩy bốn, không phẩy ba,
+00:12:07.972 --> 00:12:11.307 line:98%,end
+Có ba yếu tố ảnh hưởng đến khả năng nén.
 
-00:03:48.392 --> 00:03:51.040 line:98%,end
-không phẩy hai và không phẩy một.
+00:12:11.257 --> 00:12:13.823 line:98%,end
+Một là loại hàm wavelet.
 
-00:03:51.040 --> 00:03:55.568 line:98%,end
-Gộp C và D thành không phẩy ba, rồi gộp với B thành không phẩy sáu,
+00:12:13.823 --> 00:12:17.859 line:98%,end
+Hai là số mức phân rã: càng nhiều mức thì tính toán càng nặng,
 
-00:03:55.568 --> 00:04:00.570 line:98%,end
-cuối cùng gộp với A. Gán mã ngược lại, ta được A là không, B là một không,
+00:12:17.859 --> 00:12:21.440 line:98%,end
+và lỗi lượng tử ở tỉ lệ thấp lan ra vùng ảnh càng rộng.
 
-00:04:00.570 --> 00:04:03.071 line:98%,end
-C là một một không, D là một một một.
+00:12:21.440 --> 00:12:24.213 line:98%,end
+Ba là thiết kế bộ lượng tử.
 
-00:04:03.071 --> 00:04:05.748 line:98%,end
-Độ dài trung bình là một phẩy chín bit,
+00:12:24.814 --> 00:12:27.876 line:98%,end
+Bộ lượng tử thường là lượng tử đều.
 
-00:04:05.748 --> 00:04:08.631 line:98%,end
-so với hai bit nếu dùng mã độ dài cố định.
+00:12:27.826 --> 00:12:33.178 line:98%,end
+Một mẹo cải thiện là nới rộng khoảng lượng tử quanh số không, gọi là dead zone.
 
-00:04:09.244 --> 00:04:14.806 line:98%,end
-Mã Huffman là mã tiền tố: không có từ mã nào là phần đầu của từ mã khác.
+00:12:33.178 --> 00:12:36.257 line:98%,end
+Nhờ vậy càng nhiều hệ số nhỏ bị ép về không,
 
-00:04:14.756 --> 00:04:15.297 line:98%,end
-Nhờ vậy,
+00:12:36.257 --> 00:12:39.336 line:98%,end
+và có thể đổi bước lượng tử theo từng tỉ lệ.
 
-00:04:15.297 --> 00:04:20.368 line:98%,end
-bộ giải mã đọc từng bit và giải mã ngay lập tức mà không cần dấu phân cách.
+00:12:40.852 --> 00:12:43.646 line:98%,end
+Bây giờ ta ghép mọi thứ lại thành JPEG,
 
-00:04:21.874 --> 00:04:26.954 line:98%,end
-Khác với Huffman là mã khối, mã hóa số học tạo ra mã không khối.
+00:12:43.646 --> 00:12:46.583 line:98%,end
+chuẩn nén có mất dữ liệu quen thuộc nhất.
 
-00:04:26.904 --> 00:04:30.094 line:98%,end
-Toàn bộ một chuỗi ký hiệu được gán một từ mã duy nhất,
+00:12:46.533 --> 00:12:51.195 line:98%,end
+Bước một, chia ảnh thành các khối tám nhân tám pixel liền kề nhau.
 
-00:04:30.094 --> 00:04:33.402 line:98%,end
-chính là một khoảng số thực trong đoạn từ không đến một.
+00:12:51.814 --> 00:12:55.436 line:98%,end
+Bước hai, biến đổi DCT từng khối.
 
-00:04:34.012 --> 00:04:38.155 line:98%,end
-Mỗi ký hiệu thu hẹp khoảng theo đúng xác suất xuất hiện của nó.
+00:12:55.386 --> 00:13:00.238 line:98%,end
+Sau bước này, hệ số ở góc trên bên trái mang độ sáng trung bình của khối,
 
-00:04:38.105 --> 00:04:40.550 line:98%,end
-Thông điệp càng dài thì khoảng càng hẹp,
+00:13:00.238 --> 00:13:03.029 line:98%,end
+các hệ số xa dần mang chi tiết tần số cao.
 
-00:04:40.550 --> 00:04:43.300 line:98%,end
-và càng cần nhiều bit để biểu diễn khoảng đó.
+00:13:03.029 --> 00:13:05.477 line:98%,end
+Chưa có gì bị mất cả.
 
-00:04:43.300 --> 00:04:48.261 line:98%,end
-Ưu điểm là không bị ràng buộc mỗi ký hiệu phải có số bit nguyên như Huffman.
+00:13:06.088 --> 00:13:09.007 line:98%,end
+Bước ba mới là nơi mất dữ liệu.
 
-00:04:49.762 --> 00:04:57.329 line:98%,end
-Nén wavelet dựa trên ý tưởng: các hệ số của một phép biến đổi giải tương quan được mã hóa hiệu quả hơn chính các pixel.
+00:13:08.957 --> 00:13:13.410 line:98%,end
+Mỗi hệ số được chia cho một số trong bảng lượng tử rồi làm tròn.
 
-00:04:57.279 --> 00:05:00.559 line:98%,end
-Nếu wavelet dồn thông tin quan trọng vào ít hệ số,
+00:13:13.410 --> 00:13:16.665 line:98%,end
+Bảng lượng tử này dùng chung cho mọi khối.
 
-00:05:00.559 --> 00:05:04.232 line:98%,end
-các hệ số còn lại có thể lượng tử thô hoặc cắt về không.
+00:13:16.665 --> 00:13:19.958 line:98%,end
+Vì mỗi khối bị lượng tử độc lập với khối bên cạnh,
 
-00:05:04.852 --> 00:05:09.716 line:98%,end
-Ba yếu tố ảnh hưởng đến nén: loại hàm wavelet, số mức phân rã,
+00:13:19.958 --> 00:13:23.449 line:98%,end
+ở tỉ lệ nén cao ta nhìn thấy ranh giới giữa các khối.
 
-00:05:09.716 --> 00:05:11.599 line:98%,end
-và thiết kế bộ lượng tử.
+00:13:23.449 --> 00:13:26.496 line:98%,end
+Đó là méo khối, blocking.
 
-00:05:11.549 --> 00:05:13.076 line:98%,end
-Thường dùng lượng tử đều,
+00:13:27.006 --> 00:13:31.108 line:98%,end
+Bước bốn, các hệ số đã lượng tử, phần lớn là số không,
 
-00:05:13.076 --> 00:05:17.537 line:98%,end
-cải thiện bằng một khoảng lượng tử lớn hơn quanh không, gọi là dead zone,
+00:13:31.108 --> 00:13:34.374 line:98%,end
+được mã hóa không mất dữ liệu bằng Huffman.
 
-00:05:17.537 --> 00:05:20.104 line:98%,end
-và thay đổi bước lượng tử theo từng tỉ lệ.
+00:13:34.924 --> 00:13:38.901 line:98%,end
+Bên giải mã làm ngược lại đúng thứ tự: giải mã Huffman,
 
-00:05:21.610 --> 00:05:25.336 line:98%,end
-Bây giờ là phần quan trọng nhất: JPEG.
+00:13:38.901 --> 00:13:43.312 line:98%,end
+nhân lại với bảng lượng tử, rồi biến đổi DCT ngược từng khối.
 
-00:05:25.286 --> 00:05:27.695 line:98%,end
-Quy trình cổ điển như sau.
+00:13:43.262 --> 00:13:45.581 line:98%,end
+Ngoài chế độ tuần tự quét một lượt,
 
-00:05:27.695 --> 00:05:33.203 line:98%,end
-Chia ảnh thành các khối tám nhân tám pixel, rồi biến đổi DCT từng khối.
+00:13:45.581 --> 00:13:49.490 line:98%,end
+JPEG còn có chế độ lũy tiến gửi bản thô trước rồi tinh dần,
 
-00:05:33.820 --> 00:05:38.791 line:98%,end
-Sau đó lượng tử hóa các hệ số DCT bằng một bảng lượng tử Q u v,
+00:13:49.490 --> 00:13:54.459 line:98%,end
+chế độ phân cấp đa độ phân giải, và hỗ trợ từ tám đến mười hai bit mỗi mẫu.
 
-00:05:38.791 --> 00:05:40.684 line:98%,end
-giống nhau cho mọi khối.
+00:13:55.978 --> 00:13:58.949 line:98%,end
+Thử với ba hệ số của một khối.
 
-00:05:40.634 --> 00:05:45.672 line:98%,end
-Chính việc lượng tử độc lập từng khối là nguồn gốc của hiện tượng méo khối,
+00:13:58.899 --> 00:14:03.769 line:98%,end
+Hệ số DC bằng hai trăm ba mươi sáu, bước lượng tử là mười sáu.
 
-00:05:45.672 --> 00:05:47.418 line:98%,end
-blocking, ở tỉ lệ nén cao.
+00:14:03.769 --> 00:14:07.961 line:98%,end
+Chia ra được mười bốn phẩy bảy lăm, làm tròn thành mười lăm.
 
-00:05:48.022 --> 00:05:52.620 line:98%,end
-Các hệ số đã lượng tử được mã hóa không mất dữ liệu bằng Huffman.
+00:14:07.961 --> 00:14:12.375 line:98%,end
+Bộ giải mã nhân lại với mười sáu, được hai trăm bốn mươi.
 
-00:05:52.570 --> 00:05:59.133 line:98%,end
-Phía nhận làm ngược lại: giải mã Huffman, giải lượng tử, rồi IDCT từng khối.
+00:14:12.375 --> 00:14:14.602 line:98%,end
+Sai lệch chỉ là bốn.
 
-00:05:59.752 --> 00:06:05.027 line:98%,end
-JPEG có chế độ mã hóa tuần tự, quét một lượt từ trái sang phải từ trên xuống,
+00:14:15.120 --> 00:14:20.088 line:98%,end
+Một hệ số tần số thấp bằng âm hai mươi ba, bước lượng tử mười một.
 
-00:06:05.027 --> 00:06:09.481 line:98%,end
-và chế độ lũy tiến, mã hóa thô trước rồi tinh dần ở các lượt sau.
+00:14:20.088 --> 00:14:24.744 line:98%,end
+Chia và làm tròn được âm hai, giải mã ra âm hai mươi hai.
 
-00:06:09.431 --> 00:06:12.815 line:98%,end
-Ngoài ra còn có chế độ phân cấp đa độ phân giải,
+00:14:24.744 --> 00:14:27.120 line:98%,end
+Sai lệch chỉ là một.
 
-00:06:12.815 --> 00:06:15.707 line:98%,end
-và hỗ trợ độ sâu từ tám đến mười hai bit.
+00:14:27.670 --> 00:14:32.688 line:98%,end
+Một hệ số tần số cao bằng mười hai, nhưng bước lượng tử ở đó rất lớn,
 
-00:06:17.230 --> 00:06:20.740 line:98%,end
-Ảnh đa phổ, như ảnh vệ tinh hay ảnh y tế đa phương thức,
+00:14:32.688 --> 00:14:33.779 line:98%,end
+chín mươi chín.
 
-00:06:20.740 --> 00:06:25.253 line:98%,end
-là dữ liệu ba chiều mà chiều phổ khác bản chất với hai chiều không gian.
+00:14:33.729 --> 00:14:37.544 line:98%,end
+Chia ra chưa tới không phẩy năm nên làm tròn thành không.
 
-00:06:25.203 --> 00:06:28.455 line:98%,end
-Các bộ mã dựa trên biến đổi chia thành: phổ không gian,
+00:14:37.544 --> 00:14:40.265 line:98%,end
+Hệ số này biến mất hoàn toàn.
 
-00:06:28.455 --> 00:06:31.826 line:98%,end
-áp dụng biến đổi KL trên chiều phổ trước; không gian phổ,
+00:14:40.265 --> 00:14:43.780 line:98%,end
+Đó chính là cách JPEG bỏ chi tiết mịn mà mắt ít nhạy,
 
-00:06:31.826 --> 00:06:36.674 line:98%,end
+00:14:43.780 --> 00:14:48.820 line:98%,end
+và cũng là lý do sau lượng tử hóa có rất nhiều số không để Huffman nén tiếp.
+
+00:14:50.332 --> 00:14:53.055 line:98%,end
+Ba nội dung cuối của slide.
+
+00:14:53.005 --> 00:14:55.784 line:98%,end
+Ảnh đa phổ, như ảnh vệ tinh hay ảnh y tế,
+
+00:14:55.784 --> 00:14:59.646 line:98%,end
+có thêm chiều phổ với bản chất khác hai chiều không gian.
+
+00:14:59.646 --> 00:15:03.015 line:98%,end
+Bộ mã dựa trên biến đổi chia làm ba lớp: phổ không gian,
+
+00:15:03.015 --> 00:15:06.263 line:98%,end
+dùng biến đổi KL trên chiều phổ trước; không gian phổ,
+
+00:15:06.263 --> 00:15:11.196 line:98%,end
 biến đổi không gian trước; và biến đổi phức khi các mặt phẳng ảnh không khớp nhau.
 
-00:06:37.288 --> 00:06:40.861 line:98%,end
-Hậu xử lý ảnh nén nhằm giảm hai loại méo: ringing,
+00:15:11.806 --> 00:15:15.272 line:98%,end
+Hậu xử lý ảnh nén nhằm giảm hai loại méo.
 
-00:06:40.861 --> 00:06:45.220 line:98%,end
-gợn sóng ở tỉ lệ nén cao do bản chất thông thấp, và blocking,
+00:15:15.222 --> 00:15:18.756 line:98%,end
+Ringing là gợn sóng quanh cạnh ở tỉ lệ nén cao,
 
-00:06:45.220 --> 00:06:48.293 line:98%,end
-méo khối do lượng tử độc lập các hệ số DCT.
+00:15:18.756 --> 00:15:21.237 line:98%,end
+có ở mọi bộ mã dựa trên biến đổi.
 
-00:06:48.850 --> 00:06:52.808 line:98%,end
-Cuối cùng là nén bằng học sâu với ba hướng: CNN,
+00:15:21.237 --> 00:15:26.966 line:98%,end
+Blocking là méo khối, do lượng tử độc lập từng khối DCT như ta vừa thấy.
 
-00:06:52.808 --> 00:07:00.558 line:98%,end
-ví dụ CAS-CNN khử artefact nén; RNN cho nén ảnh độ phân giải đầy đủ; và GAN cho nén thích ứng.
+00:15:27.568 --> 00:15:30.792 line:98%,end
+Và nén bằng học sâu có ba hướng: CNN,
 
-00:07:00.508 --> 00:07:06.680 line:98%,end
-Chúng thay dần pipeline biến đổi, lượng tử, mã entropy bằng mạng học end to end.
+00:15:30.792 --> 00:15:38.807 line:98%,end
+ví dụ CAS-CNN để khử vết nén; RNN cho nén ảnh độ phân giải đầy đủ; và GAN cho nén thích ứng.
 
-00:07:08.200 --> 00:07:10.116 line:98%,end
+00:15:38.757 --> 00:15:41.680 line:98%,end
+Chúng thay dần chuỗi biến đổi, lượng tử,
+
+00:15:41.680 --> 00:15:44.968 line:98%,end
+mã entropy bằng một mạng học từ đầu đến cuối.
+
+00:15:46.486 --> 00:15:49.561 line:98%,end
+Đặt các kỹ thuật cạnh nhau để khỏi nhầm.
+
+00:15:49.511 --> 00:15:52.993 line:98%,end
+Huffman là không mất dữ liệu, mã từng ký hiệu một,
+
+00:15:52.993 --> 00:15:55.501 line:98%,end
+bằng cách gộp hai xác suất nhỏ nhất.
+
+00:15:56.104 --> 00:16:01.171 line:98%,end
+Mã số học cũng không mất dữ liệu, nhưng mã cả thông điệp thành một khoảng số.
+
+00:16:01.121 --> 00:16:04.923 line:98%,end
+Nó không bị buộc mỗi ký hiệu phải có số bit nguyên.
+
+00:16:05.530 --> 00:16:09.634 line:98%,end
+BTC là có mất dữ liệu, độ dài cố định.
+
+00:16:09.584 --> 00:16:12.369 line:98%,end
+Mỗi khối thành một bitmap cộng hai mức xám,
+
+00:16:12.369 --> 00:16:14.896 line:98%,end
+giữ nguyên trung bình và độ lệch chuẩn.
+
+00:16:15.508 --> 00:16:18.639 line:98%,end
+VQ cũng có mất dữ liệu và cũng làm theo khối,
+
+00:16:18.639 --> 00:16:21.630 line:98%,end
+nhưng thay khối bằng chỉ số trong codebook.
+
+00:16:21.580 --> 00:16:25.056 line:98%,end
+Codebook được thiết kế bằng LBG.
+
+00:16:25.678 --> 00:16:32.151 line:98%,end
+JPEG có mất dữ liệu, làm trên khối tám nhân tám, và là sự kết hợp: DCT,
+
+00:16:32.151 --> 00:16:34.521 line:98%,end
+lượng tử hóa, rồi Huffman.
+
+00:16:34.471 --> 00:16:37.831 line:98%,end
+Chỉ riêng bước lượng tử hóa làm mất thông tin.
+
+00:16:39.340 --> 00:16:41.582 line:98%,end
+Năm cái bẫy quen thuộc.
+
+00:16:41.532 --> 00:16:46.532 line:98%,end
+Một: Huffman gộp hai ký hiệu có xác suất nhỏ nhất, không phải lớn nhất.
+
+00:16:47.134 --> 00:16:52.475 line:98%,end
+Hai: entropy là cận dưới của số bit trung bình, không phải cận trên.
+
+00:16:52.425 --> 00:16:56.982 line:98%,end
+Ở ví dụ vừa rồi, hai phẩy một bốn nhỏ hơn hai phẩy hai.
+
+00:16:57.592 --> 00:17:02.373 line:98%,end
+Ba: trong JPEG, chỉ lượng tử hóa làm mất dữ liệu.
+
+00:17:02.323 --> 00:17:05.903 line:98%,end
+DCT khả nghịch, Huffman không mất gì.
+
+00:17:05.903 --> 00:17:10.005 line:98%,end
+Và méo khối sinh ra từ việc lượng tử độc lập từng khối.
+
+00:17:10.618 --> 00:17:14.648 line:98%,end
+Bốn: BTC bảo toàn trung bình và độ lệch chuẩn của từng khối,
+
+00:17:14.648 --> 00:17:18.745 line:98%,end
+với bộ lượng tử hai mức thì tốn một bit mỗi pixel cho bitmap.
+
+00:17:19.300 --> 00:17:22.570 line:98%,end
+Năm: mã số học là mã không khối.
+
+00:17:22.520 --> 00:17:27.351 line:98%,end
+Cả thông điệp nhận một từ mã, là một khoảng trong đoạn từ không đến một.
+
+00:17:27.351 --> 00:17:29.916 line:98%,end
+Huffman mới là mã khối.
+
+00:17:31.426 --> 00:17:33.342 line:98%,end
 Tổng kết chương năm.
 
-00:07:10.066 --> 00:07:13.492 line:98%,end
+00:17:33.292 --> 00:17:36.671 line:98%,end
 Nén không mất dữ liệu chỉ đạt khoảng hai đến ba lần,
 
-00:07:13.492 --> 00:07:16.720 line:98%,end
-và entropy là cận dưới của tốc độ bit trung bình.
+00:17:36.671 --> 00:17:39.920 line:98%,end
+và entropy là giới hạn dưới của số bit trung bình.
 
-00:07:17.338 --> 00:07:19.942 line:98%,end
-Huffman gộp hai ký hiệu xác suất nhỏ nhất,
+00:17:40.540 --> 00:17:44.800 line:98%,end
+Huffman gộp dần hai xác suất nhỏ nhất rồi gán mã ngược lại.
 
-00:07:19.942 --> 00:07:23.291 line:98%,end
-còn mã số học biểu diễn cả thông điệp bằng một khoảng.
+00:17:44.750 --> 00:17:49.008 line:98%,end
+Mã số học thu hẹp dần một khoảng theo xác suất của từng ký hiệu.
 
-00:07:23.860 --> 00:07:27.560 line:98%,end
-BTC giữ trung bình và độ lệch chuẩn của khối,
+00:17:49.630 --> 00:17:54.879 line:98%,end
+BTC giữ bitmap và hai mức xám để bảo toàn trung bình và độ lệch chuẩn.
 
-00:07:27.560 --> 00:07:30.438 line:98%,end
-VQ dùng codebook thiết kế bằng LBG.
+00:17:54.829 --> 00:17:58.462 line:98%,end
+VQ thay mỗi khối bằng chỉ số trong codebook.
 
-00:07:31.006 --> 00:07:35.823 line:98%,end
-JPEG gồm khối tám nhân tám, DCT, lượng tử và Huffman,
+00:17:59.080 --> 00:18:04.447 line:98%,end
+JPEG gồm chia khối tám nhân tám, DCT, lượng tử hóa và Huffman,
 
-00:07:35.823 --> 00:07:39.459 line:98%,end
+00:18:04.447 --> 00:18:07.910 line:98%,end
 với hai loại méo là blocking và ringing.
 
-00:07:39.409 --> 00:07:43.198 line:98%,end
-Hẹn gặp các bạn ở chương sáu: nén video.
+00:18:07.860 --> 00:18:11.512 line:98%,end
+Ở chương sáu, chúng ta thêm chiều thời gian: nén video,
+
+00:18:11.512 --> 00:18:14.566 line:98%,end
+nơi khung hình trước giúp đoán khung hình sau.

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="vendor/katex/dist/katex.min.css">
+<script src="vendor/katex/dist/katex.min.js"></script>
+<script src="vendor/katex/dist/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --bg: #111c18; --surface: #1b2a22; --ink: #e4eee1; --muted: #8fa392;
+    --accent: #a9c995; --orange: #edb78e; --line: #35463a; --fit: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: var(--bg); }
+  body { font-family: "Segoe UI", sans-serif; color: var(--ink); }
+  #stage { position: relative; width: 1280px; height: 720px; padding: 24px 48px 0; display: flex; flex-direction: column; }
+  .chapter { font-size: 17px; font-weight: 600; color: var(--accent); letter-spacing: .02em; height: 26px; flex: none; }
+  .head { flex: none; padding: 6px 0 12px; max-height: 118px; overflow: hidden; }
+  .kicker { display: inline-block; font-size: 14px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+            color: var(--bg); background: var(--orange); border-radius: 5px; padding: 2px 10px; margin-bottom: 6px; }
+  h1 { font-size: 35px; line-height: 1.2; font-weight: 700; }
+  h1.long { font-size: 29px; }
+  .body { flex: 1; min-height: 0; display: flex; gap: 30px; padding-bottom: 14px; }
+  .media { flex: none; width: 700px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+           padding: 12px 12px 34px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .media.narrow { width: 500px; }
+  .media img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+  .media span { position: absolute; left: 14px; bottom: 9px; font-size: 15px; color: var(--muted); }
+  .content { flex: 1; min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column;
+             gap: calc(16px * var(--fit)); font-size: calc(26px * var(--fit)); padding-top: 4px; }
+  .content.beside { font-size: calc(21px * var(--fit)); }
+  .hidden { visibility: hidden; }
+
+  .formula { background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+             padding: calc(12px * var(--fit)) 18px; font-size: calc(1.08em); text-align: center; flex: none; }
+  .formula .katex-display { margin: 0; }
+  .formula .katex { color: var(--ink); }
+
+  ul.bullets { list-style: none; display: flex; flex-direction: column; gap: calc(13px * var(--fit)); flex: none; }
+  ul.bullets li { position: relative; padding-left: 24px; line-height: 1.38; color: var(--muted); }
+  ul.bullets li::before { content: ""; position: absolute; left: 0; top: .28em; bottom: .28em; width: 5px;
+                          border-radius: 3px; background: var(--line); }
+  ul.bullets li.current { color: var(--ink); }
+  ul.bullets li.current::before { background: var(--accent); }
+
+  table { border-collapse: collapse; width: 100%; font-size: .84em; flex: none; }
+  th { text-align: left; color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--line); padding: 6px 12px; }
+  td { padding: calc(8px * var(--fit)) 12px; border-bottom: 1px solid var(--line); color: var(--muted); line-height: 1.3; vertical-align: top; }
+  td:first-child { font-weight: 600; }
+  tr.current td { color: var(--ink); background: #24382c; }
+  tr.current td:first-child { box-shadow: inset 5px 0 0 var(--accent); }
+
+  pre.code { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 0; flex: none;
+             font-family: "Cascadia Mono", Consolas, monospace; font-size: .8em; line-height: 1.5; white-space: pre; overflow: hidden; }
+  pre.code div { padding: 1px 18px 1px 0; color: var(--muted); }
+  pre.code div.current { color: var(--ink); background: #24382c; box-shadow: inset 5px 0 0 var(--accent); }
+  pre.code i { display: inline-block; width: 52px; text-align: right; padding-right: 16px; font-style: normal; color: #5f7565; }
+
+  .grids { display: flex; gap: 34px; align-items: flex-start; flex-wrap: wrap; flex: none; }
+  .gridbox { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .gridbox b { font-size: .72em; font-weight: 600; color: var(--muted); }
+  .gridbox.current b { color: var(--accent); }
+  .grid { display: grid; gap: 3px; }
+  .grid div { width: var(--cell); height: var(--cell); display: flex; align-items: center; justify-content: center;
+              background: var(--surface); border: 1px solid var(--line); border-radius: 4px; font-size: var(--cellfont);
+              font-variant-numeric: tabular-nums; color: var(--ink); }
+  .grid div.accent { background: #3d5a3a; border-color: var(--accent); color: #fff; font-weight: 600; }
+  .grid div.warn { background: #6a4a32; border-color: var(--orange); color: #fff; font-weight: 600; }
+  .grid div.dim { color: #5f7565; }
+
+  .intro h2 { font-size: 34px; font-weight: 600; color: var(--orange); margin-top: 56px; }
+  .intro h1 { font-size: 62px; line-height: 1.15; margin-top: 4px; }
+  .intro p { font-size: 22px; color: var(--muted); margin: 34px 0 14px; }
+  .agenda { display: grid; grid-auto-flow: column; column-gap: 40px; row-gap: calc(12px * var(--fit));
+            font-size: calc(22px * var(--fit)); line-height: 1.3; }
+  .agenda div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .agenda i { font-style: normal; color: var(--muted); margin-right: 12px; font-variant-numeric: tabular-nums; }
+
+  .foot { flex: none; height: 44px; position: relative; }
+  .bar { height: 4px; border-radius: 2px; background: var(--line); }
+  .bar div { height: 4px; border-radius: 2px; background: var(--accent); }
+  .foot span { position: absolute; top: 12px; font-size: 14px; color: var(--muted); }
+  .foot .right { right: 0; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const MATH = { delimiters: [{ left: "$$", right: "$$", display: true }, { left: "$", right: "$", display: false }], throwOnError: true };
+const FIT_STEPS = [1, 0.93, 0.86, 0.8, 0.74];
+
+function el(tag, cls, text) {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text !== undefined && text !== null) node.textContent = String(text);
+  return node;
+}
+
+function buildContent(state) {
+  const content = el("div", "content" + (state.media ? " beside" : ""));
+  if (state.formula) {
+    const box = el("div", "formula");
+    katex.render(state.formula, box, { displayMode: true, throwOnError: true });
+    content.append(box);
+  }
+  if (state.bullets.length) {
+    const list = el("ul", "bullets");
+    for (const b of state.bullets) {
+      const li = el("li", b.visible ? (b.current ? "current" : "") : "hidden", b.text);
+      list.append(li);
+    }
+    content.append(list);
+  }
+  if (state.table) {
+    const table = el("table");
+    const head = el("tr");
+    state.table.headers.forEach(h => head.append(el("th", "", h)));
+    table.append(head);
+    state.table.rows.forEach(row => {
+      const tr = el("tr", row.visible ? (row.current ? "current" : "") : "hidden");
+      row.cells.forEach(c => tr.append(el("td", "", c)));
+      table.append(tr);
+    });
+    content.append(table);
+  }
+  if (state.code) {
+    const pre = el("pre", "code");
+    state.code.forEach((line, i) => {
+      const row = el("div", line.current ? "current" : "");
+      row.append(el("i", "", i + 1), document.createTextNode(line.text));
+      pre.append(row);
+    });
+    content.append(pre);
+  }
+  if (state.grids.length) {
+    const wrap = el("div", "grids");
+    for (const g of state.grids) {
+      const cols = g.cells[0].length;
+      const size = cols <= 4 ? 62 : cols <= 6 ? 52 : 44;
+      const box = el("div", "gridbox" + (g.visible ? (g.current ? " current" : "") : " hidden"));
+      const grid = el("div", "grid");
+      grid.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+      grid.style.setProperty("--cell", `calc(${size}px * var(--fit))`);
+      grid.style.setProperty("--cellfont", `calc(${Math.round(size * 0.36)}px * var(--fit))`);
+      g.cells.forEach((row, r) => row.forEach((value, c) => grid.append(el("div", g.marks[`${r},${c}`] || "", value))));
+      box.append(grid);
+      if (g.label) box.append(el("b", "", g.label));
+      wrap.append(box);
+    }
+    content.append(wrap);
+  }
+  return content;
+}
+
+function buildIntro(state, stage) {
+  const intro = el("div", "body intro");
+  intro.style.display = "block";
+  intro.append(el("h2", "", `Chương ${state.chapter}`), el("h1", "", state.chapterTitle), el("p", "", "Hôm nay chúng ta sẽ đi qua:"));
+  const agenda = el("div", "agenda");
+  const rows = Math.ceil(state.agenda.length / 2);
+  agenda.style.gridTemplateRows = `repeat(${rows}, auto)`;
+  state.agenda.forEach((item, i) => {
+    const row = el("div");
+    row.append(el("i", "", String(i + 1).padStart(2, "0")), document.createTextNode(item));
+    agenda.append(row);
+  });
+  intro.append(agenda);
+  stage.append(intro);
+  return agenda;
+}
+
+/* Returns a list of overflow problems (empty = everything fits inside its box). */
+function measure(stage, box) {
+  const problems = [];
+  const frame = stage.getBoundingClientRect();
+  if (box.scrollHeight > box.clientHeight + 1) problems.push(`content is ${box.scrollHeight - box.clientHeight}px too tall`);
+  if (box.scrollWidth > box.clientWidth + 1) problems.push(`content is ${box.scrollWidth - box.clientWidth}px too wide`);
+  const limit = box.getBoundingClientRect();
+  const floor = stage.querySelector(".foot").getBoundingClientRect().top;
+  if (limit.bottom > floor + 1) problems.push(`content runs ${Math.round(limit.bottom - floor)}px into the footer`);
+  for (const node of box.querySelectorAll(".formula, table, pre.code, .grids, .katex-display, .agenda div")) {
+    const r = node.getBoundingClientRect();
+    if (r.right > limit.right + 1 || r.right > frame.right) problems.push(`${node.className || node.tagName} sticks out ${Math.round(r.right - limit.right)}px to the right`);
+    if (node.scrollWidth > node.clientWidth + 1) problems.push(`${node.className || node.tagName} clips ${node.scrollWidth - node.clientWidth}px of its text`);
+  }
+  const head = stage.querySelector(".head");
+  if (head && head.scrollHeight > head.clientHeight + 1) problems.push("title does not fit in two lines");
+  return problems;
+}
+
+/* Draws one frame. Layout uses every item (hidden ones keep their space), so all frames of a scene share one scale. */
+window.renderState = async function (state) {
+  const stage = document.getElementById("stage");
+  stage.replaceChildren();
+  document.documentElement.style.setProperty("--fit", 1);
+  stage.append(el("div", "chapter", `CHƯƠNG ${state.chapter} · ${state.chapterTitle.toUpperCase()}`));
+  let box;
+  if (state.intro) {
+    box = buildIntro(state, stage);
+  } else {
+    const head = el("div", "head");
+    if (state.kicker) head.append(el("div", "kicker", state.kicker), el("br"));
+    head.append(el("h1", state.title.length > 52 ? "long" : "", state.title));
+    const body = el("div", "body");
+    if (state.media) {
+      const media = el("div", "media" + (state.wide ? " narrow" : ""));
+      const img = el("img");
+      img.src = state.media.src;
+      media.append(img, el("span", "", state.media.caption));
+      body.append(media);
+      await img.decode();
+    }
+    box = buildContent(state);
+    body.append(box);
+    stage.append(head, body);
+  }
+  const foot = el("div", "foot");
+  const bar = el("div", "bar");
+  const done = el("div");
+  done.style.width = `${(state.progress * 100).toFixed(2)}%`;
+  bar.append(done);
+  const right = el("span", "right", `Phần ${state.sceneIndex + 1}/${state.sceneCount}`);
+  foot.append(bar, el("span", "", "nhịp học · IMP302"), right);
+  stage.append(foot);
+
+  renderMathInElement(stage, MATH);
+  await document.fonts.ready;
+  let problems = [];
+  for (const step of FIT_STEPS) {
+    document.documentElement.style.setProperty("--fit", step);
+    problems = measure(stage, box);
+    if (!problems.length) return { fit: step, problems };
+  }
+  return { fit: FIT_STEPS[FIT_STEPS.length - 1], problems };
+};
+</script>
+</body>
+</html>

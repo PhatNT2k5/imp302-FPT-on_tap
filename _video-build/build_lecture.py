@@ -3,7 +3,8 @@
 Usage: python -I build_lecture.py 1 2 3   (no args = all chapters with a script)
 
 Each scripts/chNN.json holds scenes; each scene has points, and each point is one
-bullet on screen plus the narration spoken while that bullet is highlighted.
+narration segment plus what it reveals on screen (a bullet, a table row, a code
+line or a grid). The schema lives in script_model.py, the drawing in slides.py.
 """
 import asyncio
 import hashlib
@@ -15,14 +16,15 @@ import wave
 from dataclasses import dataclass, field
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # `python -I` leaves the script folder off sys.path
+
 import edge_tts
 import imageio_ffmpeg
-import pymupdf
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
-ROOT = Path(__file__).resolve().parent
-SITE = ROOT.parent
-SCRIPTS = ROOT / "scripts"
+from script_model import ROOT, SCRIPTS, SITE, check_assets, load_script
+from slides import chapter_frames, draw, latex_to_unicode, slide_page
+
 CACHE = ROOT / "cache"
 OUT_DIR = SITE / "media" / "lectures"
 MANIFEST = SITE / "lecture-data.js"
@@ -33,35 +35,6 @@ RATE = "-4%"
 SAMPLE_RATE = 24000
 POINT_GAP = 0.45  # seconds of silence after each point
 SCENE_GAP = 0.9  # extra silence when a scene ends
-
-W, H = 1280, 720
-BG = "#111c18"
-SURFACE = "#1b2a22"
-INK = "#e4eee1"
-MUTED = "#8fa392"
-ACCENT = "#a9c995"
-ORANGE = "#edb78e"
-LINE = "#35463a"
-
-SLIDE_FILES = {
-    1: "01-1.-Basic-Gray-Level-Image-Processing.pdf",
-    2: "02-2.-Image-and-Video-Processing.pdf",
-    3: "03-3.-Image-Degradation-Restoration-and-Resconstruction.pdf",
-    4: "04-4.-Image-and-Video-Analysis.pdf",
-    5: "05-5.-Image-compression.pdf",
-    6: "06-6.-Video-compression.pdf",
-    7: "07-7.-Image-and-Video-Acquisition.pdf",
-    8: "08-8.-Image-and-Video-Rendering-and-Assessment-1-.pdf",
-    9: "10-9.-Image-and-Video-segmentation.pdf",
-    10: "11-10.-Feature-extraction.pdf",
-    11: "12-11.-Object-detection.pdf",
-    12: "13-12.-Image-pattern-classification.pdf",
-}
-
-
-def font(size: int, weight: str = "regular") -> ImageFont.FreeTypeFont:
-    files = {"regular": "segoeui.ttf", "semibold": "seguisb.ttf", "bold": "segoeuib.ttf"}
-    return ImageFont.truetype(f"C:/Windows/Fonts/{files[weight]}", size)
 
 
 # ---------- text-to-speech ----------
@@ -148,105 +121,6 @@ async def _synthesize(text: str) -> Speech:
     return Speech(wav, duration, cues)
 
 
-# ---------- frame rendering ----------
-
-def wrap(draw: ImageDraw.ImageDraw, text: str, fnt: ImageFont.FreeTypeFont, width: int) -> list[str]:
-    lines: list[str] = []
-    line = ""
-    for word in text.split():
-        trial = f"{line} {word}".strip()
-        if draw.textlength(trial, font=fnt) <= width or not line:
-            line = trial
-        else:
-            lines.append(line)
-            line = word
-    if line:
-        lines.append(line)
-    return lines
-
-
-_slide_cache: dict[tuple[int, int], Image.Image] = {}
-
-
-def slide_image(chapter: int, page: int, box: tuple[int, int]) -> Image.Image:
-    key = (chapter, page)
-    if key not in _slide_cache:
-        with pymupdf.open(SITE / "references" / SLIDE_FILES[chapter]) as doc:
-            pix = doc[page - 1].get_pixmap(dpi=150)
-            _slide_cache[key] = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
-    img = _slide_cache[key].copy()
-    img.thumbnail(box, Image.LANCZOS)
-    return img
-
-
-def draw_bullets(draw: ImageDraw.ImageDraw, points: list[str], current: int, x: int, y: int, width: int,
-                 max_bottom: int, size: int) -> None:
-    for fsize in (size, size - 2, size - 4, size - 6):
-        fnt = font(fsize)
-        blocks = [wrap(draw, p, fnt, width - 26) for p in points[: current + 1]]
-        line_h = int(fsize * 1.42)
-        total = sum(len(b) * line_h + 18 for b in blocks)
-        if y + total <= max_bottom:
-            break
-    first = 0
-    while y + sum(len(b) * line_h + 18 for b in blocks[first:]) > max_bottom and first < current:
-        first += 1  # still too tall at the smallest size: scroll the oldest bullets out
-    cy = y
-    for i, lines in enumerate(blocks[first:], start=first):
-        is_current = i == current
-        block_h = len(lines) * line_h
-        draw.rounded_rectangle((x, cy + 4, x + 5, cy + block_h - 4), radius=3, fill=ACCENT if is_current else LINE)
-        for j, ln in enumerate(lines):
-            draw.text((x + 22, cy + j * line_h), ln, font=fnt, fill=INK if is_current else MUTED)
-        cy += block_h + 18
-
-
-def render_frame(chapter: int, chapter_title: str, scene: dict, point_index: int, scene_index: int,
-                 scene_count: int) -> Image.Image:
-    img = Image.new("RGB", (W, H), BG)
-    d = ImageDraw.Draw(img)
-    d.text((48, 26), f"CHƯƠNG {chapter} · {chapter_title.upper()}", font=font(17, "semibold"), fill=ACCENT)
-    points = [p["text"] for p in scene["points"]]
-
-    if scene.get("kind") == "intro":
-        d.text((48, 120), f"Chương {chapter}", font=font(34, "semibold"), fill=ORANGE)
-        d.text((48, 165), chapter_title, font=font(62, "bold"), fill=INK)
-        d.text((48, 270), "Hôm nay chúng ta sẽ đi qua:", font=font(22), fill=MUTED)
-        agenda_font = font(22)
-        for i, item in enumerate(scene["agenda"]):
-            col, row = divmod(i, 6)
-            d.text((60 + col * 590, 315 + row * 46), f"{i + 1:02d}  {item}", font=agenda_font, fill=INK)
-    else:
-        title_font = font(36, "bold")
-        title_lines = wrap(d, scene["title"], title_font, W - 96)
-        if len(title_lines) > 1:
-            title_font = font(30, "bold")
-            title_lines = wrap(d, scene["title"], title_font, W - 96)[:2]
-        for j, ln in enumerate(title_lines):
-            d.text((48, 54 + j * 40), ln, font=title_font, fill=INK)
-        top = 116 + 40 * (len(title_lines) - 1)
-        slide = scene.get("slide")
-        if slide:
-            card = (40, top + 8, 760, 650)
-            d.rounded_rectangle(card, radius=14, fill=SURFACE, outline=LINE)
-            simg = slide_image(chapter, slide, (card[2] - card[0] - 24, card[3] - card[1] - 52))
-            ox = card[0] + (card[2] - card[0] - simg.width) // 2
-            oy = card[1] + 12 + (card[3] - card[1] - 52 - simg.height) // 2
-            img.paste(simg, (ox, oy))
-            d.text((card[0] + 14, card[3] - 32), f"Slide gốc · trang {slide}", font=font(15), fill=MUTED)
-            draw_bullets(d, points, point_index, 790, top + 14, 450, 650, 22)
-        else:
-            draw_bullets(d, points, point_index, 70, top + 24, W - 140, 650, 27)
-
-    d.rounded_rectangle((48, 676, W - 48, 680), radius=2, fill=LINE)
-    done = 48 + int((W - 96) * (scene_index + (point_index + 1) / len(points)) / scene_count)
-    d.rounded_rectangle((48, 676, done, 680), radius=2, fill=ACCENT)
-    d.text((48, 688), "nhịp học · IMP302", font=font(14), fill=MUTED)
-    label = f"Phần {scene_index + 1}/{scene_count}"
-    d.text((W - 48 - d.textlength(label, font=font(14)), 688), label, font=font(14), fill=MUTED)
-    return img
-
-
 # ---------- assembly ----------
 
 def vtt_time(t: float) -> str:
@@ -279,40 +153,45 @@ def silence(frames: int) -> bytes:
 
 
 async def build_chapter(chapter: int) -> dict:
-    spec = json.loads((SCRIPTS / f"ch{chapter:02d}.json").read_text(encoding="utf-8"))
-    title = spec["title"]
-    scenes = spec["scenes"]
-    for scene in scenes:
-        if scene.get("kind") == "intro" and "agenda" not in scene:
-            scene["agenda"] = [s["title"] for s in scenes if s.get("kind") != "intro"]
+    script = load_script(chapter)
+    problems = check_assets(chapter, script)
+    if problems:
+        raise SystemExit("Script problems:\n" + "\n".join(problems))
+    scenes = script.scenes
     work = CACHE / f"ch{chapter:02d}"
     work.mkdir(parents=True, exist_ok=True)
+    for stale in work.glob("f*.png"):
+        stale.unlink()
 
-    speeches = await asyncio.gather(*[synthesize(p["say"]) for s in scenes for p in s["points"]])
-    speech_iter = iter(speeches)
+    frames = chapter_frames(chapter, script)
+    speeches = await asyncio.gather(*[synthesize(p.say) for s in scenes for p in s.points])
+
+    overflow: list[str] = []
+    async with slide_page() as page:
+        for n, frame in enumerate(frames):
+            for problem in await draw(page, frame, work / f"f{n:03d}.png"):
+                overflow.append(f"'{scenes[frame.scene_index].title}' point {frame.point_index + 1}: {problem}")
+    if overflow:
+        raise SystemExit(f"chapter {chapter}: text overflows its box\n" + "\n".join(sorted(set(overflow))))
 
     pcm = bytearray()
     t = 0.0
     concat_lines: list[str] = []
     cues: list[Cue] = []
     outline: list[dict] = []
-    frame_no = 0
-    for si, scene in enumerate(scenes):
-        outline.append({"title": scene["title"], "start": round(t, 2)})
-        for pi, _point in enumerate(scene["points"]):
-            sp = next(speech_iter)
-            gap = POINT_GAP + (SCENE_GAP if pi == len(scene["points"]) - 1 else 0)
-            with wave.open(str(sp.wav)) as w:
-                pcm.extend(w.readframes(w.getnframes()))
-            pcm.extend(silence(int(gap * SAMPLE_RATE)))
-            cues.extend(piece for c in sp.cues for piece in split_cue(Cue(t + c.start, t + c.end, c.text)))
-            frame_path = work / f"f{frame_no:03d}.png"
-            render_frame(chapter, title, scene, pi, si, len(scenes)).save(frame_path)
-            seg = sp.duration + gap
-            concat_lines += [f"file '{frame_path.as_posix()}'", f"duration {seg:.3f}"]
-            t += seg
-            frame_no += 1
-    concat_lines.append(f"file '{(work / f'f{frame_no - 1:03d}.png').as_posix()}'")
+    for n, (frame, sp) in enumerate(zip(frames, speeches)):
+        scene = scenes[frame.scene_index]
+        if frame.point_index == 0:
+            outline.append({"title": latex_to_unicode(scene.title), "start": round(t, 2)})
+        gap = POINT_GAP + (SCENE_GAP if frame.point_index == len(scene.points) - 1 else 0)
+        with wave.open(str(sp.wav)) as w:
+            pcm.extend(w.readframes(w.getnframes()))
+        pcm.extend(silence(int(gap * SAMPLE_RATE)))
+        cues.extend(piece for c in sp.cues for piece in split_cue(Cue(t + c.start, t + c.end, c.text)))
+        seg = sp.duration + gap
+        concat_lines += [f"file '{(work / f'f{n:03d}.png').as_posix()}'", f"duration {seg:.3f}"]
+        t += seg
+    concat_lines.append(f"file '{(work / f'f{len(frames) - 1:03d}.png').as_posix()}'")
 
     audio_path = work / "audio.wav"
     with wave.open(str(audio_path), "wb") as w:
@@ -331,9 +210,14 @@ async def build_chapter(chapter: int) -> dict:
     Image.open(work / "f000.png").convert("RGB").save(OUT_DIR / f"{stem}.webp", quality=82)
     vtt = ["WEBVTT", ""] + [f"{vtt_time(c.start)} --> {vtt_time(c.end)} line:98%,end\n{c.text}\n" for c in cues]
     (OUT_DIR / f"{stem}.vtt").write_text("\n".join(vtt), encoding="utf-8")
-    print(f"chapter {chapter}: {t / 60:.1f} min, {len(scenes)} scenes", file=sys.stderr)
+    ends = [part["start"] for part in outline[1:]] + [t]
+    chapters = ["WEBVTT", ""] + [f"{vtt_time(part['start'])} --> {vtt_time(end)}\n{part['title']}\n"
+                                 for part, end in zip(outline, ends)]
+    (OUT_DIR / f"{stem}.chapters.vtt").write_text("\n".join(chapters), encoding="utf-8")
+    print(f"chapter {chapter}: {t / 60:.1f} min, {len(scenes)} scenes, {len(frames)} frames", file=sys.stderr)
     return {"src": f"media/lectures/{stem}.mp4", "poster": f"media/lectures/{stem}.webp",
-            "track": f"media/lectures/{stem}.vtt", "duration": round(t, 1), "outline": outline}
+            "track": f"media/lectures/{stem}.vtt", "chapters": f"media/lectures/{stem}.chapters.vtt",
+            "duration": round(t, 1), "outline": outline}
 
 
 def write_manifest(entries: dict[int, dict]) -> None:

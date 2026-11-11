@@ -5,201 +5,292 @@
       "kind": "intro",
       "title": "Giới thiệu chương",
       "points": [
-        {
-          "text": "Mở đầu",
-          "say": "Chào các bạn, chương năm là nén ảnh, một chương có rất nhiều câu hỏi trong đề thi. Mỗi ngày các bạn gửi hàng trăm tấm ảnh JPEG mà không để ý, và chương này sẽ giải thích chuyện gì xảy ra bên trong."
-        },
-        {
-          "text": "Hai nhánh",
-          "say": "Nén ảnh chia làm hai nhánh: nén không mất dữ liệu, lossless, và nén có mất dữ liệu, lossy. Chúng ta sẽ đi qua mã Huffman, mã số học, BTC, lượng tử hóa vector, wavelet, chuẩn JPEG, và cuối cùng là nén bằng học sâu."
-        }
+        {"text": "Mở đầu", "say": "Chào các bạn, chương năm là nén ảnh. Đây là chương có nhiều câu tính toán trong đề thi nhất, nên lần này chúng ta sẽ đi chậm: mỗi kỹ thuật đều có ý tưởng trước, công thức sau, rồi một ví dụ tính tay từng bước."},
+        {"text": "Lộ trình", "say": "Lộ trình như sau. Đầu tiên là nén không mất dữ liệu với entropy, mã Huffman và mã số học. Sau đó là nén có mất dữ liệu với BTC, lượng tử hóa vector, wavelet và chuẩn JPEG. Cuối chương là bảng so sánh và những câu hỏi đề thi hay gài."}
       ]
     },
     {
-      "title": "Nén không mất dữ liệu",
+      "kicker": "Recap",
+      "title": "Chương trước đã cho ta những gì",
+      "points": [
+        {"text": "Chương 1: histogram chia cho tổng số pixel = xác suất của mỗi mức xám", "say": "Trước khi vào bài, chúng ta nhặt lại ba thứ đã học. Thứ nhất, từ chương một: histogram chia cho tổng số pixel chính là xác suất xuất hiện của từng mức xám. Hôm nay xác suất đó sẽ quyết định mỗi ký hiệu được mã bằng bao nhiêu bit."},
+        {"text": "Chương 4: DCT và wavelet dồn năng lượng ảnh vào một số ít hệ số", "say": "Thứ hai, từ chương bốn: các phép biến đổi như DCT và wavelet không làm mất thông tin, nhưng chúng dồn phần lớn năng lượng của ảnh vào một số ít hệ số. JPEG và nén wavelet hôm nay dùng lại đúng tính chất này."},
+        {"text": "Chương 4: DCT ít gián đoạn ở biên khối nên hợp với nén theo khối", "say": "Thứ ba, DCT giả định tín hiệu đối xứng chẵn nên ít bị gián đoạn ở biên. Đó là lý do JPEG chọn DCT chứ không chọn DFT để biến đổi từng khối ảnh."}
+      ]
+    },
+    {
+      "kicker": "Intuition",
+      "title": "Vì sao ảnh nén được",
       "slide": 5,
       "points": [
-        {
-          "text": "Khai thác dư thừa: tương quan không gian giữa pixel, thời gian giữa khung",
-          "say": "Nén không mất dữ liệu giảm số bit mà không mất bất kỳ thông tin nào. Nó khả thi nhờ dư thừa trong tín hiệu: các pixel lân cận có tương quan không gian rất cao, và trong video còn có tương quan thời gian giữa các khung hình."
-        },
-        {
-          "text": "Ảnh giải mã giống hệt ảnh gốc → tỉ lệ nén chỉ khoảng 2 đến 3 lần",
-          "say": "Ảnh giải mã phải giống hệt ảnh gốc cả về số liệu, nên tỉ lệ nén bị giới hạn chỉ khoảng hai đến ba lần."
-        },
-        {
-          "text": "Perceptually lossless: bỏ cả thông tin mắt không cảm nhận được",
-          "say": "Để nén nhiều hơn, có khái niệm không mất dữ liệu theo cảm nhận, perceptually lossless. Ta bỏ cả thông tin dư thừa lẫn thông tin mắt người không nhận ra, miễn là ảnh trông giống hệt, dù về số liệu không còn giống hệt."
-        }
+        {"text": "Viết tắt chữ hay dùng: ký hiệu hay gặp nhận mã ngắn", "say": "Hãy nghĩ đến lúc các bạn nhắn tin. Từ nào dùng nhiều thì các bạn viết tắt, từ hiếm thì viết đầy đủ. Tin nhắn ngắn đi mà người đọc vẫn hiểu đúng hoàn toàn. Nén không mất dữ liệu làm đúng việc đó: ký hiệu hay gặp nhận mã ngắn, ký hiệu hiếm nhận mã dài."},
+        {"text": "Pixel cạnh nhau gần giống nhau: dư thừa không gian; khung hình liền nhau: dư thừa thời gian", "say": "Lý do thứ hai là dư thừa. Trong một bức ảnh bầu trời, pixel nào cũng gần giống pixel bên cạnh. Đó là tương quan không gian. Với video còn có tương quan thời gian giữa các khung hình liên tiếp. Đã đoán được thì không cần gửi lại."},
+        {"text": "Lossless: giống hệt ảnh gốc, chỉ nén được khoảng 2 đến 3 lần", "say": "Nén không mất dữ liệu bắt buộc ảnh giải mã giống hệt ảnh gốc đến từng con số, nên tỉ lệ nén chỉ khoảng hai đến ba lần."},
+        {"text": "Perceptually lossless: bỏ thêm phần mắt không nhận ra", "say": "Muốn nén nhiều hơn, ta chấp nhận bỏ thêm cả những thông tin mắt người không nhận ra. Ảnh nhìn vẫn giống hệt, dù số liệu đã khác. Slide gọi đó là không mất dữ liệu theo cảm nhận, perceptually lossless."}
       ]
     },
     {
-      "title": "Hệ thống mã hóa và entropy",
+      "title": "Hệ thống mã hóa không mất dữ liệu",
       "slide": 6,
       "points": [
-        {
-          "text": "3 khối: biến đổi → ánh xạ thành ký hiệu → mã hóa ký hiệu",
-          "say": "Một hệ thống mã hóa không mất dữ liệu gồm ba khối: biến đổi, ví dụ dự đoán vi phân hay DCT, để đưa dữ liệu về dạng dễ nén; ánh xạ dữ liệu thành ký hiệu; và mã hóa ký hiệu, gán từ mã nhị phân cho mỗi ký hiệu."
-        },
-        {
-          "text": "Chọn phương pháp: tỉ lệ nén, độ trễ, độ phức tạp, chống lỗi, khả mở",
-          "say": "Khi chọn phương pháp mã hóa, ta cân nhắc tỉ lệ nén, độ trễ mã hóa, độ phức tạp triển khai, khả năng chịu lỗi, và khả năng mở rộng theo lớp."
-        },
-        {
-          "text": "Entropy nguồn = cận dưới của tốc độ bit trung bình",
-          "say": "Từ lý thuyết thông tin, thông tin tự thân của một ký hiệu tỉ lệ nghịch với logarit xác suất của nó: ký hiệu càng hiếm thì càng mang nhiều thông tin. Entropy nguồn là kỳ vọng của thông tin tự thân, và đó là cận dưới lý thuyết cho tốc độ bit trung bình của mọi mã không mất dữ liệu."
-        }
+        {"text": "Khối 1 – Transformation: đưa dữ liệu về dạng dễ nén (dự đoán, DCT, băng con)", "say": "Một bộ mã hóa không mất dữ liệu gồm ba khối nối tiếp. Khối một là biến đổi, ví dụ lấy hiệu giữa pixel và giá trị dự đoán, hoặc DCT. Mục đích là đưa dữ liệu về dạng có nhiều giá trị lặp lại, tức là dễ nén hơn."},
+        {"text": "Khối 2 – Data-to-symbol mapping: gom dữ liệu thành các ký hiệu", "say": "Khối hai ánh xạ dữ liệu thành các ký hiệu. Ký hiệu có thể là một giá trị, hoặc một cặp như số lần lặp và giá trị."},
+        {"text": "Khối 3 – Lossless symbol coding: gán từ mã nhị phân cho từng ký hiệu", "say": "Khối ba gán từ mã nhị phân cho mỗi ký hiệu. Huffman và mã số học mà ta sắp học nằm ở khối này."},
+        {"text": "Chọn bộ mã: tỉ lệ nén, độ trễ, độ phức tạp, chịu lỗi, scalability", "say": "Khi chọn bộ mã, đừng chỉ nhìn tỉ lệ nén. Slide liệt kê năm tiêu chí: hiệu suất nén, độ trễ mã hóa, độ phức tạp triển khai, độ bền với lỗi, và khả năng mở rộng theo lớp."}
       ]
     },
     {
-      "title": "Mã hóa cắt khối (BTC)",
-      "slide": 12,
+      "kicker": "Formula",
+      "title": "Entropy: giới hạn của nén không mất dữ liệu",
+      "formula": "H(S) = \\underbrace{\\sum_{i=1}^{N} p_i}_{\\text{lấy trung bình theo xác suất}} \\; \\underbrace{\\log_2 \\frac{1}{p_i}}_{\\text{thông tin của ký hiệu } i} \\quad \\text{(bit / ký hiệu)}",
       "points": [
-        {
-          "text": "Nén mất dữ liệu, độ dài cố định, lượng tử từng khối",
-          "say": "Mã hóa cắt khối, BTC, là kỹ thuật nén có mất dữ liệu với độ dài cố định. Nó dùng bộ lượng tử hóa để lượng tử từng vùng cục bộ của ảnh."
-        },
-        {
-          "text": "Bảo toàn trung bình và độ lệch chuẩn của khối n×n",
-          "say": "Điểm đặc trưng: BTC bảo toàn các moment thống kê của vùng, dạng đơn giản nhất là bảo toàn trung bình mẫu và độ lệch chuẩn mẫu."
-        },
-        {
-          "text": "1 bit/pixel + hai mức a, b tính từ hai moment",
-          "say": "Với bộ lượng tử hai mức, mỗi pixel chỉ cần một bit cho biết nó lớn hay nhỏ hơn trung bình, và hai giá trị độ chói a và b dùng để giải mã được tính từ trung bình và độ lệch chuẩn của khối."
-        }
+        {"text": "Ký hiệu càng hiếm càng mang nhiều thông tin: $p = 0.4 \\to 1.32$ bit, $p = 0.04 \\to 4.64$ bit", "say": "Công thức này trông đáng sợ nhưng ý rất đơn giản. Phần bên phải là lượng thông tin của một ký hiệu. Tin càng bất ngờ thì càng nhiều thông tin. Một ký hiệu xuất hiện bốn mươi phần trăm thời gian chỉ đáng khoảng một phẩy ba bit. Một ký hiệu chỉ xuất hiện bốn phần trăm thì đáng tới bốn phẩy sáu bit."},
+        {"text": "Entropy = lượng thông tin trung bình của cả nguồn", "say": "Phần bên trái chỉ là phép lấy trung bình: ký hiệu nào hay gặp thì được tính nặng hơn. Kết quả là entropy, tức số bit trung bình mà mỗi ký hiệu của nguồn thật sự chứa."},
+        {"text": "Không mã lossless nào có số bit trung bình nhỏ hơn entropy", "say": "Điều cần nhớ để đi thi: entropy là cận dưới. Không có bộ mã không mất dữ liệu nào, giải mã được duy nhất, mà có số bit trung bình nhỏ hơn entropy. Huffman và mã số học chỉ cố tiến sát con số này."}
       ]
     },
     {
-      "title": "Lượng tử hóa vector (VQ)",
+      "kicker": "Worked example",
+      "title": "Huffman bước 1: rút gọn nguồn",
+      "table": {
+        "headers": ["Lần gộp", "Hai xác suất nhỏ nhất", "Nguồn sau khi gộp"],
+        "rows": [
+          ["Ban đầu", "—", "0.4, 0.3, 0.1, 0.1, 0.06, 0.04"],
+          ["1", "0.06 + 0.04 = 0.1", "0.4, 0.3, 0.1, 0.1, 0.1"],
+          ["2", "0.1 + 0.1 = 0.2", "0.4, 0.3, 0.2, 0.1"],
+          ["3", "0.2 + 0.1 = 0.3", "0.4, 0.3, 0.3"],
+          ["4", "0.3 + 0.3 = 0.6", "0.6, 0.4"]
+        ]
+      },
+      "points": [
+        {"say": "Bây giờ ta làm đúng ví dụ trong slide. Nguồn có sáu ký hiệu với xác suất không phẩy bốn, không phẩy ba, không phẩy một, không phẩy một, không phẩy không sáu và không phẩy không bốn. Việc đầu tiên luôn là sắp xếp xác suất từ lớn đến nhỏ."},
+        {"say": "Lần gộp thứ nhất. Lấy hai xác suất nhỏ nhất là không phẩy không sáu và không phẩy không bốn, cộng lại được không phẩy một. Hai ký hiệu đó giờ được coi như một ký hiệu. Nguồn còn năm phần tử."},
+        {"say": "Lần gộp thứ hai. Hai giá trị nhỏ nhất bây giờ là không phẩy một và không phẩy một, cộng lại được không phẩy hai. Nguồn còn bốn phần tử."},
+        {"say": "Lần gộp thứ ba. Hai giá trị nhỏ nhất là không phẩy hai và không phẩy một, cộng lại được không phẩy ba. Nguồn còn ba phần tử."},
+        {"say": "Lần gộp thứ tư. Gộp không phẩy ba với không phẩy ba thành không phẩy sáu. Nguồn chỉ còn hai phần tử là không phẩy sáu và không phẩy bốn. Khi còn hai phần tử thì dừng."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "Huffman bước 2: gán mã ngược trở lại",
+      "formula": "L_{avg} = 0.4(1) + 0.3(2) + 0.1(3) + 0.1(4) + 0.06(5) + 0.04(5) = 2.2 \\text{ bit}",
+      "table": {
+        "headers": ["Ký hiệu", "Xác suất", "Từ mã", "Số bit"],
+        "rows": [
+          ["$a_2$", "0.4", "1", "1"],
+          ["$a_6$", "0.3", "00", "2"],
+          ["$a_1$", "0.1", "011", "3"],
+          ["$a_4$", "0.1", "0100", "4"],
+          ["$a_3$", "0.06", "01010", "5"],
+          ["$a_5$", "0.04", "01011", "5"]
+        ]
+      },
+      "points": [
+        {"reveal": [1], "say": "Bước hai đi ngược từ nguồn nhỏ nhất về nguồn ban đầu. Ở nguồn cuối, không phẩy sáu nhận bit không, không phẩy bốn nhận bit một. Không phẩy bốn chính là ký hiệu a hai, nên a hai có mã chỉ một bit."},
+        {"reveal": [2], "say": "Không phẩy sáu vốn do hai giá trị không phẩy ba gộp lại. Tách nó ra, mỗi nhánh giữ bit không ở đầu rồi thêm một bit nữa. Nhánh thứ nhất là ký hiệu a sáu, nhận mã không không."},
+        {"reveal": [3, 4], "say": "Nhánh còn lại mang mã không một, tiếp tục được tách. Mỗi lần tách, mã dài thêm một bit. Vì thế a một có ba bit, a bốn có bốn bit."},
+        {"reveal": [5, 6], "say": "Hai ký hiệu hiếm nhất, a ba và a năm, bị gộp sớm nhất nên nhận mã dài nhất, năm bit. Các bạn thấy quy luật chưa: gộp càng sớm thì mã càng dài."},
+        {"reveal": 0, "say": "Giờ tính độ dài trung bình: lấy xác suất nhân số bit rồi cộng lại, được hai phẩy hai bit mỗi ký hiệu. Nếu dùng mã độ dài cố định cho sáu ký hiệu thì cần ba bit. Còn entropy của nguồn này là hai phẩy một bốn bit. Huffman đã rất sát giới hạn, nhưng không thể thấp hơn."}
+      ]
+    },
+    {
+      "kicker": "Algorithm",
+      "title": "Mã giả Huffman",
+      "code": {
+        "lines": [
+          "nodes ← mỗi ký hiệu là một nút, kèm xác suất",
+          "while số nút > 1:",
+          "    x, y ← hai nút có xác suất nhỏ nhất",
+          "    z ← nút mới, p(z) = p(x) + p(y), con là x và y",
+          "    bỏ x, y khỏi nodes; thêm z vào nodes",
+          "gán bit 0 / 1 cho hai nhánh của mỗi nút, đi từ gốc xuống",
+          "từ mã của ký hiệu = chuỗi bit trên đường từ gốc đến lá"
+        ]
+      },
+      "points": [
+        {"reveal": [2, 3], "say": "Viết lại thành thuật toán. Vòng lặp chạy cho đến khi chỉ còn một nút. Mỗi vòng chọn ra hai nút có xác suất nhỏ nhất. Đây chính là bước rút gọn nguồn mà ta vừa làm bốn lần."},
+        {"reveal": [4, 5], "say": "Hai nút đó được thay bằng một nút cha có xác suất bằng tổng. Lặp lại nhiều lần, ta dựng được một cái cây từ lá lên gốc."},
+        {"reveal": [6, 7], "say": "Sau đó đi từ gốc xuống, mỗi lần rẽ nhánh thì ghi bit không hoặc bit một. Từ mã của một ký hiệu là chuỗi bit trên đường đi từ gốc tới lá của nó. Vì mọi ký hiệu đều nằm ở lá, không từ mã nào là phần đầu của từ mã khác. Đó là tính chất mã tiền tố, giúp giải mã được ngay mà không cần dấu ngăn cách."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "Mã số học: cả thông điệp là một khoảng số",
+      "slide": 35,
+      "table": {
+        "headers": ["Ký hiệu", "Khoảng mới"],
+        "rows": [
+          ["$a_1$", "[0, 0.2)"],
+          ["$a_2$", "[0.04, 0.08)"],
+          ["$a_3$", "[0.056, 0.072)"],
+          ["$a_3$", "[0.0624, 0.0688)"],
+          ["$a_4$", "[0.06752, 0.0688)"]
+        ]
+      },
+      "points": [
+        {"reveal": 0, "say": "Huffman mã từng ký hiệu riêng, nên mỗi ký hiệu tốn ít nhất một bit nguyên. Mã số học bỏ ràng buộc đó: cả thông điệp được biểu diễn bằng một khoảng số duy nhất nằm giữa không và một. Ví dụ trong slide: nguồn có bốn ký hiệu, a một và a hai có xác suất không phẩy hai, a ba không phẩy bốn, a bốn không phẩy hai. Mỗi ký hiệu sở hữu một đoạn con dài đúng bằng xác suất của nó."},
+        {"reveal": 1, "say": "Ta mã thông điệp a một, a hai, a ba, a ba, a bốn. Ký hiệu đầu là a một, nó sở hữu đoạn từ không đến không phẩy hai. Khoảng hiện tại thu về đúng đoạn đó."},
+        {"reveal": 2, "say": "Ký hiệu thứ hai là a hai. Ta chia khoảng hiện tại theo đúng tỉ lệ cũ, rồi lấy phần của a hai, tức là từ hai mươi đến bốn mươi phần trăm của khoảng. Khoảng dài không phẩy hai, nên được đoạn từ không phẩy không bốn đến không phẩy không tám."},
+        {"reveal": 3, "say": "Tiếp theo là a ba, chiếm từ bốn mươi đến tám mươi phần trăm. Khoảng hiện tại dài không phẩy không bốn, nên khoảng mới là từ không phẩy không năm sáu đến không phẩy không bảy hai."},
+        {"reveal": 4, "say": "Lại là a ba. Làm y hệt, ta được khoảng từ không phẩy không sáu hai bốn đến không phẩy không sáu tám tám."},
+        {"reveal": 5, "say": "Cuối cùng là a bốn, chiếm hai mươi phần trăm cuối. Khoảng kết quả là từ không phẩy không sáu bảy năm hai đến không phẩy không sáu tám tám. Bất kỳ số nào trong khoảng này, ví dụ không phẩy không sáu tám, đều đại diện cho cả thông điệp. Thông điệp càng dài, khoảng càng hẹp, và càng cần nhiều bit để ghi lại."}
+      ]
+    },
+    {
+      "kicker": "Intuition",
+      "title": "BTC: giữ lại trung bình và độ lệch chuẩn của khối",
+      "slide": 14,
+      "formula": "a = \\underbrace{m_1}_{\\text{trung bình}} - \\sigma\\sqrt{\\frac{q}{k-q}} \\qquad b = m_1 + \\sigma\\sqrt{\\frac{k-q}{q}}",
+      "points": [
+        {"text": "Mỗi khối chỉ giữ 2 mức xám: mức tối $a$ và mức sáng $b$", "say": "Chuyển sang nén có mất dữ liệu. Mã hóa cắt khối, BTC, làm một việc rất mạnh tay: trong mỗi khối nhỏ, nó chỉ giữ đúng hai mức xám. Pixel nào tối hơn trung bình thì thành mức a, pixel nào sáng hơn hoặc bằng trung bình thì thành mức b."},
+        {"text": "Bitmap 1 bit/pixel cho biết pixel thuộc mức nào", "say": "Để nhớ pixel nào thuộc mức nào, bộ mã gửi một bitmap, mỗi pixel đúng một bit. Vì số bit của mỗi khối luôn như nhau nên BTC là nén độ dài cố định."},
+        {"text": "$k$: số pixel của khối, $q$: số pixel $\\ge$ trung bình, $\\sigma$: độ lệch chuẩn", "say": "Còn a và b được chọn sao cho khối sau giải mã vẫn có đúng trung bình và đúng độ lệch chuẩn như khối gốc. Trong công thức, k là số pixel của khối, q là số pixel sáng. Nhìn vào công thức: a nằm dưới trung bình, b nằm trên trung bình, và độ lệch chuẩn càng lớn thì hai mức càng xa nhau."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "BTC trên một khối 4×4",
+      "grid": [
+        {"label": "Khối gốc", "cells": [[121, 114, 56, 47], [37, 200, 247, 255], [16, 0, 12, 169], [43, 5, 7, 251]]},
+        {"label": "Bitmap (1 nếu ≥ 98.75)", "cells": [[1, 1, 0, 0], [0, 1, 1, 1], [0, 0, 0, 1], [0, 0, 0, 1]], "accent": [[0, 0], [0, 1], [1, 1], [1, 2], [1, 3], [2, 3], [3, 3]]},
+        {"label": "Khối giải mã", "cells": [[204, 204, 17, 17], [17, 204, 204, 204], [17, 17, 17, 204], [17, 17, 17, 204]], "accent": [[0, 0], [0, 1], [1, 1], [1, 2], [1, 3], [2, 3], [3, 3]]}
+      ],
+      "points": [
+        {"reveal": 1, "text": "Bước 1: $m_1 = 98.75$, $\\sigma = 92.95$, $k = 16$", "say": "Lấy một khối bốn nhân bốn, tức là mười sáu pixel. Bước một, tính trung bình của mười sáu giá trị, được chín mươi tám phẩy bảy lăm. Độ lệch chuẩn là chín mươi hai phẩy chín lăm. Độ lệch chuẩn lớn vì khối này vừa có vùng rất tối vừa có vùng rất sáng."},
+        {"reveal": 2, "text": "Bước 2: so từng pixel với trung bình → bitmap, $q = 7$", "say": "Bước hai, so từng pixel với trung bình. Một trăm hai mươi mốt lớn hơn, ghi một. Năm mươi sáu nhỏ hơn, ghi không. Làm hết mười sáu pixel, ta có bitmap. Đếm số bit một, được q bằng bảy."},
+        {"reveal": 3, "text": "Bước 3: $a \\approx 17$, $b \\approx 204$ → thay 0 bằng $a$, 1 bằng $b$", "say": "Bước ba, thay số vào công thức. Mức tối a ra khoảng mười bảy, mức sáng b ra khoảng hai trăm linh bốn. Bộ giải mã chỉ việc đặt mười bảy vào chỗ bit không và hai trăm linh bốn vào chỗ bit một. Trung bình của khối giải mã vẫn xấp xỉ chín mươi tám phẩy tám."},
+        {"reveal": 3, "text": "Chi phí: 16 bit bitmap + 2 × 8 bit = 32 bit, so với 128 bit gốc", "say": "Cuối cùng là chi phí. Bitmap tốn mười sáu bit, hai mức a và b tốn mỗi mức tám bit. Tổng cộng ba mươi hai bit, so với một trăm hai mươi tám bit của khối gốc. Tức là nén bốn lần, còn hai bit mỗi pixel. Cái giá phải trả là mọi chi tiết bên trong khối đã mất."}
+      ]
+    },
+    {
+      "kicker": "Algorithm",
+      "title": "Lượng tử hóa vector và thuật toán LBG",
       "slide": 21,
+      "code": {
+        "lines": [
+          "codebook ← N vector chọn ngẫu nhiên từ tập huấn luyện",
+          "repeat:",
+          "    gán mỗi vector huấn luyện vào code vector gần nhất",
+          "    mỗi code vector ← centroid của nhóm vừa gán cho nó",
+          "until codebook gần như không đổi",
+          "mã hóa: mỗi khối ảnh → chỉ số của code vector gần nhất"
+        ]
+      },
       "points": [
-        {
-          "text": "Lượng tử hóa: ánh xạ tập giá trị lớn sang tập nhỏ",
-          "say": "Lượng tử hóa là ánh xạ một tập giá trị lớn sang một tập nhỏ hơn. Lượng tử hóa vector, VQ, lượng tử cả một khối mẫu cùng lúc thay vì từng mẫu riêng lẻ."
-        },
-        {
-          "text": "Then chốt: thiết kế codebook",
-          "say": "Yếu tố then chốt khi thiết kế VQ là xây dựng bộ mã, codebook. Mỗi khối ảnh sẽ được thay bằng chỉ số của vector mã gần nhất trong codebook."
-        },
-        {
-          "text": "LBG: khởi tạo → gán theo lân cận gần nhất → tính lại tâm → lặp",
-          "say": "Thuật toán kinh điển là Linde Buzo Gray, LBG. Chọn ngẫu nhiên N vector mã ban đầu từ tập huấn luyện, gán mỗi vector huấn luyện vào vector mã gần nhất, tính lại tâm của mỗi cụm, rồi cập nhật codebook và lặp đến khi hội tụ. Các bạn sẽ thấy nó rất giống K-means."
-        }
-      ]
-    },
-    {
-      "title": "Mã Huffman",
-      "slide": 23,
-      "points": [
-        {
-          "text": "Số ký hiệu mã trung bình nhỏ nhất khi mã từng ký hiệu riêng",
-          "say": "Mã Huffman cho số ký hiệu mã trung bình nhỏ nhất có thể, và là tối ưu với ràng buộc mỗi ký hiệu nguồn được mã hóa riêng biệt."
-        },
-        {
-          "text": "Bước 1: rút gọn nguồn – gộp hai ký hiệu xác suất nhỏ nhất",
-          "say": "Thuật toán gồm hai bước. Bước một, rút gọn nguồn: sắp xếp xác suất, gộp hai ký hiệu có xác suất nhỏ nhất thành một, rồi lặp lại cho đến khi chỉ còn hai ký hiệu."
-        },
-        {
-          "text": "Bước 2: gán mã từ nguồn nhỏ nhất ngược về nguồn ban đầu",
-          "say": "Bước hai, gán mã cho từng nguồn đã rút gọn, bắt đầu từ nguồn nhỏ nhất và quay ngược về nguồn ban đầu, mỗi lần tách ra thì thêm bit 0 và bit 1. Kết quả là ký hiệu hay gặp có mã ngắn, ký hiệu hiếm có mã dài."
-        },
-        {
-          "text": "Ví dụ: A 0.4, B 0.3, C 0.2, D 0.1 → A=0, B=10, C=110, D=111",
-          "say": "Lấy một ví dụ. Bốn ký hiệu A, B, C, D có xác suất không phẩy bốn, không phẩy ba, không phẩy hai và không phẩy một. Gộp C và D thành không phẩy ba, rồi gộp với B thành không phẩy sáu, cuối cùng gộp với A. Gán mã ngược lại, ta được A là không, B là một không, C là một một không, D là một một một. Độ dài trung bình là một phẩy chín bit, so với hai bit nếu dùng mã độ dài cố định."
-        },
-        {
-          "text": "Mã tiền tố: không từ mã nào là tiền tố của từ mã khác",
-          "say": "Mã Huffman là mã tiền tố: không có từ mã nào là phần đầu của từ mã khác. Nhờ vậy, bộ giải mã đọc từng bit và giải mã ngay lập tức mà không cần dấu phân cách."
-        }
-      ]
-    },
-    {
-      "title": "Mã hóa số học",
-      "slide": 34,
-      "points": [
-        {
-          "text": "Mã không khối: cả thông điệp ↦ một khoảng trong [0, 1)",
-          "say": "Khác với Huffman là mã khối, mã hóa số học tạo ra mã không khối. Toàn bộ một chuỗi ký hiệu được gán một từ mã duy nhất, chính là một khoảng số thực trong đoạn từ không đến một."
-        },
-        {
-          "text": "Mỗi ký hiệu thu hẹp khoảng theo đúng xác suất của nó",
-          "say": "Mỗi ký hiệu thu hẹp khoảng theo đúng xác suất xuất hiện của nó. Thông điệp càng dài thì khoảng càng hẹp, và càng cần nhiều bit để biểu diễn khoảng đó. Ưu điểm là không bị ràng buộc mỗi ký hiệu phải có số bit nguyên như Huffman."
-        }
+        {"reveal": 0, "say": "Lượng tử hóa là ánh xạ một tập giá trị lớn sang một tập nhỏ hơn. Lượng tử hóa vector, VQ, không làm tròn từng pixel mà làm tròn cả một khối pixel cùng lúc. Hãy hình dung một bảng màu mẫu: thay vì mô tả chính xác từng màu, ta chỉ nói số thứ tự của màu gần nhất trong bảng. Bảng đó gọi là codebook, và thiết kế codebook là việc quan trọng nhất."},
+        {"reveal": 1, "say": "Thuật toán kinh điển để thiết kế codebook là Linde Buzo Gray, viết tắt LBG. Bắt đầu bằng cách chọn ngẫu nhiên N vector trong tập huấn luyện làm codebook ban đầu."},
+        {"reveal": 3, "say": "Sau đó lặp hai việc. Việc một, gán mỗi vector huấn luyện vào code vector gần nó nhất, theo quy tắc lân cận gần nhất."},
+        {"reveal": 4, "say": "Việc hai, dời mỗi code vector về tâm của nhóm vừa được gán cho nó. Lặp cho đến khi codebook gần như không đổi. Các bạn sẽ gặp lại đúng ý tưởng này ở chương chín với tên K-means."},
+        {"reveal": 6, "say": "Khi nén, mỗi khối ảnh được thay bằng chỉ số của code vector gần nhất. Bên giải mã có cùng codebook nên chỉ cần tra chỉ số là dựng lại được khối."}
       ]
     },
     {
       "title": "Nén ảnh bằng wavelet",
       "slide": 28,
       "points": [
-        {
-          "text": "Hệ số đã giải tương quan nén tốt hơn pixel gốc",
-          "say": "Nén wavelet dựa trên ý tưởng: các hệ số của một phép biến đổi giải tương quan được mã hóa hiệu quả hơn chính các pixel. Nếu wavelet dồn thông tin quan trọng vào ít hệ số, các hệ số còn lại có thể lượng tử thô hoặc cắt về không."
-        },
-        {
-          "text": "Yếu tố: loại wavelet, số mức phân rã, thiết kế bộ lượng tử",
-          "say": "Ba yếu tố ảnh hưởng đến nén: loại hàm wavelet, số mức phân rã, và thiết kế bộ lượng tử. Thường dùng lượng tử đều, cải thiện bằng một khoảng lượng tử lớn hơn quanh không, gọi là dead zone, và thay đổi bước lượng tử theo từng tỉ lệ."
-        }
+        {"text": "Mã hóa hệ số đã giải tương quan hiệu quả hơn mã hóa pixel", "say": "Nén wavelet dựa trên điều ta đã nhắc ở phần recap: sau khi biến đổi, thông tin quan trọng dồn vào ít hệ số. Mã hóa các hệ số đó hiệu quả hơn mã hóa trực tiếp pixel. Các hệ số còn lại rất nhỏ, có thể lượng tử thô hoặc cho bằng không mà ảnh gần như không đổi."},
+        {"text": "Ba yếu tố: loại wavelet, số mức phân rã, thiết kế bộ lượng tử", "say": "Có ba yếu tố ảnh hưởng đến khả năng nén. Một là loại hàm wavelet. Hai là số mức phân rã: càng nhiều mức thì tính toán càng nặng, và lỗi lượng tử ở tỉ lệ thấp lan ra vùng ảnh càng rộng. Ba là thiết kế bộ lượng tử."},
+        {"text": "Dead zone: khoảng lượng tử quanh 0 rộng hơn để ép hệ số nhỏ về 0", "say": "Bộ lượng tử thường là lượng tử đều. Một mẹo cải thiện là nới rộng khoảng lượng tử quanh số không, gọi là dead zone. Nhờ vậy càng nhiều hệ số nhỏ bị ép về không, và có thể đổi bước lượng tử theo từng tỉ lệ."}
       ]
     },
     {
-      "title": "Chuẩn JPEG",
+      "kicker": "Algorithm",
+      "title": "Chuẩn JPEG: bốn bước mã hóa",
       "slide": 40,
+      "code": {
+        "lines": [
+          "chia ảnh thành các khối 8×8 liền kề",
+          "for mỗi khối:",
+          "    F ← DCT(khối)",
+          "    Fq(u,v) ← round( F(u,v) / Q(u,v) )",
+          "    mã hóa Fq không mất dữ liệu (Huffman)",
+          "giải mã: Huffman⁻¹ → Fq × Q → IDCT từng khối"
+        ]
+      },
       "points": [
-        {
-          "text": "Chia ảnh thành khối 8×8 → DCT từng khối",
-          "say": "Bây giờ là phần quan trọng nhất: JPEG. Quy trình cổ điển như sau. Chia ảnh thành các khối tám nhân tám pixel, rồi biến đổi DCT từng khối."
-        },
-        {
-          "text": "Lượng tử bằng bảng Q(u,v) dùng chung → nguồn gốc méo khối",
-          "say": "Sau đó lượng tử hóa các hệ số DCT bằng một bảng lượng tử Q u v, giống nhau cho mọi khối. Chính việc lượng tử độc lập từng khối là nguồn gốc của hiện tượng méo khối, blocking, ở tỉ lệ nén cao."
-        },
-        {
-          "text": "Mã hóa Huffman; giải mã làm ngược: Huffman → giải lượng tử → IDCT",
-          "say": "Các hệ số đã lượng tử được mã hóa không mất dữ liệu bằng Huffman. Phía nhận làm ngược lại: giải mã Huffman, giải lượng tử, rồi IDCT từng khối."
-        },
-        {
-          "text": "Chế độ: tuần tự, lũy tiến, phân cấp; 8 đến 12 bit",
-          "say": "JPEG có chế độ mã hóa tuần tự, quét một lượt từ trái sang phải từ trên xuống, và chế độ lũy tiến, mã hóa thô trước rồi tinh dần ở các lượt sau. Ngoài ra còn có chế độ phân cấp đa độ phân giải, và hỗ trợ độ sâu từ tám đến mười hai bit."
-        }
+        {"reveal": 1, "say": "Bây giờ ta ghép mọi thứ lại thành JPEG, chuẩn nén có mất dữ liệu quen thuộc nhất. Bước một, chia ảnh thành các khối tám nhân tám pixel liền kề nhau."},
+        {"reveal": 3, "say": "Bước hai, biến đổi DCT từng khối. Sau bước này, hệ số ở góc trên bên trái mang độ sáng trung bình của khối, các hệ số xa dần mang chi tiết tần số cao. Chưa có gì bị mất cả."},
+        {"reveal": 4, "say": "Bước ba mới là nơi mất dữ liệu. Mỗi hệ số được chia cho một số trong bảng lượng tử rồi làm tròn. Bảng lượng tử này dùng chung cho mọi khối. Vì mỗi khối bị lượng tử độc lập với khối bên cạnh, ở tỉ lệ nén cao ta nhìn thấy ranh giới giữa các khối. Đó là méo khối, blocking."},
+        {"reveal": 5, "say": "Bước bốn, các hệ số đã lượng tử, phần lớn là số không, được mã hóa không mất dữ liệu bằng Huffman."},
+        {"reveal": 6, "say": "Bên giải mã làm ngược lại đúng thứ tự: giải mã Huffman, nhân lại với bảng lượng tử, rồi biến đổi DCT ngược từng khối. Ngoài chế độ tuần tự quét một lượt, JPEG còn có chế độ lũy tiến gửi bản thô trước rồi tinh dần, chế độ phân cấp đa độ phân giải, và hỗ trợ từ tám đến mười hai bit mỗi mẫu."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "Lượng tử hóa trong JPEG làm mất gì",
+      "table": {
+        "headers": ["Hệ số", "$F$", "$Q$", "round($F/Q$)", "Giải mã", "Sai số"],
+        "rows": [
+          ["DC (0,0)", "236", "16", "15", "240", "4"],
+          ["Tần số thấp (0,1)", "−23", "11", "−2", "−22", "1"],
+          ["Tần số cao (7,7)", "12", "99", "0", "0", "12"]
+        ]
+      },
+      "points": [
+        {"say": "Thử với ba hệ số của một khối. Hệ số DC bằng hai trăm ba mươi sáu, bước lượng tử là mười sáu. Chia ra được mười bốn phẩy bảy lăm, làm tròn thành mười lăm. Bộ giải mã nhân lại với mười sáu, được hai trăm bốn mươi. Sai lệch chỉ là bốn."},
+        {"say": "Một hệ số tần số thấp bằng âm hai mươi ba, bước lượng tử mười một. Chia và làm tròn được âm hai, giải mã ra âm hai mươi hai. Sai lệch chỉ là một."},
+        {"say": "Một hệ số tần số cao bằng mười hai, nhưng bước lượng tử ở đó rất lớn, chín mươi chín. Chia ra chưa tới không phẩy năm nên làm tròn thành không. Hệ số này biến mất hoàn toàn. Đó chính là cách JPEG bỏ chi tiết mịn mà mắt ít nhạy, và cũng là lý do sau lượng tử hóa có rất nhiều số không để Huffman nén tiếp."}
       ]
     },
     {
       "title": "Ảnh đa phổ, hậu xử lý và học sâu",
       "slide": 52,
       "points": [
-        {
-          "text": "Ảnh đa phổ: chiều phổ khác bản chất → biến đổi phổ-không gian",
-          "say": "Ảnh đa phổ, như ảnh vệ tinh hay ảnh y tế đa phương thức, là dữ liệu ba chiều mà chiều phổ khác bản chất với hai chiều không gian. Các bộ mã dựa trên biến đổi chia thành: phổ không gian, áp dụng biến đổi KL trên chiều phổ trước; không gian phổ, biến đổi không gian trước; và biến đổi phức khi các mặt phẳng ảnh không khớp nhau."
-        },
-        {
-          "text": "Hậu xử lý giảm méo ringing và blocking",
-          "say": "Hậu xử lý ảnh nén nhằm giảm hai loại méo: ringing, gợn sóng ở tỉ lệ nén cao do bản chất thông thấp, và blocking, méo khối do lượng tử độc lập các hệ số DCT."
-        },
-        {
-          "text": "Nén bằng học sâu: CNN, RNN, GAN",
-          "say": "Cuối cùng là nén bằng học sâu với ba hướng: CNN, ví dụ CAS-CNN khử artefact nén; RNN cho nén ảnh độ phân giải đầy đủ; và GAN cho nén thích ứng. Chúng thay dần pipeline biến đổi, lượng tử, mã entropy bằng mạng học end to end."
-        }
+        {"text": "Ảnh đa phổ: 3 lớp bộ mã – spectral-spatial, spatial-spectral, complex", "say": "Ba nội dung cuối của slide. Ảnh đa phổ, như ảnh vệ tinh hay ảnh y tế, có thêm chiều phổ với bản chất khác hai chiều không gian. Bộ mã dựa trên biến đổi chia làm ba lớp: phổ không gian, dùng biến đổi KL trên chiều phổ trước; không gian phổ, biến đổi không gian trước; và biến đổi phức khi các mặt phẳng ảnh không khớp nhau."},
+        {"text": "Hậu xử lý giảm hai loại méo: ringing và blocking", "say": "Hậu xử lý ảnh nén nhằm giảm hai loại méo. Ringing là gợn sóng quanh cạnh ở tỉ lệ nén cao, có ở mọi bộ mã dựa trên biến đổi. Blocking là méo khối, do lượng tử độc lập từng khối DCT như ta vừa thấy."},
+        {"text": "Học sâu: CNN (CAS-CNN), RNN, GAN thay dần pipeline cổ điển", "say": "Và nén bằng học sâu có ba hướng: CNN, ví dụ CAS-CNN để khử vết nén; RNN cho nén ảnh độ phân giải đầy đủ; và GAN cho nén thích ứng. Chúng thay dần chuỗi biến đổi, lượng tử, mã entropy bằng một mạng học từ đầu đến cuối."}
       ]
     },
     {
+      "kicker": "Compare",
+      "title": "So sánh các kỹ thuật dễ nhầm",
+      "table": {
+        "headers": ["Kỹ thuật", "Loại", "Đơn vị được mã", "Ý chính"],
+        "rows": [
+          ["Huffman", "Lossless", "Từng ký hiệu", "Gộp 2 xác suất nhỏ nhất, mã tiền tố"],
+          ["Arithmetic", "Lossless", "Cả thông điệp", "Một khoảng con trong [0, 1)"],
+          ["BTC", "Lossy, độ dài cố định", "Khối $n \\times n$", "Bitmap + 2 mức, giữ mean và $\\sigma$"],
+          ["VQ", "Lossy", "Khối (vector)", "Chỉ số trong codebook (LBG)"],
+          ["JPEG", "Lossy", "Khối 8×8", "DCT → lượng tử $Q$ → Huffman"]
+        ]
+      },
+      "points": [
+        {"say": "Đặt các kỹ thuật cạnh nhau để khỏi nhầm. Huffman là không mất dữ liệu, mã từng ký hiệu một, bằng cách gộp hai xác suất nhỏ nhất."},
+        {"say": "Mã số học cũng không mất dữ liệu, nhưng mã cả thông điệp thành một khoảng số. Nó không bị buộc mỗi ký hiệu phải có số bit nguyên."},
+        {"say": "BTC là có mất dữ liệu, độ dài cố định. Mỗi khối thành một bitmap cộng hai mức xám, giữ nguyên trung bình và độ lệch chuẩn."},
+        {"say": "VQ cũng có mất dữ liệu và cũng làm theo khối, nhưng thay khối bằng chỉ số trong codebook. Codebook được thiết kế bằng LBG."},
+        {"say": "JPEG có mất dữ liệu, làm trên khối tám nhân tám, và là sự kết hợp: DCT, lượng tử hóa, rồi Huffman. Chỉ riêng bước lượng tử hóa làm mất thông tin."}
+      ]
+    },
+    {
+      "kicker": "Exam traps",
+      "title": "Những chỗ đề thi hay gài",
+      "table": {
+        "headers": ["Câu hỏi", "Đáp án đúng"],
+        "rows": [
+          ["Huffman gộp hai ký hiệu nào?", "Hai ký hiệu có xác suất NHỎ nhất"],
+          ["Entropy là cận trên hay cận dưới?", "Cận DƯỚI của số bit trung bình"],
+          ["Bước nào của JPEG làm mất dữ liệu?", "Lượng tử hóa; DCT và Huffman thì không"],
+          ["BTC bảo toàn những gì?", "Trung bình và độ lệch chuẩn của khối"],
+          ["Arithmetic coding là block code?", "Sai: nonblock code, cả thông điệp một từ mã"]
+        ]
+      },
+      "points": [
+        {"say": "Năm cái bẫy quen thuộc. Một: Huffman gộp hai ký hiệu có xác suất nhỏ nhất, không phải lớn nhất."},
+        {"say": "Hai: entropy là cận dưới của số bit trung bình, không phải cận trên. Ở ví dụ vừa rồi, hai phẩy một bốn nhỏ hơn hai phẩy hai."},
+        {"say": "Ba: trong JPEG, chỉ lượng tử hóa làm mất dữ liệu. DCT khả nghịch, Huffman không mất gì. Và méo khối sinh ra từ việc lượng tử độc lập từng khối."},
+        {"say": "Bốn: BTC bảo toàn trung bình và độ lệch chuẩn của từng khối, với bộ lượng tử hai mức thì tốn một bit mỗi pixel cho bitmap."},
+        {"say": "Năm: mã số học là mã không khối. Cả thông điệp nhận một từ mã, là một khoảng trong đoạn từ không đến một. Huffman mới là mã khối."}
+      ]
+    },
+    {
+      "kicker": "Summary",
       "title": "Tổng kết chương 5",
       "points": [
-        {
-          "text": "Lossless ~2–3 lần; entropy là cận dưới tốc độ bit",
-          "say": "Tổng kết chương năm. Nén không mất dữ liệu chỉ đạt khoảng hai đến ba lần, và entropy là cận dưới của tốc độ bit trung bình."
-        },
-        {
-          "text": "Huffman: gộp 2 xác suất nhỏ nhất; Arithmetic: một khoảng [0,1)",
-          "say": "Huffman gộp hai ký hiệu xác suất nhỏ nhất, còn mã số học biểu diễn cả thông điệp bằng một khoảng."
-        },
-        {
-          "text": "BTC giữ trung bình & độ lệch chuẩn; VQ dùng codebook LBG",
-          "say": "BTC giữ trung bình và độ lệch chuẩn của khối, VQ dùng codebook thiết kế bằng LBG."
-        },
-        {
-          "text": "JPEG: 8×8 → DCT → lượng tử Q(u,v) → Huffman; blocking & ringing",
-          "say": "JPEG gồm khối tám nhân tám, DCT, lượng tử và Huffman, với hai loại méo là blocking và ringing. Hẹn gặp các bạn ở chương sáu: nén video."
-        }
+        {"text": "Lossless nén khoảng 2–3 lần; entropy là cận dưới", "say": "Tổng kết chương năm. Nén không mất dữ liệu chỉ đạt khoảng hai đến ba lần, và entropy là giới hạn dưới của số bit trung bình."},
+        {"text": "Huffman: gộp 2 xác suất nhỏ nhất. Arithmetic: thu hẹp một khoảng", "say": "Huffman gộp dần hai xác suất nhỏ nhất rồi gán mã ngược lại. Mã số học thu hẹp dần một khoảng theo xác suất của từng ký hiệu."},
+        {"text": "BTC: bitmap + $a$, $b$. VQ: codebook thiết kế bằng LBG", "say": "BTC giữ bitmap và hai mức xám để bảo toàn trung bình và độ lệch chuẩn. VQ thay mỗi khối bằng chỉ số trong codebook."},
+        {"text": "JPEG: 8×8 → DCT → lượng tử → Huffman; méo blocking và ringing", "say": "JPEG gồm chia khối tám nhân tám, DCT, lượng tử hóa và Huffman, với hai loại méo là blocking và ringing. Ở chương sáu, chúng ta thêm chiều thời gian: nén video, nơi khung hình trước giúp đoán khung hình sau."}
       ]
     }
   ]

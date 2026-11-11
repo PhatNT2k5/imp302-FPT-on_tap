@@ -5,197 +5,265 @@
       "kind": "intro",
       "title": "Giới thiệu chương",
       "points": [
-        {
-          "text": "Mở đầu",
-          "say": "Chào các bạn, chương mười một là phát hiện đối tượng, object detection. Đây là công nghệ đứng sau xe tự lái, nhận diện khuôn mặt và camera giám sát an ninh."
-        },
-        {
-          "text": "Hai câu hỏi",
-          "say": "Phát hiện đối tượng trả lời cùng lúc hai câu hỏi. Đây là gì, tức phân loại ảnh. Và nó ở đâu, tức định vị đối tượng, thường bằng một hộp bao, bounding box. Chúng ta sẽ học các độ đo, bộ dữ liệu, phương pháp truyền thống, rồi các họ mô hình học sâu."
-        }
+        {"text": "Mở đầu", "say": "Chào các bạn, chương mười một là phát hiện đối tượng. Đây là bài toán đứng sau xe tự lái, camera giám sát và mở khóa bằng khuôn mặt: máy phải nói được trong ảnh có gì, và từng thứ nằm ở đâu."},
+        {"text": "Lộ trình", "say": "Ta bắt đầu với cách chấm điểm một bộ phát hiện, gồm IoU và mAP, có ví dụ tính tay. Sau đó là các bộ dữ liệu chuẩn, phương pháp truyền thống, rồi bốn nhóm phương pháp học sâu: họ R-CNN hai giai đoạn, YOLO và SSD một giai đoạn, nhóm không dùng anchor, và nhóm Transformer."}
       ]
     },
     {
-      "title": "Độ đo đánh giá: IoU, mAP, mAR",
-      "slide": 5,
+      "kicker": "Recap",
+      "title": "Chương trước đã chuẩn bị gì",
       "points": [
-        {
-          "text": "IoU = diện tích giao / diện tích hợp; càng gần 1 càng khớp",
-          "say": "Độ đo đầu tiên là IoU, Intersection over Union. Lấy diện tích phần giao giữa hộp dự đoán và hộp thật, chia cho diện tích phần hợp. IoU càng gần một, hộp dự đoán càng khớp với vật thể thật."
-        },
-        {
-          "text": "mAP: trung bình AP trên K lớp; AP từ đường precision–recall",
-          "say": "mAP, mean average precision, là trung bình của AP trên toàn bộ K lớp. Trong đó AP được tính từ đường cong precision recall tại các mức recall khác nhau."
-        },
-        {
-          "text": "mAR: trung bình recall trên K lớp",
-          "say": "mAR, mean average recall, là trung bình recall trên K lớp, một độ đo bổ sung để so sánh các bộ phát hiện."
-        },
-        {
-          "text": "Ví dụ: hộp dự đoán trùng một nửa → IoU ≈ 0,33; ngưỡng thường 0,5",
-          "say": "Ví dụ, hai hộp cùng kích thước chồng lên nhau đúng một nửa. Phần giao bằng nửa hộp, phần hợp bằng một phẩy năm hộp, nên IoU chỉ khoảng không phẩy ba ba. Thông thường, một dự đoán được tính là đúng khi IoU lớn hơn hoặc bằng không phẩy năm."
-        },
-        {
-          "text": "Precision = đúng / tổng dự đoán; Recall = đúng / tổng vật thật",
-          "say": "Nhắc lại hai khái niệm: precision là tỉ lệ dự đoán đúng trên tổng số dự đoán, đo mức độ không báo nhầm. Recall là tỉ lệ vật thể được tìm thấy trên tổng số vật thể thật, đo mức độ không bỏ sót."
-        }
+        {"text": "Chương 10: đặc trưng thủ công (moment, Harris…) và đặc trưng CNN học được", "say": "Nhắc lại ba điều. Chương mười đã cho ta hai loại đặc trưng: loại thủ công do con người thiết kế, và loại do mạng CNN tự học. Phát hiện đối tượng truyền thống dùng loại thứ nhất, phát hiện hiện đại dùng loại thứ hai."},
+        {"text": "Chương 9: phân đoạn gán nhãn cho từng pixel; hôm nay chỉ cần một khung chữ nhật", "say": "Chương chín phân đoạn ảnh đến từng pixel. Phát hiện đối tượng thô hơn: mỗi vật chỉ cần một khung chữ nhật bao quanh, gọi là bounding box."},
+        {"text": "Chương 9: K-means, SLIC đều là \"chọn ứng viên rồi tinh chỉnh\"", "say": "Và ý tưởng đề xuất ứng viên rồi tinh chỉnh dần mà ta gặp ở các thuật toán lặp của chương chín sẽ xuất hiện lại trong các bộ phát hiện hai giai đoạn."}
       ]
     },
     {
+      "kicker": "Intuition",
+      "title": "Phát hiện = \"cái gì\" + \"ở đâu\"",
+      "slide": 3,
+      "points": [
+        {"text": "Image classification: cả ảnh nhận một nhãn – \"đây là gì?\"", "say": "Hãy so ba mức độ. Phân loại ảnh giống như đặt tên cho bức ảnh: đây là ảnh con mèo. Cả ảnh chỉ nhận một nhãn."},
+        {"text": "Object localization: vẽ bounding box – \"nó ở đâu?\"", "say": "Định vị đối tượng trả lời thêm câu hỏi ở đâu, bằng cách vẽ một khung chữ nhật quanh vật."},
+        {"text": "Object detection: nhiều vật, mỗi vật một nhãn và một bounding box", "say": "Phát hiện đối tượng kết hợp cả hai, và làm cho mọi vật trong ảnh: mỗi vật một nhãn kèm một khung. Giống trò chơi tìm đồ vật trong tranh, vừa phải khoanh đúng chỗ, vừa phải gọi đúng tên."},
+        {"text": "Ứng dụng: xe tự lái, nhận diện khuôn mặt, giám sát an ninh", "say": "Ứng dụng tiêu biểu trong slide là xe tự lái, nhận diện khuôn mặt và giám sát an ninh. Vì đầu ra gồm cả nhãn lẫn khung, ta cần cách chấm điểm cho cả hai. Đó là IoU và mAP."}
+      ]
+    },
+    {
+      "kicker": "Formula",
+      "title": "IoU: khung dự đoán khớp đến đâu",
+      "slide": 5,
+      "formula": "IoU = \\frac{\\overbrace{\\text{Area of intersection}}^{\\text{phần hai khung chồng nhau}}}{\\underbrace{\\text{Area of union}}_{\\text{phần hai khung phủ, tính một lần}}}",
+      "points": [
+        {"text": "So khung dự đoán với khung thật (ground truth)", "say": "IoU là viết tắt của Intersection over Union. Ta có khung thật do người gán nhãn vẽ, gọi là ground truth, và khung do mô hình dự đoán. Tử số là diện tích phần hai khung chồng lên nhau. Mẫu số là diện tích vùng mà hai khung cùng phủ, phần chồng nhau chỉ tính một lần."},
+        {"text": "IoU từ 0 (không chạm nhau) đến 1 (trùng khít)", "say": "Hai khung không chạm nhau thì IoU bằng không. Hai khung trùng khít thì IoU bằng một. Vậy IoU càng gần một, khung dự đoán càng khớp với vật thật."},
+        {"text": "Lưu ý: phân số trên slide gốc bị in ngược; đúng là giao chia hợp", "say": "Một lưu ý nhỏ: trong slide gốc, phân số bị in ngược, hợp ở trên và giao ở dưới. Đúng theo tên gọi và theo ý nghĩa gần một là tốt, công thức phải là giao chia hợp. Khi đi thi các bạn nhớ là giao chia hợp."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "Tính IoU bằng tay",
+      "table": {
+        "headers": ["Khung thật (0,0)–(4,4), diện tích 16", "Dự đoán lệch chéo (2,2)–(6,6)", "Dự đoán lệch ngang (1,0)–(5,4)"],
+        "rows": [
+          ["Phần giao", "2 × 2 = 4", "3 × 4 = 12"],
+          ["Phần hợp = 16 + 16 − giao", "32 − 4 = 28", "32 − 12 = 20"],
+          ["IoU", "4 / 28 ≈ 0.14", "12 / 20 = 0.6"]
+        ]
+      },
+      "points": [
+        {"say": "Khung thật có góc trên trái ở tọa độ không không và góc dưới phải ở bốn bốn, diện tích mười sáu. Dự đoán thứ nhất lệch chéo hai đơn vị. Phần giao là hình vuông từ hai đến bốn theo cả hai chiều, tức là hai nhân hai bằng bốn. Dự đoán thứ hai chỉ lệch ngang một đơn vị. Phần giao rộng ba, cao bốn, bằng mười hai."},
+        {"say": "Phần hợp không cần vẽ hình. Lấy tổng diện tích hai khung trừ đi phần giao, vì phần giao đã bị đếm hai lần. Trường hợp một: ba mươi hai trừ bốn bằng hai mươi tám. Trường hợp hai: ba mươi hai trừ mười hai bằng hai mươi."},
+        {"say": "Chia ra. Trường hợp một: bốn phần hai mươi tám, khoảng không phẩy một bốn, khung lệch quá nhiều. Trường hợp hai: mười hai phần hai mươi bằng không phẩy sáu. Trong thực hành, người ta đặt một ngưỡng, thường là không phẩy năm. Dự đoán có IoU vượt ngưỡng được tính là phát hiện đúng. Ở đây dự đoán thứ hai đúng, dự đoán thứ nhất sai."}
+      ]
+    },
+    {
+      "title": "mAP và mAR",
+      "slide": 6,
+      "points": [
+        {"text": "Precision: trong các khung mô hình đưa ra, bao nhiêu phần đúng", "say": "IoU chấm từng khung. Để chấm cả mô hình, ta cần hai khái niệm. Precision, độ chính xác: trong tất cả các khung mô hình đưa ra, có bao nhiêu phần là đúng. Mô hình thận trọng, chỉ đưa ra khung khi rất chắc, sẽ có precision cao."},
+        {"text": "Recall: trong các vật có thật, bao nhiêu phần được tìm thấy", "say": "Recall, độ phủ: trong tất cả các vật có thật, mô hình tìm ra được bao nhiêu phần. Mô hình đưa ra thật nhiều khung sẽ có recall cao, nhưng precision giảm. Hai đại lượng này kéo nhau."},
+        {"text": "AP: tóm tắt đường cong precision – recall của một lớp, tính trên mọi mức recall", "say": "Average Precision, viết tắt AP, tóm tắt sự đánh đổi đó thành một con số cho một lớp đối tượng. Nó được suy ra từ đường cong precision recall, tính trên mọi mức recall khác nhau."},
+        {"text": "mAP: trung bình AP trên $K$ lớp. mAR: trung bình AR trên $K$ lớp", "say": "mAP là trung bình của AP trên toàn bộ K lớp. Tương tự, mAR là trung bình của average recall trên K lớp, một độ đo bổ sung để so sánh các bộ phát hiện."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "Tính AP cho một lớp (4 vật thật, 5 dự đoán)",
+      "table": {
+        "headers": ["Dự đoán (xếp theo độ tin cậy)", "Đúng / Sai", "Precision", "Recall"],
+        "rows": [
+          ["1", "Đúng", "1/1 = 1.00", "1/4 = 0.25"],
+          ["2", "Sai", "1/2 = 0.50", "0.25"],
+          ["3", "Đúng", "2/3 ≈ 0.67", "2/4 = 0.50"],
+          ["4", "Đúng", "3/4 = 0.75", "3/4 = 0.75"],
+          ["5", "Sai", "3/5 = 0.60", "0.75"]
+        ]
+      },
+      "points": [
+        {"say": "Giả sử lớp con mèo có bốn con mèo thật trong tập kiểm tra. Mô hình đưa ra năm khung, ta xếp chúng theo độ tin cậy giảm dần rồi xét từng cái. Khung thứ nhất đúng. Precision là một trên một, bằng một. Recall là một trên bốn, bằng không phẩy hai lăm."},
+        {"say": "Khung thứ hai sai. Đến lúc này có một đúng trên hai khung, precision tụt xuống không phẩy năm. Recall không đổi vì chưa tìm thêm được con mèo nào."},
+        {"say": "Khung thứ ba đúng. Hai đúng trên ba khung, precision khoảng không phẩy sáu bảy. Recall lên hai trên bốn, bằng không phẩy năm."},
+        {"say": "Khung thứ tư đúng. Precision là ba trên bốn, bằng không phẩy bảy lăm. Recall cũng là không phẩy bảy lăm."},
+        {"say": "Khung thứ năm sai. Precision còn không phẩy sáu, recall dừng ở không phẩy bảy lăm. Con mèo thứ tư không bao giờ được tìm thấy. Giờ tính AP: recall tăng qua ba bậc, mỗi bậc rộng không phẩy hai lăm. Ở mỗi bậc, lấy precision tốt nhất từ bậc đó trở đi: lần lượt là một, không phẩy bảy lăm và không phẩy bảy lăm. Nhân với bề rộng bậc rồi cộng lại, AP bằng không phẩy sáu hai lăm. Nếu lớp con chó có AP không phẩy tám bảy lăm, thì mAP của hai lớp là trung bình cộng, bằng không phẩy bảy lăm."}
+      ]
+    },
+    {
+      "kicker": "Compare",
       "title": "Các bộ dữ liệu chuẩn",
       "slide": 7,
+      "table": {
+        "headers": ["Bộ dữ liệu", "Số ảnh (xấp xỉ)", "Số lớp"],
+        "rows": [
+          ["PASCAL VOC", "10 nghìn", "20"],
+          ["COCO", "200 nghìn", "80"],
+          ["ImageNet (ILSVRC)", "14 triệu", "200"],
+          ["Open Images", "9 triệu", "600"]
+        ]
+      },
       "points": [
-        {
-          "text": "PASCAL VOC: ~10.000 ảnh, 20 lớp",
-          "say": "Có bốn bộ dữ liệu chuẩn các bạn cần nhớ con số. PASCAL VOC có khoảng mười nghìn ảnh với hai mươi lớp."
-        },
-        {
-          "text": "COCO: ~200.000 ảnh, 80 lớp",
-          "say": "COCO, Common Objects in Context, có khoảng hai trăm nghìn ảnh với tám mươi lớp."
-        },
-        {
-          "text": "ImageNet ILSVRC: ~14 triệu ảnh, 200 lớp; Open Images: ~9 triệu ảnh, 600 lớp",
-          "say": "ImageNet, cuộc thi ILSVRC, có khoảng mười bốn triệu ảnh, phần phát hiện có hai trăm lớp. Và Open Images có khoảng chín triệu ảnh với sáu trăm lớp. Mẹo nhớ: VOC hai mươi, COCO tám mươi, ImageNet hai trăm, Open Images sáu trăm."
-        }
+        {"say": "Muốn so sánh các mô hình thì phải chấm trên cùng một bộ dữ liệu. Slide nêu bốn bộ chuẩn. PASCAL VOC có khoảng mười nghìn ảnh huấn luyện và kiểm định, với hai mươi lớp đối tượng."},
+        {"say": "COCO, viết tắt của Common Objects in Context, có khoảng hai trăm nghìn ảnh với tám mươi lớp."},
+        {"say": "ImageNet của cuộc thi ILSVRC có khoảng mười bốn triệu ảnh, với hai trăm lớp cho bài toán phát hiện."},
+        {"say": "Open Images có khoảng chín triệu ảnh với sáu trăm lớp. Các cặp số này, đặc biệt là số lớp hai mươi, tám mươi, hai trăm, sáu trăm, là kiểu câu hỏi ghi nhớ rất hay gặp."}
       ]
     },
     {
       "title": "Phương pháp truyền thống",
       "slide": 12,
       "points": [
-        {
-          "text": "3 bước: chọn vùng → trích đặc trưng (SIFT, HOG) → phân loại",
-          "say": "Pipeline truyền thống gồm ba bước: chọn các vị trí có khả năng chứa thông tin, trích đặc trưng như SIFT, HOG hay contour, rồi phân loại đối tượng."
-        },
-        {
-          "text": "Cửa sổ trượt đa tỉ lệ → tốn kém, nhiều ứng viên vô ích",
-          "say": "Vì đối tượng có thể ở bất kỳ vị trí, kích thước và tỉ lệ khung nào, phương pháp truyền thống phải quét toàn ảnh bằng cửa sổ trượt ở nhiều tỉ lệ, rất tốn kém và sinh ra nhiều ứng viên vô ích."
-        },
-        {
-          "text": "Dòng thời gian: bộ phân loại nhị phân (2001) → HOG (2005) → DPM (2009)",
-          "say": "Dòng thời gian: bộ phân loại nhị phân năm hai nghìn lẻ một, HOG năm hai nghìn lẻ năm, và Deformable Part Model năm hai nghìn lẻ chín."
-        },
-        {
-          "text": "Viola–Jones (2001): Haar + AdaBoost + cascade, phát hiện mặt thời gian thực",
-          "say": "Bộ phân loại nhị phân năm hai nghìn lẻ một nổi tiếng nhất là bộ phát hiện khuôn mặt Viola Jones, dùng đặc trưng Haar, tính nhanh bằng ảnh tích phân, chọn đặc trưng bằng AdaBoost, và xếp tầng các bộ phân loại để loại nhanh vùng nền. Đây là bộ phát hiện khuôn mặt thời gian thực đầu tiên."
-        },
-        {
-          "text": "HOG: histogram hướng gradient theo ô; DPM: mô hình gồm các bộ phận co giãn",
-          "say": "HOG chia ảnh thành các ô nhỏ, tính histogram hướng gradient trong mỗi ô, rất hiệu quả cho phát hiện người đi bộ. DPM mở rộng ý tưởng này bằng cách mô hình vật thể như một tập bộ phận có thể dịch chuyển tương đối với nhau."
-        }
+        {"text": "Ba bước: chọn vị trí có khả năng chứa vật → trích đặc trưng → phân loại", "say": "Trước thời học sâu, phát hiện đối tượng gồm ba bước: chọn những vị trí có khả năng chứa thông tin, trích đặc trưng tại đó, rồi phân loại."},
+        {"text": "Đặc trưng thủ công: SIFT, HOG, contour", "say": "Đặc trưng là loại thủ công mà chương mười đã nói, ví dụ SIFT, HOG hay đường biên."},
+        {"text": "Dòng thời gian: bộ phân loại nhị phân (2001) → HOG (2005) → Deformable Part Model (2009)", "say": "Dòng thời gian trong slide: bộ phân loại nhị phân năm hai nghìn linh một, Histogram of Oriented Gradient năm hai nghìn linh năm, và Deformable Part Model năm hai nghìn linh chín."},
+        {"text": "Vật có nhiều vị trí, kích thước, tỉ lệ → phải trượt cửa sổ đa tỉ lệ, rất tốn kém", "say": "Điểm yếu lớn nhất: vật có thể ở bất kỳ đâu, to nhỏ bất kỳ, với tỉ lệ khung bất kỳ. Phương pháp truyền thống vì thế phải trượt một cửa sổ qua toàn bộ ảnh ở nhiều tỉ lệ. Ta thử đếm xem tốn đến mức nào."}
       ]
     },
     {
-      "title": "Họ R-CNN",
-      "slide": 16,
+      "kicker": "Worked example",
+      "title": "Cửa sổ trượt tốn kém thế nào (minh họa)",
+      "table": {
+        "headers": ["Đại lượng", "Phép tính", "Kết quả"],
+        "rows": [
+          ["Vị trí theo chiều ngang", "(640 − 64) / 8 + 1", "73"],
+          ["Vị trí theo chiều dọc", "(480 − 64) / 8 + 1", "53"],
+          ["Số cửa sổ ở một tỉ lệ", "73 × 53", "3 869"],
+          ["Thêm nhiều tỉ lệ và nhiều hình dạng", "3 869 × số tỉ lệ × số hình dạng", "hàng chục nghìn"]
+        ]
+      },
       "points": [
-        {
-          "text": "Anchor-based: định nghĩa trước tập hộp neo dày đặc nhiều tỉ lệ",
-          "say": "Bước sang học sâu, nhóm đầu tiên là phương pháp dựa trên anchor: định nghĩa trước một tập dày đặc các hộp neo với nhiều tỉ lệ, chia thành mẫu dương và âm, rồi dự đoán độ lệch vị trí cho mẫu dương."
-        },
-        {
-          "text": "R-CNN: selective search → CNN → SVM + hồi quy; đơn giản nhưng chậm",
-          "say": "R-CNN sinh nhiều hộp ứng viên bằng selective search, đưa từng hộp qua CNN để trích đặc trưng, rồi dùng SVM để phân loại và hồi quy tuyến tính để tinh chỉnh vị trí. Đơn giản nhưng rất chậm."
-        },
-        {
-          "text": "Fast R-CNN: RoI pooling + đa nhiệm; +11,5% độ chính xác, nhanh hơn 200 lần",
-          "say": "Fast R-CNN cải thiện độ chính xác mười một phẩy năm phần trăm và nhanh hơn hơn hai trăm lần, nhờ lớp RoI pooling đưa mọi kích thước về kích thước cố định, và mô hình đa nhiệm kết hợp phân loại với hồi quy hộp."
-        },
-        {
-          "text": "Faster R-CNN: Region Proposal Network, học end-to-end",
-          "say": "Faster R-CNN thay selective search bằng mạng đề xuất vùng, RPN, chia sẻ đặc trưng với mạng phát hiện. Toàn bộ pipeline nằm trong một mạng duy nhất, học end to end."
-        },
-        {
-          "text": "Non-Maximum Suppression: bỏ các hộp trùng lặp có IoU cao",
-          "say": "Một bước hậu xử lý chung cho hầu hết bộ phát hiện là non maximum suppression. Mạng thường sinh ra nhiều hộp chồng lên cùng một vật. Ta giữ hộp có điểm cao nhất, loại các hộp khác có IoU với nó vượt ngưỡng, rồi lặp lại."
-        },
-        {
-          "text": "Hai giai đoạn: chính xác hơn; một giai đoạn: nhanh hơn",
-          "say": "Họ R-CNN được gọi là bộ phát hiện hai giai đoạn: giai đoạn một đề xuất vùng, giai đoạn hai phân loại và tinh chỉnh. Nhìn chung, hai giai đoạn chính xác hơn còn một giai đoạn nhanh hơn, dù khoảng cách này ngày càng thu hẹp."
-        }
+        {"say": "Lấy một ảnh sáu trăm bốn mươi nhân bốn trăm tám mươi, cửa sổ sáu mươi tư nhân sáu mươi tư, mỗi lần dịch tám pixel. Theo chiều ngang, cửa sổ có thể đặt ở bảy mươi ba vị trí."},
+        {"say": "Theo chiều dọc có năm mươi ba vị trí."},
+        {"say": "Nhân lại, riêng một kích thước cửa sổ đã có ba nghìn tám trăm sáu mươi chín cửa sổ. Mỗi cửa sổ đều phải trích đặc trưng và chạy bộ phân loại."},
+        {"say": "Mà vật có thể to hay nhỏ, cao hay dẹt, nên phải lặp lại với nhiều tỉ lệ và nhiều hình dạng cửa sổ. Con số lên đến hàng chục nghìn cho mỗi ảnh, và gần như tất cả đều chỉ chứa nền. Đây là điều slide muốn nói: chi phí tính toán rất cao và sinh ra rất nhiều ứng viên vô ích. Các phương pháp học sâu ra đời để giải quyết đúng vấn đề này."}
+      ]
+    },
+    {
+      "kicker": "Intuition",
+      "title": "Phương pháp dựa trên anchor",
+      "slide": 14,
+      "points": [
+        {"text": "Anchor box: tập khung mẫu định sẵn, nhiều kích thước và tỉ lệ, rải dày trên ảnh", "say": "Phần lớn các bộ phát hiện học sâu dựa trên anchor. Anchor box là một tập các khung mẫu được định nghĩa trước, với nhiều kích thước và tỉ lệ, rải dày đặc trên ảnh. Hãy coi chúng như những khuôn có sẵn."},
+        {"text": "Gán nhãn anchor: mẫu dương (khớp vật thật) và mẫu âm (nền)", "say": "Theo một chiến lược gán nhãn, mỗi anchor được coi là mẫu dương nếu nó khớp đủ tốt với một vật thật, hoặc mẫu âm nếu nó chỉ chứa nền. Thước đo độ khớp chính là IoU vừa học."},
+        {"text": "Mô hình dự đoán lớp và độ lệch vị trí cho các mẫu dương", "say": "Mô hình không phải vẽ khung từ con số không. Nó chỉ cần dự đoán lớp, và dự đoán cần xê dịch, co giãn khuôn có sẵn bao nhiêu để khớp với vật. Sửa một khuôn gần đúng dễ hơn nhiều so với vẽ mới."}
+      ]
+    },
+    {
+      "kicker": "Compare",
+      "title": "Họ R-CNN: ba đời cải tiến",
+      "slide": 16,
+      "table": {
+        "headers": ["Mô hình", "Sinh ứng viên bằng", "Điểm mới", "Ghi nhớ"],
+        "rows": [
+          ["R-CNN", "Selective search", "CNN trích đặc trưng + SVM + hồi quy tuyến tính", "Đơn giản nhưng chậm"],
+          ["Fast R-CNN", "Selective search", "RoI pooling + mô hình đa nhiệm", "Chính xác hơn 11.5%, nhanh hơn 200 lần"],
+          ["Faster R-CNN", "Region Proposal Network", "RPN chia sẻ đặc trưng với mạng phát hiện", "Một mạng duy nhất, end-to-end"]
+        ]
+      },
+      "points": [
+        {"say": "Họ R-CNN là đại diện của bộ phát hiện hai giai đoạn: giai đoạn một đề xuất vùng, giai đoạn hai phân loại và tinh chỉnh. R-CNN đời đầu dùng thuật toán selective search để sinh ra một lượng lớn khung ứng viên. Mỗi khung được đưa qua mạng tích chập để trích đặc trưng, rồi dùng SVM để phân loại và bộ hồi quy tuyến tính để tinh chỉnh vị trí. Đơn giản, nhưng chậm vì mạng phải chạy lại cho từng khung."},
+        {"say": "Fast R-CNN sửa điều đó. Lớp RoI pooling ánh xạ các vùng có kích thước khác nhau về một kích thước cố định, nên mạng tích chập chỉ cần chạy một lần cho cả ảnh. Thêm vào đó là mô hình đa nhiệm, học phân loại và hồi quy khung cùng lúc. Theo slide, nó chính xác hơn mười một phẩy năm phần trăm và nhanh hơn hơn hai trăm lần so với R-CNN."},
+        {"say": "Faster R-CNN thay nốt selective search, khâu chậm còn lại, bằng một mạng đề xuất vùng, Region Proposal Network, viết tắt RPN. Mạng này dùng chung đặc trưng với mạng phát hiện. Từ đây, sinh ứng viên, trích đặc trưng, phân loại và hồi quy đều nằm trong một mạng duy nhất, học từ đầu đến cuối."}
+      ]
+    },
+    {
+      "kicker": "Algorithm",
+      "title": "Đường đi của một ảnh qua Faster R-CNN",
+      "code": {
+        "lines": [
+          "feature_map ← backbone_CNN(ảnh)            # chạy MỘT lần",
+          "proposals ← RPN(feature_map)              # các anchor có khả năng chứa vật",
+          "for mỗi proposal:",
+          "    f ← RoI_pooling(feature_map, proposal) # về kích thước cố định",
+          "    lớp ← classifier(f)",
+          "    khung ← box_regressor(f)               # tinh chỉnh vị trí",
+          "trả về các (lớp, khung, độ tin cậy)"
+        ]
+      },
+      "points": [
+        {"reveal": [1], "say": "Ghép các mảnh lại thành một dòng chảy. Ảnh đi qua mạng tích chập xương sống đúng một lần, cho ra bản đồ đặc trưng. Đây là cải tiến của Fast R-CNN."},
+        {"reveal": [2], "say": "Mạng đề xuất vùng nhìn vào bản đồ đặc trưng đó và chọn ra những anchor có khả năng chứa vật. Đây là cải tiến của Faster R-CNN, thay cho selective search."},
+        {"reveal": [4], "say": "Với mỗi vùng đề xuất, RoI pooling cắt phần tương ứng trên bản đồ đặc trưng và đưa về một kích thước cố định, dù vùng to hay nhỏ."},
+        {"reveal": [5, 6], "say": "Từ đó hai nhánh chạy song song: một nhánh phân loại, một nhánh hồi quy để tinh chỉnh vị trí khung. Đó là mô hình đa nhiệm."}
       ]
     },
     {
       "title": "Một giai đoạn: YOLO và SSD",
       "slide": 20,
       "points": [
-        {
-          "text": "YOLO: dự đoán hộp và lớp trong một lần truyền, gần thời gian thực",
-          "say": "Họ mô hình một giai đoạn bỏ hẳn bước đề xuất vùng. YOLO, You Only Look Once, dự đoán trực tiếp hộp và lớp trong một lần truyền qua mạng, đổi lấy tốc độ rất nhanh, gần thời gian thực."
-        },
-        {
-          "text": "SSD: hộp mặc định + tích chập nhỏ trên nhiều feature map nhiều tỉ lệ",
-          "say": "SSD, Single Shot Detector, dự đoán điểm lớp và độ lệch hộp cho một tập hộp mặc định, bằng các bộ lọc tích chập nhỏ trên bản đồ đặc trưng. Độ chính xác cao nhờ dự đoán ở nhiều tỉ lệ từ các bản đồ đặc trưng có độ phân giải khác nhau."
-        },
-        {
-          "text": "YOLO chia ảnh thành lưới S×S; mỗi ô dự đoán hộp + độ tin cậy + lớp",
-          "say": "Cụ thể, YOLO chia ảnh thành lưới S nhân S. Ô nào chứa tâm vật thể thì chịu trách nhiệm phát hiện vật đó. Mỗi ô dự đoán một số hộp kèm độ tin cậy, cùng với xác suất các lớp. Tất cả được tính trong một lần truyền, nên rất nhanh."
-        },
-        {
-          "text": "Feature map độ phân giải cao → vật nhỏ; độ phân giải thấp → vật lớn",
-          "say": "Với SSD, các bản đồ đặc trưng có độ phân giải cao ở các lớp đầu giúp phát hiện vật nhỏ, còn các bản đồ độ phân giải thấp ở lớp sâu giúp phát hiện vật lớn. Đây là ý tưởng đa tỉ lệ được dùng rộng rãi về sau."
-        }
+        {"text": "YOLO – You Only Look Once: dự đoán khung và lớp trong một lần truyền qua mạng", "say": "Bộ phát hiện hai giai đoạn giống người đọc kỹ: lướt tìm chỗ đáng chú ý rồi mới xem từng chỗ. Bộ phát hiện một giai đoạn giống người liếc một cái là xong. YOLO, viết tắt của You Only Look Once, dự đoán trực tiếp khung và lớp chỉ trong một lần truyền qua mạng."},
+        {"text": "Đánh đổi: tốc độ rất nhanh, gần thời gian thực", "say": "Bỏ giai đoạn đề xuất vùng giúp YOLO rất nhanh, gần thời gian thực, và đó là thứ nó đánh đổi để có."},
+        {"text": "SSD – Single-Shot Detector: điểm lớp + độ lệch cho một tập khung mặc định cố định", "say": "SSD, Single Shot Detector, cũng là một giai đoạn. Nó dự đoán điểm số lớp và độ lệch khung cho một tập khung mặc định cố định, bằng các bộ lọc tích chập nhỏ áp trên bản đồ đặc trưng."},
+        {"text": "SSD dự đoán ở nhiều tỉ lệ từ các feature map có độ phân giải khác nhau", "say": "SSD đạt độ chính xác cao nhờ dự đoán ở nhiều tỉ lệ: bản đồ đặc trưng độ phân giải cao lo các vật nhỏ, bản đồ độ phân giải thấp lo các vật lớn. Nó cũng tách riêng dự đoán theo từng tỉ lệ khung hình."}
       ]
     },
     {
-      "title": "Không dùng anchor",
+      "title": "Không dùng anchor (anchor-free)",
       "slide": 24,
       "points": [
-        {
-          "text": "Hạn chế anchor: siêu tham số thủ công, mất cân bằng âm–dương",
-          "say": "Phương pháp anchor có ba hạn chế: thiết kế kích thước và tỉ lệ anchor là siêu tham số thủ công, dễ kém tổng quát; phần lớn anchor là mẫu âm, gây mất cân bằng; và hộp vuông vẫn mơ hồ vị trí, lẫn nhiễu nền."
-        },
-        {
-          "text": "CornerNet: biểu diễn hộp bằng góc; corner pooling",
-          "say": "Phương pháp dựa trên điểm góc biểu diễn hộp bằng các góc thưa. CornerNet giới thiệu corner pooling, một lớp pooling mới giúp mạng định vị góc của bounding box tốt hơn."
-        },
-        {
-          "text": "FCOS: dự đoán trực tiếp tại từng vị trí của feature map",
-          "say": "FCOS, Fully Convolutional One Stage, là đại diện của phương pháp dựa trên điểm neo, dự đoán trực tiếp tại từng vị trí trên bản đồ đặc trưng mà không cần anchor box."
-        }
+        {"text": "Nhược điểm của anchor: siêu tham số kích thước, tỉ lệ ảnh hưởng lớn, khó tổng quát hóa", "say": "Anchor tiện, nhưng có ba vấn đề mà slide chỉ ra. Một, kích thước và tỉ lệ của anchor là siêu tham số do con người chọn. Chọn không hợp với dữ liệu thì hiệu năng giảm mạnh, và mô hình khó tổng quát hóa."},
+        {"text": "Đa số anchor là mẫu âm → mất cân bằng dương / âm; nhiễu nền trong khung", "say": "Hai, phần lớn các anchor sinh ra chỉ chứa nền, gây mất cân bằng nghiêm trọng giữa mẫu âm và mẫu dương. Ba, ngay cả anchor dương vẫn chứa nhiễu từ nền và mơ hồ về vị trí."},
+        {"text": "Key-point-based: CornerNet biểu diễn khung bằng các góc, dùng corner pooling", "say": "Nhóm không dùng anchor có hai nhánh. Nhánh dựa trên điểm khóa biểu diễn khung bằng các góc. CornerNet giới thiệu corner pooling, một loại lớp pooling mới giúp mạng định vị các góc của khung tốt hơn."},
+        {"text": "Anchor-point-based: FCOS dự đoán trực tiếp tại từng vị trí của feature map", "say": "Nhánh dựa trên điểm neo có đại diện là FCOS, bộ phát hiện một giai đoạn tích chập hoàn toàn. Nó dự đoán trực tiếp tại từng vị trí trên bản đồ đặc trưng, không cần định nghĩa trước anchor box nào."}
       ]
     },
     {
       "title": "Phát hiện bằng Transformer",
       "slide": 30,
       "points": [
-        {
-          "text": "CNN khó nắm thông tin toàn cục; Transformer bắt phụ thuộc tầm xa",
-          "say": "CNN trích đặc trưng bằng các cửa sổ cục bộ, nên khó nắm thông tin toàn cục. Transformer bắt được phụ thuộc tầm xa và dễ thu thông tin toàn cục."
-        },
-        {
-          "text": "DETR: CNN backbone → flatten + positional encoding → encoder–decoder",
-          "say": "DETR, DEtection TRansformer, dùng CNN backbone học biểu diễn hai chiều, làm phẳng và thêm mã hóa vị trí, đưa vào bộ mã hóa transformer. Bộ giải mã nhận một số cố định các embedding đã học, gọi là object queries, và chú ý đến đầu ra bộ mã hóa."
-        },
-        {
-          "text": "ViT, ViT-FRCNN: transformer thuần cho phát hiện",
-          "say": "ViT, Vision Transformer, và các biến thể như ViT FRCNN là những hướng dùng kiến trúc transformer thuần cho bài toán phát hiện đối tượng."
-        },
-        {
-          "text": "DETR bỏ anchor và NMS; ghép cặp dự đoán–nhãn bằng Hungarian matching",
-          "say": "Điểm đặc biệt của DETR là bỏ được cả anchor lẫn non maximum suppression. Mỗi object query dự đoán tối đa một vật, và trong huấn luyện, dự đoán được ghép cặp một một với nhãn thật bằng thuật toán ghép cặp Hungarian. Đổi lại, DETR huấn luyện lâu hơn và kém hơn với vật nhỏ."
-        }
+        {"text": "CNN nhìn qua cửa sổ tích chập cục bộ → khó nắm thông tin toàn cục", "say": "Mạng CNN trích đặc trưng bằng các cửa sổ tích chập trượt độc lập, mỗi cửa sổ chỉ thấy một vùng nhỏ. Vì thế nó khó nắm thông tin toàn cục một cách hiệu quả."},
+        {"text": "Transformer nắm phụ thuộc tầm xa (long-range dependencies)", "say": "Transformer thì cho mọi vị trí nhìn thấy mọi vị trí khác, nên nắm được các phụ thuộc tầm xa và thông tin toàn cục."},
+        {"text": "DETR: backbone CNN → flatten + positional encoding → transformer encoder", "say": "DETR, viết tắt của Detection Transformer, dùng một backbone CNN để học biểu diễn hai chiều của ảnh. Biểu diễn đó được làm phẳng, cộng thêm mã hóa vị trí, rồi đưa vào bộ mã hóa transformer."},
+        {"text": "Decoder nhận một số cố định object queries, chú ý đến đầu ra encoder", "say": "Bộ giải mã nhận một số lượng nhỏ, cố định, các embedding vị trí đã học, gọi là object queries. Mỗi query giống một người đi hỏi: ở đây có vật nào không. Chúng chú ý đến đầu ra của bộ mã hóa để trả lời. Ngoài ra còn có ViT và ViT-FRCNN áp dụng kiến trúc transformer cho phát hiện."}
       ]
     },
     {
+      "kicker": "Compare",
+      "title": "Bốn nhóm phương pháp học sâu",
+      "table": {
+        "headers": ["Nhóm", "Đại diện", "Ý chính", "Đánh đổi"],
+        "rows": [
+          ["Anchor, hai giai đoạn", "R-CNN, Fast, Faster R-CNN", "Đề xuất vùng rồi phân loại + hồi quy", "Chính xác, chậm hơn"],
+          ["Anchor, một giai đoạn", "YOLO, SSD", "Dự đoán khung và lớp trong một lượt", "Nhanh, gần thời gian thực"],
+          ["Anchor-free", "CornerNet, FCOS", "Dùng góc hoặc điểm, không cần khung mẫu", "Bớt siêu tham số anchor"],
+          ["Transformer", "DETR, ViT-FRCNN", "Attention nắm thông tin toàn cục", "Dùng object queries"]
+        ]
+      },
+      "points": [
+        {"say": "Bảng tổng hợp bốn nhóm. Nhóm dựa trên anchor hai giai đoạn gồm họ R-CNN: đề xuất vùng trước rồi mới phân loại và hồi quy."},
+        {"say": "Nhóm dựa trên anchor một giai đoạn gồm YOLO và SSD: bỏ khâu đề xuất vùng, dự đoán thẳng trong một lượt, đổi lấy tốc độ."},
+        {"say": "Nhóm không dùng anchor gồm CornerNet với các góc và FCOS với các điểm, tránh được việc thiết kế siêu tham số anchor."},
+        {"say": "Nhóm Transformer gồm DETR và ViT-FRCNN, dùng cơ chế chú ý để nắm thông tin toàn cục, với object queries ở bộ giải mã."}
+      ]
+    },
+    {
+      "kicker": "Exam traps",
+      "title": "Những chỗ đề thi hay gài",
+      "table": {
+        "headers": ["Câu hỏi", "Đáp án đúng"],
+        "rows": [
+          ["IoU gần 1 nghĩa là gì?", "Khung dự đoán khớp rất sát khung thật"],
+          ["mAP là trung bình của cái gì?", "Của AP trên $K$ lớp; AP lấy từ đường cong precision – recall"],
+          ["Fast R-CNN nhanh nhờ đâu?", "RoI pooling + mô hình đa nhiệm"],
+          ["Faster R-CNN thay selective search bằng gì?", "Region Proposal Network (RPN)"],
+          ["Mô hình nào là anchor-free?", "CornerNet, FCOS (YOLO, SSD thì không)"]
+        ]
+      },
+      "points": [
+        {"say": "Năm cái bẫy. Một: IoU gần một nghĩa là khung dự đoán khớp rất sát khung thật. Công thức là giao chia hợp."},
+        {"say": "Hai: mAP là trung bình AP trên tất cả các lớp, và AP được suy ra từ đường cong precision recall. Đừng nhầm với trung bình của precision."},
+        {"say": "Ba: Fast R-CNN nhanh nhờ lớp RoI pooling và mô hình đa nhiệm. Các con số cần nhớ là mười một phẩy năm phần trăm và hai trăm lần."},
+        {"say": "Bốn: Faster R-CNN thay selective search bằng mạng đề xuất vùng RPN, chia sẻ đặc trưng với mạng phát hiện."},
+        {"say": "Năm: các mô hình không dùng anchor là CornerNet và FCOS. YOLO và SSD trong slide được xếp vào nhóm dựa trên anchor."}
+      ]
+    },
+    {
+      "kicker": "Summary",
       "title": "Tổng kết chương 11",
       "points": [
-        {
-          "text": "Detection = classification + localization",
-          "say": "Tổng kết chương mười một. Phát hiện đối tượng là phân loại cộng định vị."
-        },
-        {
-          "text": "IoU, mAP, mAR; VOC 20, COCO 80, ImageNet 200, Open Images 600",
-          "say": "Độ đo gồm IoU, mAP và mAR. Bộ dữ liệu: VOC hai mươi lớp, COCO tám mươi, ImageNet hai trăm, Open Images sáu trăm."
-        },
-        {
-          "text": "R-CNN → Fast (RoI pooling) → Faster (RPN); YOLO, SSD",
-          "say": "Họ R-CNN đi từ R-CNN, sang Fast R-CNN với RoI pooling, rồi Faster R-CNN với RPN. YOLO và SSD là mô hình một giai đoạn."
-        },
-        {
-          "text": "Anchor-free: CornerNet, FCOS; Transformer: DETR",
-          "say": "Không dùng anchor có CornerNet và FCOS, còn dựa trên transformer có DETR. Hẹn gặp các bạn ở chương cuối cùng: phân loại ảnh."
-        }
+        {"text": "Detection = classification + localization; chấm bằng IoU, mAP, mAR", "say": "Tổng kết chương mười một. Phát hiện đối tượng là phân loại cộng định vị, được chấm điểm bằng IoU cho từng khung, và mAP, mAR cho cả mô hình."},
+        {"text": "Truyền thống: chọn vùng → đặc trưng thủ công → phân loại; cửa sổ trượt tốn kém", "say": "Phương pháp truyền thống gồm chọn vùng, trích đặc trưng thủ công và phân loại, với nhược điểm là cửa sổ trượt đa tỉ lệ rất tốn kém."},
+        {"text": "Anchor-based: R-CNN → Fast → Faster (RPN); một giai đoạn: YOLO, SSD", "say": "Nhóm dựa trên anchor đi từ R-CNN đến Fast rồi Faster R-CNN với RPN, và nhóm một giai đoạn là YOLO và SSD."},
+        {"text": "Anchor-free: CornerNet, FCOS. Transformer: DETR, ViT", "say": "Nhóm không dùng anchor có CornerNet và FCOS, nhóm Transformer có DETR và ViT. Trong mọi bộ phát hiện đều có một khâu phân loại. Chương mười hai, chương cuối, sẽ mổ xẻ chính khâu đó: từ bộ phân loại khoảng cách tối thiểu, Bayes, đến mạng nơ-ron."}
       ]
     }
   ]

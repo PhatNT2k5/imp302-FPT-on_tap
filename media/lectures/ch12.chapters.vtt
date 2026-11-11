@@ -1,0 +1,55 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:36.770
+Giới thiệu chương
+
+00:00:36.770 --> 00:01:15.260
+Những gì ta đã có
+
+00:01:15.260 --> 00:02:13.110
+Mẫu, lớp mẫu và bốn giai đoạn nhận dạng
+
+00:02:13.110 --> 00:02:50.260
+Bộ phân loại khoảng cách tối thiểu
+
+00:02:50.260 --> 00:03:57.640
+Phân loại một mẫu bằng hai cách
+
+00:03:57.640 --> 00:04:25.040
+Đối sánh tương quan (template matching)
+
+00:04:25.040 --> 00:05:16.570
+Bộ phân loại Bayes: kết hợp bằng chứng và tần suất
+
+00:05:16.570 --> 00:05:50.230
+Hàm quyết định Bayes với tổn thất 0-1
+
+00:05:50.230 --> 00:06:39.140
+Bayes: lớp phổ biến hơn chưa chắc thắng
+
+00:06:39.140 --> 00:07:27.150
+Bayes cho lớp mẫu phân phối Gauss
+
+00:07:27.150 --> 00:08:08.110
+Perceptron: một đường thẳng tự sửa sai
+
+00:08:08.110 --> 00:08:55.570
+Thuật toán perceptron
+
+00:08:55.570 --> 00:10:21.160
+Chạy perceptron bằng tay (α = 1, bắt đầu từ 0)
+
+00:10:21.160 --> 00:11:15.170
+Từ perceptron đến mạng nơ-ron sâu
+
+00:11:15.170 --> 00:12:20.590
+Các kiến trúc CNN kinh điển
+
+00:12:20.590 --> 00:12:57.390
+Ba hướng phân loại
+
+00:12:57.390 --> 00:13:37.790
+Những chỗ đề thi hay gài
+
+00:13:37.790 --> 00:14:29.208
+Tổng kết chương 12 và toàn môn

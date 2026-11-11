@@ -5,186 +5,273 @@
       "kind": "intro",
       "title": "Giới thiệu chương",
       "points": [
-        {
-          "text": "Mở đầu",
-          "say": "Chào các bạn, chương chín là phân đoạn ảnh và video. Phân đoạn là chia ảnh thành các vùng thỏa mãn những điều kiện nhất định, ví dụ tách người ra khỏi nền, hay tách từng chiếc xe trên đường."
-        },
-        {
-          "text": "Hai đặc tính cơ bản",
-          "say": "Các thuật toán phân đoạn ảnh xám dựa trên một trong hai đặc tính. Sự gián đoạn, discontinuity, tức là tìm biên nơi cường độ thay đổi đột ngột, gọi là phân đoạn dựa trên cạnh. Và sự tương đồng, similarity, tức là gom các vùng giống nhau theo tiêu chí, gọi là phân đoạn dựa trên vùng. Câu này xuất hiện ngay trong những câu đầu của bộ đề."
-        }
+        {"text": "Mở đầu", "say": "Chào các bạn, chương chín là phân đoạn ảnh và video. Đây là bước chuyển từ xử lý ảnh sang hiểu ảnh: thay vì làm đẹp từng pixel, ta bắt đầu gom pixel thành các vùng có ý nghĩa."},
+        {"text": "Lộ trình", "say": "Lộ trình gồm: phân đoạn bằng K-means và siêu điểm ảnh SLIC, phân đoạn bằng cắt đồ thị và Normalized Cut, dùng chuyển động để phân đoạn, phân đoạn video và theo dõi đối tượng, rồi các phương pháp học sâu. Ba thuật toán chính đều có ví dụ tính tay."}
       ]
     },
     {
-      "title": "Phân đoạn bằng K-means",
+      "kicker": "Recap",
+      "title": "Những gì ta mang theo vào chương này",
+      "points": [
+        {"text": "Chương 1: ngưỡng hóa, Otsu, gán nhãn vùng = phân đoạn đơn giản nhất", "say": "Thật ra các bạn đã phân đoạn từ chương một. Ngưỡng hóa và Otsu chia ảnh thành nền và vật thể, gán nhãn vùng đếm từng đối tượng. Nhưng ngưỡng hóa chỉ xử lý được hai lớp và chỉ nhìn vào mức xám."},
+        {"text": "Chương 5: LBG trong lượng tử hóa vector = gán vào tâm gần nhất, rồi cập nhật tâm", "say": "Ở chương năm, thuật toán LBG lặp hai bước: gán mỗi vector vào tâm gần nhất, rồi dời tâm về trung bình nhóm. Hôm nay đúng thuật toán đó xuất hiện dưới tên K-means."},
+        {"text": "Chương 6: khác biệt giữa các khung hình là do vật chuyển động", "say": "Ở chương sáu, khác biệt giữa các khung hình liên tiếp chủ yếu do vật thể chuyển động. Phần sau của chương này dùng chính khác biệt đó để tách vật chuyển động khỏi nền."}
+      ]
+    },
+    {
+      "kicker": "Intuition",
+      "title": "Hai cách nhìn bài toán phân đoạn",
+      "slide": 3,
+      "points": [
+        {"text": "Phân đoạn = chia ảnh thành các vùng thỏa một số điều kiện", "say": "Phân đoạn là chia ảnh thành các vùng thỏa mãn một số điều kiện. Hãy tưởng tượng tô màu một bức tranh: các bạn phải quyết định đâu là ranh giới giữa bầu trời và ngọn núi."},
+        {"text": "Discontinuity: tìm chỗ cường độ đổi đột ngột → phân đoạn dựa trên biên", "say": "Có hai cách. Cách một dựa trên sự gián đoạn: tìm những chỗ cường độ thay đổi đột ngột, đó là đường biên. Giống như ta lần theo nét viền của hình vẽ."},
+        {"text": "Similarity: gom các pixel giống nhau → phân đoạn dựa trên vùng", "say": "Cách hai dựa trên sự tương đồng: gom những pixel giống nhau thành một vùng. Giống như ta đổ màu vào một vùng có cùng sắc độ. K-means, SLIC và cắt đồ thị trong chương này đều thuộc cách thứ hai."}
+      ]
+    },
+    {
+      "kicker": "Algorithm",
+      "title": "K-means cho phân đoạn vùng",
       "slide": 9,
+      "code": {
+        "lines": [
+          "mỗi pixel → một vector đặc trưng (xám: 1 số, màu: 3 số)",
+          "khởi tạo k tâm cụm",
+          "repeat:",
+          "    gán mỗi pixel vào cụm có tâm gần nhất",
+          "    tâm mới ← trung bình các pixel trong cụm",
+          "until ‖tâm mới − tâm cũ‖ < ngưỡng (residual error)"
+        ]
+      },
       "points": [
-        {
-          "text": "Mỗi pixel là một quan sát: vô hướng (xám) hoặc vector 3 chiều (màu)",
-          "say": "Cách đầu tiên là phân cụm bằng K-means. Mỗi pixel, hay vector đặc trưng của nó, được coi là một quan sát: một số vô hướng với ảnh xám, hoặc vector ba chiều với ảnh màu."
-        },
-        {
-          "text": "Khởi tạo k tâm → gán mẫu vào tâm gần nhất → cập nhật tâm → lặp",
-          "say": "Thuật toán khởi tạo k tâm cụm, gán mỗi mẫu vào cụm có tâm gần nhất, cập nhật tâm bằng trung bình các mẫu được gán, rồi lặp lại."
-        },
-        {
-          "text": "Dừng khi sai số dư giữa tâm mới và cũ nhỏ hơn ngưỡng",
-          "say": "Thuật toán dừng khi sai số dư, tức tổng khoảng cách Euclid giữa tâm cụm mới và cũ, nhỏ hơn một ngưỡng cho trước."
-        },
-        {
-          "text": "Phải chọn trước k; kết quả phụ thuộc khởi tạo; không xét vị trí pixel",
-          "say": "K-means có ba hạn chế các bạn cần biết. Phải chọn trước số cụm k. Kết quả phụ thuộc vào khởi tạo nên có thể rơi vào cực tiểu cục bộ. Và nếu chỉ dùng màu, K-means không xét vị trí, nên các pixel cùng màu ở hai góc ảnh vẫn chung một cụm, tạo ra vùng rời rạc."
-        }
+        {"reveal": [1], "say": "K-means coi mỗi pixel là một quan sát. Với ảnh xám, quan sát là một con số. Với ảnh màu, đó là một vector ba chiều."},
+        {"reveal": [2], "say": "Ta chọn trước số cụm k, và khởi tạo k tâm cụm."},
+        {"reveal": [4], "say": "Vòng lặp gồm hai bước. Bước gán: mỗi pixel đi về cụm có tâm gần nó nhất."},
+        {"reveal": [5], "say": "Bước cập nhật: tâm của mỗi cụm được dời về trung bình các pixel vừa được gán vào."},
+        {"reveal": [6], "say": "Lặp cho đến khi sai số dư, tức là khoảng cách giữa tâm mới và tâm cũ, nhỏ hơn một ngưỡng cho trước. Lúc đó các tâm gần như không đổi nữa."}
       ]
     },
     {
-      "title": "Siêu điểm ảnh và SLIC",
+      "kicker": "Worked example",
+      "title": "K-means với 6 pixel, k = 2",
+      "table": {
+        "headers": ["Vòng", "Tâm đang dùng", "Cụm A", "Cụm B", "Tâm mới"],
+        "rows": [
+          ["1", "1 và 2", "{1}", "{2, 3, 10, 11, 12}", "1 và 7.6"],
+          ["2", "1 và 7.6", "{1, 2, 3}", "{10, 11, 12}", "2 và 11"],
+          ["3", "2 và 11", "{1, 2, 3}", "{10, 11, 12}", "2 và 11 → dừng"]
+        ]
+      },
+      "points": [
+        {"say": "Lấy sáu pixel có mức xám một, hai, ba, mười, mười một, mười hai. Nhìn bằng mắt ta biết có hai nhóm, một nhóm tối và một nhóm sáng. Để thấy thuật toán tự sửa sai, ta cố tình khởi tạo hai tâm rất tệ là một và hai. Vòng một: pixel một gần tâm một nhất, các pixel còn lại đều gần tâm hai hơn. Cập nhật: cụm A chỉ có một, tâm vẫn là một. Cụm B có trung bình bảy phẩy sáu."},
+        {"say": "Vòng hai: dùng tâm một và bảy phẩy sáu. Pixel hai và ba giờ gần tâm một hơn, nên chuyển sang cụm A. Pixel mười, mười một, mười hai ở lại cụm B. Cập nhật: tâm A bằng hai, tâm B bằng mười một."},
+        {"say": "Vòng ba: dùng tâm hai và mười một. Không pixel nào đổi cụm, tâm không đổi, thuật toán dừng. Dù khởi tạo rất tệ, chỉ sau hai vòng ta đã có đúng hai vùng tối và sáng. Nhưng nhớ rằng với những khởi tạo khác, K-means có thể dừng ở kết quả kém hơn."}
+      ]
+    },
+    {
+      "kicker": "Intuition",
+      "title": "Siêu điểm ảnh (superpixels)",
+      "slide": 11,
+      "points": [
+        {"text": "Thay lưới pixel bằng các vùng nhỏ có ý nghĩa cảm nhận hơn từng pixel", "say": "K-means trên toàn ảnh có một vấn đề: nó chỉ nhìn màu, không nhìn vị trí. Hai pixel cùng màu ở hai góc ảnh vẫn bị gom vào một cụm. Siêu điểm ảnh giải quyết bằng cách gom các pixel gần nhau và giống nhau thành những mảnh nhỏ, giống như các mảnh ghép xếp hình."},
+        {"text": "Mục tiêu: giảm tính toán, bỏ chi tiết thừa, nhưng giữ ranh giới thật", "say": "Mục tiêu là giảm khối lượng tính toán và bỏ chi tiết không liên quan. Một ảnh hàng triệu pixel có thể chỉ còn vài trăm siêu điểm ảnh. Điều kiện bắt buộc là ranh giới giữa các vùng thật phải được giữ nguyên."}
+      ]
+    },
+    {
+      "kicker": "Formula",
+      "title": "SLIC: khoảng cách kết hợp màu và vị trí",
+      "slide": 13,
+      "formula": "D = \\sqrt{ \\underbrace{d_c^2}_{\\text{khác màu}} + \\underbrace{\\left(\\frac{d_s}{s}\\right)^2}_{\\text{xa vị trí}} \\underbrace{c^2}_{\\text{trọng số}} }",
+      "points": [
+        {"text": "Vector 5 chiều: 3 thành phần màu + 2 tọa độ $(x, y)$", "say": "SLIC là một biến thể của K-means. Mỗi pixel được mô tả bằng vector năm chiều: ba thành phần màu và hai tọa độ."},
+        {"text": "$d_c$: khoảng cách màu, $d_s$: khoảng cách không gian, $s$: khoảng cách lưới", "say": "Khoảng cách giữa pixel và tâm cụm có hai phần: phần khác màu và phần xa về vị trí. Phần vị trí được chia cho s, khoảng cách giữa các tâm trên lưới ban đầu, để hai phần có cùng thang đo."},
+        {"text": "$c$ lớn → ưu tiên gọn về không gian; $c$ nhỏ → bám sát ranh giới ảnh", "say": "Hằng số c quyết định bên nào quan trọng hơn. C lớn thì vị trí quan trọng hơn, siêu điểm ảnh gọn và đều. C nhỏ thì màu quan trọng hơn, siêu điểm ảnh bám sát ranh giới ảnh nhưng hình dạng kém đều. Ta kiểm chứng bằng số ngay sau đây."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "Trọng số $c$ đổi quyết định của SLIC",
+      "table": {
+        "headers": ["Tâm cụm ($s = 10$)", "$d_c$", "$d_s$", "$D$ khi $c = 1$", "$D$ khi $c = 20$"],
+        "rows": [
+          ["Tâm A: cùng màu, ở xa", "4", "8", "4.08 ✓", "16.49"],
+          ["Tâm B: khác màu, ở gần", "8", "2", "8.00", "8.94 ✓"]
+        ]
+      },
+      "points": [
+        {"reveal": 1, "say": "Một pixel đang phân vân giữa hai tâm cụm. Tâm A có màu gần giống, khoảng cách màu là bốn, nhưng ở xa, khoảng cách không gian là tám. Tâm B có màu khác hơn, khoảng cách màu là tám, nhưng ở rất gần, khoảng cách không gian là hai. Khoảng cách lưới s bằng mười."},
+        {"reveal": 2, "say": "Khi c bằng một, phần vị trí gần như không đáng kể. Khoảng cách đến A là bốn phẩy không tám, đến B là tám. Pixel chọn A, tức là chọn theo màu."},
+        {"reveal": [1, 2], "say": "Khi c bằng hai mươi, phần vị trí được nhân lên rất mạnh. Khoảng cách đến A tăng vọt lên mười sáu phẩy bốn chín, đến B chỉ tám phẩy chín bốn. Pixel chọn B, tức là chọn theo vị trí. Đây chính là ý nghĩa của câu trong slide: c lớn làm siêu điểm ảnh gọn, c nhỏ làm siêu điểm ảnh bám màu và ranh giới."}
+      ]
+    },
+    {
+      "kicker": "Algorithm",
+      "title": "Thuật toán SLIC",
       "slide": 12,
+      "code": {
+        "lines": [
+          "đặt tâm cụm trên lưới đều, cách nhau s pixel",
+          "dời mỗi tâm đến điểm gradient thấp nhất trong ô 3×3",
+          "repeat:",
+          "    với mỗi tâm: chỉ xét pixel trong vùng 2s × 2s quanh nó",
+          "    gán pixel vào tâm có D nhỏ nhất",
+          "    cập nhật tâm = trung bình vector 5 chiều của cụm",
+          "until hội tụ",
+          "hậu xử lý: thay pixel bằng giá trị trung bình vùng của nó"
+        ]
+      },
       "points": [
-        {
-          "text": "Superpixel: gom pixel thành vùng sơ khai có ý nghĩa, giữ đúng ranh giới",
-          "say": "Siêu điểm ảnh, superpixel, gom các pixel thành những vùng sơ khai có ý nghĩa cảm nhận hơn từng pixel riêng lẻ. Mục tiêu là giảm tải tính toán, đồng thời vẫn phải giữ được ranh giới thực giữa các vùng."
-        },
-        {
-          "text": "SLIC: K-means trên vector 5 chiều (3 màu + 2 tọa độ)",
-          "say": "Thuật toán SLIC, Simple Linear Iterative Clustering, là một biến thể của K-means dùng vector năm chiều: ba thành phần màu và hai tọa độ không gian."
-        },
-        {
-          "text": "Tâm dời về gradient thấp nhất 3×3; chỉ tìm trong vùng 2s×2s",
-          "say": "SLIC khởi tạo tâm trên lưới đều, rồi dời mỗi tâm đến vị trí có gradient thấp nhất trong lân cận ba nhân ba. Sau đó mỗi pixel chỉ được so với các tâm trong vùng hai s nhân hai s, chứ không phải toàn ảnh, nên nhanh hơn K-means chuẩn rất nhiều."
-        },
-        {
-          "text": "Hằng số c: lớn → gọn, đều; nhỏ → bám sát ranh giới",
-          "say": "Khoảng cách D trong SLIC kết hợp khoảng cách màu và khoảng cách không gian với hằng số c. c lớn ưu tiên siêu điểm ảnh gọn và đều, c nhỏ giúp bám sát ranh giới ảnh hơn nhưng hình dạng kém đều."
-        }
+        {"reveal": [1, 2], "say": "SLIC khởi tạo các tâm cụm trên một lưới đều. Sau đó dời mỗi tâm đến điểm có gradient thấp nhất trong ô ba nhân ba xung quanh, để tâm không rơi đúng lên một cạnh hay một điểm nhiễu."},
+        {"reveal": [4, 5], "say": "Khác biệt quan trọng nhất so với K-means: mỗi tâm chỉ tìm pixel trong vùng hai s nhân hai s quanh nó, chứ không quét cả ảnh. Nhờ vậy SLIC nhanh hơn K-means chuẩn rất nhiều."},
+        {"reveal": [6, 7], "say": "Cập nhật tâm và lặp đến khi hội tụ, giống K-means."},
+        {"reveal": [8], "say": "Cuối cùng là hậu xử lý: mỗi pixel trong một vùng được thay bằng giá trị trung bình của vùng đó, cho ra ảnh siêu điểm ảnh."}
       ]
     },
     {
+      "kicker": "Intuition",
       "title": "Phân đoạn bằng cắt đồ thị",
-      "slide": 18,
+      "slide": 17,
       "points": [
-        {
-          "text": "Pixel = nút; trọng số cạnh w(i,j) tỉ lệ với độ tương đồng",
-          "say": "Phương pháp cắt đồ thị biểu diễn mỗi pixel là một nút của đồ thị. Trọng số cạnh w i j tỉ lệ thuận với độ tương đồng giữa hai nút. Mục tiêu là chia nút thành các nhóm sao cho trong nhóm thì giống nhau, giữa các nhóm thì khác nhau."
-        },
-        {
-          "text": "Thêm nút source và sink; min cut = tổng trọng số nhỏ nhất để tách",
-          "say": "Người ta thêm hai nút đặc biệt là source và sink, đại diện cho tiền cảnh và hậu cảnh. Cắt cực tiểu, minimum cut, là tập cạnh có tổng trọng số nhỏ nhất mà khi bỏ đi sẽ tách source khỏi sink."
-        },
-        {
-          "text": "Kết quả thường vượt trội nhưng phức tạp và chậm hơn",
-          "say": "Cắt đồ thị thường cho kết quả vượt trội so với các phương pháp khác, nhưng cái giá là độ phức tạp cao và thời gian chạy chậm hơn."
-        },
-        {
-          "text": "Ví dụ: tách vật thể với vài nét đánh dấu của người dùng",
-          "say": "Ứng dụng quen thuộc của cắt đồ thị là tách vật thể khỏi nền trong các phần mềm chỉnh ảnh. Người dùng chỉ cần vẽ vài nét đánh dấu đâu là vật, đâu là nền. Các nét này gắn chặt pixel với source hoặc sink, và thuật toán min cut tự tìm đường biên tốt nhất giữa chúng."
-        }
+        {"text": "Mỗi pixel là một nút; cạnh nối hai nút có trọng số $w(i,j)$ = độ giống nhau", "say": "Một cách nhìn hoàn toàn khác: coi ảnh là một mạng lưới. Mỗi pixel là một nút. Hai nút được nối bằng một cạnh có trọng số w, càng giống nhau thì trọng số càng lớn. Hãy hình dung các sợi dây chun: pixel giống nhau được nối bằng dây chun dày, pixel khác nhau nối bằng dây mảnh."},
+        {"text": "Cắt = chia nút thành hai tập $A$, $B$; chi phí = tổng trọng số các cạnh bị cắt", "say": "Phân đoạn là cầm kéo cắt mạng lưới thành hai phần A và B. Chi phí của nhát cắt là tổng trọng số các dây bị cắt đứt. Ta muốn cắt những dây mảnh, tức là cắt giữa các pixel khác nhau."},
+        {"text": "Thêm nút source và sink: xác suất là tiền cảnh hoặc hậu cảnh", "say": "Trong phiên bản có minimum cut, ta thêm hai nút đặc biệt là nguồn và đích, đại diện cho tiền cảnh và hậu cảnh. Cắt cực tiểu là nhát cắt có tổng trọng số nhỏ nhất mà tách được nguồn khỏi đích."},
+        {"text": "Kết quả thường tốt hơn, nhưng cài đặt phức tạp và chạy chậm hơn", "say": "Phương pháp này thường cho kết quả tốt hơn các cách khác, nhưng cái giá là cài đặt phức tạp hơn và chạy chậm hơn."}
       ]
     },
     {
-      "title": "Normalized Cut",
+      "kicker": "Formula",
+      "title": "Normalized Cut: chống nhát cắt quá nhỏ",
+      "slide": 20,
+      "formula": "Ncut(A,B) = \\frac{cut(A,B)}{\\underbrace{assoc(A,V)}_{\\text{tổng nối của } A}} + \\frac{cut(A,B)}{assoc(B,V)}",
+      "points": [
+        {"text": "Min cut thích cắt riêng một nút lẻ loi vì ít cạnh bị cắt", "say": "Cắt cực tiểu có một tật xấu: nó rất thích cắt riêng một nút lẻ loi, vì nút đó có ít dây nối nên cắt rẻ. Kết quả là những vùng chỉ có một hai pixel, vô nghĩa."},
+        {"text": "Ncut chia chi phí cắt cho tổng nối của mỗi phần", "say": "Normalized Cut sửa bằng cách chia chi phí cắt cho tổng mức độ kết nối của mỗi phần với toàn đồ thị. Một phần nhỏ xíu có tổng kết nối rất nhỏ, nên phân số của nó trở nên rất lớn, và nhát cắt đó bị phạt nặng."},
+        {"text": "$Ncut(A,B) = 2 - Nassoc(A,B)$", "say": "Slide còn cho một đẳng thức: Ncut bằng hai trừ Nassoc, trong đó Nassoc đo mức liên kết bên trong mỗi phần. Nghĩa là làm nhỏ Ncut cũng chính là làm lớn liên kết bên trong. Hai mục tiêu thực chất là một."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "Min cut và Ncut trên đồ thị 5 nút",
+      "table": {
+        "headers": ["Cách cắt", "Cạnh bị cắt", "cut", "Ncut"],
+        "rows": [
+          ["Đồ thị", "1–2: 9, 3–4: 8, 1–3: 1, 2–4: 2, 4–5: 1", "—", "—"],
+          ["Tách riêng {5}", "4–5", "1", "1/1 + 1/41 ≈ 1.02"],
+          ["{1, 2} | {3, 4, 5}", "1–3, 2–4", "3", "3/21 + 3/21 ≈ 0.29"]
+        ]
+      },
+      "points": [
+        {"say": "Xét một đồ thị năm nút. Nút một và hai nối nhau rất chặt, trọng số chín. Nút ba và bốn cũng chặt, trọng số tám. Giữa hai nhóm chỉ có hai dây mảnh, trọng số một và hai. Còn nút năm chỉ treo vào nút bốn bằng một dây trọng số một."},
+        {"say": "Nhát cắt tách riêng nút năm chỉ cắt một dây, chi phí là một. Đó là nhát cắt rẻ nhất, nên cắt cực tiểu sẽ chọn nó. Nhưng tính Ncut: tổng nối của nút năm chỉ là một, nên phân số đầu bằng một. Phần còn lại có tổng nối bốn mươi mốt. Ncut xấp xỉ một phẩy không hai, rất lớn."},
+        {"say": "Nhát cắt chia nhóm một hai khỏi nhóm ba bốn năm cắt hai dây, chi phí là ba, đắt hơn. Nhưng mỗi bên có tổng nối hai mươi mốt, nên Ncut chỉ khoảng không phẩy hai chín. Ncut chọn nhát cắt này, đúng với hai nhóm mà mắt ta nhìn thấy. Kiểm tra đẳng thức: Nassoc bằng mười tám phần hai mốt nhân hai, khoảng một phẩy bảy một, và hai trừ một phẩy bảy một đúng bằng không phẩy hai chín."}
+      ]
+    },
+    {
+      "kicker": "Algorithm",
+      "title": "Thuật toán phân đoạn bằng cắt đồ thị",
       "slide": 23,
+      "code": {
+        "lines": [
+          "dựng đồ thị có trọng số G = (V, E); tính ma trận W và D",
+          "giải (D − W) y = λ D y",
+          "lấy vector riêng ứng với trị riêng NHỎ THỨ HAI",
+          "dùng vector đó chia đôi đồ thị sao cho Ncut(A, B) nhỏ nhất",
+          "nếu chưa đủ K phần: kiểm tra độ ổn định của nhát cắt",
+          "chia đệ quy các phần nếu cần"
+        ]
+      },
       "points": [
-        {
-          "text": "Ncut: chi phí cắt chia cho tổng kết nối → tránh vùng quá nhỏ",
-          "say": "Dùng trực tiếp tổng trọng số cắt thường thiên vị việc cắt ra các vùng rất nhỏ. Vì vậy người ta dùng Normalized Cut, Ncut, tính chi phí cắt như một phần của tổng kết nối đến toàn bộ nút."
-        },
-        {
-          "text": "Giải (D − W)y = λDy, dùng vector riêng ứng trị riêng nhỏ thứ hai",
-          "say": "Thuật toán: xây dựng ma trận W và D, giải bài toán trị riêng D trừ W nhân y bằng lambda D y, lấy vector riêng ứng với trị riêng nhỏ thứ hai để chia đôi đồ thị sao cho Ncut nhỏ nhất, rồi chia đệ quy nếu cần thêm phân hoạch."
-        }
+        {"reveal": [1], "say": "Thử mọi cách cắt là không khả thi với ảnh thật, nên ta dùng đại số tuyến tính. Bước một, dựng đồ thị có trọng số, tính ma trận trọng số W và ma trận đường chéo D chứa tổng nối của mỗi nút."},
+        {"reveal": [2, 3], "say": "Bước hai, giải bài toán trị riêng trong slide, rồi lấy vector riêng ứng với trị riêng nhỏ thứ hai. Không phải nhỏ nhất, vì trị riêng nhỏ nhất ứng với nghiệm tầm thường không chia gì cả. Đây là chỗ đề thi rất hay hỏi."},
+        {"reveal": [4], "say": "Bước ba, dùng vector riêng đó để chia đôi đồ thị: chọn điểm tách sao cho Ncut nhỏ nhất."},
+        {"reveal": [5, 6], "say": "Nếu chưa đủ K phần, kiểm tra xem phần hiện tại có nên chia tiếp không dựa vào độ ổn định của nhát cắt, rồi chia đệ quy các phần nếu cần."}
       ]
     },
     {
-      "title": "Dùng chuyển động để phân đoạn",
-      "slide": 25,
+      "kicker": "Worked example",
+      "title": "Dùng chuyển động: ảnh sai khác",
+      "slide": 24,
+      "grid": [
+        {"label": "Khung 1", "cells": [[10, 10, 10], [10, 200, 10], [10, 10, 10]], "accent": [[1, 1]]},
+        {"label": "Khung 2", "cells": [[10, 10, 10], [10, 12, 200], [10, 10, 10]], "accent": [[1, 2]]},
+        {"label": "|khác| > 20", "cells": [[0, 0, 0], [0, 1, 1], [0, 0, 0]], "warn": [[1, 1], [1, 2]]}
+      ],
       "points": [
-        {
-          "text": "Ảnh sai khác và ADI: so ảnh tham chiếu với mọi khung sau",
-          "say": "Chuyển động cũng là một gợi ý mạnh để phân đoạn. Kỹ thuật không gian đơn giản nhất là so sánh trực tiếp hai khung để có ảnh sai khác. Ảnh sai khác tích lũy, ADI, so sánh một ảnh tham chiếu với mọi ảnh tiếp theo trong chuỗi."
-        },
-        {
-          "text": "Miền tần số: vật đi đều tạo sóng sin, tần số tỉ lệ vận tốc",
-          "say": "Kỹ thuật miền tần số: nếu vật thể đi một pixel mỗi khung theo một hướng cố định, phép chiếu tổng cường độ qua các khung sẽ tạo ra một sóng sin phức với tần số tỉ lệ với vận tốc. Tìm đỉnh trong phổ Fourier là biết vận tốc."
-        },
-        {
-          "text": "Thống kê: Gauss, Fourier, hiệp phương sai, nhãn",
-          "say": "Ngoài ra có phương pháp thống kê với bốn nhóm đặc trưng: thống kê Gauss đo biến thiên theo hướng, thống kê Fourier đo năng lượng trong một băng tần, thống kê hiệp phương sai đo tương quan giữa các kênh, và thống kê nhãn đo mức đồng nhất."
-        }
+        {"reveal": [1, 2], "text": "Một chấm sáng dịch sang phải một pixel giữa hai khung", "say": "Bây giờ thêm chiều thời gian. Kỹ thuật không gian đơn giản nhất là so sánh trực tiếp hai khung hình từng pixel một. Trong ví dụ, một chấm sáng giá trị hai trăm dịch sang phải một pixel. Pixel ở giữa cũng thay đổi nhẹ từ mười lên mười hai do nhiễu."},
+        {"reveal": 3, "text": "Ngưỡng hóa độ chênh lệch → ảnh sai khác, bỏ qua nhiễu nhỏ", "say": "Lấy trị tuyệt đối độ chênh lệch, rồi ngưỡng hóa với ngưỡng hai mươi. Thay đổi nhỏ do nhiễu bị loại. Chỉ còn hai pixel sáng: vị trí cũ và vị trí mới của chấm. Đó là ảnh sai khác. Lưu ý nó đánh dấu cả chỗ vật vừa rời đi, không chỉ chỗ vật đang đứng."},
+        {"reveal": 3, "text": "ADI: so một ảnh tham chiếu với mọi khung tiếp theo, cộng dồn", "say": "Ảnh sai khác tích lũy, ADI, mở rộng ý này: so một ảnh tham chiếu với mọi khung tiếp theo và cộng dồn số lần mỗi pixel thay đổi, nhờ vậy thấy được cả quỹ đạo."},
+        {"reveal": 3, "text": "Miền tần số: vật đi đều → sóng sin phức, tần số tỉ lệ vận tốc", "say": "Còn trong miền tần số, nếu vật đi đều một pixel mỗi khung, phép chiếu tổng cường độ qua các khung tạo ra một sóng sin phức có tần số tỉ lệ với vận tốc. Tìm đỉnh trong phổ Fourier là biết vật đi nhanh cỡ nào."}
       ]
     },
     {
-      "title": "Phân đoạn video",
-      "slide": 35,
+      "title": "Phương pháp thống kê và phân đoạn video",
+      "slide": 34,
       "points": [
-        {
-          "text": "Scene change: tìm ranh giới cảnh, so histogram hoặc thống kê khối",
-          "say": "Phân đoạn video có nhiều dạng. Phát hiện thay đổi cảnh là phân đoạn một chiều theo thời gian, tìm các điểm có khác biệt lớn trong không gian đặc trưng. Có thể bền vững hơn bằng cách chia khung thành khối, lọc thông thấp trước, hoặc so histogram thay vì so từng pixel."
-        },
-        {
-          "text": "Spatio-temporal change: ngưỡng hóa frame difference, kim tự tháp Gauss",
-          "say": "Phát hiện thay đổi không gian thời gian tách khung thành vùng thay đổi và vùng nền bằng cách ngưỡng hóa ảnh sai khác giữa các khung, có thể cải thiện bằng kim tự tháp Gauss đa phân giải và tích hợp thời gian."
-        },
-        {
-          "text": "Motion segmentation: tìm chuyển động trội, đăng ký, lặp với mô hình bậc cao",
-          "say": "Phân đoạn chuyển động gán nhãn các pixel theo các chuyển động độc lập. Ta tìm vector tịnh tiến trội, đăng ký hai ảnh theo chuyển động trội, tìm vùng tĩnh, rồi ước lượng mô hình bậc cao hơn như affine hay phối cảnh, và lặp lại."
-        }
+        {"text": "Thống kê vùng: Gauss, Fourier, hiệp phương sai, nhãn", "say": "Phương pháp thống kê mô tả một vùng bằng bốn nhóm đặc trưng: thống kê Gauss đo biến thiên theo một hướng, thống kê Fourier đo năng lượng trong một băng tần, thống kê hiệp phương sai đo tương quan giữa các kênh màu, và thống kê nhãn đo độ đồng nhất."},
+        {"text": "Scene change detection: phân đoạn 1 chiều theo thời gian, tìm điểm chuyển cảnh", "say": "Với video, phát hiện chuyển cảnh là bài toán phân đoạn một chiều theo trục thời gian: tìm những thời điểm có khác biệt lớn trong không gian đặc trưng, thường là màu và chuyển động. Muốn bền vững hơn thì chia khung thành khối, lọc thông thấp trước, hoặc so histogram thay vì so từng pixel."},
+        {"text": "Spatio-temporal change detection: ngưỡng hóa frame difference, thêm kim tự tháp Gauss và temporal integration", "say": "Phát hiện thay đổi không gian thời gian tách mỗi khung thành vùng thay đổi và vùng đứng yên bằng cách ngưỡng hóa ảnh sai khác, đúng như ví dụ vừa rồi. Có thể cải thiện bằng kim tự tháp Gauss đa độ phân giải, và bằng tích hợp thời gian để vùng thay đổi liên tục qua các khung."},
+        {"text": "Motion segmentation: tách các phần chuyển động độc lập, xử lý cả camera chuyển động", "say": "Phân đoạn chuyển động gán nhãn các pixel theo những phần chuyển động độc lập. Khi camera cũng di chuyển, ta ước lượng chuyển động trội của cả khung trước, đăng ký hai ảnh theo chuyển động đó, rồi tìm vùng không khớp, và lặp với mô hình chuyển động bậc cao hơn như affine hay phối cảnh."}
       ]
     },
     {
       "title": "Theo dõi chuyển động và học sâu",
       "slide": 47,
       "points": [
-        {
-          "text": "Theo dõi 2D: dựa trên vùng, đường biên, đặc trưng, mẫu; Bayes",
-          "say": "Theo dõi vật thể cứng hai chiều có bốn nhóm: dựa trên vùng, đường biên, đặc trưng và mẫu. Theo dõi Bayes lan truyền hậu nghiệm từ bước trước bằng mô hình hệ thống, rồi cập nhật bằng định lý Bayes."
-        },
-        {
-          "text": "Theo dõi 3D: 6 tham số vị trí + hướng; ví dụ tư thế đầu",
-          "say": "Theo dõi vật thể cứng ba chiều ước lượng sáu tham số gồm vị trí và hướng, ứng dụng tiêu biểu là ước lượng tư thế đầu người."
-        },
-        {
-          "text": "Nơ-ron: ANN, RBFN, SAWTA; học sâu: ngữ nghĩa, thực thể, Mask R-CNN",
-          "say": "Về mạng nơ-ron cổ điển có ANN truyền thẳng, mạng RBF, và SAWTA dùng bộ lọc Gabor cho ảnh kết cấu. Với học sâu, phân đoạn ngữ nghĩa chia theo mức giám sát, phân đoạn thực thể chia theo kiến trúc, và Mask R-CNN là kiến trúc tiêu biểu."
-        }
+        {"text": "Theo dõi 2D: dựa trên vùng, đường biên, đặc trưng, hoặc mẫu", "say": "Theo dõi vật thể cứng hai chiều có bốn hướng: dựa trên vùng, dựa trên đường biên, dựa trên đặc trưng, và dựa trên mẫu."},
+        {"text": "Bayes tracking: dự đoán trạng thái bằng mô hình hệ thống, sửa bằng phép đo", "say": "Theo dõi theo phương pháp Bayes giống cách ta đoán vị trí một chiếc xe trong sương mù: dựa vào vị trí và vận tốc trước để dự đoán vị trí mới, rồi khi nhìn thấy lờ mờ thì sửa lại dự đoán. Về hình thức, hậu nghiệm ở bước trước được lan truyền tiến bằng mô hình hệ thống, rồi cập nhật bằng định lý Bayes với phép đo mới."},
+        {"text": "Theo dõi 3D: 6 tham số (vị trí + hướng), ví dụ tư thế đầu người", "say": "Theo dõi ba chiều ước lượng sáu tham số: ba cho vị trí tâm và ba cho hướng. Ứng dụng chính là ước lượng tư thế đầu người, coi đầu như vật cứng dù thật ra không hoàn toàn cứng."},
+        {"text": "Học sâu: semantic segmentation, instance segmentation (Mask R-CNN)", "say": "Cuối cùng là học sâu. Phân đoạn ngữ nghĩa gán nhãn lớp cho mỗi pixel và được chia theo mức độ giám sát. Phân đoạn thực thể tách riêng từng đối tượng, chia theo kiến trúc đa giai đoạn hay đơn giai đoạn, với Mask R-CNN là đại diện tiêu biểu. Trước đó còn có các mạng nơ-ron cổ điển như mạng truyền thẳng, RBFN và SAWTA dùng bộ lọc Gabor cho ảnh có kết cấu."}
       ]
     },
     {
-      "title": "Chọn phương pháp phân đoạn nào",
+      "kicker": "Compare",
+      "title": "So sánh các phương pháp phân đoạn",
+      "table": {
+        "headers": ["Phương pháp", "Nhìn vào", "Ưu điểm", "Hạn chế"],
+        "rows": [
+          ["Ngưỡng hóa / Otsu", "Mức xám", "Rất nhanh", "Chỉ 2 lớp, bỏ qua vị trí"],
+          ["K-means", "Màu (đặc trưng)", "Đơn giản, k lớp", "Bỏ qua vị trí, phụ thuộc khởi tạo"],
+          ["SLIC", "Màu + vị trí (5D)", "Nhanh nhờ vùng 2s × 2s", "Chỉ tạo mảnh nhỏ, chưa phải đối tượng"],
+          ["Graph cut / Ncut", "Độ giống giữa cặp pixel", "Kết quả tốt", "Phức tạp, chậm"],
+          ["Ảnh sai khác", "Thay đổi theo thời gian", "Tách vật chuyển động", "Cần nhiều khung, nhạy nhiễu"]
+        ]
+      },
       "points": [
-        {
-          "text": "Ngưỡng/K-means: nhanh, đơn giản; SLIC: tiền xử lý tốt",
-          "say": "Trước khi tổng kết, hãy xem nên chọn phương pháp nào. Ngưỡng hóa và K-means nhanh, đơn giản, phù hợp khi vật và nền khác biệt rõ về màu hay cường độ. SLIC là bước tiền xử lý tốt, giảm hàng triệu pixel xuống vài trăm siêu điểm ảnh."
-        },
-        {
-          "text": "Graph cut: chính xác, có thể tương tác, nhưng chậm",
-          "say": "Cắt đồ thị cho đường biên chính xác và có thể kết hợp tương tác với người dùng, nhưng chậm hơn."
-        },
-        {
-          "text": "Video: tận dụng chuyển động; ngữ nghĩa: dùng học sâu",
-          "say": "Với video, chuyển động là gợi ý mạnh nhất. Còn khi cần vùng có ý nghĩa ngữ nghĩa như người, xe, cây, các phương pháp học sâu như Mask R-CNN gần như là lựa chọn bắt buộc, vì phân đoạn thuần túy theo màu hay chuyển động không đảm bảo ý nghĩa ngữ nghĩa."
-        }
+        {"say": "Đặt các phương pháp cạnh nhau. Ngưỡng hóa và Otsu từ chương một chỉ nhìn mức xám, rất nhanh nhưng chỉ cho hai lớp."},
+        {"say": "K-means cho k lớp, đơn giản, nhưng chỉ nhìn màu, bỏ qua vị trí, và kết quả phụ thuộc vào cách khởi tạo."},
+        {"say": "SLIC thêm vị trí vào vector đặc trưng và chỉ tìm trong vùng hai s nhân hai s nên rất nhanh. Nhưng nó chỉ tạo ra các mảnh nhỏ, chưa phải đối tượng hoàn chỉnh."},
+        {"say": "Cắt đồ thị và Normalized Cut nhìn vào độ giống nhau giữa từng cặp pixel, cho kết quả tốt nhưng phức tạp và chậm."},
+        {"say": "Ảnh sai khác dùng thông tin thời gian để tách vật chuyển động, nhưng cần nhiều khung hình và nhạy với nhiễu."}
       ]
     },
     {
+      "kicker": "Exam traps",
+      "title": "Những chỗ đề thi hay gài",
+      "table": {
+        "headers": ["Câu hỏi", "Đáp án đúng"],
+        "rows": [
+          ["Hai đặc tính nền tảng của phân đoạn?", "Discontinuity (dựa trên biên) và similarity (dựa trên vùng)"],
+          ["Vector đặc trưng của SLIC có mấy chiều?", "5: ba màu + hai tọa độ"],
+          ["SLIC tìm pixel trong vùng nào?", "2s × 2s quanh tâm, không phải toàn ảnh"],
+          ["$c$ lớn trong SLIC thì sao?", "Siêu điểm ảnh gọn hơn (ưu tiên vị trí)"],
+          ["Graph cut dùng vector riêng nào?", "Ứng với trị riêng NHỎ THỨ HAI"]
+        ]
+      },
+      "points": [
+        {"say": "Năm cái bẫy. Một: hai đặc tính nền tảng là sự gián đoạn, dẫn đến phân đoạn dựa trên biên, và sự tương đồng, dẫn đến phân đoạn dựa trên vùng."},
+        {"say": "Hai: vector đặc trưng của SLIC có năm chiều, ba cho màu và hai cho tọa độ."},
+        {"say": "Ba: SLIC chỉ tìm trong vùng hai s nhân hai s quanh mỗi tâm, đó là lý do nó nhanh hơn K-means chuẩn."},
+        {"say": "Bốn: c lớn làm siêu điểm ảnh gọn hơn, c nhỏ làm siêu điểm ảnh bám sát ranh giới hơn. Đề hay đảo hai vế này."},
+        {"say": "Năm: thuật toán cắt đồ thị dùng vector riêng ứng với trị riêng nhỏ thứ hai, không phải nhỏ nhất."}
+      ]
+    },
+    {
+      "kicker": "Summary",
       "title": "Tổng kết chương 9",
       "points": [
-        {
-          "text": "Edge-based: gián đoạn; region-based: tương đồng",
-          "say": "Tổng kết chương chín. Phân đoạn dựa trên cạnh tìm gián đoạn, phân đoạn dựa trên vùng tìm tương đồng."
-        },
-        {
-          "text": "K-means; SLIC: 5 chiều, vùng 2s×2s, hằng số c",
-          "say": "K-means gom cụm pixel, SLIC dùng vector năm chiều và chỉ tìm trong vùng hai s nhân hai s."
-        },
-        {
-          "text": "Graph cut: min cut, Normalized Cut với trị riêng nhỏ thứ hai",
-          "say": "Cắt đồ thị dùng min cut, và Normalized Cut dùng vector riêng của trị riêng nhỏ thứ hai."
-        },
-        {
-          "text": "ADI, scene change, motion segmentation, tracking, Mask R-CNN",
-          "say": "Với video có ADI, phát hiện thay đổi cảnh, phân đoạn chuyển động và theo dõi đối tượng. Hẹn gặp các bạn ở chương mười: trích xuất đặc trưng."
-        }
+        {"text": "K-means: gán vào tâm gần nhất ↔ cập nhật tâm, lặp đến hội tụ", "say": "Tổng kết chương chín. K-means lặp hai bước gán và cập nhật tâm cho đến khi hội tụ."},
+        {"text": "SLIC: 5 chiều, vùng tìm 2s × 2s, $c$ cân bằng màu và vị trí", "say": "SLIC tạo siêu điểm ảnh với vector năm chiều, chỉ tìm trong vùng hai s nhân hai s, và dùng c để cân bằng giữa màu và vị trí."},
+        {"text": "Ncut chuẩn hóa chi phí cắt; giải $(D - W)y = \\lambda D y$", "say": "Normalized Cut chuẩn hóa chi phí cắt để tránh các vùng quá nhỏ, và được giải bằng vector riêng ứng với trị riêng nhỏ thứ hai."},
+        {"text": "Chuyển động: ảnh sai khác, ADI; video: chuyển cảnh, motion segmentation, tracking", "say": "Chuyển động cho ta ảnh sai khác và ADI, rồi phân đoạn video, phân đoạn chuyển động và theo dõi đối tượng. Khi đã có các vùng, chương mười sẽ trả lời câu hỏi tiếp theo: mô tả mỗi vùng bằng những con số nào."}
       ]
     }
   ]

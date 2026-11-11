@@ -5,186 +5,243 @@
       "kind": "intro",
       "title": "Giới thiệu chương",
       "points": [
-        {
-          "text": "Mở đầu",
-          "say": "Chào các bạn, chương tám bàn về giai đoạn cuối của pipeline: hiển thị và in ảnh trên những thiết bị có giới hạn về số mức xám hay số màu, và làm sao để đánh giá chất lượng ảnh một cách khách quan."
-        },
-        {
-          "text": "Lộ trình",
-          "say": "Chúng ta sẽ học halftoning với ordered dithering và error diffusion, lượng tử hóa màu với thuật toán median cut, các tiêu chí cảm nhận của mắt người, và cuối cùng là chỉ số SSIM."
-        }
+        {"text": "Mở đầu", "say": "Chào các bạn, chương tám nói về hai việc ở cuối đường ống xử lý ảnh. Việc thứ nhất: hiển thị hoặc in một bức ảnh trên thiết bị chỉ có rất ít mức xám hay rất ít màu. Việc thứ hai: đo xem một bức ảnh sau xử lý đẹp hay xấu theo cách con người cảm nhận."},
+        {"text": "Lộ trình", "say": "Phần một gồm halftoning với ordered dithering và error diffusion, rồi lượng tử hóa màu bằng median cut. Phần hai gồm đặc tính của mắt người, độ đo Minkowski và chỉ số SSIM. Mỗi kỹ thuật đều có một ví dụ nhỏ tính bằng tay."}
       ]
     },
     {
-      "title": "Lượng tử hóa ảnh và halftoning",
+      "kicker": "Recap",
+      "title": "Những mảnh ghép từ các chương trước",
+      "points": [
+        {"text": "Chương 7: quantization đưa biên độ về một tập hữu hạn mức", "say": "Nhắc lại ba điều. Ở chương bảy, lượng tử hóa là đưa biên độ về một tập hữu hạn mức. Hôm nay ta lượng tử hóa cực mạnh: chỉ còn hai mức để in, hoặc vài trăm màu để hiển thị."},
+        {"text": "Chương 1: ngưỡng hóa biến ảnh xám thành ảnh nhị phân, mất chi tiết", "say": "Ở chương một, ngưỡng hóa biến ảnh xám thành ảnh nhị phân nhưng làm mất các chuyển sắc. Halftoning cũng tạo ảnh nhị phân, nhưng tìm cách giữ lại cảm giác về sắc độ."},
+        {"text": "Chương 5: nén lossy gây méo (blocking, ringing) → cần cách đo chất lượng", "say": "Ở chương năm, nén có mất dữ liệu sinh ra méo khối và gợn sóng. Vậy làm sao chấm điểm một ảnh bị méo? Đó là nội dung nửa sau của chương này."}
+      ]
+    },
+    {
+      "kicker": "Intuition",
+      "title": "Halftoning: lừa mắt bằng các chấm đen trắng",
       "slide": 4,
       "points": [
-        {
-          "text": "Lượng tử D mức về K mức (K < D), tối thiểu tiêu chí méo",
-          "say": "Bài toán đặt ra: ảnh có mỗi pixel trong khoảng từ không đến D trừ một, và ta cần lượng tử về K mức, với K nhỏ hơn D, sao cho một tiêu chí méo là nhỏ nhất."
-        },
-        {
-          "text": "K = 2: halftoning cho máy in nhị phân",
-          "say": "Trường hợp K bằng hai chính là halftoning, dùng cho máy in laser hay máy in phun chỉ có hai trạng thái: có mực hoặc không có mực."
-        },
-        {
-          "text": "Từ xa, ảnh halftone trông giống ảnh gốc nhiều mức",
-          "say": "Halftoning biến ảnh liên tục nhiều mức, ví dụ hai trăm năm mươi sáu mức, thành ảnh hai mức, sao cho khi nhìn từ xa, mắt ta thấy hai ảnh giống nhau. Mắt tự trung bình hóa các chấm nhỏ thành sắc độ xám."
-        },
-        {
-          "text": "Báo in và máy in dùng halftone; mắt tự trung bình các chấm",
-          "say": "Các bạn có thể thấy halftoning ở khắp nơi: ảnh trên báo giấy, trên tờ rơi, hay khi in bằng máy in đen trắng. Nếu nhìn thật gần, ảnh chỉ là những chấm đen trên nền trắng với mật độ khác nhau. Mắt chúng ta hoạt động như một bộ lọc thông thấp, tự trung bình hóa các chấm thành sắc độ xám."
-        },
-        {
-          "text": "Ngưỡng hóa cố định ở 128 → mất hết sắc độ trung gian",
-          "say": "Tại sao không đơn giản ngưỡng hóa ở mức một trăm hai mươi tám? Vì như vậy mọi vùng xám nhạt đều thành trắng tinh, mọi vùng xám đậm thành đen kịt, ta mất hoàn toàn các sắc độ trung gian. Halftoning giải quyết bằng cách thay đổi mật độ chấm thay vì thay đổi độ đậm."
-        }
+        {"text": "Ảnh in trên báo: chỉ có chấm mực đen trên giấy trắng", "say": "Hãy cầm một tờ báo giấy và nhìn thật gần vào một bức ảnh. Các bạn sẽ thấy chỉ có những chấm mực đen trên nền giấy trắng, không hề có màu xám. Nhưng nhìn từ xa, ta vẫn thấy đủ các sắc xám."},
+        {"text": "Mắt người như một bộ lọc thông thấp: tự lấy trung bình vùng nhỏ", "say": "Bí mật nằm ở mắt người. Mắt hoạt động như một bộ lọc thông thấp, nó tự lấy trung bình trên những vùng nhỏ. Vùng nào nhiều chấm đen thì trông tối, vùng nào ít chấm thì trông sáng."},
+        {"text": "Halftoning: ảnh nhiều mức → ảnh 2 mức, nhìn từ xa vẫn giống ảnh gốc", "say": "Halftoning chính là việc chuyển một ảnh nhiều mức, ví dụ hai trăm năm mươi sáu mức, thành ảnh chỉ có hai mức, sao cho nhìn từ xa hai ảnh trông giống nhau."},
+        {"text": "Ba nhóm, phức tạp tăng dần: ordered dithering → error diffusion → optimization", "say": "Có ba nhóm phương pháp, xếp theo độ phức tạp tính toán tăng dần: ordered dithering đơn giản nhất, rồi error diffusion, và phức tạp nhất là các kỹ thuật tối ưu hóa."}
       ]
     },
     {
-      "title": "Ordered dithering và error diffusion",
-      "slide": 6,
+      "title": "Phát biểu bài toán lượng tử hóa ảnh",
+      "slide": 3,
       "points": [
-        {
-          "text": "3 nhóm: ordered dithering < error diffusion < tối ưu hóa (độ phức tạp)",
-          "say": "Có ba nhóm phương pháp halftoning theo độ phức tạp tăng dần: ordered dithering đơn giản nhất, rồi error diffusion, và phức tạp nhất là các kỹ thuật tối ưu hóa."
-        },
-        {
-          "text": "Ordered dithering: so pixel với ma trận ngưỡng cố định",
-          "say": "Ordered dithering so sánh giá trị pixel với một ma trận ngưỡng cố định, dither matrix, để quyết định bật hay tắt điểm ảnh đầu ra."
-        },
-        {
-          "text": "Error diffusion: lan sai số lượng tử sang pixel lân cận chưa xử lý",
-          "say": "Error diffusion cho chất lượng cao hơn, đặc biệt hợp với thiết bị độ phân giải thấp và trung bình. Tại mỗi pixel, sai số lượng tử hóa, tức hiệu giữa giá trị đầu vào và giá trị nhị phân đầu ra, được khuếch tán sang các pixel lân cận chưa xử lý qua một nhân khuếch tán. Nhờ vậy sai số trung bình về lâu dài xấp xỉ bằng không."
-        },
-        {
-          "text": "Ma trận Bayer: ngưỡng khác nhau ở mỗi vị trí, lặp lại khắp ảnh",
-          "say": "Ma trận dither kinh điển là ma trận Bayer. Mỗi vị trí trong ma trận có một ngưỡng khác nhau, và ma trận được lặp lại như lát gạch trên toàn ảnh. Một vùng xám năm mươi phần trăm sẽ bật đúng một nửa số chấm theo một mẫu đều đặn. Nhược điểm là có thể thấy rõ các hoa văn lặp lại."
-        },
-        {
-          "text": "Floyd–Steinberg: chia sai số theo tỉ lệ 7/16, 3/16, 5/16, 1/16",
-          "say": "Nhân khuếch tán sai số nổi tiếng nhất là Floyd Steinberg. Sai số tại một pixel được chia cho bốn pixel lân cận chưa xử lý: bảy phần mười sáu cho pixel bên phải, ba phần mười sáu cho pixel dưới bên trái, năm phần mười sáu cho pixel ngay bên dưới, và một phần mười sáu cho pixel dưới bên phải. Tổng các trọng số bằng một."
-        },
-        {
-          "text": "Error diffusion cho ít hoa văn lặp, chi tiết tốt hơn nhưng tuần tự, chậm hơn",
-          "say": "So với ordered dithering, error diffusion cho ít hoa văn lặp và giữ chi tiết tốt hơn. Đổi lại, nó phải xử lý tuần tự từng pixel vì mỗi pixel phụ thuộc vào sai số của các pixel trước, nên khó song song hóa và chậm hơn."
-        }
+        {"text": "Mỗi pixel thuộc $\\{0, \\ldots, D-1\\}$, cần đưa về $K$ mức với $K < D$", "say": "Phát biểu chính thức trong slide: ảnh có mỗi pixel nhận giá trị từ không đến D trừ một. Ta cần lượng tử mỗi pixel về K mức đầu ra, với K nhỏ hơn D, sao cho một tiêu chí méo là nhỏ nhất."},
+        {"text": "$K = 2$: halftoning cho máy in nhị phân, hai mức là 0 và $D-1$", "say": "Trường hợp K bằng hai chính là halftoning, dùng cho máy in laser hay máy in phun chỉ có hai trạng thái: có mực hoặc không có mực. Hai mức đầu ra là không và D trừ một."},
+        {"text": "Tiêu chí méo cơ bản: sai số bình phương trung bình (MSE)", "say": "Tiêu chí méo quen thuộc nhất là sai số bình phương trung bình giữa ảnh gốc và ảnh đã lượng tử. Lát nữa ta sẽ thấy tiêu chí này chưa đủ tốt."}
       ]
     },
     {
-      "title": "Lượng tử hóa màu: median cut",
+      "kicker": "Worked example",
+      "title": "Ngưỡng hóa thường và ordered dithering",
+      "slide": 5,
+      "grid": [
+        {"label": "Vùng ảnh xám", "cells": [[100, 100], [100, 100]]},
+        {"label": "Ma trận ngưỡng", "cells": [[32, 159], [223, 96]]},
+        {"label": "Halftone", "cells": [[1, 0], [0, 1]], "accent": [[0, 0], [1, 1]]}
+      ],
+      "points": [
+        {"reveal": 1, "text": "Ngưỡng cố định 128: cả vùng xám 100 thành đen", "say": "Xét một vùng ảnh phẳng, cả bốn pixel đều có mức xám một trăm trên thang hai trăm năm mươi lăm. Nếu dùng ngưỡng hóa thường với ngưỡng một trăm hai mươi tám, cả bốn pixel đều thành đen. Một vùng xám vừa phải biến thành đen kịt. Sai rất nhiều."},
+        {"reveal": 2, "text": "Ordered dithering: mỗi vị trí có một ngưỡng riêng, ma trận lặp lại khắp ảnh", "say": "Ordered dithering thay một ngưỡng duy nhất bằng một ma trận ngưỡng. Mỗi vị trí có một ngưỡng riêng: ba mươi hai, một trăm năm mươi chín, hai trăm hai mươi ba và chín mươi sáu. Ma trận nhỏ này được lặp lại như lát gạch trên khắp ảnh. Đó là ý nghĩa của phép chia lấy dư trong sơ đồ của slide."},
+        {"reveal": 3, "text": "100 > 32 và 100 > 96 → bật; 100 < 159 và 100 < 223 → tắt", "say": "So từng pixel với ngưỡng của nó. Một trăm lớn hơn ba mươi hai, bật. Một trăm nhỏ hơn một trăm năm mươi chín, tắt. Nhỏ hơn hai trăm hai mươi ba, tắt. Lớn hơn chín mươi sáu, bật."},
+        {"reveal": 3, "text": "2 trong 4 pixel sáng → trung bình 127.5, gần 100 hơn nhiều so với 0", "say": "Kết quả: hai trong bốn pixel sáng. Nhìn từ xa, mắt lấy trung bình và thấy mức khoảng một trăm hai mươi bảy. Con số đó gần với một trăm hơn rất nhiều so với màu đen. Vùng càng sáng thì càng nhiều pixel vượt ngưỡng, nên sắc độ được giữ lại."}
+      ]
+    },
+    {
+      "title": "Error diffusion: đẩy sai số sang hàng xóm",
+      "slide": 7,
+      "points": [
+        {"text": "$u(x,y)$ = pixel gốc + sai số khuếch tán từ các pixel đã xử lý", "say": "Error diffusion cho chất lượng cao, đặc biệt hợp với thiết bị độ phân giải thấp đến trung bình. Ý tưởng giống như trả tiền thiếu: lần này làm tròn thiếu bao nhiêu thì ghi nợ, lần sau bù lại. Mỗi pixel trước khi lượng tử được cộng thêm phần sai số mà các pixel trước chuyển sang. Giá trị sau khi cộng gọi là đầu vào đã điều chỉnh, ký hiệu u."},
+        {"text": "$b(x,y)$ = ngưỡng hóa $u$; sai số $e = u - b$", "say": "Sau đó u được ngưỡng hóa thành đầu ra nhị phân b. Sai số lượng tử e bằng u trừ b."},
+        {"text": "Kernel $h(m,n)$ chia sai số cho các pixel chưa xử lý", "say": "Sai số này được chia cho các pixel lân cận chưa xử lý, theo các trọng số của một nhân khuếch tán sai số, ký hiệu h."},
+        {"text": "Về lâu dài sai số trung bình xấp xỉ 0", "say": "Nhờ vậy sai số không bị vứt đi mà được bù dần, và sai số trung bình về lâu dài xấp xỉ không."}
+      ]
+    },
+    {
+      "kicker": "Worked example",
+      "title": "Error diffusion trên một hàng pixel",
+      "table": {
+        "headers": ["Pixel", "$f$", "$u = f + e$ trước", "$b$ (ngưỡng 128)", "$e = u - b$"],
+        "rows": [
+          ["1", "100", "100", "0", "+100"],
+          ["2", "100", "100 + 100 = 200", "255", "−55"],
+          ["3", "100", "100 − 55 = 45", "0", "+45"],
+          ["4", "100", "100 + 45 = 145", "255", "−110"]
+        ]
+      },
+      "points": [
+        {"say": "Lấy lại vùng xám một trăm, lần này là một hàng bốn pixel. Để dễ tính, ta dùng nhân đơn giản nhất: toàn bộ sai số được đẩy sang pixel bên phải. Pixel một có u bằng một trăm, nhỏ hơn ngưỡng một trăm hai mươi tám nên xuất ra không. Sai số là cộng một trăm, nghĩa là ta đang nợ một trăm đơn vị độ sáng."},
+        {"say": "Pixel hai nhận món nợ đó: một trăm cộng một trăm bằng hai trăm. Hai trăm vượt ngưỡng nên xuất ra hai trăm năm mươi lăm. Lần này ta trả dư, sai số là âm năm mươi lăm."},
+        {"say": "Pixel ba: một trăm trừ năm mươi lăm còn bốn mươi lăm, dưới ngưỡng, xuất ra không. Sai số cộng bốn mươi lăm."},
+        {"say": "Pixel bốn: một trăm cộng bốn mươi lăm bằng một trăm bốn mươi lăm, vượt ngưỡng, xuất ra hai trăm năm mươi lăm. Kết quả cả hàng là đen, trắng, đen, trắng, trung bình khoảng một trăm hai mươi bảy, trong khi ngưỡng hóa thường cho toàn màu đen. Sai số còn lại tiếp tục được chuyển cho các pixel sau, nên càng đi xa trung bình càng sát một trăm."}
+      ]
+    },
+    {
+      "kicker": "Algorithm",
+      "title": "Mã giả error diffusion",
+      "code": {
+        "lines": [
+          "for mỗi pixel (x, y) theo thứ tự quét:",
+          "    u ← f(x, y) + sai số nhận từ các pixel trước",
+          "    b(x, y) ← 255 nếu u ≥ 128, ngược lại 0",
+          "    e ← u − b(x, y)",
+          "    for mỗi hàng xóm chưa xử lý (m, n):",
+          "        cộng h(m, n) · e vào pixel đó"
+        ]
+      },
+      "points": [
+        {"reveal": [1, 2], "say": "Viết thành mã giả. Ta đi qua từng pixel theo thứ tự quét. Trước hết cộng vào pixel phần sai số mà các pixel trước đã chuyển sang, được giá trị u."},
+        {"reveal": [3, 4], "say": "Tiếp theo ngưỡng hóa u để có đầu ra nhị phân, rồi tính sai số bằng u trừ đầu ra."},
+        {"reveal": [5, 6], "say": "Cuối cùng chia sai số cho các hàng xóm chưa xử lý theo trọng số của nhân h. Vì chỉ chia cho pixel chưa xử lý, thuật toán chỉ cần quét ảnh đúng một lượt."}
+      ]
+    },
+    {
+      "title": "Lượng tử hóa màu và median cut",
       "slide": 10,
       "points": [
-        {
-          "text": "Hiển thị ảnh K bit trên thiết bị chỉ có L bit → thiết kế bảng màu",
-          "say": "Lượng tử hóa màu giải bài toán hiển thị ảnh màu K bit, ví dụ hai mươi tư bit RGB, trên thiết bị chỉ hỗ trợ L bit, tức hai mũ L màu. Ta cần thiết kế bảng màu và cách ánh xạ mỗi pixel vào bảng."
-        },
-        {
-          "text": "Mỗi màu trong bảng đại diện cho số pixel gần bằng nhau",
-          "say": "Thuật toán median cut thiết kế bảng màu sao cho mỗi màu trong bảng đại diện cho số lượng pixel gần bằng nhau."
-        },
-        {
-          "text": "Histogram màu → tiền lượng tử 15 bit → hộp bao → cắt tại trung vị → lặp",
-          "say": "Các bước như sau: tính histogram màu, tiền lượng tử xuống mười lăm bit, tức ba mươi hai nghìn bảy trăm sáu mươi tám màu, tìm hộp chữ nhật bao khít các màu trong không gian màu, cắt hộp tại điểm trung vị để mỗi nửa chứa khoảng một nửa số pixel, rồi lặp lại đến khi đủ số màu mong muốn."
-        },
-        {
-          "text": "Ví dụ: GIF giới hạn 256 màu → cần bảng màu tốt",
-          "say": "Một ví dụ thực tế của lượng tử hóa màu là định dạng GIF, chỉ cho phép tối đa hai trăm năm mươi sáu màu mỗi ảnh. Để ảnh chụp chuyển sang GIF vẫn đẹp, ta cần chọn bảng màu thật khéo, và median cut là một thuật toán kinh điển để làm việc đó."
-        },
-        {
-          "text": "Cắt theo trục có độ trải lớn nhất của hộp",
-          "say": "Khi cắt hộp, người ta thường chọn trục có độ trải màu lớn nhất, tức kênh đỏ, lục hoặc lam có khoảng giá trị rộng nhất, rồi cắt tại trung vị theo trục đó. Mỗi hộp cuối cùng được đại diện bằng màu trung bình của các pixel bên trong. Có thể kết hợp với error diffusion để giảm hiện tượng phân dải màu."
-        }
+        {"text": "Ảnh $K$ bit/pixel (ví dụ 24) hiển thị trên thiết bị $L$ bit: chỉ có $2^L$ màu", "say": "Chuyển sang ảnh màu. Mỗi pixel có K bit, ví dụ hai mươi bốn bit cho RGB, nhưng thiết bị chỉ hỗ trợ L bit, tức là hai mũ L màu. Có hai việc phải làm: thiết kế bảng màu, và quyết định mỗi pixel dùng màu nào trong bảng."},
+        {"text": "Median cut: mỗi màu trong bảng đại diện cho số pixel xấp xỉ bằng nhau", "say": "Thuật toán median cut thiết kế bảng màu theo nguyên tắc công bằng: mỗi màu trong bảng đại diện cho một số lượng pixel gần bằng nhau. Vùng màu nào có nhiều pixel thì được chia nhiều màu hơn."},
+        {"text": "Histogram màu → tiền lượng tử 15 bit (32 768 màu) → hộp bao khít", "say": "Các bước: tính histogram màu, ảnh hai mươi bốn bit có tối đa mười sáu triệu màu. Tiền lượng tử xuống mười lăm bit, mỗi kênh năm bit, còn ba mươi hai nghìn bảy trăm sáu mươi tám màu. Rồi tìm một hộp chữ nhật bao khít mọi màu có trong ảnh."},
+        {"text": "Cắt hộp tại điểm trung vị, lặp lại đến khi đủ số màu", "say": "Sau đó cắt hộp tại điểm trung vị, sao cho mỗi nửa chứa khoảng một nửa số pixel. Lặp lại việc cắt cho đến khi có đủ số hộp bằng số màu mong muốn."}
       ]
     },
     {
-      "title": "Tiêu chí cảm nhận của mắt người",
+      "kicker": "Worked example",
+      "title": "Median cut: từ 8 giá trị xuống 4 màu",
+      "table": {
+        "headers": ["Bước", "Các hộp màu"],
+        "rows": [
+          ["Sắp xếp 8 pixel", "10, 12, 20, 22, 100, 110, 200, 220"],
+          ["Cắt lần 1 tại trung vị", "{10, 12, 20, 22}   {100, 110, 200, 220}"],
+          ["Cắt lần 2 từng hộp", "{10, 12}  {20, 22}  {100, 110}  {200, 220}"],
+          ["Màu đại diện = trung bình hộp", "11,  21,  105,  210"]
+        ]
+      },
+      "points": [
+        {"say": "Để tính tay, ta chỉ xét một kênh màu với tám pixel. Sắp xếp các giá trị từ nhỏ đến lớn."},
+        {"say": "Cắt lần một tại trung vị, mỗi bên bốn pixel. Chú ý điểm cắt không nằm giữa dải giá trị. Giữa dải từ mười đến hai trăm hai mươi là khoảng một trăm mười lăm, nhưng ta cắt giữa hai mươi hai và một trăm, vì cắt theo số lượng pixel chứ không theo khoảng giá trị."},
+        {"say": "Cắt lần hai, mỗi hộp lại được chia đôi tại trung vị của nó. Ta có bốn hộp, mỗi hộp đúng hai pixel."},
+        {"say": "Màu đại diện của mỗi hộp là trung bình của hộp: mười một, hai mươi mốt, một trăm linh năm và hai trăm mười. Vùng tối có nhiều pixel nên được hẳn hai màu. Sau khi có bảng màu, mỗi pixel được ánh xạ về màu gần nhất, hoặc dùng error diffusion với bảng màu đóng vai trò codebook để chuyển sắc mượt hơn."}
+      ]
+    },
+    {
+      "title": "Mắt người nhìn ảnh như thế nào",
       "slide": 14,
       "points": [
-        {
-          "text": "Dựa trên CSF, thích nghi ánh sáng, che lấp",
-          "say": "Phần tiếp theo là đánh giá chất lượng ảnh theo cảm nhận. Các mô hình cảm nhận dựa trên đặc tính của hệ thị giác: hàm độ nhạy tương phản, thích nghi ánh sáng, và hiện tượng che lấp."
-        },
-        {
-          "text": "CSF: đáp ứng tần số của mắt, giống bộ lọc thông dải",
-          "say": "Hàm độ nhạy tương phản, CSF, mô tả đáp ứng tần số của mắt người. Có thể coi nó như một bộ lọc thông dải, bandpass, được đo bằng ngưỡng nhìn thấy của các lưới sóng sin."
-        },
-        {
-          "text": "Contrast masking: thành phần này che thành phần khác cùng vị trí, tần số",
-          "say": "Che lấp tương phản là hiện tượng một thành phần ảnh trở nên khó thấy khi có một thành phần khác cùng vị trí và tần số tương tự. Với video, che lấp thời gian rất quan trọng, và cảm nhận vật thể chuyển động phụ thuộc vào việc mắt có đang bám theo vật thể hay không."
-        },
-        {
-          "text": "Độ đo cảm nhận cần: hiệu chỉnh, đăng ký, mô hình hiển thị",
-          "say": "Một độ đo chất lượng cảm nhận cần ba yếu tố: hiệu chỉnh, calibration; đăng ký, registration, tức sự tương ứng điểm với điểm giữa hai ảnh; và mô hình hiển thị, vì mắt chỉ thấy được những gì màn hình tái tạo được."
-        },
-        {
-          "text": "Mắt nhạy nhất ở tần số trung bình, kém ở rất thấp và rất cao",
-          "say": "Vì CSF có dạng thông dải, mắt người nhạy nhất với các chi tiết ở tần số trung bình, và kém nhạy với những thay đổi rất chậm hoặc rất nhỏ, mịn. Đó là lý do JPEG có thể bỏ bớt tần số cao mà ta khó nhận ra."
-        },
-        {
-          "text": "Thích nghi ánh sáng: mắt cảm nhận độ tương phản tương đối (luật Weber)",
-          "say": "Thích nghi ánh sáng nghĩa là mắt cảm nhận độ tương phản tương đối chứ không phải tuyệt đối. Cùng một mức chênh lệch độ sáng sẽ dễ thấy trên nền tối hơn trên nền sáng. Đây là nội dung của luật Weber."
-        }
+        {"text": "CSF – contrast sensitivity function: mắt như bộ lọc thông dải", "say": "Sang phần hai: đánh giá chất lượng. Muốn đo theo cảm nhận thì phải hiểu mắt người. Đặc tính đầu tiên là hàm độ nhạy tương phản, CSF. Nó mô tả đáp ứng tần số của hệ thị giác, và có dạng một bộ lọc thông dải: mắt nhạy nhất với chi tiết cỡ vừa, kém nhạy với thay đổi quá chậm hoặc quá mịn. CSF được đo bằng ngưỡng nhìn thấy các lưới sóng sin."},
+        {"text": "Light adaptation: mắt thích nghi với độ sáng nền", "say": "Đặc tính thứ hai là thích nghi ánh sáng: mắt cảm nhận độ tương phản so với nền, không cảm nhận độ sáng tuyệt đối."},
+        {"text": "Contrast masking: chi tiết bị che bởi thành phần gần giống nó", "say": "Thứ ba là che lấp tương phản. Một thành phần ảnh khó thấy hơn khi có một thành phần khác ở cùng vị trí và có tần số tương tự. Ví dụ, nhiễu trên bầu trời phẳng rất dễ thấy, nhưng cùng lượng nhiễu đó trên bãi cỏ thì gần như vô hình."},
+        {"text": "Temporal masking: quan trọng với video, phụ thuộc mắt có bám theo vật không", "say": "Thứ tư là che lấp thời gian, quan trọng với video. Cảm nhận về một vật chuyển động phụ thuộc nhiều vào việc mắt có đang bám theo vật đó hay không."}
       ]
     },
     {
-      "title": "Độ đo Minkowski và SSIM",
+      "title": "Ba điều kiện của một độ đo cảm nhận",
+      "slide": 16,
+      "points": [
+        {"text": "Calibration: ảnh đến từ nhiều thiết bị, phải quy về cùng thang đo", "say": "Mục tiêu của một độ đo cảm nhận là tìm ra khác biệt giữa hai ảnh mà mắt người thật sự nhận thấy. Slide nêu ba điều kiện cần. Một là hiệu chỉnh: ảnh có thể đến từ nhiều thiết bị và qua nhiều phép biến đổi, nên phải quy về cùng một thang đo."},
+        {"text": "Registration: hai ảnh phải khớp điểm – với – điểm", "say": "Hai là đăng ký: hai ảnh phải khớp nhau từng điểm. Chỉ cần lệch một pixel thì mọi phép so sánh theo pixel đều vô nghĩa."},
+        {"text": "Display model: mắt chỉ thấy những gì thiết bị hiển thị tái tạo được", "say": "Ba là mô hình hiển thị: mắt chỉ thấy những gì màn hình hay máy in tái tạo được, nên độ đo phải tính đến thiết bị."}
+      ]
+    },
+    {
+      "kicker": "Formula",
+      "title": "Độ đo Minkowski",
+      "slide": 17,
+      "formula": "E_p = \\Big( \\sum_{i=1}^{N} \\underbrace{|x_i - y_i|^{p}}_{\\text{sai khác tại pixel } i} \\Big)^{1/p}",
+      "points": [
+        {"text": "$x$: ảnh tham chiếu (coi là hoàn hảo), $y$: ảnh bị méo", "say": "Độ đo đơn giản nhất là Minkowski. Ta có ảnh tham chiếu, coi như hoàn hảo, và ảnh bị méo. Với mỗi pixel, lấy độ chênh lệch, nâng lên lũy thừa p, cộng tất cả lại, rồi lấy căn bậc p."},
+        {"text": "$p$ càng lớn, lỗi lớn càng bị phạt nặng; $p = 2$ gắn với MSE", "say": "Số mũ p nằm từ một đến vô cùng. P bằng một là tổng sai khác tuyệt đối. P bằng hai gắn liền với sai số bình phương trung bình. P càng lớn thì những lỗi lớn càng chi phối kết quả."},
+        {"text": "Nhược điểm: mọi pixel được coi độc lập, không biết gì về cấu trúc", "say": "Slide hỏi: độ đo này có thật sự tốt không? Câu trả lời là không. Nó coi mỗi pixel là độc lập và không biết gì về cấu trúc của ảnh. Hai ảnh méo có cùng sai số có thể trông khác nhau một trời một vực. Ta sẽ thấy bằng số ngay sau khi học SSIM."}
+      ]
+    },
+    {
+      "kicker": "Formula",
+      "title": "Chỉ số tương đồng cấu trúc SSIM",
       "slide": 18,
+      "formula": "S(x,y) = \\underbrace{l(x,y)}_{\\text{độ chói: } \\mu} \\cdot \\underbrace{c(x,y)}_{\\text{tương phản: } \\sigma} \\cdot \\underbrace{s(x,y)}_{\\text{cấu trúc}}",
       "points": [
-        {
-          "text": "Minkowski: chuẩn Lp của hiệu từng điểm — không khớp cảm nhận",
-          "say": "Độ đo Minkowski giữa ảnh tham chiếu và ảnh méo đơn giản là chuẩn Lp của hiệu số từng điểm, MSE là một trường hợp. Nhưng nó không phản ánh tốt cảm nhận của con người: hai ảnh có cùng MSE vẫn có thể trông khác nhau rất nhiều."
-        },
-        {
-          "text": "SSIM = độ chói × độ tương phản × cấu trúc",
-          "say": "Chỉ số tương đồng cấu trúc SSIM khắc phục điều đó bằng ba thành phần. Một, so sánh độ chói, ước lượng bằng cường độ trung bình. Hai, so sánh độ tương phản, ước lượng bằng độ lệch chuẩn. Ba, so sánh cấu trúc, sau khi chuẩn hóa tín hiệu về độ lệch chuẩn đơn vị."
-        },
-        {
-          "text": "Tính cục bộ bằng cửa sổ Gauss, lấy trung bình trên quality map",
-          "say": "Trong thực tế, SSIM được tính cục bộ qua một cửa sổ Gauss đối xứng tròn trượt qua ảnh, tạo ra bản đồ chất lượng, rồi lấy trung bình có trọng số để ra chỉ số SSIM cuối cùng. Đây cũng là cơ sở của hàm mất mát SSIM trong các mô hình phục hồi ảnh hiện đại."
-        },
-        {
-          "text": "PSNR = 10·log10(MAX²/MSE), đơn vị dB",
-          "say": "Độ đo phổ biến dựa trên MSE là PSNR, tỉ số tín hiệu cực đại trên nhiễu, bằng mười nhân logarit cơ số mười của giá trị cực đại bình phương chia cho MSE, tính bằng đề xi ben. PSNR càng cao thì ảnh càng giống ảnh gốc về mặt số liệu."
-        },
-        {
-          "text": "SSIM ∈ [−1, 1], bằng 1 khi hai ảnh giống hệt",
-          "say": "SSIM nằm trong khoảng từ trừ một đến một, và bằng một khi hai ảnh giống hệt nhau. Khác với PSNR, SSIM phạt nặng các méo làm thay đổi cấu trúc, như mờ hay méo khối, và phạt nhẹ các thay đổi đều như tăng giảm độ sáng, nên khớp với cảm nhận của con người hơn."
-        }
+        {"text": "$l$: so sánh trung bình $\\mu_x, \\mu_y$ – hai ảnh sáng như nhau không?", "say": "SSIM tách sự giống nhau thành ba câu hỏi gần như độc lập. Câu một, độ chói: hai ảnh có sáng như nhau không? Độ chói được ước lượng bằng cường độ trung bình."},
+        {"text": "$c$: so sánh độ lệch chuẩn $\\sigma_x, \\sigma_y$ – tương phản như nhau không?", "say": "Câu hai, tương phản: hai ảnh có độ tương phản như nhau không? Tương phản được ước lượng bằng độ lệch chuẩn."},
+        {"text": "$s$: chuẩn hóa hai tín hiệu rồi so dạng sóng – lên xuống cùng nhau không?", "say": "Câu ba, cấu trúc: sau khi trừ trung bình và chia cho độ lệch chuẩn, hai tín hiệu có lên xuống cùng nhau không? Nếu chỗ này sáng lên thì chỗ kia cũng sáng lên, cấu trúc được giữ."},
+        {"text": "Tính cục bộ bằng cửa sổ Gauss trượt → quality map → lấy trung bình", "say": "Ba thành phần nhân lại thành một chỉ số. Trong thực tế SSIM được tính cục bộ qua một cửa sổ Gauss đối xứng tròn trượt trên ảnh, tạo ra một bản đồ chất lượng, rồi lấy trung bình bản đồ đó làm điểm SSIM cuối cùng."}
       ]
     },
     {
-      "title": "Đánh giá chất lượng: chủ quan và khách quan",
+      "kicker": "Worked example",
+      "title": "Cùng MSE nhưng SSIM khác hẳn",
+      "table": {
+        "headers": ["Với $x$ = 100, 110, 100, 110", "$y_1 = x + 10$ (sáng hơn)", "$y_2$ (sọc bị đảo)"],
+        "rows": [
+          ["Giá trị", "110, 120, 110, 120", "110, 100, 110, 100"],
+          ["MSE", "100", "100"],
+          ["Độ chói $l$", "0.996", "1"],
+          ["Tương phản $c$", "1", "1"],
+          ["Cấu trúc $s$", "1", "−1"],
+          ["SSIM = $l \\cdot c \\cdot s$", "0.996", "−1"]
+        ]
+      },
       "points": [
-        {
-          "text": "Chủ quan: MOS — người xem chấm điểm, chính xác nhưng tốn kém",
-          "say": "Trước khi tổng kết, cần phân biệt hai cách đánh giá chất lượng. Đánh giá chủ quan cho nhiều người xem chấm điểm, rồi lấy điểm trung bình, gọi là MOS. Cách này phản ánh đúng cảm nhận nhưng tốn thời gian và chi phí."
-        },
-        {
-          "text": "Khách quan: full-reference, reduced-reference, no-reference",
-          "say": "Đánh giá khách quan dùng công thức. Có ba loại theo mức tham chiếu: tham chiếu đầy đủ, khi có ảnh gốc, như PSNR và SSIM; tham chiếu giảm, chỉ có một số đặc trưng của ảnh gốc; và không tham chiếu, chỉ có ảnh méo. Mục tiêu của mọi độ đo khách quan là tương quan càng cao càng tốt với điểm MOS."
-        }
+        {"say": "Ảnh gốc là một kết cấu sọc: một trăm, một trăm mười, một trăm, một trăm mười. Ta làm méo theo hai cách. Cách một, cộng mười vào mọi pixel, ảnh chỉ sáng hơn một chút. Cách hai, pixel thứ nhất cộng mười, pixel thứ hai trừ mười, cứ thế xen kẽ, khiến sọc sáng thành sọc tối và ngược lại."},
+        {"say": "Tính sai số bình phương trung bình. Ở cả hai cách, mỗi pixel đều lệch đúng mười đơn vị, nên sai số bình phương trung bình đều bằng một trăm. Theo độ đo này, hai ảnh méo tệ như nhau."},
+        {"say": "Giờ tính SSIM, bỏ qua các hằng số nhỏ cho gọn. Về độ chói, ảnh một có trung bình một trăm mười lăm so với một trăm linh năm, nên điểm độ chói là không phẩy chín chín sáu. Ảnh hai có cùng trung bình với ảnh gốc, điểm độ chói là một."},
+        {"say": "Về tương phản, cả hai ảnh méo đều dao động với biên độ y như ảnh gốc, nên điểm tương phản đều là một."},
+        {"say": "Về cấu trúc thì khác hẳn. Ảnh một lên xuống cùng nhịp với ảnh gốc, điểm cấu trúc là một. Ảnh hai lên đúng lúc ảnh gốc xuống, điểm cấu trúc là âm một."},
+        {"say": "Nhân ba thành phần lại. Ảnh một có SSIM xấp xỉ một, gần như hoàn hảo. Ảnh hai có SSIM âm một, tệ nhất có thể. Cùng một sai số bình phương trung bình, nhưng SSIM phân biệt được ảnh chỉ sáng lên với ảnh bị phá cấu trúc. Đó là lý do SSIM khớp với cảm nhận của mắt hơn."}
       ]
     },
     {
+      "kicker": "Compare",
+      "title": "Ba nhóm phương pháp halftoning",
+      "table": {
+        "headers": ["Phương pháp", "Cách làm", "Độ phức tạp"],
+        "rows": [
+          ["Ordered dithering", "So pixel với ma trận ngưỡng cố định, lặp tuần hoàn", "Thấp nhất"],
+          ["Error diffusion", "Ngưỡng hóa rồi khuếch tán sai số qua kernel $h$", "Trung bình"],
+          ["Optimization", "Tối thiểu trực tiếp một tiêu chí méo $d(f, b)$", "Cao nhất"]
+        ]
+      },
+      "points": [
+        {"say": "So sánh ba nhóm halftoning. Ordered dithering chỉ so mỗi pixel với một ma trận ngưỡng cố định, mỗi pixel xử lý độc lập, nên đơn giản nhất."},
+        {"say": "Error diffusion ngưỡng hóa rồi khuếch tán sai số sang hàng xóm. Pixel sau phụ thuộc pixel trước, phức tạp hơn nhưng chất lượng cao hơn."},
+        {"say": "Các kỹ thuật tối ưu hóa tìm trực tiếp ảnh halftone làm nhỏ nhất một tiêu chí méo giữa ảnh gốc và ảnh halftone. Chúng cho kết quả tốt nhất nhưng tốn tính toán nhất."}
+      ]
+    },
+    {
+      "kicker": "Exam traps",
+      "title": "Những chỗ đề thi hay gài",
+      "table": {
+        "headers": ["Câu hỏi", "Đáp án đúng"],
+        "rows": [
+          ["Halftoning ứng với $K$ bằng mấy?", "$K = 2$, hai mức 0 và $D-1$"],
+          ["Xếp theo độ phức tạp tăng dần?", "Ordered dithering → error diffusion → optimization"],
+          ["Median cut cắt hộp ở đâu?", "Tại trung vị: hai nửa có số pixel xấp xỉ bằng nhau"],
+          ["CSF có dạng bộ lọc gì?", "Thông dải (bandpass)"],
+          ["Ba thành phần của SSIM?", "Luminance (mean), contrast (std), structure"]
+        ]
+      },
+      "points": [
+        {"say": "Năm cái bẫy. Một: halftoning là trường hợp K bằng hai, với hai mức đầu ra là không và D trừ một."},
+        {"say": "Hai: thứ tự độ phức tạp tăng dần là ordered dithering, error diffusion, rồi tối ưu hóa."},
+        {"say": "Ba: median cut cắt tại trung vị, để mỗi màu trong bảng đại diện cho số pixel xấp xỉ bằng nhau. Không phải cắt ở giữa dải giá trị."},
+        {"say": "Bốn: hàm độ nhạy tương phản có dạng bộ lọc thông dải, không phải thông thấp hay thông cao."},
+        {"say": "Năm: SSIM gồm độ chói đo bằng trung bình, tương phản đo bằng độ lệch chuẩn, và cấu trúc. Ba thành phần này tương đối độc lập với nhau."}
+      ]
+    },
+    {
+      "kicker": "Summary",
       "title": "Tổng kết chương 8",
       "points": [
-        {
-          "text": "Halftoning: K = 2; ordered dithering vs error diffusion",
-          "say": "Tổng kết chương tám. Halftoning là lượng tử về hai mức, với ordered dithering dùng ma trận ngưỡng và error diffusion lan sai số sang lân cận."
-        },
-        {
-          "text": "Median cut: cắt hộp màu tại trung vị",
-          "say": "Median cut thiết kế bảng màu bằng cách cắt hộp màu tại điểm trung vị."
-        },
-        {
-          "text": "CSF như bộ lọc thông dải; masking; calibration – registration – display",
-          "say": "Mắt người có hàm độ nhạy tương phản dạng thông dải, có hiện tượng che lấp, và độ đo cảm nhận cần hiệu chỉnh, đăng ký và mô hình hiển thị."
-        },
-        {
-          "text": "SSIM: độ chói + tương phản + cấu trúc",
-          "say": "Cuối cùng, SSIM kết hợp độ chói, độ tương phản và cấu trúc. Hẹn gặp các bạn ở chương chín: phân đoạn ảnh và video."
-        }
+        {"text": "Halftoning ($K = 2$): ordered dithering, error diffusion, optimization", "say": "Tổng kết chương tám. Halftoning đưa ảnh về hai mức mà nhìn từ xa vẫn giống ảnh gốc, bằng ordered dithering, error diffusion hoặc tối ưu hóa."},
+        {"text": "Median cut: bảng màu chia đều số pixel, cắt tại trung vị", "say": "Lượng tử hóa màu dùng median cut để thiết kế bảng màu, cắt hộp màu tại trung vị."},
+        {"text": "Mắt người: CSF thông dải, light adaptation, masking", "say": "Hệ thị giác có hàm độ nhạy tương phản dạng thông dải, có thích nghi ánh sáng và các hiện tượng che lấp."},
+        {"text": "Minkowski không hiểu cấu trúc; SSIM = luminance × contrast × structure", "say": "Độ đo Minkowski không hiểu cấu trúc ảnh, còn SSIM kết hợp độ chói, tương phản và cấu trúc. Sang chương chín, ta bắt đầu phần phân tích ảnh với bài toán phân đoạn: chia ảnh thành các vùng có ý nghĩa."}
       ]
     }
   ]

@@ -1,4 +1,4 @@
-import {lectures} from './lecture-data.js?v=1';
+import {lectures} from './lecture-data.js?v=2';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const time=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 const SPEED_KEY='lecture-speed';
@@ -13,7 +13,7 @@ export function renderLecture(chapter){
  if(!l)return '';
  const speed=readSpeed();
  return `<section class="lecture" aria-label="Video bài giảng chương ${chapter}">
-<div class="lecture-player"><video id="lecture-video" controls playsinline preload="metadata" poster="${esc(l.poster)}"><source src="${esc(l.src)}" type="video/mp4"><track kind="captions" src="${esc(l.track)}" srclang="vi" label="Tiếng Việt" default><p><a href="${esc(l.src)}">Mở video bài giảng</a></p></video></div>
+<div class="lecture-player"><video id="lecture-video" controls playsinline preload="metadata" poster="${esc(l.poster)}"><source src="${esc(l.src)}" type="video/mp4"><track kind="captions" src="${esc(l.track)}" srclang="vi" label="Tiếng Việt" default>${l.chapters?`<track kind="chapters" src="${esc(l.chapters)}" srclang="vi" label="Mục lục">`:''}<p><a href="${esc(l.src)}">Mở video bài giảng</a></p></video></div>
 <div class="lecture-tools"><span class="lecture-now" aria-live="polite">Giảng bằng tiếng Việt · ${time(l.duration)} · ${l.outline.length} phần</span><label>Tốc độ <select id="lecture-speed" aria-label="Tốc độ phát">${[.75,1,1.25,1.5,1.75,2].map(v=>`<option value="${v}" ${v===speed?'selected':''}>${v}×</option>`).join('')}</select></label><button class="text-button" id="lecture-cc" type="button" aria-pressed="true">CC Phụ đề</button></div>
 <ol class="lecture-outline">${l.outline.map((p,i)=>`<li><button type="button" data-lecture-seek="${p.start}" data-lecture-part="${i}"><span>${time(p.start)}</span><strong>${esc(p.title)}</strong></button></li>`).join('')}</ol>
 </section>`;

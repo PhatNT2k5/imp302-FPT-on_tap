@@ -1,337 +1,571 @@
 WEBVTT
 
-00:00:00.100 --> 00:00:00.998 line:98%,end
-Chào các bạn,
+00:00:00.100 --> 00:00:04.347 line:98%,end
+Chào các bạn, chương bảy là thu nhận ảnh và video.
 
-00:00:00.998 --> 00:00:07.211 line:98%,end
-chương bảy đưa chúng ta quay về điểm khởi đầu của toàn bộ pipeline: thu nhận ảnh và video.
+00:00:04.297 --> 00:00:09.420 line:98%,end
+Sau sáu chương xử lý và nén, bây giờ ta quay lại câu hỏi gốc: một cảnh thật,
 
-00:00:07.161 --> 00:00:12.318 line:98%,end
-Đây là quá trình biến thế giới thực liên tục thành dữ liệu số rời rạc trong máy tính.
+00:00:09.420 --> 00:00:14.206 line:98%,end
+liên tục, trở thành một mảng số như thế nào, và ta mất gì trong lúc đó.
 
-00:00:12.934 --> 00:00:15.693 line:98%,end
-Chúng ta sẽ tìm hiểu lấy mẫu và lượng tử hóa,
+00:00:14.806 --> 00:00:20.147 line:98%,end
+Chương này xoay quanh ba từ khóa: lấy mẫu, lượng tử hóa và nội suy.
 
-00:00:15.693 --> 00:00:19.494 line:98%,end
-phân tích Fourier của tín hiệu lấy mẫu và hiện tượng răng cưa,
+00:00:20.097 --> 00:00:24.628 line:98%,end
+Ta sẽ hiểu vì sao có hiện tượng răng cưa, tính tay một ví dụ giảm mẫu,
 
-00:00:19.494 --> 00:00:22.620 line:98%,end
-chuyển đổi tốc độ lấy mẫu, các phương pháp nội suy,
+00:00:24.628 --> 00:00:27.800 line:98%,end
+một ví dụ tăng mẫu, một ví dụ nội suy song tuyến,
 
-00:00:22.620 --> 00:00:25.931 line:98%,end
-rồi đến lấy mẫu video và chuyển đổi tốc độ khung hình.
+00:00:27.800 --> 00:00:31.425 line:98%,end
+rồi mở rộng sang video với chuyển đổi tốc độ khung hình.
 
-00:00:27.388 --> 00:00:35.111 line:98%,end
-Thu nhận ảnh đưa ta từ miền tham số liên tục của thế giới thực sang miền tham số rời rạc với biên độ đã lượng tử hóa trong thiết bị số.
+00:00:32.932 --> 00:00:35.187 line:98%,end
+Ba thứ cần nhặt lại.
 
-00:00:35.662 --> 00:00:41.211 line:98%,end
-Lấy mẫu là rời rạc hóa tọa độ: biến ảnh có tham số liên tục thành một mảng số.
+00:00:35.137 --> 00:00:37.980 line:98%,end
+Một, ở chương một, khi xoay hay phóng ảnh,
 
-00:00:41.161 --> 00:00:45.393 line:98%,end
-Nói cách khác, lấy mẫu quyết định ảnh có bao nhiêu pixel.
+00:00:37.980 --> 00:00:43.665 line:98%,end
+tọa độ mới thường bị lẻ và ta đã dùng nội suy lân cận gần nhất để đưa về lưới pixel.
 
-00:00:45.900 --> 00:00:49.380 line:98%,end
-Lượng tử hóa là rời rạc hóa biên độ:
+00:00:43.665 --> 00:00:47.637 line:98%,end
+Hôm nay ta hiểu sâu hơn và học thêm nội suy song tuyến.
 
-00:00:49.380 --> 00:00:53.807 line:98%,end
-biến giá trị cường độ liên tục thành một trong một tập hữu hạn các mức,
+00:00:48.238 --> 00:00:52.475 line:98%,end
+Hai, ở chương hai, bộ lọc thông thấp loại bỏ các tần số cao,
 
-00:00:53.807 --> 00:00:56.052 line:98%,end
-ví dụ hai trăm năm mươi sáu mức xám.
+00:00:52.475 --> 00:00:54.946 line:98%,end
+tức là các chi tiết thay đổi nhanh.
 
-00:00:56.052 --> 00:00:59.148 line:98%,end
-Các bạn đừng nhầm hai khái niệm này:
+00:00:54.896 --> 00:00:59.258 line:98%,end
+Hôm nay bộ lọc đó có một nhiệm vụ mới: chống răng cưa.
 
-00:00:59.148 --> 00:01:03.588 line:98%,end
-lấy mẫu là theo tọa độ, lượng tử là theo biên độ.
+00:00:59.872 --> 00:01:04.835 line:98%,end
+Ba, ở chương sáu, video là một chuỗi khung hình theo thời gian.
 
-00:01:04.138 --> 00:01:11.666 line:98%,end
-Một ví dụ cụ thể: một ảnh một nghìn chín trăm hai mươi nhân một nghìn không trăm tám mươi pixel cho biết kết quả của bước lấy mẫu.
+00:01:04.785 --> 00:01:09.276 line:98%,end
+Như vậy video được lấy mẫu cả theo không gian lẫn theo thời gian,
 
-00:01:11.616 --> 00:01:16.161 line:98%,end
-Còn việc mỗi pixel dùng tám bit, tức hai trăm năm mươi sáu mức xám,
+00:01:09.276 --> 00:01:11.556 line:98%,end
+và cả hai đều có thể bị răng cưa.
 
-00:01:16.161 --> 00:01:18.400 line:98%,end
-là kết quả của bước lượng tử hóa.
+00:01:13.054 --> 00:01:16.572 line:98%,end
+Hãy tưởng tượng các bạn ghi lại nhiệt độ trong ngày.
 
-00:01:19.012 --> 00:01:21.931 line:98%,end
-Mỗi bước gây ra một kiểu lỗi riêng.
+00:01:16.522 --> 00:01:20.949 line:98%,end
+Các bạn không thể ghi liên tục, nên chỉ đo mỗi giờ một lần.
 
-00:01:21.881 --> 00:01:25.709 line:98%,end
-Lấy mẫu quá thưa làm mất chi tiết và gây răng cưa.
+00:01:20.949 --> 00:01:25.063 line:98%,end
+Đó là lấy mẫu: chọn những vị trí rời rạc để đo.
 
-00:01:25.709 --> 00:01:29.709 line:98%,end
-Lượng tử quá ít mức thì những vùng chuyển sắc mượt, như bầu trời,
+00:01:25.063 --> 00:01:28.800 line:98%,end
+Với ảnh, các vị trí đó là lưới pixel.
 
-00:01:29.709 --> 00:01:34.264 line:98%,end
-sẽ bị phân thành từng dải với các đường viền giả, gọi là false contouring.
+00:01:29.416 --> 00:01:34.874 line:98%,end
+Mỗi lần đo, các bạn làm tròn đến một độ, không ghi mười chữ số thập phân.
 
-00:01:35.770 --> 00:01:40.087 line:98%,end
-Về mặt Fourier, biến đổi Fourier không gian liên tục, CSFT,
+00:01:34.824 --> 00:01:39.928 line:98%,end
+Đó là lượng tử hóa: đưa biên độ liên tục về một tập hữu hạn giá trị.
 
-00:01:40.087 --> 00:01:43.819 line:98%,end
-có đơn vị tần số là chu kỳ trên đơn vị khoảng cách.
+00:01:39.928 --> 00:01:44.082 line:98%,end
+Với ảnh tám bit, đó là hai trăm năm mươi sáu mức xám.
 
-00:01:43.769 --> 00:01:50.449 line:98%,end
-Còn biến đổi Fourier không gian rời rạc, DSFT, có đơn vị là chu kỳ trên pixel.
+00:01:44.698 --> 00:01:47.135 line:98%,end
+Nếu đo quá thưa thì sao?
 
-00:01:51.052 --> 00:01:51.827 line:98%,end
-Khi lấy mẫu,
+00:01:47.085 --> 00:01:50.861 line:98%,end
+Nhiệt độ lên xuống giữa hai lần đo sẽ bị bỏ sót.
 
-00:01:51.827 --> 00:01:57.512 line:98%,end
-phổ của tín hiệu rời rạc chính là phổ liên tục bị lặp lại tuần hoàn theo chu kỳ lấy mẫu.
+00:01:50.861 --> 00:01:54.585 line:98%,end
+Tệ hơn, ta còn nhìn thấy một quy luật giả.
 
-00:01:58.078 --> 00:02:01.481 line:98%,end
-Nếu lấy mẫu không đủ dày, vi phạm định lý Nyquist,
+00:01:54.585 --> 00:01:58.127 line:98%,end
+Trong phim, bánh xe quay nhanh trông như quay ngược.
 
-00:02:01.481 --> 00:02:06.518 line:98%,end
-các bản sao phổ sẽ chồng lên nhau và gây ra hiện tượng răng cưa, aliasing.
+00:01:58.127 --> 00:02:02.020 line:98%,end
+Trên ảnh, áo kẻ sọc nhỏ hiện ra những vân lạ.
 
-00:02:06.468 --> 00:02:10.947 line:98%,end
-Ví dụ quen thuộc là vân moiré khi chụp màn hình hoặc áo kẻ sọc.
+00:02:02.020 --> 00:02:05.666 line:98%,end
+Tất cả đều là một hiện tượng: aliasing.
 
-00:02:11.560 --> 00:02:15.273 line:98%,end
-Nhắc lại định lý lấy mẫu Nyquist: để khôi phục được tín hiệu,
+00:02:07.192 --> 00:02:12.041 line:98%,end
+Điều kiện Nyquist nói một điều rất đời thường: muốn ghi lại một sọc sáng tối,
 
-00:02:15.273 --> 00:02:20.143 line:98%,end
-tần số lấy mẫu phải lớn hơn hoặc bằng hai lần tần số cao nhất có trong tín hiệu.
+00:02:12.041 --> 00:02:14.245 line:98%,end
+mỗi chu kỳ phải có ít nhất hai mẫu,
 
-00:02:20.093 --> 00:02:20.633 line:98%,end
-Với ảnh,
+00:02:14.245 --> 00:02:17.142 line:98%,end
+một mẫu cho phần sáng và một mẫu cho phần tối.
 
-00:02:20.633 --> 00:02:25.562 line:98%,end
-điều này có nghĩa là chi tiết nhỏ nhất phải được phủ bởi ít nhất hai mẫu.
+00:02:17.092 --> 00:02:21.975 line:98%,end
+Vậy tần số lấy mẫu phải ít nhất gấp đôi tần số cao nhất có trong ảnh.
 
-00:02:26.170 --> 00:02:30.378 line:98%,end
-Răng cưa không chỉ xảy ra trong không gian mà cả theo thời gian.
+00:02:22.594 --> 00:02:23.276 line:98%,end
+Về đơn vị,
 
-00:02:30.328 --> 00:02:38.557 line:98%,end
-Hiện tượng bánh xe ô tô trong phim trông như đang quay ngược chính là răng cưa thời gian: tốc độ khung hình quá thấp so với tốc độ quay của bánh xe.
+00:02:23.276 --> 00:02:28.729 line:98%,end
+biến đổi Fourier của ảnh liên tục đo tần số bằng chu kỳ trên đơn vị khoảng cách.
 
-00:02:40.072 --> 00:02:43.329 line:98%,end
-Chuyển đổi tốc độ lấy mẫu gồm hai chiều.
+00:02:28.679 --> 00:02:33.132 line:98%,end
+Biến đổi Fourier của ảnh rời rạc đo bằng chu kỳ trên pixel.
 
-00:02:43.279 --> 00:02:48.383 line:98%,end
-Giảm mẫu, downsampling, giảm tốc độ lấy mẫu theo hệ số nguyên C nhân D,
+00:02:33.132 --> 00:02:35.326 line:98%,end
+Vì cần hai pixel cho một chu kỳ,
 
-00:02:48.383 --> 00:02:53.488 line:98%,end
-bằng cách chỉ giữ lại mỗi mẫu thứ C theo hướng m và thứ D theo hướng n.
+00:02:35.326 --> 00:02:39.851 line:98%,end
+tần số cao nhất biểu diễn được là không phẩy năm chu kỳ mỗi pixel.
 
-00:02:54.106 --> 00:03:02.826 line:98%,end
-Hệ quả trong miền tần số là DSFT bị giãn ra theo hệ số C và D. Nếu ảnh gốc có năng lượng ở tần số cao hơn ngưỡng Nyquist mới,
+00:02:40.468 --> 00:02:46.095 line:98%,end
+Slide giải thích bằng phổ: lấy mẫu làm phổ của ảnh liên tục bị lặp lại theo chu kỳ.
 
-00:03:02.826 --> 00:03:04.082 line:98%,end
-ta sẽ bị răng cưa.
+00:02:46.045 --> 00:02:49.977 line:98%,end
+Nếu lấy mẫu đủ dày, các bản sao nằm tách nhau.
 
-00:03:04.636 --> 00:03:09.013 line:98%,end
-Để tránh điều đó, ảnh cần được lọc thông thấp trước khi giảm mẫu.
+00:02:49.977 --> 00:02:53.298 line:98%,end
+Nếu lấy mẫu thưa, các bản sao chồng lên nhau,
 
-00:03:08.963 --> 00:03:13.403 line:98%,end
-Bộ lọc kết hợp với bộ giảm mẫu được gọi là decimator.
+00:02:53.298 --> 00:02:56.175 line:98%,end
+và phần chồng lấn đó chính là aliasing.
 
-00:03:14.014 --> 00:03:20.225 line:98%,end
-Ví dụ trực quan: nếu thu nhỏ một ảnh có áo kẻ sọc dày bằng cách bỏ bớt pixel mà không lọc trước,
+00:02:57.682 --> 00:03:01.137 line:98%,end
+Giảm mẫu là giảm tốc độ lấy mẫu của một ảnh đã số hóa,
 
-00:03:20.225 --> 00:03:24.042 line:98%,end
-các sọc sẽ biến thành những vân lượn sóng lạ, gọi là moiré.
+00:03:01.137 --> 00:03:06.768 line:98%,end
+theo hệ số nguyên C và D. Thao tác rất đơn giản: theo chiều ngang giữ lại mỗi mẫu thứ C,
 
-00:03:23.992 --> 00:03:28.588 line:98%,end
-Nếu làm mờ nhẹ trước rồi mới bỏ pixel, vân này biến mất.
+00:03:06.768 --> 00:03:10.223 line:98%,end
+theo chiều dọc giữ mỗi mẫu thứ D, bỏ hết phần còn lại.
 
-00:03:30.100 --> 00:03:33.644 line:98%,end
-Chiều ngược lại là tăng mẫu, upsampling.
+00:03:10.780 --> 00:03:12.032 line:98%,end
+Trong miền tần số,
 
-00:03:33.594 --> 00:03:38.190 line:98%,end
-Ta chèn thêm C trừ một và D trừ một số không vào giữa các mẫu.
+00:03:12.032 --> 00:03:16.902 line:98%,end
+giảm mẫu làm phổ giãn ra C lần theo một hướng và D lần theo hướng kia.
 
-00:03:38.806 --> 00:03:40.971 line:98%,end
-Tăng mẫu làm phổ tần số co lại,
+00:03:16.852 --> 00:03:21.771 line:98%,end
+Dễ hiểu thôi: ảnh nhỏ đi một nửa thì mỗi sọc chỉ còn một nửa số pixel,
 
-00:03:40.971 --> 00:03:44.394 line:98%,end
-và không gây răng cưa vì không mất thông tin nào.
+00:03:21.771 --> 00:03:25.354 line:98%,end
+nên tính theo pixel, sọc đó dao động nhanh gấp đôi.
 
-00:03:44.344 --> 00:03:47.951 line:98%,end
-Tuy nhiên nó tạo ra các bản sao phổ dư thừa.
+00:03:25.966 --> 00:03:32.869 line:98%,end
+Hệ quả quan trọng nhất: phần phổ bị giãn ra có thể vượt quá giới hạn không phẩy năm và gây thêm aliasing.
 
-00:03:48.568 --> 00:03:54.768 line:98%,end
-Vì vậy ta kết hợp bộ tăng mẫu với một bộ lọc để loại các bản sao phổ đó và làm mượt tín hiệu.
+00:03:33.424 --> 00:03:37.124 line:98%,end
+Cách phòng tránh là lọc thông thấp ảnh trước khi giảm mẫu.
 
-00:03:54.718 --> 00:03:58.911 line:98%,end
-Tổ hợp này gọi là interpolator, bộ nội suy.
+00:03:37.074 --> 00:03:40.733 line:98%,end
+Bộ lọc này gọi là bộ lọc trước, prefilter.
 
-00:03:58.911 --> 00:04:04.809 line:98%,end
-Các bạn nhớ cặp đôi: decimator cho giảm mẫu, interpolator cho tăng mẫu.
+00:03:40.733 --> 00:03:45.368 line:98%,end
+Ghép bộ lọc và bộ giảm mẫu lại, ta có một decimator.
 
-00:04:05.410 --> 00:04:09.136 line:98%,end
-Lấy ví dụ tăng mẫu một chiều với hệ số hai.
+00:03:46.870 --> 00:03:48.903 line:98%,end
+Tính thử với số.
 
-00:04:09.086 --> 00:04:14.490 line:98%,end
-Dãy a, b sau khi chèn số không thành a, không, b, không.
+00:03:48.853 --> 00:03:52.960 line:98%,end
+Ảnh gốc có các sọc với tần số không phẩy bốn chu kỳ mỗi pixel,
 
-00:04:14.490 --> 00:04:16.678 line:98%,end
-Qua bộ lọc nội suy tuyến tính,
+00:03:52.960 --> 00:03:56.471 line:98%,end
+tức là cứ hai pixel rưỡi thì hết một chu kỳ sáng tối.
 
-00:04:16.678 --> 00:04:22.513 line:98%,end
-các số không được thay bằng trung bình hai mẫu kề, ta được a, a cộng b chia hai,
+00:03:56.471 --> 00:04:01.575 line:98%,end
+Con số này nhỏ hơn không phẩy năm, nên ảnh gốc biểu diễn sọc hoàn toàn đúng.
 
-00:04:22.513 --> 00:04:23.461 line:98%,end
-b, và cứ thế.
+00:04:02.176 --> 00:04:06.853 line:98%,end
+Bây giờ giảm mẫu hai lần, tức là bỏ đi mỗi pixel thứ hai.
 
-00:04:24.976 --> 00:04:28.437 line:98%,end
-Nội suy lân cận gần nhất, còn gọi là nội suy bậc không,
+00:04:06.803 --> 00:04:12.467 line:98%,end
+Tần số tính theo pixel mới tăng gấp đôi, thành không phẩy tám chu kỳ mỗi pixel.
 
-00:04:28.437 --> 00:04:33.598 line:98%,end
-là phương pháp đơn giản nhất về tính toán: chỉ lặp lại giá trị của pixel gần nhất.
+00:04:13.066 --> 00:04:16.414 line:98%,end
+Không phẩy tám vượt quá giới hạn không phẩy năm.
 
-00:04:33.548 --> 00:04:36.777 line:98%,end
-Kết quả có thể bị khối và răng cưa.
+00:04:16.364 --> 00:04:17.610 line:98%,end
+Nó không biến mất,
 
-00:04:37.378 --> 00:04:43.044 line:98%,end
-Nội suy song tuyến, bilinear, là mở rộng hai chiều của nội suy tuyến tính.
+00:04:17.610 --> 00:04:22.038 line:98%,end
+mà bị gập lại: lấy không phẩy tám trừ một rồi lấy trị tuyệt đối,
 
-00:04:42.994 --> 00:04:47.076 line:98%,end
-Nó nội suy tuyến tính giữa các mẫu lân cận theo cả hai hướng,
+00:04:22.038 --> 00:04:23.422 line:98%,end
+được không phẩy hai.
 
-00:04:47.076 --> 00:04:48.749 line:98%,end
-nên cho kết quả mượt hơn.
+00:04:23.422 --> 00:04:27.367 line:98%,end
+Trên ảnh nhỏ, ta thấy các sọc thưa hơn hẳn sọc thật.
 
-00:04:49.372 --> 00:04:54.674 line:98%,end
-Nội suy song tuyến dùng bốn pixel lân cận, nội suy theo hàng rồi theo cột.
+00:04:27.367 --> 00:04:29.450 line:98%,end
+Đó là sọc giả.
 
-00:04:54.624 --> 00:04:59.554 line:98%,end
-Nâng cao hơn là nội suy song khối, bicubic, dùng mười sáu pixel lân cận,
+00:04:30.052 --> 00:04:31.875 line:98%,end
+Muốn an toàn khi giảm C lần,
 
-00:04:59.554 --> 00:05:02.566 line:98%,end
-cho ảnh sắc nét hơn nhưng tốn tính toán hơn.
+00:04:31.875 --> 00:04:36.108 line:98%,end
+tần số trong ảnh gốc phải nhỏ hơn một chia hai C. Với C bằng hai,
 
-00:05:03.190 --> 00:05:05.887 line:98%,end
-Tóm lại có một sự đánh đổi.
+00:04:36.108 --> 00:04:39.234 line:98%,end
+giới hạn là không phẩy hai lăm chu kỳ mỗi pixel.
 
-00:05:05.837 --> 00:05:10.134 line:98%,end
-Nearest neighbor nhanh nhất nhưng cho ảnh bị khối, răng cưa.
+00:04:39.790 --> 00:04:43.008 line:98%,end
+Sọc không phẩy bốn nằm trên giới hạn đó.
 
-00:05:10.134 --> 00:05:13.702 line:98%,end
-Bilinear mượt hơn nhưng làm cạnh hơi mờ.
+00:04:42.958 --> 00:04:47.633 line:98%,end
+Vì vậy ta lọc thông thấp trước để bỏ nó đi, rồi mới giảm mẫu.
 
-00:05:13.702 --> 00:05:16.931 line:98%,end
-Tùy ứng dụng mà ta chọn phương pháp phù hợp.
+00:04:47.633 --> 00:04:51.982 line:98%,end
+Ảnh nhỏ sẽ mất các sọc mịn, nhưng không xuất hiện sọc giả.
 
-00:05:18.436 --> 00:05:19.065 line:98%,end
-Với video,
+00:04:51.982 --> 00:04:55.276 line:98%,end
+Thà mất chi tiết còn hơn có chi tiết sai.
 
-00:05:19.065 --> 00:05:24.727 line:98%,end
-bước thu nhận ban đầu đặc biệt quan trọng vì nó quyết định thông tin nào có trong dữ liệu.
+00:04:56.788 --> 00:04:59.342 line:98%,end
+Chiều ngược lại là tăng mẫu.
 
-00:05:24.677 --> 00:05:29.349 line:98%,end
-Quá trình này được mô hình hóa như một bộ lọc trước theo không gian và thời gian,
+00:04:59.292 --> 00:05:04.193 line:98%,end
+Để tăng C lần, ta chèn C trừ một số không vào giữa hai mẫu liền nhau,
 
-00:05:29.349 --> 00:05:32.060 line:98%,end
+00:05:04.193 --> 00:05:06.323 line:98%,end
+tương tự với D theo chiều kia.
+
+00:05:06.934 --> 00:05:10.113 line:98%,end
+Lần này phổ co lại chứ không giãn ra.
+
+00:05:10.063 --> 00:05:15.206 line:98%,end
+Vì không bỏ đi mẫu nào nên không mất thông tin, và không có aliasing.
+
+00:05:15.808 --> 00:05:19.736 line:98%,end
+Nhưng các số không vừa chèn tạo ra các bản sao phổ thừa,
+
+00:05:19.736 --> 00:05:22.190 line:98%,end
+nhìn trên ảnh là các lỗ đen xen kẽ.
+
+00:05:22.140 --> 00:05:27.765 line:98%,end
+Một bộ lọc thông thấp đặt phía sau sẽ xóa các bản sao đó, tức là lấp đầy các lỗ.
+
+00:05:27.765 --> 00:05:31.672 line:98%,end
+Bộ tăng mẫu cộng bộ lọc gọi là interpolator.
+
+00:05:33.190 --> 00:05:38.544 line:98%,end
+Thử trên một hàng chỉ có ba pixel: mười, hai mươi, ba mươi.
+
+00:05:39.112 --> 00:05:43.216 line:98%,end
+Tăng mẫu hai lần: chèn một số không vào giữa mỗi cặp.
+
+00:05:43.166 --> 00:05:49.155 line:98%,end
+Hàng mới có năm phần tử: mười, không, hai mươi, không, ba mươi.
+
+00:05:49.155 --> 00:05:53.127 line:98%,end
+Nếu hiển thị ngay, ta thấy các vạch đen xen kẽ.
+
+00:05:53.746 --> 00:05:56.097 line:98%,end
+Cho hàng này qua một bộ lọc đơn giản,
+
+00:05:56.097 --> 00:05:59.529 line:98%,end
+thay mỗi số không bằng trung bình của hai mẫu hai bên.
+
+00:05:59.479 --> 00:06:04.636 line:98%,end
+Ta được mười, mười lăm, hai mươi, hai mươi lăm, ba mươi.
+
+00:06:04.636 --> 00:06:08.073 line:98%,end
+Hàng pixel dài gấp đôi và thay đổi mượt.
+
+00:06:08.073 --> 00:06:10.289 line:98%,end
+Đây chính là nội suy tuyến tính,
+
+00:06:10.289 --> 00:06:13.750 line:98%,end
+và cũng là lý do bộ lọc phải đứng sau bộ tăng mẫu.
+
+00:06:15.256 --> 00:06:17.511 line:98%,end
+Đặt hai hệ cạnh nhau.
+
+00:06:17.461 --> 00:06:21.911 line:98%,end
+Decimator: lọc thông thấp trước với tần số cắt bằng một chia hai C,
+
+00:06:21.911 --> 00:06:27.291 line:98%,end
+sau đó mới giữ lại mỗi mẫu thứ C. Lọc trước để chặn aliasing trước khi nó xảy ra.
+
+00:06:27.898 --> 00:06:31.529 line:98%,end
+Interpolator thì ngược thứ tự: chèn số không trước,
+
+00:06:31.529 --> 00:06:34.163 line:98%,end
+rồi lọc thông thấp sau để lấp các lỗ.
+
+00:06:34.113 --> 00:06:38.631 line:98%,end
+Mẹo nhớ: giảm mẫu thì lọc trước, tăng mẫu thì lọc sau.
+
+00:06:40.144 --> 00:06:44.078 line:98%,end
+Slide trình bày hai phương pháp nội suy theo hướng lọc tuyến tính.
+
+00:06:44.028 --> 00:06:47.005 line:98%,end
+Đơn giản nhất về tính toán là lân cận gần nhất,
+
+00:06:47.005 --> 00:06:52.451 line:98%,end
+còn gọi là nội suy bậc không hay lặp pixel: tọa độ lẻ được làm tròn về pixel gần nhất,
+
+00:06:52.451 --> 00:06:54.224 line:98%,end
+rồi lấy luôn giá trị của nó.
+
+00:06:54.826 --> 00:06:59.893 line:98%,end
+Muốn mượt hơn, các mẫu ở giữa được nội suy tuyến tính từ các mẫu lân cận.
+
+00:06:59.843 --> 00:07:05.481 line:98%,end
+Mở rộng ra hai chiều, ta có nội suy song tuyến, còn gọi là nội suy bậc một.
+
+00:07:06.100 --> 00:07:10.165 line:98%,end
+Nội suy song tuyến dùng bốn pixel bao quanh điểm cần tính.
+
+00:07:10.115 --> 00:07:14.021 line:98%,end
+Pixel nào càng gần điểm đó thì trọng số càng lớn.
+
+00:07:14.021 --> 00:07:16.430 line:98%,end
+Ta tính thử ngay sau đây.
+
+00:07:17.938 --> 00:07:22.443 line:98%,end
+Bốn pixel bao quanh có giá trị: hàng trên là mười và hai mươi,
+
+00:07:22.443 --> 00:07:24.841 line:98%,end
+hàng dưới là ba mươi và bốn mươi.
+
+00:07:24.791 --> 00:07:30.260 line:98%,end
+Điểm cần tính nằm cách mép trái một phần tư ô, và cách hàng trên ba phần tư ô.
+
+00:07:30.868 --> 00:07:34.529 line:98%,end
+Bước một, nội suy theo chiều ngang trên hàng trên.
+
+00:07:34.479 --> 00:07:39.258 line:98%,end
+Đi một phần tư quãng đường từ mười đến hai mươi, được mười hai phẩy năm.
+
+00:07:39.862 --> 00:07:43.236 line:98%,end
+Bước hai, làm tương tự trên hàng dưới.
+
+00:07:43.186 --> 00:07:48.265 line:98%,end
+Đi một phần tư quãng đường từ ba mươi đến bốn mươi, được ba mươi hai phẩy năm.
+
+00:07:48.880 --> 00:07:53.296 line:98%,end
+Bước ba, nội suy theo chiều dọc giữa hai kết quả vừa có.
+
+00:07:53.246 --> 00:07:57.574 line:98%,end
+Đi ba phần tư quãng đường từ mười hai phẩy năm đến ba mươi hai phẩy năm,
+
+00:07:57.574 --> 00:07:59.197 line:98%,end
+được hai mươi bảy phẩy năm.
+
+00:07:59.197 --> 00:08:02.100 line:98%,end
+Đó là kết quả nội suy song tuyến.
+
+00:08:02.722 --> 00:08:08.399 line:98%,end
+Còn nếu dùng lân cận gần nhất, ta chỉ lấy pixel gần nhất là pixel dưới bên trái,
+
+00:08:08.399 --> 00:08:09.534 line:98%,end
+giá trị ba mươi.
+
+00:08:09.484 --> 00:08:14.653 line:98%,end
+Hai mươi bảy phẩy năm phản ánh cả bốn hàng xóm, còn ba mươi chỉ phản ánh một.
+
+00:08:16.168 --> 00:08:17.993 line:98%,end
+So sánh nhanh.
+
+00:08:17.943 --> 00:08:22.344 line:98%,end
+Lân cận gần nhất còn gọi là nội suy bậc không hay lặp pixel.
+
+00:08:22.344 --> 00:08:24.987 line:98%,end
+Song tuyến là nội suy bậc một.
+
+00:08:25.594 --> 00:08:28.721 line:98%,end
+Lân cận gần nhất chỉ dùng một pixel.
+
+00:08:28.671 --> 00:08:31.744 line:98%,end
+Song tuyến dùng bốn pixel bao quanh.
+
+00:08:32.356 --> 00:08:37.645 line:98%,end
+Lân cận gần nhất có chi phí tính toán thấp nhất, nên vẫn được dùng rất rộng rãi.
+
+00:08:37.595 --> 00:08:40.368 line:98%,end
+Song tuyến tốn thêm vài phép nhân.
+
+00:08:40.990 --> 00:08:41.753 line:98%,end
+Về kết quả,
+
+00:08:41.753 --> 00:08:47.372 line:98%,end
+lân cận gần nhất làm ảnh phóng to hiện rõ từng khối vuông và răng cưa ở các cạnh.
+
+00:08:47.322 --> 00:08:49.822 line:98%,end
+Song tuyến cho ảnh mượt hơn.
+
+00:08:51.340 --> 00:08:53.282 line:98%,end
+Sang video.
+
+00:08:53.232 --> 00:08:56.245 line:98%,end
+Bước thu nhận và quét ban đầu đặc biệt quan trọng,
+
+00:08:56.245 --> 00:08:59.378 line:98%,end
+vì nó quyết định thông tin nào có mặt trong dữ liệu.
+
+00:08:59.378 --> 00:09:04.819 line:98%,end
+Quá trình này được mô hình hóa thành hai phần: một bộ lọc trước theo không gian và thời gian,
+
+00:09:04.819 --> 00:09:07.568 line:98%,end
 rồi lấy mẫu lý tưởng trên một cấu trúc lấy mẫu.
 
-00:05:32.662 --> 00:05:37.664 line:98%,end
-Cấu trúc lấy mẫu quyết định lượng thông tin không gian thời gian mà tín hiệu có thể mang,
+00:09:08.182 --> 00:09:13.366 line:98%,end
+Cấu trúc lấy mẫu quyết định tín hiệu mang được bao nhiêu thông tin không gian và thời gian.
 
-00:05:37.664 --> 00:05:39.969 line:98%,end
-còn bộ lọc trước giới hạn lượng răng cưa.
+00:09:13.316 --> 00:09:16.259 line:98%,end
+Bộ lọc trước thì giới hạn lượng aliasing,
 
-00:05:40.528 --> 00:05:42.631 line:98%,end
-Cấu trúc này được mô tả bằng lưới,
+00:09:16.259 --> 00:09:19.202 line:98%,end
+đúng vai trò của prefilter mà ta vừa học.
 
-00:05:42.631 --> 00:05:48.942 line:98%,end
-lattice: một tập điểm rời rạc là tổ hợp tuyến tính với hệ số nguyên của các vector độc lập tuyến tính.
+00:09:19.816 --> 00:09:23.842 line:98%,end
+Cấu trúc lấy mẫu được mô tả bằng một lưới, lattice.
 
-00:05:48.892 --> 00:05:52.971 line:98%,end
-Lấy mẫu thời gian một chiều có lưới xác định bởi chu kỳ khung T,
+00:09:23.792 --> 00:09:30.328 line:98%,end
+Một lưới D chiều là tập các điểm tạo bởi tổ hợp tuyến tính với hệ số nguyên của các vector độc lập tuyến tính.
 
-00:05:52.971 --> 00:05:58.006 line:98%,end
-còn quét xen kẽ, interlaced, là một lưới hai chiều theo chiều dọc và thời gian.
+00:09:30.328 --> 00:09:34.443 line:98%,end
+Nói đơn giản, đó là một mẫu điểm lặp lại đều đặn.
 
-00:05:58.618 --> 00:06:01.159 line:98%,end
-Có hai kiểu quét video.
+00:09:35.050 --> 00:09:37.560 line:98%,end
+Lấy mẫu theo thời gian là lưới một chiều,
 
-00:06:01.109 --> 00:06:05.666 line:98%,end
-Quét liên tục, progressive, ghi toàn bộ các dòng của mỗi khung.
+00:09:37.560 --> 00:09:42.826 line:98%,end
+xác định bởi chu kỳ khung hình T. Lấy mẫu dọc và thời gian cùng lúc là lưới hai chiều.
 
-00:06:05.666 --> 00:06:07.247 line:98%,end
-Quét xen kẽ, interlaced,
+00:09:42.776 --> 00:09:48.322 line:98%,end
+Ví dụ quét xen kẽ: lượt này ghi các dòng lẻ, lượt sau ghi các dòng chẵn.
 
-00:06:07.247 --> 00:06:11.198 line:98%,end
-chia mỗi khung thành hai trường: một trường gồm các dòng lẻ,
+00:09:49.840 --> 00:09:54.035 line:98%,end
+Chuyển đổi tốc độ khung hình chính là tăng mẫu theo trục thời gian.
 
-00:06:11.198 --> 00:06:14.885 line:98%,end
-một trường gồm các dòng chẵn, ghi xen kẽ theo thời gian.
+00:09:53.985 --> 00:10:01.224 line:98%,end
+Ví dụ trong slide: tăng phim điện ảnh từ hai mươi bốn lên bốn mươi tám hoặc sáu mươi khung hình mỗi giây để chuyển động mượt hơn.
 
-00:06:14.885 --> 00:06:19.664 line:98%,end
-Quét xen kẽ giảm một nửa băng thông nhưng gây răng lược khi có chuyển động nhanh.
+00:10:01.224 --> 00:10:07.943 line:98%,end
+Cách đơn giản là nội suy thời gian thuần túy: khung mới được tính từ các khung lân cận tại cùng vị trí pixel.
 
-00:06:20.284 --> 00:06:23.948 line:98%,end
-Việc chuyển video xen kẽ sang liên tục, gọi là deinterlacing,
+00:10:08.554 --> 00:10:11.839 line:98%,end
+Nếu phổ thời gian của tín hiệu thỏa tiêu chí Nyquist,
 
-00:06:23.948 --> 00:06:27.733 line:98%,end
-thực chất cũng là một bài toán nội suy không gian và thời gian,
+00:10:11.839 --> 00:10:15.249 line:98%,end
+các điểm đầu ra có thể tính bằng nội suy sinc lý tưởng.
 
-00:06:27.733 --> 00:06:29.895 line:98%,end
-và cũng hưởng lợi từ bù chuyển động.
+00:10:15.820 --> 00:10:18.895 line:98%,end
+Vấn đề xuất hiện khi vật chuyển động nhanh.
 
-00:06:31.354 --> 00:06:34.429 line:98%,end
-Cuối cùng là chuyển đổi tốc độ khung hình.
+00:10:18.845 --> 00:10:24.118 line:98%,end
+Giả sử quả bóng ở vị trí mười trong khung trước và vị trí hai mươi trong khung sau.
 
-00:06:34.379 --> 00:06:37.275 line:98%,end
-Nội suy thời gian thuần túy dùng để tăng tốc độ khung,
+00:10:24.118 --> 00:10:26.801 line:98%,end
+Lấy trung bình hai khung tại từng pixel,
 
-00:06:37.275 --> 00:06:42.960 line:98%,end
-ví dụ phim điện ảnh từ hai mươi tư lên bốn mươi tám hoặc sáu mươi khung một giây cho chuyển động mượt hơn.
+00:10:26.801 --> 00:10:31.496 line:98%,end
+ta không được một quả bóng ở vị trí mười lăm, mà được hai quả bóng mờ,
 
-00:06:42.960 --> 00:06:48.207 line:98%,end
-Nếu tín hiệu thỏa Nyquist theo thời gian, có thể dùng nội suy sinc lý tưởng.
+00:10:31.496 --> 00:10:33.441 line:98%,end
+một ở mười và một ở hai mươi.
 
-00:06:48.820 --> 00:06:52.376 line:98%,end
-Nhưng nội suy thuần thời gian không quan tâm đến chuyển động,
+00:10:33.441 --> 00:10:36.319 line:98%,end
+Đó là bóng ma, ghosting.
 
-00:06:52.376 --> 00:06:56.574 line:98%,end
-nên khi vật thể di chuyển nhanh sẽ xuất hiện hiện tượng nhòe và bóng mờ,
+00:10:36.934 --> 00:10:40.217 line:98%,end
+Nội suy có bù chuyển động giải quyết việc này.
 
-00:06:56.574 --> 00:06:57.507 line:98%,end
-gọi là ghosting.
+00:10:40.167 --> 00:10:45.260 line:98%,end
+Nó ước lượng chuyển động trước, giống chương sáu, rồi nội suy dọc theo quỹ đạo,
 
-00:06:58.078 --> 00:07:02.264 line:98%,end
-Giải pháp là nội suy có bù chuyển động: ước lượng vật thể đi đâu,
+00:10:45.260 --> 00:10:47.967 line:98%,end
+nên đặt quả bóng đúng vào vị trí mười lăm.
 
-00:07:02.264 --> 00:07:05.098 line:98%,end
-rồi nội suy dọc theo quỹ đạo chuyển động đó.
+00:10:49.468 --> 00:10:53.064 line:98%,end
+Bảng này gom lại phần hay bị nhầm nhất của chương.
 
-00:07:05.048 --> 00:07:09.567 line:98%,end
-Đây là kỹ thuật được dùng trong các tivi có chế độ làm mượt chuyển động.
+00:10:53.014 --> 00:10:58.079 line:98%,end
+Giảm mẫu giữ lại mỗi mẫu thứ C. Tăng mẫu chèn C trừ một số không.
 
-00:07:10.168 --> 00:07:14.585 line:98%,end
-Hai cách thô sơ nhất để đổi tốc độ khung là lặp lại hoặc bỏ bớt khung,
+00:10:58.678 --> 00:11:01.219 line:98%,end
+Giảm mẫu làm phổ giãn ra.
 
-00:07:14.585 --> 00:07:18.686 line:98%,end
-gây giật hình, và trộn trung bình hai khung kề nhau, gây bóng mờ.
+00:11:01.169 --> 00:11:03.643 line:98%,end
+Tăng mẫu làm phổ co lại.
 
-00:07:18.636 --> 00:07:21.222 line:98%,end
-Nội suy có bù chuyển động khắc phục cả hai,
+00:11:04.264 --> 00:11:08.355 line:98%,end
+Giảm mẫu có thể gây aliasing vì bỏ bớt thông tin.
 
-00:07:21.222 --> 00:07:25.433 line:98%,end
-nhưng nếu ước lượng chuyển động sai thì sẽ xuất hiện các mảnh vỡ hình.
+00:11:08.305 --> 00:11:10.284 line:98%,end
+Tăng mẫu thì không.
 
-00:07:26.950 --> 00:07:28.931 line:98%,end
+00:11:10.906 --> 00:11:15.804 line:98%,end
+Bộ lọc thông thấp đứng trước bộ giảm mẫu, nhưng đứng sau bộ tăng mẫu.
+
+00:11:16.372 --> 00:11:20.389 line:98%,end
+Và tên của hệ ghép: lọc cộng giảm mẫu là decimator,
+
+00:11:20.389 --> 00:11:23.067 line:98%,end
+tăng mẫu cộng lọc là interpolator.
+
+00:11:24.538 --> 00:11:26.376 line:98%,end
+Năm cái bẫy.
+
+00:11:26.326 --> 00:11:30.844 line:98%,end
+Một: lấy mẫu rời rạc hóa vị trí, tức là tham số.
+
+00:11:30.844 --> 00:11:33.904 line:98%,end
+Lượng tử hóa rời rạc hóa biên độ.
+
+00:11:33.904 --> 00:11:36.769 line:98%,end
+Đề rất hay đảo hai định nghĩa này.
+
+00:11:37.372 --> 00:11:42.921 line:98%,end
+Hai: đơn vị tần số của biến đổi Fourier rời rạc là chu kỳ trên pixel.
+
+00:11:42.871 --> 00:11:46.686 line:98%,end
+Của biến đổi liên tục là chu kỳ trên đơn vị khoảng cách.
+
+00:11:47.302 --> 00:11:51.267 line:98%,end
+Ba: giảm mẫu làm phổ giãn ra, có thể gây aliasing,
+
+00:11:51.267 --> 00:11:53.645 line:98%,end
+nên phải lọc thông thấp trước.
+
+00:11:54.208 --> 00:11:58.872 line:98%,end
+Bốn: tăng mẫu không gây aliasing, vì không mất thông tin.
+
+00:11:58.822 --> 00:12:02.676 line:98%,end
+Bộ lọc phía sau chỉ để xóa các bản sao phổ thừa.
+
+00:12:03.274 --> 00:12:08.081 line:98%,end
+Năm: nội suy thời gian thuần túy gây bóng ma khi vật chuyển động nhanh.
+
+00:12:08.031 --> 00:12:11.429 line:98%,end
+Vì thế mới cần nội suy có bù chuyển động.
+
+00:12:12.952 --> 00:12:14.946 line:98%,end
 Tổng kết chương bảy.
 
-00:07:28.881 --> 00:07:34.324 line:98%,end
-Lấy mẫu là rời rạc hóa tọa độ, còn lượng tử hóa là rời rạc hóa biên độ.
+00:12:14.896 --> 00:12:19.818 line:98%,end
+Lấy mẫu rời rạc hóa vị trí, lượng tử hóa rời rạc hóa biên độ.
 
-00:07:34.936 --> 00:07:39.430 line:98%,end
-Lấy mẫu quá thưa khiến các bản sao phổ chồng lấn và gây răng cưa.
+00:12:20.434 --> 00:12:26.569 line:98%,end
+Lấy mẫu quá thưa so với điều kiện Nyquist thì các bản sao phổ chồng nhau và sinh ra aliasing.
 
-00:07:39.994 --> 00:07:45.647 line:98%,end
-Decimator gồm lọc trước rồi giảm mẫu, interpolator gồm tăng mẫu rồi lọc.
+00:12:27.124 --> 00:12:30.264 line:98%,end
+Decimator lọc trước rồi giảm mẫu.
 
-00:07:46.204 --> 00:07:50.497 line:98%,end
-Nội suy ảnh có nearest neighbor và bilinear, còn với video,
+00:12:30.214 --> 00:12:33.313 line:98%,end
+Interpolator chèn số không rồi lọc.
 
-00:07:50.497 --> 00:07:53.771 line:98%,end
-nội suy có bù chuyển động giúp tránh bóng mờ.
+00:12:33.313 --> 00:12:37.454 line:98%,end
+Nội suy có hai mức: lân cận gần nhất và song tuyến.
 
-00:07:53.721 --> 00:07:58.409 line:98%,end
-Hẹn gặp các bạn ở chương tám: hiển thị và đánh giá chất lượng ảnh.
+00:12:38.062 --> 00:12:40.787 line:98%,end
+Với video, cấu trúc lấy mẫu là một lưới,
+
+00:12:40.787 --> 00:12:45.147 line:98%,end
+và đổi tốc độ khung hình nên có bù chuyển động để tránh bóng ma.
+
+00:12:45.097 --> 00:12:50.525 line:98%,end
+Chương tám đi đến đầu bên kia của đường ống: hiển thị ảnh lên thiết bị ít mức xám,
+
+00:12:50.525 --> 00:12:52.246 line:98%,end
+và đo xem ảnh đẹp hay xấu.

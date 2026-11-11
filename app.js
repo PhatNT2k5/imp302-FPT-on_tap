@@ -1,5 +1,5 @@
 import {renderLessonBody,bindLessonMedia,mediaCount} from './lesson-media.js?v=8';
-import {renderLecture,bindLecture,lectureLabel,hasLecture} from './lecture-video.js?v=1';
+import {renderLecture,bindLecture,lectureLabel,hasLecture} from './lecture-video.js?v=2';
 import {begin,grade,advance} from './engine.js?v=6';
 import {reconcileProgress,rowsFor} from './content-progress.js?v=8';
 const {items,lessons,meta}=window.STUDY_DATA,VI=window.STUDY_VI||{};

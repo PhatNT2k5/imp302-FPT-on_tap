@@ -1,0 +1,55 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:36.240
+Giới thiệu chương
+
+00:00:36.240 --> 00:01:13.790
+Những mảnh ghép từ các chương trước
+
+00:01:13.790 --> 00:02:02.120
+Halftoning: lừa mắt bằng các chấm đen trắng
+
+00:02:02.120 --> 00:02:38.180
+Phát biểu bài toán lượng tử hóa ảnh
+
+00:02:38.180 --> 00:03:50.170
+Ngưỡng hóa thường và ordered dithering
+
+00:03:50.170 --> 00:04:35.900
+Error diffusion: đẩy sai số sang hàng xóm
+
+00:04:35.900 --> 00:05:42.920
+Error diffusion trên một hàng pixel
+
+00:05:42.920 --> 00:06:11.480
+Mã giả error diffusion
+
+00:06:11.480 --> 00:07:08.590
+Lượng tử hóa màu và median cut
+
+00:07:08.590 --> 00:08:03.870
+Median cut: từ 8 giá trị xuống 4 màu
+
+00:08:03.870 --> 00:09:04.120
+Mắt người nhìn ảnh như thế nào
+
+00:09:04.120 --> 00:09:38.600
+Ba điều kiện của một độ đo cảm nhận
+
+00:09:38.600 --> 00:10:29.550
+Độ đo Minkowski
+
+00:10:29.550 --> 00:11:18.400
+Chỉ số tương đồng cấu trúc SSIM
+
+00:11:18.400 --> 00:12:54.500
+Cùng MSE nhưng SSIM khác hẳn
+
+00:12:54.500 --> 00:13:27.160
+Ba nhóm phương pháp halftoning
+
+00:13:27.160 --> 00:14:11.950
+Những chỗ đề thi hay gài
+
+00:14:11.950 --> 00:14:51.222
+Tổng kết chương 8
