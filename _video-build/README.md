@@ -14,6 +14,7 @@ The site player (`../lecture-video.js`) shows a playlist for story chapters and 
 | File | Role |
 | --- | --- |
 | `scripts/chNN.json` | Lecture script per chapter (formats below) |
+| `story_gen/gen_chNN.py` | Python generators that write each story script and its story map (shared helpers in `story_kit.py`) |
 | `story_maps/chNN.md` | Method map of a chapter: order, problem → old way → idea → limit → next. Reviewed before writing the script |
 | `script_model.py` | Pydantic schema, beat-order rules, asset checks (slide pages, image paths, TTS-friendly narration, story length) |
 | `slide_template.html` | The slide layout; KaTeX renders `$...$` math (vendored in `vendor/katex`); SVG drawing for graph / histogram / intervals |

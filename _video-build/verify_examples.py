@@ -15,6 +15,86 @@ def close(actual: float, expected: float, tol: float = 5e-3) -> None:
         raise AssertionError(f"expected {expected}, computed {actual}")
 
 
+def ch01() -> None:
+    # Full-scale histogram stretch of the range 80..150
+    for f, g in [(80, 0), (115, 127.5), (150, 255)]:
+        close((f - 80) * 255 / 70, g)
+    # Histogram equalisation, K = 4 levels, 16 pixels
+    hist = np.array([2, 10, 2, 2])
+    cdf = np.cumsum(hist) / hist.sum()
+    assert cdf.tolist() == [0.125, 0.75, 0.875, 1.0]
+    assert np.floor(cdf * 3 + 0.5).astype(int).tolist() == [0, 2, 3, 3]
+    # Averaging four noisy shots of a pixel whose true value is 100
+    shots = [100 + n for n in (8, -6, 3, -5)]
+    assert shots == [108, 94, 103, 95] and sum(shots) / 4 == 100
+    # Otsu on 14 pixels over levels 0..7
+    h = np.array([0, 2, 4, 1, 0, 1, 4, 2], dtype=float)
+    prob, levels, scores = h / h.sum(), np.arange(8), {}
+    for t in range(2, 8):
+        w0 = prob[:t].sum()
+        m0 = (levels[:t] * prob[:t]).sum() / w0
+        m1 = (levels[t:] * prob[t:]).sum() / (1 - w0)
+        scores[t] = round(w0 * (1 - w0) * (m0 - m1) ** 2, 2)
+    assert scores == {2: 1.5, 3: 4.08, 4: 4.59, 5: 4.59, 6: 4.08, 7: 1.5}, scores
+    # Two-pass region labelling with one equivalence
+    img = np.array([[1, 1, 0, 1, 1, 0], [1, 0, 0, 0, 1, 0], [1, 1, 1, 1, 1, 0], [0, 0, 0, 0, 0, 1]])
+    labels, parent, nxt = np.zeros_like(img), {}, 1
+    for r in range(img.shape[0]):
+        for c in range(img.shape[1]):
+            if not img[r, c]:
+                continue
+            left = labels[r, c - 1] if c else 0
+            up = labels[r - 1, c] if r else 0
+            if not left and not up:
+                labels[r, c], parent[nxt], nxt = nxt, nxt, nxt + 1
+            elif left and up and left != up:
+                labels[r, c] = min(left, up)
+                parent[max(left, up)] = min(left, up)
+            else:
+                labels[r, c] = left or up
+    assert labels.tolist() == [[1, 1, 0, 2, 2, 0], [1, 0, 0, 0, 2, 0], [1, 1, 1, 1, 1, 0], [0, 0, 0, 0, 0, 3]], labels
+    assert parent == {1: 1, 2: 1, 3: 3}
+    assert len({parent[v] for v in parent}) == 2
+    # Closing a one-pixel hole with OR (dilation) then AND (erosion), window 3
+    row = np.array([0, 1, 1, 0, 1, 1, 0])
+    dil = np.array([np.pad(row, 1)[i:i + 3].max() for i in range(7)])
+    clo = np.array([np.pad(dil, 1)[i:i + 3].min() for i in range(7)])
+    assert dil.tolist() == [1] * 7 and clo.tolist() == [0, 1, 1, 1, 1, 1, 0]
+    print("ch01 equalisation [0,2,3,3], Otsu", scores, "labels: 2 objects, closing", clo.tolist())
+
+
+def ch02() -> None:
+    impulse, kernel = np.array([0, 0, 1, 0, 0]), np.array([1, 2, 3])
+    corr = np.correlate(impulse, kernel, mode="same")
+    conv = np.convolve(impulse, kernel, mode="same")
+    assert corr.tolist() == [0, 3, 2, 1, 0] and conv.tolist() == [0, 1, 2, 3, 0]
+    gauss = [round(math.exp(-u * u / 8), 2) for u in range(6)]
+    assert gauss == [1.0, 0.88, 0.61, 0.32, 0.14, 0.04], gauss
+    window = [10, 12, 11, 255, 13]
+    assert sorted(window)[2] == 12
+    close(sum(window) / 5, 60.2)
+    weights = dict(zip(window, [1, 2, 3, 2, 1]))
+    half, total = sum(weights.values()) / 2, 0
+    for v in sorted(window, reverse=True):
+        total += weights[v]
+        if total >= half:
+            break
+    assert (half, v) == (4.5, 12)
+    row = np.array([0, 1, 1, 1, 0, 0, 1, 0])
+    pad = np.pad(row, 1)
+    eroded = np.array([pad[i:i + 3].min() for i in range(len(row))])
+    opened = np.array([np.pad(eroded, 1)[i:i + 3].max() for i in range(len(row))])
+    assert eroded.tolist() == [0, 0, 1, 0, 0, 0, 0, 0] and opened.tolist() == [0, 1, 1, 1, 0, 0, 0, 0]
+    f = np.array([10.0, 10, 10, 20, 30, 30, 30])
+    d1 = np.diff(f)
+    d2 = f[2:] + f[:-2] - 2 * f[1:-1]
+    assert d1.tolist() == [0, 0, 10, 10, 0, 0] and d2.tolist() == [0, 10, 0, -10, 0]
+    blur = np.array([f[i - 1:i + 2].mean() for i in range(1, 6)])
+    sharp = f[1:6] + (f[1:6] - blur)
+    assert np.allclose(blur, [10, 13.33, 20, 26.67, 30], atol=0.01) and np.allclose(sharp, [10, 6.67, 20, 33.33, 30], atol=0.01)
+    print("ch02 corr/conv, median 12 vs mean 60.2, opening", opened.tolist(), "unsharp", np.round(sharp, 2).tolist())
+
+
 def ch03() -> None:
     # Mean filters on a 3x3 window: eight pixels 100 and one pepper pixel 0
     window = np.array([100.0] * 8 + [0.0])
@@ -389,6 +469,6 @@ def ch12() -> None:
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    for check in (ch03, ch04, ch05, ch06, ch07, ch08, ch09, ch10, ch11, ch12):
+    for check in (ch01, ch02, ch03, ch04, ch05, ch06, ch07, ch08, ch09, ch10, ch11, ch12):
         check()
     print("all worked-example numbers verified")
