@@ -1,0 +1,67 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.571 line:98%,end
+Ảnh biển số ban đêm có hạt lấm tấm khắp nơi, đôi chỗ có điểm trắng đen lẻ tẻ.
+
+00:00:05.521 --> 00:00:09.271 line:98%,end
+Bộ lọc tốt cho loại này có thể tệ cho loại kia.
+
+00:00:10.786 --> 00:00:17.103 line:98%,end
+Dùng một bộ lọc làm mượt cho mọi trường hợp: nhiễu giảm nhưng chi tiết như nét chữ biển số cũng mờ theo.
+
+00:00:18.568 --> 00:00:21.773 line:98%,end
+Nhiễu sinh ra khi thu nhận và truyền dẫn.
+
+00:00:21.723 --> 00:00:26.775 line:98%,end
+Ta mô tả nó bằng hàm mật độ xác suất: giá trị nhiễu hay rơi vào đâu.
+
+00:00:27.394 --> 00:00:32.839 line:98%,end
+Khi phổ Fourier của nhiễu là hằng số trên mọi tần số, ta gọi là nhiễu trắng.
+
+00:00:32.789 --> 00:00:37.112 line:98%,end
+Nhiễu thường coi là độc lập tọa độ và không tương quan với ảnh.
+
+00:00:38.632 --> 00:00:42.605 line:98%,end
+Chụp một vùng phẳng, histogram cho thấy hình dạng nhiễu.
+
+00:00:42.555 --> 00:00:46.371 line:98%,end
+Nhiễu Gauss có histogram hình chuông quanh giá trị thật.
+
+00:00:46.978 --> 00:00:50.795 line:98%,end
+Thử đoán: nhiễu muối tiêu có histogram trông thế nào?
+
+00:00:53.364 --> 00:00:54.722 line:98%,end
+Hai cột lẻ ở hai đầu,
+
+00:00:54.722 --> 00:01:00.736 line:98%,end
+cực đen và cực trắng: một số pixel ngẫu nhiên bị biến thành không hoặc hai trăm năm mươi lăm.
+
+00:01:02.202 --> 00:01:06.670 line:98%,end
+Gauss phổ biến nhất, đặc trưng bởi trung bình và độ lệch chuẩn.
+
+00:01:07.236 --> 00:01:13.032 line:98%,end
+Rayleigh, Erlang hay Gamma, hàm mũ và phân bố đều là các hàm mật độ khác.
+
+00:01:13.590 --> 00:01:17.954 line:98%,end
+Muối tiêu là nhiễu xung, pixel thành cực đen hoặc cực trắng.
+
+00:01:19.404 --> 00:01:24.575 line:98%,end
+Cảm biến thiếu sáng cho nhiễu gần Gauss; đường truyền lỗi bit cho nhiễu muối tiêu.
+
+00:01:24.525 --> 00:01:27.455 line:98%,end
+Biết nguồn gốc là đoán được loại nhiễu.
+
+00:01:28.962 --> 00:01:33.482 line:98%,end
+Mỗi loại nhiễu có đặc trưng thống kê riêng, quyết định bộ lọc phù hợp.
+
+00:01:33.432 --> 00:01:36.609 line:98%,end
+Video sau: các bộ lọc trung bình.
+
+00:01:38.112 --> 00:01:42.984 line:98%,end
+Bẫy một: nhiễu trắng có phổ Fourier là hằng số trên mọi tần số.
+
+00:01:43.554 --> 00:01:48.777 line:98%,end
+Bẫy hai: muối tiêu là nhiễu xung, pixel thành cực đen hoặc cực trắng.
+
+00:01:49.332 --> 00:01:53.865 line:98%,end
+Bẫy ba: nhiễu Gauss đặc trưng bởi trung bình và độ lệch chuẩn.

@@ -1,0 +1,82 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.323 line:98%,end
+Ta muốn xóa hạt nhiễu trên nền phẳng nhưng giữ nguyên các cạnh sắc của chữ trên biển số.
+
+00:00:06.778 --> 00:00:09.306 line:98%,end
+Lọc trung bình làm mờ cạnh.
+
+00:00:09.256 --> 00:00:12.720 line:98%,end
+Lọc tần số đối xử mọi vị trí như nhau.
+
+00:00:14.224 --> 00:00:17.101 line:98%,end
+Biến đổi wavelet là biểu diễn đa phân giải,
+
+00:00:17.101 --> 00:00:19.643 line:98%,end
+cài bằng bộ lọc băng con hai kênh lặp.
+
+00:00:19.593 --> 00:00:24.788 line:98%,end
+Cạnh thật cho vài hệ số chi tiết lớn; nhiễu rải ra rất nhiều hệ số nhỏ.
+
+00:00:25.402 --> 00:00:30.365 line:98%,end
+Vậy đặt một ngưỡng: hệ số nhỏ hơn ngưỡng coi như nhiễu, bỏ đi.
+
+00:00:31.816 --> 00:00:32.440 line:98%,end
+Bước một,
+
+00:00:32.440 --> 00:00:38.263 line:98%,end
+phân rã ảnh thành hệ số xấp xỉ tần số thấp và hệ số chi tiết tần số cao ở nhiều mức.
+
+00:00:38.213 --> 00:00:44.320 line:98%,end
+Lấy năm hệ số chi tiết: không phẩy ba, âm không phẩy tám, hai phẩy năm, âm bốn,
+
+00:00:44.320 --> 00:00:45.479 line:98%,end
+không phẩy một.
+
+00:00:46.090 --> 00:00:49.373 line:98%,end
+Bước hai, ngưỡng hóa với ngưỡng bằng một.
+
+00:00:49.323 --> 00:00:52.203 line:98%,end
+Ngưỡng cứng chỉ xóa hệ số nhỏ hơn ngưỡng,
+
+00:00:52.203 --> 00:00:55.573 line:98%,end
+giữ nguyên phần còn lại: hai phẩy năm và âm bốn.
+
+00:00:56.188 --> 00:00:59.484 line:98%,end
+Thử đoán: ngưỡng mềm khác ngưỡng cứng ở đâu?
+
+00:01:02.046 --> 00:01:08.337 line:98%,end
+Ngưỡng mềm còn kéo các hệ số giữ lại về phía không một lượng bằng ngưỡng: một phẩy năm và âm ba.
+
+00:01:08.904 --> 00:01:13.515 line:98%,end
+Bước ba, biến đổi wavelet ngược để tái tạo ảnh đã khử nhiễu.
+
+00:01:14.982 --> 00:01:19.593 line:98%,end
+Ngưỡng cứng chỉ đưa hệ số nhỏ về không, giữ nguyên hệ số lớn.
+
+00:01:20.160 --> 00:01:24.550 line:98%,end
+Ngưỡng mềm giảm đều mọi hệ số theo ngưỡng, kết quả mượt hơn.
+
+00:01:26.022 --> 00:01:27.780 line:98%,end
+Ảnh y tế, ảnh thiên văn,
+
+00:01:27.780 --> 00:01:32.613 line:98%,end
+tín hiệu âm thanh: khử nhiễu mà vẫn giữ cạnh và chi tiết đột ngột.
+
+00:01:34.068 --> 00:01:36.857 line:98%,end
+Đến giờ ta phục hồi ảnh đã chụp.
+
+00:01:36.807 --> 00:01:42.157 line:98%,end
+Có bài toán khác hẳn: tái tạo ảnh bên trong một vật mà camera không nhìn thấy,
+
+00:01:42.157 --> 00:01:43.460 line:98%,end
+như lát cắt cơ thể.
+
+00:01:44.070 --> 00:01:49.163 line:98%,end
+Video sau: tái tạo ảnh từ phép chiếu, nền tảng của CT.
+
+00:01:50.628 --> 00:01:56.125 line:98%,end
+Bẫy một: ba bước là phân rã, ngưỡng hóa, rồi biến đổi wavelet ngược.
+
+00:01:56.694 --> 00:02:02.725 line:98%,end
+Bẫy hai: ngưỡng cứng chỉ xóa hệ số nhỏ; ngưỡng mềm giảm đều mọi hệ số theo ngưỡng.

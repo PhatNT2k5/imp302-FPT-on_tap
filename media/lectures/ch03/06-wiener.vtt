@@ -1,0 +1,82 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.941 line:98%,end
+Ta muốn ước lượng gần ảnh gốc nhất, tức sai số bình phương trung bình nhỏ nhất,
+
+00:00:04.941 --> 00:00:06.534 line:98%,end
+mà không để nhiễu bùng nổ.
+
+00:00:08.002 --> 00:00:12.978 line:98%,end
+Lọc nghịch đảo chia thẳng cho H, khuếch đại nhiễu tại các tần số H nhỏ.
+
+00:00:14.440 --> 00:00:18.270 line:98%,end
+Wiener đưa thêm tỉ lệ công suất nhiễu trên tín hiệu.
+
+00:00:18.220 --> 00:00:23.871 line:98%,end
+Tần số nào tín hiệu mạnh thì phục hồi mạnh; tần số nào nhiễu lấn át thì kiềm chế.
+
+00:00:24.490 --> 00:00:28.663 line:98%,end
+Giả định: nhiễu và ảnh không tương quan, đều có trung bình không,
+
+00:00:28.663 --> 00:00:31.745 line:98%,end
+và ước lượng là hàm tuyến tính của ảnh suy giảm.
+
+00:00:33.208 --> 00:00:35.671 line:98%,end
+Tử số giống lọc nghịch đảo.
+
+00:00:35.621 --> 00:00:40.048 line:98%,end
+Mẫu số cộng thêm K, tỉ lệ công suất nhiễu trên tín hiệu.
+
+00:00:40.666 --> 00:00:45.733 line:98%,end
+Khi K bằng không, tức không nhiễu, Wiener trở về đúng lọc nghịch đảo.
+
+00:00:45.683 --> 00:00:50.683 line:98%,end
+Khi H rất nhỏ so với K, hệ số tiến về không thay vì vô cùng.
+
+00:00:52.192 --> 00:00:56.882 line:98%,end
+H bằng một: Wiener cho mười phẩy bốn, gần như lọc nghịch đảo.
+
+00:00:57.442 --> 00:01:00.895 line:98%,end
+H bằng không phẩy năm: mười phẩy năm tám.
+
+00:01:01.444 --> 00:01:06.121 line:98%,end
+Thử đoán: tại H bằng không phẩy không một, Wiener cho bao nhiêu?
+
+00:01:08.670 --> 00:01:12.383 line:98%,end
+Chỉ khoảng không phẩy năm chín, thay vì sáu mươi.
+
+00:01:12.333 --> 00:01:17.789 line:98%,end
+Wiener chấp nhận bỏ tần số đó vì nhiễu lấn át, nhưng không để nhiễu bùng nổ.
+
+00:01:19.308 --> 00:01:24.310 line:98%,end
+Nghịch đảo không dùng thông tin nhiễu; Wiener dùng tỉ lệ nhiễu trên tín hiệu.
+
+00:01:24.870 --> 00:01:28.009 line:98%,end
+Wiener tối ưu theo sai số bình phương trung bình,
+
+00:01:28.009 --> 00:01:30.380 line:98%,end
+nhưng cần biết phổ công suất ảnh gốc.
+
+00:01:31.836 --> 00:01:36.317 line:98%,end
+Khử mờ ảnh thiên văn, ảnh y tế, ảnh camera.
+
+00:01:36.267 --> 00:01:41.749 line:98%,end
+Hiệu năng phục hồi thường được đo bằng SNR và sai số bình phương trung bình.
+
+00:01:43.266 --> 00:01:47.591 line:98%,end
+Wiener cần phổ công suất của ảnh gốc, thứ ta đang đi tìm.
+
+00:01:47.541 --> 00:01:52.932 line:98%,end
+Và nó chỉ tối ưu theo trung bình thống kê, không tối ưu cho từng ảnh cụ thể.
+
+00:01:53.532 --> 00:01:57.297 line:98%,end
+Video sau: bình phương tối thiểu có ràng buộc.
+
+00:01:58.746 --> 00:02:03.123 line:98%,end
+Bẫy một: Wiener là bộ lọc bình phương trung bình tối thiểu.
+
+00:02:03.684 --> 00:02:08.478 line:98%,end
+Bẫy hai: khi không có nhiễu, Wiener trở về lọc nghịch đảo.
+
+00:02:09.030 --> 00:02:14.670 line:98%,end
+Bẫy ba: Wiener cần phổ công suất ảnh gốc và chỉ tối ưu theo trung bình thống kê.

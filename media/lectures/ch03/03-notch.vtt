@@ -1,0 +1,73 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.829 line:98%,end
+Nhiễu điện từ đèn đường làm ảnh có những sọc mờ lặp lại đều khắp khung hình.
+
+00:00:06.298 --> 00:00:11.469 line:98%,end
+Lọc trung bình làm mờ cả ảnh mà vẫn không xóa sạch sọc, vì sọc trải khắp ảnh.
+
+00:00:12.928 --> 00:00:14.016 line:98%,end
+Trong phổ Fourier,
+
+00:00:14.016 --> 00:00:18.972 line:98%,end
+nhiễu tuần hoàn hiện thành các đốm năng lượng tập trung tại đúng tần số của nhiễu.
+
+00:00:19.522 --> 00:00:22.524 line:98%,end
+Chỉ cần khoét đúng các đốm đó là xóa được sọc,
+
+00:00:22.524 --> 00:00:25.592 line:98%,end
+phần còn lại của ảnh gần như không bị đụng tới.
+
+00:00:27.040 --> 00:00:31.210 line:98%,end
+Phổ của ảnh cao nhất ở tần số không và giảm dần ra tần số cao,
+
+00:00:31.210 --> 00:00:33.631 line:98%,end
+nhưng có hai đốm nhô lên bất thường.
+
+00:00:34.186 --> 00:00:37.105 line:98%,end
+Thử đoán: hai đốm đó là gì?
+
+00:00:39.660 --> 00:00:43.425 line:98%,end
+Là tần số của sọc nhiễu, đối xứng hai bên.
+
+00:00:43.375 --> 00:00:47.333 line:98%,end
+Bộ lọc notch reject đặt vùng chặn đúng tại hai đốm đó.
+
+00:00:48.834 --> 00:00:53.924 line:98%,end
+Notch reject là tích các bộ lọc thông cao có tâm dời tới vị trí các đốm nhiễu,
+
+00:00:53.924 --> 00:00:55.425 line:98%,end
+theo từng cặp đối xứng.
+
+00:00:55.980 --> 00:00:59.654 line:98%,end
+Notch pass là phần bù: một trừ notch reject.
+
+00:00:59.604 --> 00:01:03.836 line:98%,end
+Nó giữ lại đúng nhiễu, dùng để quan sát hình dạng nhiễu.
+
+00:01:05.346 --> 00:01:09.554 line:98%,end
+Lọc trung bình đụng tới mọi tần số, làm mờ cả ảnh.
+
+00:01:10.116 --> 00:01:14.324 line:98%,end
+Notch chỉ chặn vài tần số nhiễu, giữ nguyên phần còn lại.
+
+00:01:15.786 --> 00:01:18.422 line:98%,end
+Khử nhiễu điện lưới, sọc do máy quét,
+
+00:01:18.422 --> 00:01:21.700 line:98%,end
+nhiễu tuần hoàn trong ảnh vệ tinh và ảnh y tế.
+
+00:01:23.160 --> 00:01:27.016 line:98%,end
+Khử nhiễu xong, biển số vẫn mờ vì xe chạy.
+
+00:01:26.966 --> 00:01:31.289 line:98%,end
+Muốn khử mờ, trước hết phải biết ảnh bị làm mờ thế nào.
+
+00:01:32.790 --> 00:01:37.948 line:98%,end
+Bẫy một: nhiễu tuần hoàn hiện thành các đốm năng lượng tập trung trong phổ Fourier.
+
+00:01:38.520 --> 00:01:44.225 line:98%,end
+Bẫy hai: notch reject là tích các bộ lọc thông cao có tâm dời tới các đốm nhiễu.
+
+00:01:44.778 --> 00:01:49.455 line:98%,end
+Bẫy ba: notch pass là phần bù, bằng một trừ notch reject.

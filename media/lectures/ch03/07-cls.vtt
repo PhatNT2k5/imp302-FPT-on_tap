@@ -1,0 +1,82 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.594 line:98%,end
+Ta không có ảnh biển số gốc, nên không biết phổ công suất của nó.
+
+00:00:04.544 --> 00:00:07.604 line:98%,end
+Vẫn muốn phục hồi tốt cho đúng ảnh này.
+
+00:00:09.106 --> 00:00:13.952 line:98%,end
+Wiener cần phổ công suất ảnh gốc và chỉ tối ưu theo trung bình thống kê.
+
+00:00:15.400 --> 00:00:18.515 line:98%,end
+Chọn ảnh mượt nhất, đo bằng toán tử Laplacian,
+
+00:00:18.515 --> 00:00:22.511 line:98%,end
+trong số các ảnh khớp với quan sát đến mức sai số cho phép.
+
+00:00:23.074 --> 00:00:25.805 line:98%,end
+Laplacian lớn ở chỗ thay đổi đột ngột,
+
+00:00:25.805 --> 00:00:29.040 line:98%,end
+nên tối thiểu nó giúp giảm độ nhạy với nhiễu.
+
+00:00:30.496 --> 00:00:33.156 line:98%,end
+Lời giải trong miền tần số giống Wiener,
+
+00:00:33.156 --> 00:00:38.011 line:98%,end
+nhưng thay tỉ lệ nhiễu trên tín hiệu bằng gamma nhân phổ của Laplacian P.
+
+00:00:38.578 --> 00:00:43.242 line:98%,end
+Chỉ cần biết trung bình và phương sai của nhiễu, không cần phổ ảnh gốc.
+
+00:00:44.704 --> 00:00:47.089 line:98%,end
+Chọn một gamma ban đầu.
+
+00:00:47.650 --> 00:00:52.379 line:98%,end
+Tính ảnh phục hồi, rồi tính sai số khôi phục so với ảnh quan sát.
+
+00:00:52.948 --> 00:00:58.015 line:98%,end
+Thử đoán: sai số còn lớn hơn mức cho phép thì nên tăng hay giảm gamma?
+
+00:01:00.582 --> 00:01:06.600 line:98%,end
+Giảm gamma để bớt làm mượt, khớp quan sát hơn; sai số quá nhỏ thì tăng gamma.
+
+00:01:06.550 --> 00:01:08.985 line:98%,end
+Lặp đến khi thỏa ràng buộc.
+
+00:01:10.500 --> 00:01:15.046 line:98%,end
+Wiener cần phổ công suất ảnh gốc và nhiễu, tối ưu trung bình.
+
+00:01:15.606 --> 00:01:20.245 line:98%,end
+CLS chỉ cần trung bình và phương sai nhiễu, tối ưu cho từng ảnh,
+
+00:01:20.245 --> 00:01:22.275 line:98%,end
+đổi lại phải lặp chọn gamma.
+
+00:01:23.724 --> 00:01:27.158 line:98%,end
+Phục hồi ảnh khi không có mô hình thống kê của ảnh gốc,
+
+00:01:27.158 --> 00:01:30.093 line:98%,end
+như ảnh pháp y hay ảnh khoa học chỉ có một bản.
+
+00:01:31.554 --> 00:01:35.059 line:98%,end
+Các bộ lọc tần số xử lý cả ảnh một kiểu.
+
+00:01:35.009 --> 00:01:41.389 line:98%,end
+Nhiễu ở vùng phẳng và chi tiết ở vùng nét chữ lại cần cách xử lý khác nhau theo vị trí và tỉ lệ.
+
+00:01:42.012 --> 00:01:45.439 line:98%,end
+Video sau: khử nhiễu bằng wavelet.
+
+00:01:46.890 --> 00:01:51.313 line:98%,end
+Bẫy một: CLS tối thiểu một hàm tiêu chí dựa trên Laplacian,
+
+00:01:51.313 --> 00:01:53.637 line:98%,end
+kèm ràng buộc sai số khôi phục.
+
+00:01:54.204 --> 00:01:58.451 line:98%,end
+Bẫy hai: gamma được điều chỉnh lặp đến khi thỏa ràng buộc.
+
+00:01:59.022 --> 00:02:03.061 line:98%,end
+Bẫy ba: CLS không cần phổ công suất ảnh gốc.

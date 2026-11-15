@@ -1,0 +1,55 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:05.750 line:98%,end
+Chương ba là phục hồi ảnh, chương dài và nặng lý thuyết nhất,
+
+00:00:05.750 --> 00:00:07.552 line:98%,end
+nhưng ý tưởng rất trực quan.
+
+00:00:07.552 --> 00:00:13.672 line:98%,end
+Ví dụ cả chương: ảnh biển số xe từ camera giao thông ban đêm, vừa mờ vì xe chạy,
+
+00:00:13.672 --> 00:00:15.508 line:98%,end
+vừa nhiễu vì thiếu sáng.
+
+00:00:16.126 --> 00:00:18.274 line:98%,end
+Khác tăng cường ảnh mang tính chủ quan,
+
+00:00:18.274 --> 00:00:21.744 line:98%,end
+phục hồi dựa trên kiến thức tiên nghiệm về hiện tượng suy giảm,
+
+00:00:21.744 --> 00:00:24.058 line:98%,end
+và cải thiện theo một tiêu chí khách quan.
+
+00:00:24.616 --> 00:00:28.036 line:98%,end
+Thử nghĩ: nếu biết chính xác ảnh bị làm mờ thế nào,
+
+00:00:28.036 --> 00:00:30.517 line:98%,end
+ta có đảo ngược được hoàn toàn không?
+
+00:00:33.966 --> 00:00:38.942 line:98%,end
+Ảnh gốc f đi qua hàm suy giảm h, là kênh truyền hay hệ thống thu nhận.
+
+00:00:39.504 --> 00:00:45.873 line:98%,end
+Cộng thêm nhiễu, ra ảnh quan sát g. Trong miền tần số: G bằng H nhân F cộng N.
+
+00:00:46.434 --> 00:00:50.646 line:98%,end
+Bài toán ngược: từ g, cùng hiểu biết về h và về nhiễu,
+
+00:00:50.646 --> 00:00:52.907 line:98%,end
+ước lượng một ảnh gần f nhất.
+
+00:00:54.360 --> 00:00:58.410 line:98%,end
+Trước hết hiểu nhiễu, rồi các bộ lọc khử nhiễu: trung bình,
+
+00:00:58.410 --> 00:01:00.195 line:98%,end
+notch cho nhiễu tuần hoàn.
+
+00:01:00.762 --> 00:01:07.183 line:98%,end
+Tiếp đến khử mờ: ước lượng hàm suy giảm, lọc nghịch đảo, Wiener, CLS.
+
+00:01:07.133 --> 00:01:12.563 line:98%,end
+Rồi wavelet, tái tạo CT, và phục hồi đa kênh, video.

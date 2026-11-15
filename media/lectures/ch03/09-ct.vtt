@@ -1,0 +1,85 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.829 line:98%,end
+Tia X chụp thẳng chỉ cho một bóng chồng lên nhau của mọi thứ trên đường đi.
+
+00:00:04.779 --> 00:00:07.669 line:98%,end
+Ta muốn thấy từng lát cắt bên trong.
+
+00:00:09.178 --> 00:00:13.923 line:98%,end
+Một tấm X quang thường là tổng hấp thụ dọc mỗi tia, mọi lớp chồng lên nhau,
+
+00:00:13.923 --> 00:00:16.706 line:98%,end
+không biết cái gì nằm trước, cái gì nằm sau.
+
+00:00:18.160 --> 00:00:20.558 line:98%,end
+Chiếu tia X qua vật theo nhiều hướng,
+
+00:00:20.558 --> 00:00:23.409 line:98%,end
+mỗi hướng cho một profile hấp thụ một chiều.
+
+00:00:23.962 --> 00:00:24.765 line:98%,end
+Chiếu ngược,
+
+00:00:24.765 --> 00:00:29.385 line:98%,end
+backprojection: rải đều mỗi giá trị đo ngược lại dọc theo tia của nó,
+
+00:00:29.385 --> 00:00:31.126 line:98%,end
+rồi cộng tất cả các hướng.
+
+00:00:31.076 --> 00:00:34.643 line:98%,end
+Chỗ nào nhiều tia cùng nói là đặc thì sáng lên.
+
+00:00:36.160 --> 00:00:41.930 line:98%,end
+Vật hai nhân hai: góc trên trái bằng hai, góc dưới phải bằng một, còn lại không.
+
+00:00:42.490 --> 00:00:45.864 line:98%,end
+Chiếu ngang được tổng hai hàng: hai và một.
+
+00:00:45.814 --> 00:00:49.070 line:98%,end
+Chiếu dọc được tổng hai cột: hai và một.
+
+00:00:49.684 --> 00:00:54.022 line:98%,end
+Thử đoán: rải ngược rồi cộng hai hướng, điểm nào sáng nhất?
+
+00:00:56.574 --> 00:01:02.085 line:98%,end
+Mỗi pixel nhận một nửa tổng hàng cộng một nửa tổng cột: hai, một phẩy năm,
+
+00:01:02.085 --> 00:01:03.425 line:98%,end
+một phẩy năm, một.
+
+00:01:03.375 --> 00:01:07.971 line:98%,end
+Góc trên trái sáng nhất, đúng vị trí vật, nhưng có vết nhòe.
+
+00:01:07.971 --> 00:01:10.875 line:98%,end
+Thêm nhiều góc chiếu thì vết nhòe giảm.
+
+00:01:12.396 --> 00:01:15.380 line:98%,end
+Một góc chiếu chỉ cho một dải nhòe.
+
+00:01:15.942 --> 00:01:18.202 line:98%,end
+Slide minh họa với một, hai, ba,
+
+00:01:18.202 --> 00:01:23.288 line:98%,end
+bốn và ba mươi hai phép chiếu ngược: càng nhiều góc, ảnh càng chính xác.
+
+00:01:24.756 --> 00:01:28.009 line:98%,end
+Chụp cắt lớp vi tính trong bệnh viện thu các lát cắt,
+
+00:01:28.009 --> 00:01:30.956 line:98%,end
+rồi chồng lại tạo biểu diễn ba chiều của cơ thể.
+
+00:01:32.418 --> 00:01:37.016 line:98%,end
+Ảnh màu, ảnh đa phổ và video có nhiều kênh liên quan nhau.
+
+00:01:36.966 --> 00:01:40.378 line:98%,end
+Phục hồi từng kênh riêng là bỏ phí thông tin.
+
+00:01:40.378 --> 00:01:42.539 line:98%,end
+Video cuối chương.
+
+00:01:44.040 --> 00:01:49.472 line:98%,end
+Bẫy một: CT tái tạo ảnh bằng chiếu ngược từ các profile hấp thụ một chiều.
+
+00:01:50.034 --> 00:01:54.658 line:98%,end
+Bẫy hai: càng nhiều góc chiếu ngược, ảnh tái tạo càng chính xác.

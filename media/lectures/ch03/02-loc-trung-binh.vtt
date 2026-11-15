@@ -1,0 +1,112 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.907 line:98%,end
+Trên nền biển số trắng đều, có một pixel bị nhiễu tiêu thành đen kịt.
+
+00:00:04.857 --> 00:00:08.060 line:98%,end
+Bộ lọc nào xóa được mà không làm mờ?
+
+00:00:09.562 --> 00:00:12.976 line:98%,end
+Arithmetic mean lấy trung bình cộng cửa sổ.
+
+00:00:12.926 --> 00:00:17.900 line:98%,end
+Làm mượt nhưng làm mờ chi tiết, và điểm nhiễu chỉ bị pha loãng chứ không mất.
+
+00:00:19.408 --> 00:00:22.397 line:98%,end
+Có nhiều cách lấy trung bình: nhân, điều hòa,
+
+00:00:22.397 --> 00:00:27.978 line:98%,end
+contraharmonic với bậc Q. Mỗi cách nhạy khác nhau với giá trị cực đen hay cực trắng.
+
+00:00:28.546 --> 00:00:34.147 line:98%,end
+Hoặc thôi tính trung bình, chọn theo thứ tự: trung vị, lớn nhất, nhỏ nhất.
+
+00:00:35.608 --> 00:00:39.607 line:98%,end
+Tám pixel bằng một trăm, một pixel bằng không.
+
+00:00:39.557 --> 00:00:44.149 line:98%,end
+Trung bình cộng khoảng tám mươi tám phẩy chín: điểm đen bị pha loãng,
+
+00:00:44.149 --> 00:00:44.948 line:98%,end
+vẫn còn vết.
+
+00:00:45.562 --> 00:00:49.340 line:98%,end
+Trung bình nhân: tích có một số không nên ra không.
+
+00:00:49.290 --> 00:00:54.329 line:98%,end
+Trung bình điều hòa: một chia không là vô cùng, kết quả cũng về không.
+
+00:00:54.329 --> 00:00:57.064 line:98%,end
+Cả hai thất bại với nhiễu tiêu.
+
+00:00:57.676 --> 00:01:01.519 line:98%,end
+Thử đoán: contraharmonic với Q dương thì sao?
+
+00:01:04.086 --> 00:01:08.359 line:98%,end
+Q bằng một: tổng bình phương chia tổng, được đúng một trăm.
+
+00:01:08.309 --> 00:01:10.275 line:98%,end
+Q dương diệt tiêu.
+
+00:01:10.275 --> 00:01:13.517 line:98%,end
+Trung vị và bộ lọc max cũng cho một trăm.
+
+00:01:15.036 --> 00:01:18.619 line:98%,end
+Đổi điểm nhiễu thành muối, hai trăm năm mươi lăm.
+
+00:01:18.569 --> 00:01:22.592 line:98%,end
+Trung bình cộng khoảng một trăm mười bảy, vẫn còn vết sáng.
+
+00:01:23.214 --> 00:01:26.038 line:98%,end
+Trung bình điều hòa khoảng một trăm lẻ bảy,
+
+00:01:26.038 --> 00:01:30.898 line:98%,end
+gần một trăm hơn: điều hòa tốt với muối và Gauss, nhưng thất bại với tiêu.
+
+00:01:31.464 --> 00:01:34.591 line:98%,end
+Contraharmonic với Q âm diệt muối.
+
+00:01:34.541 --> 00:01:36.843 line:98%,end
+Bộ lọc min chọn giá trị nhỏ nhất,
+
+00:01:36.843 --> 00:01:40.192 line:98%,end
+xóa sạch điểm trắng; trung vị cũng cho một trăm.
+
+00:01:41.694 --> 00:01:47.126 line:98%,end
+Arithmetic làm mượt nhưng mờ; geometric mượt tương đương mà giữ chi tiết tốt hơn.
+
+00:01:47.688 --> 00:01:51.922 line:98%,end
+Harmonic tốt với muối và Gauss, thất bại với tiêu.
+
+00:01:52.482 --> 00:01:56.162 line:98%,end
+Contraharmonic: Q dương diệt tiêu, Q âm diệt muối,
+
+00:01:56.162 --> 00:01:58.812 line:98%,end
+cùng một dấu không diệt được cả hai.
+
+00:01:58.762 --> 00:02:01.536 line:98%,end
+Max diệt tiêu, min diệt muối.
+
+00:02:03.048 --> 00:02:05.873 line:98%,end
+Ảnh quét tài liệu, ảnh truyền qua kênh lỗi,
+
+00:02:05.873 --> 00:02:10.602 line:98%,end
+ảnh y tế: chọn đúng bộ lọc theo loại nhiễu giúp giữ nét chữ và chi tiết.
+
+00:02:12.054 --> 00:02:16.861 line:98%,end
+Có loại nhiễu không ngẫu nhiên mà lặp lại đều đặn như sọc, do nhiễu điện.
+
+00:02:16.811 --> 00:02:20.522 line:98%,end
+Lọc trung bình sẽ làm mờ cả ảnh mà sọc vẫn còn.
+
+00:02:21.120 --> 00:02:25.601 line:98%,end
+Video sau xử lý nó trong miền tần số: bộ lọc notch.
+
+00:02:27.054 --> 00:02:32.095 line:98%,end
+Bẫy một: contraharmonic với Q dương diệt tiêu, Q âm diệt muối.
+
+00:02:32.664 --> 00:02:38.057 line:98%,end
+Bẫy hai: trung bình điều hòa tốt với muối và Gauss nhưng thất bại với tiêu.
+
+00:02:38.610 --> 00:02:43.013 line:98%,end
+Bẫy ba: bộ lọc max diệt tiêu, bộ lọc min diệt muối.

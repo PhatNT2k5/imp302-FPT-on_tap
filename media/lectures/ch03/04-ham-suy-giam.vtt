@@ -1,0 +1,46 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.799 line:98%,end
+Muốn đảo ngược sự mờ, phải biết hàm suy giảm h: chuyển động của xe,
+
+00:00:04.799 --> 00:00:07.745 line:98%,end
+độ lệch tiêu cự, hay nhiễu loạn không khí.
+
+00:00:09.202 --> 00:00:13.287 line:98%,end
+Với suy giảm tuyến tính và bất biến vị trí, h thỏa tính cộng,
+
+00:00:13.287 --> 00:00:15.832 line:98%,end
+tính đồng nhất và bất biến không gian.
+
+00:00:16.396 --> 00:00:20.012 line:98%,end
+Ảnh không nhiễu là tích chập ảnh gốc với đáp ứng xung của h,
+
+00:00:20.012 --> 00:00:22.544 line:98%,end
+biểu diễn qua tích phân Fredholm loại một.
+
+00:00:22.494 --> 00:00:26.947 line:98%,end
+Có nhiễu thì cộng N: G bằng H F cộng N.
+
+00:00:28.450 --> 00:00:33.351 line:98%,end
+Quan sát: nhìn một chi tiết sắc nét trong ảnh, như một điểm đèn nhỏ,
+
+00:00:33.351 --> 00:00:34.936 line:98%,end
+xem nó bị nhòe ra sao.
+
+00:00:35.500 --> 00:00:41.244 line:98%,end
+Thực nghiệm: chụp một xung sáng cường độ A đã biết bằng chính thiết bị đó để đo đáp ứng.
+
+00:00:41.806 --> 00:00:43.660 line:98%,end
+Mô hình hóa: dùng toán học,
+
+00:00:43.660 --> 00:00:47.850 line:98%,end
+ví dụ nhiễu loạn khí quyển gần giống bộ lọc thông thấp Gauss.
+
+00:00:47.800 --> 00:00:51.992 line:98%,end
+Phục hồi khi phải ước lượng h như vậy gọi là giải chập mù.
+
+00:00:53.500 --> 00:00:59.218 line:98%,end
+Bẫy một: ba cách ước lượng hàm suy giảm là quan sát, thực nghiệm và mô hình hóa.
+
+00:00:59.782 --> 00:01:04.849 line:98%,end
+Bẫy hai: phục hồi khi phải ước lượng hàm suy giảm gọi là giải chập mù.

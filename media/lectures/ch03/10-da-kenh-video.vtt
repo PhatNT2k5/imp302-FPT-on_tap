@@ -1,0 +1,49 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.506 line:98%,end
+Ảnh màu có ba kênh, ảnh vệ tinh có nhiều băng, video có nhiều khung.
+
+00:00:05.456 --> 00:00:08.581 line:98%,end
+Các kênh và khung liên quan chặt với nhau.
+
+00:00:10.090 --> 00:00:14.646 line:98%,end
+Ngoài tương quan trong từng kênh, khai thác thêm tương quan giữa các kênh,
+
+00:00:14.646 --> 00:00:16.863 line:98%,end
+nên phục hồi tốt hơn xử lý riêng lẻ.
+
+00:00:17.428 --> 00:00:25.868 line:98%,end
+Hai phương pháp: LMMSE dựa trên ma trận hiệp phương sai của nhiễu và ảnh; RWLS có thêm tham số điều chỉnh.
+
+00:00:27.322 --> 00:00:31.503 line:98%,end
+Phát hiện chuyển động xác định vùng chuyển động giữa hai thời điểm,
+
+00:00:31.503 --> 00:00:33.001 line:98%,end
+chủ yếu cho camera tĩnh.
+
+00:00:32.951 --> 00:00:35.488 line:98%,end
+Vì cường độ đổi cả do nhiễu và ánh sáng,
+
+00:00:35.488 --> 00:00:39.292 line:98%,end
+dùng kiểm định giả thuyết với ngưỡng cố định hoặc thích ứng.
+
+00:00:39.892 --> 00:00:43.454 line:98%,end
+Ước lượng chuyển động cần ba yếu tố: mô hình chuyển động,
+
+00:00:43.454 --> 00:00:47.954 line:98%,end
+tiêu chí ước lượng trong miền pixel hoặc tần số, và chiến lược tìm kiếm.
+
+00:00:48.526 --> 00:00:53.424 line:98%,end
+Video có dữ liệu rất lớn, nên phương pháp phục hồi phải đủ nhẹ.
+
+00:00:53.374 --> 00:00:57.462 line:98%,end
+Ứng dụng: thiên văn, pháp y, ảnh y tế.
+
+00:00:58.972 --> 00:01:04.130 line:98%,end
+Bẫy một: phục hồi đa kênh tốt hơn vì khai thác thêm tương quan giữa các kênh.
+
+00:01:04.702 --> 00:01:08.195 line:98%,end
+Bẫy hai: ước lượng chuyển động cần mô hình chuyển động,
+
+00:01:08.195 --> 00:01:10.863 line:98%,end
+tiêu chí ước lượng và chiến lược tìm kiếm.

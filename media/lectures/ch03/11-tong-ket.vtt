@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.628 line:98%,end
+Nhìn lại biển số ban đêm.
+
+00:00:02.578 --> 00:00:07.930 line:98%,end
+Mô hình g bằng h tích chập f cộng nhiễu; mỗi loại nhiễu có hàm mật độ riêng.
+
+00:00:08.542 --> 00:00:12.958 line:98%,end
+Bộ lọc trung bình chọn theo loại nhiễu, notch xóa nhiễu tuần hoàn.
+
+00:00:12.908 --> 00:00:18.117 line:98%,end
+Lọc nghịch đảo nhạy nhiễu, Wiener kiềm chế bằng tỉ lệ nhiễu trên tín hiệu,
+
+00:00:18.117 --> 00:00:20.369 line:98%,end
+CLS bỏ được yêu cầu phổ ảnh gốc.
+
+00:00:20.968 --> 00:00:24.756 line:98%,end
+Wavelet khử nhiễu mà giữ cạnh, CT tái tạo bằng chiếu ngược,
+
+00:00:24.756 --> 00:00:28.288 line:98%,end
+và phục hồi đa kênh khai thác tương quan giữa các kênh.
+
+00:00:29.758 --> 00:00:34.252 line:98%,end
+Một: contraharmonic Q dương diệt tiêu, Q âm diệt muối.
+
+00:00:34.816 --> 00:00:38.047 line:98%,end
+Hai: harmonic thất bại với tiêu.
+
+00:00:38.602 --> 00:00:42.393 line:98%,end
+Ba: notch reject là tích thông cao dời tâm.
+
+00:00:42.964 --> 00:00:46.898 line:98%,end
+Bốn: Wiener với K bằng không là lọc nghịch đảo.
+
+00:00:47.470 --> 00:00:51.951 line:98%,end
+Năm: CLS chỉnh gamma lặp, không cần phổ ảnh gốc.
+
+00:00:53.404 --> 00:00:58.150 line:98%,end
+Chương bốn đi sâu vào các phép biến đổi ảnh, như DCT và wavelet,
+
+00:00:58.150 --> 00:01:01.635 line:98%,end
+mà ta đã dùng ở đây và sẽ dùng lại khi nén ảnh.

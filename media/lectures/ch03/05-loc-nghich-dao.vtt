@@ -1,0 +1,64 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.360 line:98%,end
+Đã biết H, ta muốn lấy lại F từ ảnh quan sát G.
+
+00:00:05.818 --> 00:00:10.234 line:98%,end
+Các bộ lọc khử nhiễu chỉ làm mượt, không đảo ngược được sự mờ.
+
+00:00:11.704 --> 00:00:17.722 line:98%,end
+G bằng H nhân F, vậy chia G cho H là ra F. Đơn giản như đảo ngược một phép nhân.
+
+00:00:19.174 --> 00:00:24.759 line:98%,end
+Giả sử tại ba tần số, F đều bằng mười, nhiễu bằng không phẩy năm, còn H là một,
+
+00:00:24.759 --> 00:00:27.588 line:98%,end
+không phẩy năm, và không phẩy không một.
+
+00:00:28.144 --> 00:00:33.025 line:98%,end
+Tần số thứ nhất: G bằng mười phẩy năm, chia cho một được mười phẩy năm,
+
+00:00:33.025 --> 00:00:34.331 line:98%,end
+sai không phẩy năm.
+
+00:00:34.882 --> 00:00:40.509 line:98%,end
+Tần số thứ hai: G năm phẩy năm, chia không phẩy năm được mười một, sai một.
+
+00:00:41.068 --> 00:00:45.432 line:98%,end
+Thử đoán: tần số mà H chỉ bằng không phẩy không một thì sao?
+
+00:00:47.982 --> 00:00:52.593 line:98%,end
+G chỉ là không phẩy sáu, chia cho không phẩy không một được sáu mươi.
+
+00:00:52.543 --> 00:00:54.314 line:98%,end
+Sai năm mươi!
+
+00:00:54.314 --> 00:00:57.478 line:98%,end
+Nhiễu nhỏ xíu bị khuếch đại một trăm lần.
+
+00:00:58.980 --> 00:01:05.675 line:98%,end
+Chia G cho H được F cộng N chia H. Khi H gần không, số hạng N chia H khổng lồ.
+
+00:01:07.146 --> 00:01:10.690 line:98%,end
+Không nhiễu, lọc nghịch đảo phục hồi hoàn hảo.
+
+00:01:11.244 --> 00:01:16.194 line:98%,end
+Có nhiễu, tần số nào H gần không thì nhiễu bị khuếch đại không kiểm soát.
+
+00:01:17.658 --> 00:01:22.446 line:98%,end
+Lọc nghịch đảo chỉ dùng được khi nhiễu rất nhỏ và H không có giá trị gần không,
+
+00:01:22.446 --> 00:01:25.355 line:98%,end
+hoặc khi ta chỉ phục hồi một dải tần số an toàn.
+
+00:01:26.808 --> 00:01:31.823 line:98%,end
+Ta cần bộ lọc biết tự kiềm chế ở những tần số mà nhiễu lấn át tín hiệu.
+
+00:01:31.773 --> 00:01:34.247 line:98%,end
+Đó là bộ lọc Wiener.
+
+00:01:35.766 --> 00:01:40.521 line:98%,end
+Bẫy một: lọc nghịch đảo rất nhạy nhiễu tại các tần số H gần không.
+
+00:01:41.088 --> 00:01:45.960 line:98%,end
+Bẫy hai: nếu không có nhiễu, lọc nghịch đảo phục hồi hoàn hảo.
