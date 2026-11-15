@@ -1,0 +1,145 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.231 line:98%,end
+Trong vườn ươm, giống thứ nhất chiếm bảy mươi phần trăm số cây,
+
+00:00:04.231 --> 00:00:05.935 line:98%,end
+giống thứ hai chỉ ba mươi.
+
+00:00:05.885 --> 00:00:09.049 line:98%,end
+Bông hoa mới lại rất giống giống thứ hai.
+
+00:00:09.049 --> 00:00:11.068 line:98%,end
+Máy nên chọn gì?
+
+00:00:12.586 --> 00:00:16.958 line:98%,end
+Khoảng cách tối thiểu chỉ so với trung bình, không biết lớp nào phổ biến,
+
+00:00:16.958 --> 00:00:18.994 line:98%,end
+cũng không biết lớp nào trải rộng.
+
+00:00:20.464 --> 00:00:22.979 line:98%,end
+Một bệnh nhân sốt và ho.
+
+00:00:22.929 --> 00:00:26.197 line:98%,end
+Triệu chứng khớp cả cảm cúm lẫn một bệnh hiếm.
+
+00:00:26.197 --> 00:00:31.315 line:98%,end
+Bác sĩ cân nhắc: triệu chứng giống bệnh nào hơn, và bệnh nào phổ biến hơn.
+
+00:00:31.930 --> 00:00:34.211 line:98%,end
+Bayes làm đúng vậy.
+
+00:00:34.161 --> 00:00:36.978 line:98%,end
+Hàm mật độ cho biết mẫu giống lớp j đến đâu,
+
+00:00:36.978 --> 00:00:40.372 line:98%,end
+xác suất tiên nghiệm cho biết lớp j phổ biến đến đâu.
+
+00:00:40.972 --> 00:00:44.073 line:98%,end
+Mỗi lần gán sai sinh ra một tổn thất.
+
+00:00:44.023 --> 00:00:49.010 line:98%,end
+Bộ phân loại làm nhỏ nhất tổng tổn thất trung bình gọi là bộ phân loại Bayes.
+
+00:00:50.530 --> 00:00:54.132 line:98%,end
+Với tổn thất không một, đúng mất không, sai mất một,
+
+00:00:54.132 --> 00:00:56.626 line:98%,end
+hàm quyết định là tích của hai phần.
+
+00:00:56.576 --> 00:00:58.946 line:98%,end
+Chọn lớp có tích lớn nhất.
+
+00:00:59.548 --> 00:01:04.133 line:98%,end
+Để đạt tối ưu, phải biết hàm mật độ và xác suất của mỗi lớp.
+
+00:01:04.083 --> 00:01:09.005 line:98%,end
+Thực tế phải ước lượng từ dữ liệu, và chỉ tối ưu khi ước lượng đúng.
+
+00:01:10.522 --> 00:01:15.271 line:98%,end
+Lớp một phổ biến, tiên nghiệm không phẩy bảy, nhưng mẫu không giống lắm,
+
+00:01:15.271 --> 00:01:16.722 line:98%,end
+mật độ không phẩy hai.
+
+00:01:16.672 --> 00:01:19.094 line:98%,end
+Tích là không phẩy một bốn.
+
+00:01:19.708 --> 00:01:25.361 line:98%,end
+Thử đoán: lớp hai hiếm, tiên nghiệm không phẩy ba, nhưng mật độ không phẩy sáu.
+
+00:01:25.311 --> 00:01:27.043 line:98%,end
+Lớp nào thắng?
+
+00:01:29.646 --> 00:01:33.606 line:98%,end
+Tích của lớp hai là không phẩy một tám, lớn hơn.
+
+00:01:33.556 --> 00:01:38.023 line:98%,end
+Bayes chọn lớp hai, dù lớp một phổ biến gấp hơn hai lần.
+
+00:01:38.640 --> 00:01:44.905 line:98%,end
+Chia mỗi tích cho tổng không phẩy ba hai được xác suất hậu nghiệm: khoảng bốn mươi bốn và năm mươi sáu phần trăm.
+
+00:01:46.374 --> 00:01:51.506 line:98%,end
+Khi các lớp có phân phối Gauss, lấy logarit tự nhiên của hàm quyết định.
+
+00:01:51.456 --> 00:01:55.727 line:98%,end
+Logarit biến tích thành tổng mà không đổi thứ tự lớn nhỏ.
+
+00:01:56.328 --> 00:02:02.398 line:98%,end
+Số hạng giống nhau ở mọi lớp, n chia hai nhân logarit hai pi, được bỏ đi.
+
+00:02:02.946 --> 00:02:07.788 line:98%,end
+Phần còn lại gồm logarit tiên nghiệm, logarit định thức ma trận hiệp phương sai,
+
+00:02:07.788 --> 00:02:11.177 line:98%,end
+và khoảng cách tới trung bình có tính hình dạng phân bố.
+
+00:02:11.748 --> 00:02:16.808 line:98%,end
+Vì x xuất hiện ở dạng bình phương, các hàm quyết định là siêu mặt bậc hai,
+
+00:02:16.808 --> 00:02:17.766 line:98%,end
+hyperquadrics.
+
+00:02:19.218 --> 00:02:22.059 line:98%,end
+Khoảng cách tối thiểu chỉ dùng trung bình.
+
+00:02:22.620 --> 00:02:25.136 line:98%,end
+Bayes dùng cả độ giống và độ phổ biến,
+
+00:02:25.136 --> 00:02:28.247 line:98%,end
+tối ưu theo nghĩa tổn thất trung bình nhỏ nhất.
+
+00:02:28.806 --> 00:02:33.574 line:98%,end
+Đổi lại, Bayes cần biết hoặc ước lượng được phân phối của từng lớp.
+
+00:02:35.028 --> 00:02:36.989 line:98%,end
+Lọc thư rác, chẩn đoán y khoa,
+
+00:02:36.989 --> 00:02:41.697 line:98%,end
+và nhiều hệ thống ra quyết định dựa trên xác suất đều dùng tư duy Bayes.
+
+00:02:43.146 --> 00:02:46.507 line:98%,end
+Bayes chỉ tối ưu khi biết đúng phân phối.
+
+00:02:46.457 --> 00:02:50.650 line:98%,end
+Với ảnh thật, phân phối rất phức tạp và khó ước lượng.
+
+00:02:51.252 --> 00:02:56.098 line:98%,end
+Có cách nào học thẳng biên quyết định từ dữ liệu, không cần biết phân phối?
+
+00:02:56.048 --> 00:02:58.340 line:98%,end
+Đó là perceptron.
+
+00:02:59.850 --> 00:03:01.954 line:98%,end
+Bẫy một: với tổn thất không một,
+
+00:03:01.954 --> 00:03:05.243 line:98%,end
+chọn lớp có tích mật độ nhân tiên nghiệm lớn nhất.
+
+00:03:05.796 --> 00:03:11.423 line:98%,end
+Bẫy hai: hạn chế của Bayes là phải biết hàm mật độ và xác suất của từng lớp.
+
+00:03:11.982 --> 00:03:16.841 line:98%,end
+Bẫy ba: với lớp Gauss, hàm quyết định là siêu mặt bậc hai.

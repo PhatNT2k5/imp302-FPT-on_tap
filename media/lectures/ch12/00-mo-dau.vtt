@@ -1,0 +1,52 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.139 line:98%,end
+Chào các bạn, đây là chương cuối: phân loại ảnh.
+
+00:00:04.089 --> 00:00:07.799 line:98%,end
+Ví dụ của cả chương là một chiếc máy trong vườn ươm.
+
+00:00:07.799 --> 00:00:13.203 line:98%,end
+Nó đo chiều dài và chiều rộng cánh hoa, rồi phải nói bông hoa thuộc giống nào.
+
+00:00:13.822 --> 00:00:19.710 line:98%,end
+Một mẫu là sự sắp xếp các đặc trưng, viết thành vector x gồm n descriptor.
+
+00:00:19.660 --> 00:00:23.136 line:98%,end
+Một lớp mẫu là tập các mẫu có chung tính chất.
+
+00:00:23.136 --> 00:00:26.605 line:98%,end
+Khi đối tượng mô tả bằng cấu trúc như chuỗi ký hiệu,
+
+00:00:26.605 --> 00:00:29.074 line:98%,end
+ta dùng mẫu cấu trúc thay cho vector.
+
+00:00:29.680 --> 00:00:34.786 line:98%,end
+Thử nghĩ: nếu các bạn là chiếc máy, các bạn sẽ quyết định bằng cách nào?
+
+00:00:38.238 --> 00:00:41.644 line:98%,end
+Nhận dạng gồm bốn giai đoạn: cảm biến tạo tín hiệu,
+
+00:00:41.644 --> 00:00:46.118 line:98%,end
+tiền xử lý giảm nhiễu và phân đoạn, trích đặc trưng, rồi phân loại.
+
+00:00:46.680 --> 00:00:49.742 line:98%,end
+Các chương trước đã lo ba giai đoạn đầu.
+
+00:00:49.692 --> 00:00:54.327 line:98%,end
+Chương này là bước cuối: gán nhãn cho mẫu dựa trên đặc trưng của nó.
+
+00:00:55.830 --> 00:00:57.538 line:98%,end
+Có ba hướng.
+
+00:00:57.488 --> 00:01:02.123 line:98%,end
+Đối sánh với nguyên mẫu: so với một mẫu điển hình của mỗi lớp.
+
+00:01:02.736 --> 00:01:07.087 line:98%,end
+Bộ phân loại thống kê tối ưu: Bayes, dùng xác suất.
+
+00:01:07.650 --> 00:01:12.066 line:98%,end
+Và mạng nơ-ron, từ perceptron đến CNN sâu.
+
+00:01:12.016 --> 00:01:15.558 line:98%,end
+Mỗi hướng ra đời để vá chỗ hụt của hướng trước.

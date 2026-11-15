@@ -1,0 +1,100 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.917 line:98%,end
+Thay vì tự thiết kế đặc trưng như chương mười,
+
+00:00:02.917 --> 00:00:06.652 line:98%,end
+ta muốn mạng nhìn thẳng vào ảnh cánh hoa và tự học đặc trưng.
+
+00:00:08.122 --> 00:00:13.007 line:98%,end
+Trước đây đặc trưng do con người thiết kế, rồi mới đưa vào bộ phân loại.
+
+00:00:12.957 --> 00:00:17.163 line:98%,end
+Đặc trưng chọn kém thì bộ phân loại tốt mấy cũng không cứu được.
+
+00:00:18.664 --> 00:00:24.029 line:98%,end
+CNN dùng các bộ lọc tích chập nhỏ trượt trên ảnh, giống các bộ lọc ở chương hai,
+
+00:00:24.029 --> 00:00:25.437 line:98%,end
+nhưng hệ số được học.
+
+00:00:25.387 --> 00:00:28.225 line:98%,end
+Pooling thu nhỏ bản đồ đặc trưng.
+
+00:00:28.834 --> 00:00:34.384 line:98%,end
+Các khối tích chập và pooling lặp lại: lớp đầu học cạnh, lớp sau học hình dạng,
+
+00:00:34.384 --> 00:00:35.789 line:98%,end
+lớp sâu học bộ phận.
+
+00:00:37.240 --> 00:00:40.815 line:98%,end
+LeNet năm là kiến trúc kinh điển đầu tiên: ảnh vào cố định,
+
+00:00:40.815 --> 00:00:44.390 line:98%,end
+khối tích chập pooling lặp lại, số bộ lọc tăng theo độ sâu,
+
+00:00:44.390 --> 00:00:47.177 line:98%,end
+tách phần trích đặc trưng khỏi phần phân loại.
+
+00:00:47.746 --> 00:00:51.455 line:98%,end
+AlexNet mang đến ReLU sau tích chập, softmax ở đầu ra,
+
+00:00:51.455 --> 00:00:56.745 line:98%,end
+max pooling thay average pooling, dropout, cho tích chập nối thẳng tích chập,
+
+00:00:56.745 --> 00:00:58.256 line:98%,end
+và tăng cường dữ liệu.
+
+00:00:58.828 --> 00:01:03.599 line:98%,end
+VGG mười sáu dùng bộ lọc rất nhỏ ba nhân ba và một nhân một với bước trượt một,
+
+00:01:03.599 --> 00:01:07.826 line:98%,end
+max pooling hai nhân hai, xếp chồng nhiều tích chập trước mỗi pooling,
+
+00:01:07.826 --> 00:01:09.637 line:98%,end
+sâu mười sáu và mười chín lớp.
+
+00:01:10.198 --> 00:01:15.070 line:98%,end
+Thử đoán: mạng càng sâu càng khó huấn luyện vì gradient yếu dần.
+
+00:01:15.020 --> 00:01:17.403 line:98%,end
+ResNet giải quyết thế nào?
+
+00:01:20.016 --> 00:01:24.324 line:98%,end
+ResNet thêm kết nối tắt, cho gradient đi thẳng qua nhiều lớp,
+
+00:01:24.324 --> 00:01:26.372 line:98%,end
+và lặp lại các khối residual.
+
+00:01:26.322 --> 00:01:30.007 line:98%,end
+Nhờ vậy huấn luyện được tới một trăm năm mươi hai lớp.
+
+00:01:31.518 --> 00:01:36.481 line:98%,end
+Đặc trưng thủ công do con người chọn; CNN tự học từ dữ liệu.
+
+00:01:37.032 --> 00:01:42.451 line:98%,end
+CNN cần nhiều dữ liệu và tính toán, nhưng cho kết quả vượt trội trên ảnh thật.
+
+00:01:43.902 --> 00:01:50.312 line:98%,end
+Các mạng này làm backbone cho phát hiện đối tượng ở chương mười một và phân đoạn ở chương chín: VGG,
+
+00:01:50.312 --> 00:01:52.107 line:98%,end
+ResNet xuất hiện ở khắp nơi.
+
+00:01:53.580 --> 00:01:57.150 line:98%,end
+CNN mạnh nhưng đói dữ liệu và tính toán.
+
+00:01:57.100 --> 00:02:01.514 line:98%,end
+Đây là điểm dừng của môn học, và là điểm khởi đầu của học sâu.
+
+00:02:03.018 --> 00:02:09.986 line:98%,end
+Bẫy một: AlexNet dùng ReLU, softmax, max pooling, dropout và tăng cường dữ liệu.
+
+00:02:10.548 --> 00:02:16.514 line:98%,end
+Bẫy hai: VGG mười sáu dùng bộ lọc ba nhân ba và một nhân một, bước trượt một.
+
+00:02:17.070 --> 00:02:20.984 line:98%,end
+Bẫy ba: ResNet chống suy giảm gradient bằng kết nối tắt,
+
+00:02:20.984 --> 00:02:23.361 line:98%,end
+sâu tới một trăm năm mươi hai lớp.

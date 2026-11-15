@@ -1,0 +1,76 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.771 line:98%,end
+Ảnh thật phức tạp hơn bốn điểm.
+
+00:00:02.721 --> 00:00:06.510 line:98%,end
+Các lớp đan xen, cần những biên cong và phức tạp.
+
+00:00:08.026 --> 00:00:11.166 line:98%,end
+Một perceptron chỉ vẽ một siêu phẳng.
+
+00:00:12.616 --> 00:00:15.352 line:98%,end
+Ghép nhiều nơ-ron thành nhiều lớp.
+
+00:00:15.302 --> 00:00:20.880 line:98%,end
+Mỗi nơ-ron ở lớp l vẫn làm việc cũ: tổng có trọng số các đầu vào cộng bias,
+
+00:00:20.880 --> 00:00:22.516 line:98%,end
+rồi qua hàm kích hoạt.
+
+00:00:23.122 --> 00:00:25.403 line:98%,end
+Lớp sau xây trên kết quả của lớp trước,
+
+00:00:25.403 --> 00:00:28.736 line:98%,end
+nên mạng ghép được nhiều đường thẳng thành biên phức tạp.
+
+00:00:30.208 --> 00:00:33.452 line:98%,end
+Một: đưa các vector mẫu vào mạng.
+
+00:00:34.018 --> 00:00:39.892 line:98%,end
+Hai: lan truyền tiến qua từng lớp để phân loại toàn bộ mẫu huấn luyện và tính sai số.
+
+00:00:40.444 --> 00:00:46.318 line:98%,end
+Ba: lan truyền ngược sai số đầu ra qua mạng để tính lượng thay đổi cần cho từng tham số.
+
+00:00:46.870 --> 00:00:50.049 line:98%,end
+Bốn: cập nhật trọng số và bias.
+
+00:00:49.999 --> 00:00:55.390 line:98%,end
+Về tinh thần vẫn là quy tắc sửa sai của perceptron, áp cho nhiều lớp cùng lúc.
+
+00:00:56.908 --> 00:01:02.431 line:98%,end
+Perceptron: một nơ-ron, một siêu phẳng, quy tắc sửa sai đơn giản.
+
+00:01:02.998 --> 00:01:08.456 line:98%,end
+Mạng nhiều lớp: nhiều nơ-ron, biên phức tạp, huấn luyện bằng lan truyền ngược.
+
+00:01:09.916 --> 00:01:11.764 line:98%,end
+Mọi hệ thống nhận dạng hiện đại,
+
+00:01:11.764 --> 00:01:14.650 line:98%,end
+từ nhận dạng chữ viết tay đến nhận diện khuôn mặt,
+
+00:01:14.650 --> 00:01:17.652 line:98%,end
+đều là mạng nơ-ron huấn luyện bằng lan truyền ngược.
+
+00:01:19.114 --> 00:01:23.953 line:98%,end
+Đưa thẳng mọi pixel của ảnh vào một mạng kết nối đầy đủ thì số trọng số khổng lồ,
+
+00:01:23.953 --> 00:01:27.658 line:98%,end
+và mạng không tận dụng việc pixel gần nhau liên quan với nhau.
+
+00:01:28.228 --> 00:01:31.355 line:98%,end
+Mạng nơ-ron tích chập giải quyết điều đó.
+
+00:01:31.305 --> 00:01:35.120 line:98%,end
+Video sau: các kiến trúc CNN kinh điển.
+
+00:01:36.634 --> 00:01:41.721 line:98%,end
+Bẫy một: thứ tự bốn bước là đưa mẫu vào, lan truyền tiến và tính sai số,
+
+00:01:41.721 --> 00:01:45.607 line:98%,end
+lan truyền ngược sai số, rồi cập nhật trọng số và bias.
+
+00:01:46.156 --> 00:01:51.536 line:98%,end
+Bẫy hai: mỗi nơ-ron tính tổng có trọng số cộng bias rồi qua hàm kích hoạt.

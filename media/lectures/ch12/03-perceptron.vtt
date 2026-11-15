@@ -1,0 +1,148 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.336 line:98%,end
+Ta không biết phân phối của từng giống hoa, nhưng có sẵn nhiều bông đã gán nhãn.
+
+00:00:05.286 --> 00:00:08.359 line:98%,end
+Có thể học thẳng ranh giới từ chúng không?
+
+00:00:09.874 --> 00:00:14.147 line:98%,end
+Bayes chỉ tối ưu khi biết đúng hàm mật độ và tiên nghiệm.
+
+00:00:14.097 --> 00:00:17.014 line:98%,end
+Ước lượng sai thì không còn tối ưu.
+
+00:00:18.520 --> 00:00:22.979 line:98%,end
+Perceptron nhân mỗi đặc trưng với một trọng số, cộng lại, cộng bias,
+
+00:00:22.979 --> 00:00:26.061 line:98%,end
+rồi qua hàm kích hoạt ra cộng một hoặc trừ một.
+
+00:00:26.626 --> 00:00:29.630 line:98%,end
+Các điểm có tổng bằng không tạo thành một siêu phẳng,
+
+00:00:29.630 --> 00:00:32.917 line:98%,end
+trong hai chiều là một đường thẳng chia mặt phẳng làm hai.
+
+00:00:33.484 --> 00:00:38.499 line:98%,end
+Nó học như người tập ném phi tiêu: ném lệch bên nào thì chỉnh tay một chút.
+
+00:00:38.449 --> 00:00:43.085 line:98%,end
+Sai thì xê dịch trọng số một bước alpha, đúng thì giữ nguyên.
+
+00:00:44.602 --> 00:00:49.630 line:98%,end
+Chọn hệ số học alpha dương, khởi tạo trọng số và bias tùy ý.
+
+00:00:50.188 --> 00:00:52.664 line:98%,end
+Lớp một muốn đầu ra dương.
+
+00:00:52.614 --> 00:00:56.201 line:98%,end
+Nếu mẫu lớp một cho đầu ra nhỏ hơn hoặc bằng không,
+
+00:00:56.201 --> 00:00:59.789 line:98%,end
+cộng alpha nhân mẫu vào trọng số và alpha vào bias.
+
+00:01:00.406 --> 00:01:02.869 line:98%,end
+Lớp hai muốn đầu ra âm.
+
+00:01:02.819 --> 00:01:07.246 line:98%,end
+Nếu mẫu lớp hai cho đầu ra lớn hơn hoặc bằng không, trừ đi.
+
+00:01:07.864 --> 00:01:11.564 line:98%,end
+Lặp đến khi đi hết một vòng không phải sửa lần nào.
+
+00:01:13.030 --> 00:01:18.566 line:98%,end
+Bốn mẫu: lớp một gồm không không và không một, lớp hai gồm một không và một một.
+
+00:01:18.516 --> 00:01:21.758 line:98%,end
+Bắt đầu từ không, alpha bằng một.
+
+00:01:21.758 --> 00:01:27.422 line:98%,end
+Mẫu không không cho đầu ra không, không dương, nên sai: bias tăng lên một.
+
+00:01:28.024 --> 00:01:31.763 line:98%,end
+Mẫu không một cho đầu ra một, dương, đúng.
+
+00:01:32.314 --> 00:01:38.253 line:98%,end
+Mẫu một không cho đầu ra một, không âm, sai: trọng số thành âm một và không,
+
+00:01:38.253 --> 00:01:39.347 line:98%,end
+bias về không.
+
+00:01:39.916 --> 00:01:42.861 line:98%,end
+Mẫu một một cho âm một, đúng.
+
+00:01:42.811 --> 00:01:45.584 line:98%,end
+Hết vòng một, sửa hai lần.
+
+00:01:46.198 --> 00:01:50.002 line:98%,end
+Thử đoán: thuật toán còn phải sửa thêm mấy lần nữa?
+
+00:01:52.560 --> 00:01:55.570 line:98%,end
+Vòng hai và ba sửa thêm ba lần.
+
+00:01:55.520 --> 00:01:59.517 line:98%,end
+Trọng số dừng ở âm hai và không, bias bằng một.
+
+00:01:59.517 --> 00:02:02.668 line:98%,end
+Vòng bốn không sai mẫu nào, dừng.
+
+00:02:04.182 --> 00:02:09.770 line:98%,end
+Bốn mẫu trên mặt phẳng: hai mẫu lớp một bên trái, hai mẫu lớp hai bên phải.
+
+00:02:10.320 --> 00:02:13.088 line:98%,end
+Biên là âm hai nhân x một cộng một bằng không,
+
+00:02:13.088 --> 00:02:17.301 line:98%,end
+tức đường thẳng đứng x một bằng không phẩy năm, nằm đúng giữa hai lớp.
+
+00:02:17.251 --> 00:02:21.066 line:98%,end
+Năm lần sửa là đủ, đúng như định lý hội tụ hứa hẹn,
+
+00:02:21.066 --> 00:02:23.384 line:98%,end
+vì hai lớp khả phân tuyến tính.
+
+00:02:24.894 --> 00:02:29.896 line:98%,end
+Bayes cần phân phối của lớp; perceptron chỉ cần ví dụ có nhãn.
+
+00:02:30.456 --> 00:02:32.936 line:98%,end
+Perceptron chỉ học được biên tuyến tính,
+
+00:02:32.936 --> 00:02:36.409 line:98%,end
+và chỉ hội tụ chắc chắn khi hai lớp khả phân tuyến tính.
+
+00:02:36.978 --> 00:02:42.058 line:98%,end
+Bayes cho biên bậc hai với lớp Gauss, perceptron cho một siêu phẳng.
+
+00:02:43.512 --> 00:02:48.045 line:98%,end
+Perceptron là đơn vị nhỏ nhất của mọi mạng nơ-ron hiện đại.
+
+00:02:47.995 --> 00:02:52.822 line:98%,end
+Mỗi nơ-ron trong mạng sâu vẫn làm đúng việc: tổng có trọng số cộng bias,
+
+00:02:52.822 --> 00:02:54.297 line:98%,end
+rồi qua hàm kích hoạt.
+
+00:02:55.806 --> 00:02:59.128 line:98%,end
+Một perceptron chỉ vẽ được một đường thẳng.
+
+00:02:59.078 --> 00:03:03.323 line:98%,end
+Nếu các giống hoa xen kẽ nhau, không đường thẳng nào tách được.
+
+00:03:03.936 --> 00:03:07.337 line:98%,end
+Ghép nhiều perceptron thành nhiều lớp thì sao?
+
+00:03:07.287 --> 00:03:09.630 line:98%,end
+Đó là mạng nơ-ron.
+
+00:03:11.142 --> 00:03:16.027 line:98%,end
+Bẫy một: định lý hội tụ chỉ đảm bảo khi hai lớp khả phân tuyến tính.
+
+00:03:16.584 --> 00:03:21.709 line:98%,end
+Bẫy hai: mẫu lớp một bị coi là sai khi đầu ra nhỏ hơn hoặc bằng không,
+
+00:03:21.709 --> 00:03:22.953 line:98%,end
+kể cả bằng không.
+
+00:03:23.514 --> 00:03:27.631 line:98%,end
+Bẫy ba: một perceptron chỉ học được biên tuyến tính.

@@ -1,253 +1,1553 @@
 {
-  "title": "Phân loại ảnh",
-  "scenes": [
+ "title": "Phân loại ảnh",
+ "example": "Máy phân loại hoa trong vườn ươm: đo cánh hoa rồi cho biết thuộc giống nào",
+ "stories": [
+  {
+   "id": "mo-dau",
+   "title": "Mở đầu: bước cuối của nhận dạng",
+   "kind": "intro",
+   "scenes": [
     {
-      "kind": "intro",
-      "title": "Giới thiệu chương",
-      "points": [
-        {"text": "Mở đầu", "say": "Chào các bạn, chương mười hai là chương cuối: phân loại mẫu ảnh. Đây là bước cuối cùng của đường ống nhận dạng, nơi máy nhìn vào các đặc trưng và quyết định: mẫu này thuộc lớp nào."},
-        {"text": "Lộ trình", "say": "Ta đi qua các khái niệm mẫu và lớp mẫu, rồi ba hướng phân loại. Một, đối sánh với nguyên mẫu, gồm bộ phân loại khoảng cách tối thiểu và đối sánh tương quan. Hai, bộ phân loại thống kê tối ưu Bayes. Ba, perceptron, mạng nơ-ron và các kiến trúc CNN sâu. Ba thuật toán chính đều có ví dụ tính tay."}
-      ]
-    },
-    {
-      "kicker": "Recap",
-      "title": "Những gì ta đã có",
-      "points": [
-        {"text": "Chương 10: mỗi vùng → một vector đặc trưng (compactness, moment, …)", "say": "Nhắc lại ba điều. Chương mười biến mỗi vùng ảnh thành một bộ số: độ compact, các moment bất biến, đặc trưng kết cấu. Hôm nay bộ số đó trở thành vector mẫu, đầu vào của bộ phân loại."},
-        {"text": "Chương 9: K-means gán điểm vào tâm gần nhất", "say": "Chương chín, K-means gán mỗi điểm vào tâm cụm gần nhất. Bộ phân loại khoảng cách tối thiểu hôm nay làm đúng việc đó, chỉ khác là các tâm đã được tính sẵn từ dữ liệu có nhãn."},
-        {"text": "Chương 11: mọi bộ phát hiện đều có một khâu phân loại", "say": "Chương mười một, mọi bộ phát hiện đối tượng, từ R-CNN đến YOLO, đều có một khâu phân loại bên trong. Chương này giải thích khâu đó hoạt động thế nào."}
-      ]
-    },
-    {
-      "kicker": "Intuition",
-      "title": "Mẫu, lớp mẫu và bốn giai đoạn nhận dạng",
-      "slide": 4,
-      "points": [
-        {"text": "Pattern: một sự sắp xếp các đặc trưng. Pattern class: tập các mẫu có chung tính chất", "say": "Một mẫu là một sự sắp xếp các đặc trưng, ví dụ chiều dài và chiều rộng của một chiếc lá. Một lớp mẫu là tập các mẫu có chung một số tính chất, ví dụ mọi chiếc lá phong. Phân loại giống việc phân loại trái cây ở chợ: nhìn kích thước, màu sắc, hình dáng rồi bỏ vào đúng rổ."},
-        {"text": "4 giai đoạn: sensing → preprocessing → feature extraction → classification", "say": "Đường ống nhận dạng có bốn giai đoạn: cảm biến sinh ra tín hiệu, tiền xử lý để giảm nhiễu, tăng cường, phân đoạn, trích đặc trưng, và cuối cùng là phân loại. Mười một chương trước đã lo ba giai đoạn đầu."},
-        {"text": "Vector mẫu $x = (x_1, \\ldots, x_n)$; mẫu cấu trúc (chuỗi ký hiệu) khi đặc trưng không phải số", "say": "Mẫu thường được viết thành vector x gồm n thành phần, mỗi thành phần là một đặc trưng. Khi vật được mô tả bằng cấu trúc, ví dụ một chuỗi ký hiệu, vector không còn phù hợp và ta dùng mẫu cấu trúc."},
-        {"text": "Ba hướng: đối sánh nguyên mẫu, thống kê tối ưu (Bayes), mạng nơ-ron", "say": "Có ba hướng phân loại chính: đối sánh mẫu chưa biết với các nguyên mẫu, bộ phân loại thống kê tối ưu, và mạng nơ-ron. Ta đi lần lượt từng hướng."}
-      ]
-    },
-    {
-      "kicker": "Formula",
-      "title": "Bộ phân loại khoảng cách tối thiểu",
-      "slide": 10,
-      "formula": "\\underbrace{m_j = \\frac{1}{n_j} \\sum_{x \\in c_j} x}_{\\text{nguyên mẫu = trung bình lớp}} \\qquad \\underbrace{D_j(x) = \\lVert x - m_j \\rVert}_{\\text{khoảng cách tới lớp } j}",
-      "points": [
-        {"text": "Nguyên mẫu của mỗi lớp = vector trung bình của lớp đó", "say": "Hướng thứ nhất là đơn giản nhất. Mỗi lớp được đại diện bằng một nguyên mẫu, chính là vector trung bình của mọi mẫu trong lớp đó. Giống như hình dung một quả táo điển hình."},
-        {"text": "Gán $x$ vào lớp có $D_j(x)$ nhỏ nhất", "say": "Khi gặp một mẫu mới, ta tính khoảng cách Euclid từ nó đến nguyên mẫu của từng lớp, rồi gán nó vào lớp gần nhất."},
-        {"text": "Tương đương: $d_j(x) = m_j^T x - \\tfrac{1}{2} m_j^T m_j$, chọn $d_j$ LỚN nhất", "say": "Slide cho một cách viết tương đương bằng hàm quyết định d. Chọn khoảng cách nhỏ nhất tương đương với chọn hàm quyết định lớn nhất. Đề thi hay hỏi chiều của bất đẳng thức này: khoảng cách thì nhỏ nhất, hàm quyết định thì lớn nhất. Ta kiểm chứng bằng số ngay sau đây."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Phân loại một mẫu bằng hai cách",
-      "table": {
-        "headers": ["Với $x = (3, 1)$", "Lớp 1: $m_1 = (4.3, 1.3)$", "Lớp 2: $m_2 = (1.5, 0.3)$"],
-        "rows": [
-          ["Khoảng cách $D_j(x)$", "√(1.3² + 0.3²) ≈ 1.33", "√(1.5² + 0.7²) ≈ 1.66"],
-          ["$m_j^T x$", "4.3·3 + 1.3·1 = 14.2", "1.5·3 + 0.3·1 = 4.8"],
-          ["$\\tfrac{1}{2} m_j^T m_j$", "≈ 10.09", "≈ 1.17"],
-          ["Hàm quyết định $d_j(x)$", "≈ 4.11", "≈ 3.63"]
-        ]
+     "kicker": "Mở đầu",
+     "title": "Một bông hoa, thuộc giống nào?",
+     "points": [
+      {
+       "say": "Chào các bạn, đây là chương cuối: phân loại ảnh. Ví dụ của cả chương là một chiếc máy trong vườn ươm. Nó đo chiều dài và chiều rộng cánh hoa, rồi phải nói bông hoa thuộc giống nào.",
+       "text": "Ví dụ: máy phân loại hoa"
       },
-      "points": [
-        {"say": "Hai lớp hoa có nguyên mẫu, tính theo chiều dài và chiều rộng cánh hoa. Lớp một có trung bình bốn phẩy ba và một phẩy ba. Lớp hai có trung bình một phẩy năm và không phẩy ba. Một bông hoa mới có số đo ba và một. Cách thứ nhất: tính khoảng cách. Đến lớp một khoảng một phẩy ba ba, đến lớp hai khoảng một phẩy sáu sáu. Lớp một gần hơn, nên bông hoa thuộc lớp một."},
-        {"say": "Cách thứ hai: dùng hàm quyết định. Phần thứ nhất là tích vô hướng của nguyên mẫu với x. Với lớp một được mười bốn phẩy hai, với lớp hai được bốn phẩy tám."},
-        {"say": "Phần thứ hai là một nửa bình phương độ dài của nguyên mẫu, không phụ thuộc x nên tính sẵn được. Lớp một khoảng mười phẩy không chín, lớp hai khoảng một phẩy mười bảy."},
-        {"say": "Lấy phần thứ nhất trừ phần thứ hai. Lớp một khoảng bốn phẩy một một, lớp hai khoảng ba phẩy sáu ba. Hàm quyết định của lớp một lớn hơn, và kết luận trùng với cách tính khoảng cách. Ưu điểm của cách thứ hai là chỉ cần phép nhân và cộng, không cần khai căn."}
-      ]
-    },
-    {
-      "title": "Đối sánh tương quan (template matching)",
-      "slide": 12,
-      "points": [
-        {"text": "Tính hệ số tương quan giữa ảnh và một mẫu mô hình $w$ (ảnh con nguyên mẫu)", "say": "Cũng thuộc hướng đối sánh nguyên mẫu, đối sánh tương quan làm việc trực tiếp với ảnh. Ta có một ảnh con nguyên mẫu, ký hiệu w, ví dụ hình một chữ cái. Ta trượt w trên ảnh và tại mỗi vị trí tính hệ số tương quan giữa w và vùng ảnh bên dưới."},
-        {"text": "Vị trí có hệ số tương quan lớn nhất = nơi khớp nhất", "say": "Nơi hệ số tương quan lớn nhất là nơi ảnh giống mẫu nhất. Phương pháp này còn được gọi là đối sánh mẫu, template matching."}
-      ]
-    },
-    {
-      "kicker": "Intuition",
-      "title": "Bộ phân loại Bayes: kết hợp bằng chứng và tần suất",
-      "slide": 13,
-      "points": [
-        {"text": "Bác sĩ chẩn đoán: triệu chứng khớp bệnh nào + bệnh nào phổ biến hơn", "say": "Hướng thứ hai là thống kê. Hãy nghĩ đến một bác sĩ. Một bệnh nhân bị sốt và ho. Triệu chứng này khớp với cả cảm cúm lẫn một bệnh hiếm. Bác sĩ cân nhắc hai thứ: triệu chứng phù hợp với bệnh nào hơn, và bệnh nào phổ biến hơn trong thực tế."},
-        {"text": "$p(x \\mid c_j)$: mẫu $x$ trông giống lớp $j$ đến đâu. $P(c_j)$: lớp $j$ phổ biến đến đâu", "say": "Bộ phân loại Bayes làm đúng như vậy. Phần thứ nhất là hàm mật độ xác suất, cho biết mẫu x trông giống lớp j đến mức nào. Phần thứ hai là xác suất tiên nghiệm, cho biết lớp j xuất hiện thường xuyên đến mức nào."},
-        {"text": "Mỗi quyết định sai có tổn thất $L_{ij}$; Bayes làm nhỏ nhất tổn thất trung bình", "say": "Trong slide, mỗi lần gán sai một mẫu sinh ra một tổn thất. Bộ phân loại làm nhỏ nhất tổng tổn thất trung bình trên mọi quyết định được gọi là bộ phân loại Bayes. Với tổn thất không một, nghĩa là đúng thì mất không, sai thì mất một, quy tắc trở nên rất gọn."}
-      ]
-    },
-    {
-      "kicker": "Formula",
-      "title": "Hàm quyết định Bayes với tổn thất 0-1",
-      "slide": 17,
-      "formula": "d_j(x) = \\underbrace{p(x \\mid c_j)}_{\\text{mẫu giống lớp } j \\text{ đến đâu}} \\cdot \\underbrace{P(c_j)}_{\\text{lớp } j \\text{ phổ biến đến đâu}}",
-      "points": [
-        {"text": "Gán $x$ vào lớp có $d_j(x)$ lớn nhất", "say": "Với tổn thất không một, hàm quyết định của lớp j là tích của hai phần vừa nói. Ta gán mẫu vào lớp có tích lớn nhất."},
-        {"text": "Tối ưu chỉ khi biết pdf của từng lớp và xác suất của từng lớp", "say": "Slide hỏi: hạn chế là gì? Để đạt tối ưu, ta phải biết hàm mật độ xác suất của các mẫu trong mỗi lớp và xác suất xuất hiện của mỗi lớp."},
-        {"text": "Hạn chế: thực tế không biết chính xác → phải ước lượng từ dữ liệu huấn luyện", "say": "Trong thực tế ta hầu như không biết chính xác hai thứ đó, mà phải ước lượng từ dữ liệu huấn luyện. Bộ phân loại chỉ tối ưu khi ước lượng đúng. Đây là câu trả lời cho câu hỏi thảo luận trong slide."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Bayes: lớp phổ biến hơn chưa chắc thắng",
-      "table": {
-        "headers": ["Lớp", "$p(x \\mid c_j)$", "$P(c_j)$", "$d_j = p \\cdot P$", "Hậu nghiệm $d_j / \\sum d$"],
-        "rows": [
-          ["$c_1$", "0.2", "0.7", "0.14", "0.14 / 0.32 ≈ 0.44"],
-          ["$c_2$", "0.6", "0.3", "0.18", "0.18 / 0.32 ≈ 0.56"]
-        ]
+      {
+       "say": "Một mẫu là sự sắp xếp các đặc trưng, viết thành vector x gồm n descriptor. Một lớp mẫu là tập các mẫu có chung tính chất. Khi đối tượng mô tả bằng cấu trúc như chuỗi ký hiệu, ta dùng mẫu cấu trúc thay cho vector.",
+       "text": "Mẫu = vector đặc trưng · lớp = tập mẫu chung tính chất"
       },
-      "points": [
-        {"reveal": 1, "say": "Có hai lớp. Lớp một rất phổ biến, xác suất tiên nghiệm không phẩy bảy. Nhưng mẫu x đang xét không giống lớp một lắm, mật độ chỉ là không phẩy hai. Nhân lại được không phẩy một bốn."},
-        {"reveal": 2, "say": "Lớp hai hiếm hơn, xác suất tiên nghiệm không phẩy ba, nhưng mẫu x rất giống lớp hai, mật độ không phẩy sáu. Nhân lại được không phẩy một tám."},
-        {"reveal": [1, 2], "say": "Không phẩy một tám lớn hơn không phẩy một bốn, nên Bayes chọn lớp hai, dù lớp một phổ biến gấp hơn hai lần. Chia mỗi tích cho tổng không phẩy ba hai, ta được xác suất hậu nghiệm: khoảng bốn mươi bốn phần trăm cho lớp một và năm mươi sáu phần trăm cho lớp hai. Nếu chỉ nhìn tần suất, hoặc chỉ nhìn độ giống, ta sẽ có thể chọn sai. Bayes kết hợp cả hai."}
-      ]
+      {
+       "say": "Thử nghĩ: nếu các bạn là chiếc máy, các bạn sẽ quyết định bằng cách nào?",
+       "text": "Các bạn sẽ quyết định thế nào?",
+       "ask": true
+      }
+     ]
     },
     {
-      "title": "Bayes cho lớp mẫu phân phối Gauss",
-      "slide": 19,
-      "points": [
-        {"text": "Lấy logarit tự nhiên: $d_j(x) = \\ln p(x \\mid c_j) + \\ln P(c_j)$", "say": "Khi các lớp có phân phối Gauss, slide lấy logarit tự nhiên của hàm quyết định. Logarit biến tích thành tổng và không đổi thứ tự lớn nhỏ, nên lớp nào thắng vẫn thắng."},
-        {"text": "Bỏ hằng số $\\tfrac{n}{2}\\ln(2\\pi)$ vì chung cho mọi lớp", "say": "Trong biểu thức có một số hạng giống hệt nhau ở mọi lớp, n chia hai nhân logarit của hai pi. Số hạng chung không ảnh hưởng đến việc so sánh, nên được bỏ đi."},
-        {"text": "Còn lại: $\\ln P(c_j)$, $\\ln|C_j|$ và khoảng cách từ $x$ tới trung bình $m_j$ theo hiệp phương sai $C_j$", "say": "Phần còn lại gồm logarit xác suất tiên nghiệm, logarit định thức của ma trận hiệp phương sai, và một khoảng cách từ x đến trung bình của lớp, được đo có tính đến hình dạng phân bố của lớp."},
-        {"text": "Kết luận: hàm quyết định là hyperquadric – mặt bậc hai trong không gian $n$ chiều", "say": "Vì x xuất hiện ở dạng bình phương, các hàm quyết định là các siêu mặt bậc hai, hyperquadrics, trong không gian n chiều. Đây là kết luận in đậm cuối slide và hay được hỏi."}
-      ]
-    },
-    {
-      "kicker": "Intuition",
-      "title": "Perceptron: một đường thẳng tự sửa sai",
-      "slide": 24,
-      "points": [
-        {"text": "Tính tổng có trọng số $w^T x + w_{n+1}$, rồi qua hàm kích hoạt → $+1$ hoặc $-1$", "say": "Hướng thứ ba là mạng nơ-ron, bắt đầu từ đơn vị nhỏ nhất: perceptron. Nó nhân mỗi đặc trưng với một trọng số, cộng lại, cộng thêm một hằng số bias, rồi cho qua hàm kích hoạt để ra cộng một hoặc trừ một."},
-        {"text": "Biên quyết định là một siêu phẳng (đường thẳng trong 2D)", "say": "Tập các điểm có tổng đúng bằng không là một siêu phẳng. Trong hai chiều đó là một đường thẳng chia mặt phẳng làm hai nửa, mỗi nửa là một lớp."},
-        {"text": "Học: gặp mẫu sai thì đẩy đường thẳng về phía đúng một bước $\\alpha$", "say": "Perceptron học như một người tập ném phi tiêu: ném lệch bên nào thì chỉnh tay sang bên kia một chút. Mỗi khi phân loại sai một mẫu, nó xê dịch trọng số một bước nhỏ alpha để đẩy đường thẳng về phía đúng. Mẫu đúng thì không đụng đến."}
-      ]
-    },
-    {
-      "kicker": "Algorithm",
-      "title": "Thuật toán perceptron",
-      "slide": 23,
-      "code": {
-        "lines": [
-          "chọn α > 0; w(1) tùy ý; w_{n+1}(1) tùy ý",
-          "for k = 1, 2, …:",
-          "    if x(k) ∈ c1 và wᵀx(k) + w_{n+1} ≤ 0:",
-          "        w ← w + α·x(k);   w_{n+1} ← w_{n+1} + α",
-          "    elif x(k) ∈ c2 và wᵀx(k) + w_{n+1} ≥ 0:",
-          "        w ← w − α·x(k);   w_{n+1} ← w_{n+1} − α",
-          "    else: giữ nguyên w, w_{n+1}",
-          "dừng khi một vòng không còn mẫu nào bị sửa"
-        ]
+     "kicker": "Mở đầu",
+     "title": "Bốn giai đoạn nhận dạng",
+     "points": [
+      {
+       "say": "Nhận dạng gồm bốn giai đoạn: cảm biến tạo tín hiệu, tiền xử lý giảm nhiễu và phân đoạn, trích đặc trưng, rồi phân loại.",
+       "reveal": 1
       },
-      "points": [
-        {"reveal": [1], "say": "Đây là thuật toán đúng như slide. Chọn hệ số học alpha dương, khởi tạo trọng số và bias tùy ý."},
-        {"reveal": [3, 4], "say": "Lớp một muốn đầu ra dương. Nếu một mẫu lớp một cho đầu ra nhỏ hơn hoặc bằng không, tức là bị phân loại sai, ta cộng alpha nhân mẫu đó vào trọng số và cộng alpha vào bias. Đầu ra của mẫu đó lần sau sẽ lớn hơn."},
-        {"reveal": [5, 6], "say": "Lớp hai muốn đầu ra âm. Nếu một mẫu lớp hai cho đầu ra lớn hơn hoặc bằng không, ta làm ngược lại: trừ đi."},
-        {"reveal": [7, 8], "say": "Mẫu đúng thì giữ nguyên. Lặp đến khi đi hết một vòng mà không phải sửa lần nào. Định lý hội tụ perceptron đảm bảo điều này xảy ra sau hữu hạn bước, nếu hai lớp khả phân tuyến tính."}
-      ]
+      {
+       "say": "Các chương trước đã lo ba giai đoạn đầu. Chương này là bước cuối: gán nhãn cho mẫu dựa trên đặc trưng của nó.",
+       "reveal": 2
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "n0",
+        "label": "Cảm biến",
+        "x": 0,
+        "y": 0,
+        "shape": "box",
+        "step": 0
+       },
+       {
+        "id": "n1",
+        "label": "Tiền xử lý",
+        "x": 0,
+        "y": 1,
+        "shape": "box",
+        "step": 0
+       },
+       {
+        "id": "n2",
+        "label": "Trích đặc trưng (ch. 10)",
+        "x": 0,
+        "y": 2,
+        "shape": "box",
+        "step": 1
+       },
+       {
+        "id": "n3",
+        "label": "Phân loại (ch. 12)",
+        "x": 0,
+        "y": 3,
+        "shape": "box",
+        "step": 2
+       }
+      ],
+      "edges": [
+       {
+        "a": "n0",
+        "b": "n1",
+        "step": 0
+       },
+       {
+        "a": "n1",
+        "b": "n2",
+        "step": 1
+       },
+       {
+        "a": "n2",
+        "b": "n3",
+        "step": 2
+       }
+      ],
+      "arrows": true
+     }
     },
     {
-      "kicker": "Worked example",
-      "title": "Chạy perceptron bằng tay ($\\alpha = 1$, bắt đầu từ 0)",
-      "table": {
-        "headers": ["Bước", "Mẫu", "Đầu ra", "Kết luận", "$w$ và bias sau bước"],
-        "rows": [
-          ["1", "(0,0) lớp 1", "0 ≤ 0", "Sai → cộng", "w = (0, 0), b = 1"],
-          ["2", "(0,1) lớp 1", "1 > 0", "Đúng", "giữ nguyên"],
-          ["3", "(1,0) lớp 2", "1 ≥ 0", "Sai → trừ", "w = (−1, 0), b = 0"],
-          ["4", "(1,1) lớp 2", "−1 < 0", "Đúng", "giữ nguyên"],
-          ["Vòng 2–3", "cả 4 mẫu", "—", "Sửa thêm 3 lần", "w = (−2, 0), b = 1"],
-          ["Vòng 4", "cả 4 mẫu", "—", "Không sai mẫu nào", "Dừng"]
-        ]
+     "kicker": "Mở đầu",
+     "title": "Ba hướng phân loại",
+     "points": [
+      {
+       "say": "Có ba hướng. Đối sánh với nguyên mẫu: so với một mẫu điển hình của mỗi lớp.",
+       "text": "1. Đối sánh nguyên mẫu"
       },
-      "points": [
-        {"say": "Bốn mẫu hai chiều. Lớp một gồm không không và không một, lớp hai gồm một không và một một. Bắt đầu với trọng số và bias đều bằng không, alpha bằng một. Mẫu đầu tiên thuộc lớp một, đầu ra bằng không. Không dương, nên bị coi là sai. Cộng mẫu vào trọng số, trọng số vẫn là không, và bias tăng lên một."},
-        {"say": "Mẫu không một thuộc lớp một: đầu ra bằng bias, bằng một, dương. Đúng, giữ nguyên."},
-        {"say": "Mẫu một không thuộc lớp hai: đầu ra bằng một, không âm. Sai. Trừ mẫu khỏi trọng số được âm một và không, bias giảm về không."},
-        {"say": "Mẫu một một thuộc lớp hai: đầu ra bằng âm một, âm. Đúng, giữ nguyên. Hết vòng một, đã sửa hai lần."},
-        {"say": "Vòng hai và vòng ba lặp lại đúng quy tắc đó. Mẫu không không và mẫu một không vẫn còn nằm sát biên nên bị sửa thêm ba lần nữa. Trọng số dừng ở âm hai và không, bias bằng một."},
-        {"say": "Vòng bốn, cả bốn mẫu đều đúng, thuật toán dừng. Biên quyết định là âm hai nhân x một cộng một bằng không, tức là đường thẳng đứng x một bằng không phẩy năm, nằm đúng giữa hai lớp. Tổng cộng năm lần sửa, đúng như định lý hội tụ hứa hẹn, vì hai lớp này khả phân tuyến tính."}
-      ]
-    },
-    {
-      "title": "Từ perceptron đến mạng nơ-ron sâu",
-      "slide": 26,
-      "points": [
-        {"text": "Mỗi nơ-ron lớp $l$: tổng có trọng số các đầu vào + bias → hàm kích hoạt", "say": "Một perceptron chỉ vẽ được một đường thẳng. Ghép nhiều nơ-ron thành nhiều lớp, ta có mạng nơ-ron. Mỗi nơ-ron ở lớp l vẫn làm việc cũ: tổng có trọng số các đầu vào cộng bias, rồi qua hàm kích hoạt."},
-        {"text": "Forward propagation: đưa $x$ qua các lớp → lớp đầu ra quyết định lớp", "say": "Lan truyền tiến là đưa vector đầu vào đi qua từng lớp cho đến lớp đầu ra. Giá trị ở lớp đầu ra cho biết mẫu thuộc lớp nào."},
-        {"text": "Backpropagation: (1) đưa mẫu vào, (2) forward + tính sai số, (3) truyền ngược sai số, (4) cập nhật $w$, bias", "say": "Lan truyền ngược để huấn luyện gồm bốn bước theo slide. Một, đưa các vector mẫu vào mạng. Hai, lan truyền tiến để phân loại toàn bộ mẫu huấn luyện và tính sai số. Ba, lan truyền ngược sai số đầu ra qua mạng để tính lượng thay đổi cần thiết cho từng tham số. Bốn, cập nhật trọng số và bias. Về tinh thần, đó vẫn là quy tắc sửa sai của perceptron, chỉ là áp cho nhiều lớp cùng lúc."}
-      ]
-    },
-    {
-      "kicker": "Compare",
-      "title": "Các kiến trúc CNN kinh điển",
-      "slide": 30,
-      "table": {
-        "headers": ["Mạng", "Điểm mới cần nhớ"],
-        "rows": [
-          ["LeNet-5", "CNN kinh điển đầu tiên; khối tích chập – pooling lặp lại; tách phần trích đặc trưng và phần phân loại"],
-          ["AlexNet", "ReLU, softmax, max pooling, dropout, data augmentation; conv nối thẳng conv"],
-          ["VGG16", "Bộ lọc rất nhỏ 3×3 và 1×1, stride 1; max pooling 2×2; sâu 16 và 19 lớp"],
-          ["ResNet50", "Kết nối tắt (skip) + khối residual; sâu đến 152 lớp, chống vanishing gradient"]
-        ]
+      {
+       "say": "Bộ phân loại thống kê tối ưu: Bayes, dùng xác suất.",
+       "text": "2. Thống kê tối ưu: Bayes"
       },
-      "points": [
-        {"say": "Cuối cùng là bốn kiến trúc CNN. LeNet-5 là kiến trúc kinh điển đầu tiên. Ảnh đầu vào có kích thước cố định, các lớp tích chập và pooling được nhóm thành khối và lặp lại, số bộ lọc tăng dần theo độ sâu, và phần trích đặc trưng tách rõ khỏi phần phân loại."},
-        {"say": "AlexNet mang đến một loạt kỹ thuật: hàm kích hoạt ReLU sau các lớp tích chập và softmax ở lớp đầu ra, max pooling thay cho average pooling, dropout để chính quy hóa giữa các lớp kết nối đầy đủ, cho phép một lớp tích chập nối thẳng vào lớp tích chập khác, và tăng cường dữ liệu."},
-        {"say": "VGG16 dùng các bộ lọc rất nhỏ, ba nhân ba và một nhân một, với bước trượt một, và max pooling hai nhân hai. Nó xếp chồng nhiều lớp tích chập trước mỗi lớp pooling, lặp lại khối đó, để tạo ra các mạng rất sâu, mười sáu và mười chín lớp."},
-        {"say": "ResNet50 thêm kết nối tắt, cho phép gradient đi thẳng qua nhiều lớp, và lặp lại các khối residual. Nhờ vậy huấn luyện được mạng sâu đến một trăm năm mươi hai lớp mà không bị suy giảm gradient."}
-      ]
-    },
-    {
-      "kicker": "Compare",
-      "title": "Ba hướng phân loại",
-      "table": {
-        "headers": ["Hướng", "Cần biết gì", "Biên quyết định", "Hạn chế"],
-        "rows": [
-          ["Khoảng cách tối thiểu", "Trung bình mỗi lớp", "Tuyến tính", "Bỏ qua độ phân tán của lớp"],
-          ["Bayes", "pdf và xác suất của mỗi lớp", "Bậc hai (Gauss)", "Phải ước lượng pdf và tiên nghiệm"],
-          ["Perceptron", "Dữ liệu có nhãn", "Siêu phẳng", "Chỉ hội tụ nếu khả phân tuyến tính"],
-          ["Mạng nơ-ron sâu / CNN", "Rất nhiều dữ liệu có nhãn", "Phi tuyến tùy ý", "Tốn dữ liệu và tính toán"]
-        ]
-      },
-      "points": [
-        {"say": "So sánh các hướng. Bộ phân loại khoảng cách tối thiểu chỉ cần trung bình mỗi lớp, cho biên tuyến tính, nhưng bỏ qua việc lớp nào phân tán rộng, lớp nào tập trung."},
-        {"say": "Bayes tối ưu về mặt thống kê, với lớp Gauss cho biên bậc hai, nhưng phải biết hoặc ước lượng được hàm mật độ và xác suất tiên nghiệm."},
-        {"say": "Perceptron học trực tiếp từ dữ liệu, cho biên là một siêu phẳng, và chỉ đảm bảo hội tụ nếu dữ liệu khả phân tuyến tính."},
-        {"say": "Mạng nơ-ron sâu và CNN học được biên phi tuyến bất kỳ, nhưng cần rất nhiều dữ liệu có nhãn và tài nguyên tính toán."}
-      ]
-    },
-    {
-      "kicker": "Exam traps",
-      "title": "Những chỗ đề thi hay gài",
-      "table": {
-        "headers": ["Câu hỏi", "Đáp án đúng"],
-        "rows": [
-          ["Nguyên mẫu trong minimum-distance là gì?", "Vector trung bình của lớp"],
-          ["Dùng $d_j(x)$ thì chọn lớn nhất hay nhỏ nhất?", "LỚN nhất (khoảng cách $D_j$ mới nhỏ nhất)"],
-          ["Bayes 0-1 loss chọn lớp theo gì?", "$p(x \\mid c_j) P(c_j)$ lớn nhất"],
-          ["Biên Bayes với lớp Gauss có dạng gì?", "Hyperquadric (bậc hai)"],
-          ["Perceptron hội tụ khi nào?", "Khi hai lớp khả phân tuyến tính, sau hữu hạn bước"]
-        ]
-      },
-      "points": [
-        {"say": "Năm cái bẫy. Một: nguyên mẫu trong bộ phân loại khoảng cách tối thiểu là vector trung bình của lớp."},
-        {"say": "Hai: khoảng cách thì chọn nhỏ nhất, hàm quyết định thì chọn lớn nhất. Đề hay đảo chiều chỗ này."},
-        {"say": "Ba: Bayes với tổn thất không một chọn lớp có tích mật độ nhân xác suất tiên nghiệm lớn nhất, không phải chỉ dựa vào tiên nghiệm, như ví dụ vừa rồi đã cho thấy."},
-        {"say": "Bốn: với lớp Gauss, hàm quyết định Bayes là các siêu mặt bậc hai."},
-        {"say": "Năm: định lý hội tụ perceptron chỉ đúng khi hai lớp khả phân tuyến tính, và khi đó thuật toán dừng sau hữu hạn bước."}
-      ]
-    },
-    {
-      "kicker": "Summary",
-      "title": "Tổng kết chương 12 và toàn môn",
-      "points": [
-        {"text": "Minimum distance: gần trung bình nhất ↔ $d_j(x)$ lớn nhất; template matching", "say": "Tổng kết chương mười hai. Bộ phân loại khoảng cách tối thiểu gán mẫu vào lớp có trung bình gần nhất, tương đương hàm quyết định lớn nhất. Đối sánh tương quan tìm nơi khớp nhất với một mẫu."},
-        {"text": "Bayes: $p(x \\mid c_j) P(c_j)$ lớn nhất; lớp Gauss → hyperquadrics", "say": "Bayes chọn lớp có tích mật độ nhân tiên nghiệm lớn nhất, và với lớp Gauss cho biên bậc hai."},
-        {"text": "Perceptron → mạng nơ-ron (forward, backprop) → LeNet, AlexNet, VGG16, ResNet50", "say": "Perceptron học một siêu phẳng bằng cách sửa sai, mở rộng thành mạng nơ-ron huấn luyện bằng lan truyền ngược, và các CNN từ LeNet đến ResNet."},
-        {"text": "Toàn môn: thu nhận → xử lý → nén → phân đoạn → đặc trưng → phát hiện → phân loại", "say": "Và đó là trọn vẹn môn học: từ thu nhận ảnh, xử lý và phục hồi, nén ảnh và video, hiển thị và đánh giá, đến phân đoạn, trích đặc trưng, phát hiện và phân loại. Cảm ơn các bạn đã theo dõi đến chương cuối. Hãy làm các câu hỏi ôn tập để củng cố, và chúc các bạn thi tốt."}
-      ]
+      {
+       "say": "Và mạng nơ-ron, từ perceptron đến CNN sâu. Mỗi hướng ra đời để vá chỗ hụt của hướng trước.",
+       "text": "3. Mạng nơ-ron"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Khoảng cách tối thiểu",
+       "Bayes",
+       "Perceptron",
+       "Mạng nơ-ron",
+       "CNN kinh điển"
+      ],
+      "current": 0
+     }
     }
-  ]
+   ]
+  },
+  {
+   "id": "khoang-cach",
+   "title": "Đối sánh nguyên mẫu: khoảng cách tối thiểu",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Bông hoa mới giống lớp nào hơn?",
+     "points": [
+      {
+       "say": "Máy đo được một bông hoa mới: cánh dài ba, rộng một. Nó giống giống hoa thứ nhất hay thứ hai hơn?",
+       "text": "Hoa mới (3; 1): lớp nào?"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Nhớ từng bông đã gặp",
+     "points": [
+      {
+       "say": "Cách ngây thơ là nhớ mọi bông hoa từng gặp rồi so với từng bông một. Tốn bộ nhớ và chậm.",
+       "text": "So với từng mẫu đã gặp: tốn và chậm"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Một mẫu điển hình cho mỗi lớp",
+     "points": [
+      {
+       "say": "Mỗi lớp được đại diện bằng một nguyên mẫu, chính là vector trung bình của mọi mẫu trong lớp. Như hình dung một quả táo điển hình.",
+       "text": "Nguyên mẫu = trung bình lớp"
+      },
+      {
+       "say": "Mẫu mới đi về lớp có nguyên mẫu gần nhất theo khoảng cách Euclid.",
+       "text": "Gán vào lớp gần nhất"
+      }
+     ]
+    },
+    {
+     "kicker": "Công thức",
+     "title": "Nguyên mẫu và khoảng cách",
+     "points": [
+      {
+       "say": "Nguyên mẫu là trung bình các mẫu của lớp j. Khoảng cách là độ dài vector từ x đến nguyên mẫu.",
+       "text": "m_j = trung bình · D_j = ‖x − m_j‖"
+      },
+      {
+       "say": "Slide còn viết tương đương bằng hàm quyết định d: chọn khoảng cách nhỏ nhất tương đương với chọn hàm quyết định lớn nhất.",
+       "text": "Khoảng cách NHỎ nhất ⇔ hàm quyết định LỚN nhất"
+      }
+     ],
+     "formula": "\\underbrace{m_j = \\frac{1}{n_j} \\sum_{x \\in c_j} x}_{\\text{nguyên mẫu}} \\qquad \\underbrace{d_j(x) = m_j^T x - \\tfrac{1}{2} m_j^T m_j}_{\\text{hàm quyết định}}"
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Phân loại bông hoa mới",
+     "points": [
+      {
+       "say": "Lớp một có nguyên mẫu bốn phẩy ba và một phẩy ba. Lớp hai có nguyên mẫu một phẩy năm và không phẩy ba. Hoa mới ở ba và một.",
+       "reveal": 0
+      },
+      {
+       "say": "Thử đoán: nhìn hình, hoa mới gần lớp nào hơn?",
+       "reveal": 0,
+       "ask": true
+      },
+      {
+       "say": "Khoảng cách tới lớp một khoảng một phẩy ba ba, tới lớp hai khoảng một phẩy sáu sáu.",
+       "reveal": 1
+      },
+      {
+       "say": "Lớp một gần hơn, nên bông hoa thuộc lớp một.",
+       "reveal": 2
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "m1",
+        "label": "m1",
+        "x": 4.3,
+        "y": 0.7,
+        "note": "lớp 1 (4,3; 1,3)",
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "m2",
+        "label": "m2",
+        "x": 1.5,
+        "y": 1.7,
+        "note": "lớp 2 (1,5; 0,3)"
+       },
+       {
+        "id": "x",
+        "label": "x",
+        "x": 3,
+        "y": 1,
+        "shape": "box",
+        "note": "hoa mới (3; 1)"
+       }
+      ],
+      "edges": [
+       {
+        "a": "x",
+        "b": "m1",
+        "label": "1,33",
+        "step": 1,
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "x",
+        "b": "m2",
+        "label": "1,66",
+        "step": 1
+       }
+      ],
+      "caption": "Trục: chiều dài và chiều rộng cánh hoa"
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Cách thứ hai: hàm quyết định",
+     "points": [
+      {
+       "say": "Tích vô hướng của nguyên mẫu với x: lớp một được mười bốn phẩy hai, lớp hai được bốn phẩy tám.",
+       "reveal": 1
+      },
+      {
+       "say": "Một nửa bình phương độ dài nguyên mẫu, không phụ thuộc x nên tính sẵn: lớp một khoảng mười phẩy không chín, lớp hai khoảng một phẩy mười bảy.",
+       "reveal": 2
+      },
+      {
+       "say": "Trừ ra: lớp một khoảng bốn phẩy một một, lớp hai khoảng ba phẩy sáu ba. Lớn nhất là lớp một, trùng kết luận. Ưu điểm: chỉ cần nhân và cộng, không cần khai căn.",
+       "reveal": 3
+      }
+     ],
+     "table": {
+      "headers": [
+       "Với x = (3; 1)",
+       "Lớp 1: m1 = (4,3; 1,3)",
+       "Lớp 2: m2 = (1,5; 0,3)"
+      ],
+      "rows": [
+       [
+        "mᵀx",
+        "14,2",
+        "4,8"
+       ],
+       [
+        "½ mᵀm",
+        "≈ 10,09",
+        "≈ 1,17"
+       ],
+       [
+        "d(x)",
+        "≈ 4,11 ✓",
+        "≈ 3,63"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Đối sánh tương quan",
+     "points": [
+      {
+       "say": "Cũng thuộc hướng nguyên mẫu, đối sánh tương quan làm việc trực tiếp với ảnh. Có một ảnh con nguyên mẫu w, ví dụ hình một chữ cái.",
+       "text": "Ảnh con nguyên mẫu w"
+      },
+      {
+       "say": "Trượt w trên ảnh, tại mỗi vị trí tính hệ số tương quan. Nơi tương quan lớn nhất là nơi giống mẫu nhất. Còn gọi là template matching.",
+       "text": "Tương quan lớn nhất → giống nhất"
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Khoảng cách và hàm quyết định",
+     "points": [
+      {
+       "say": "Hai cách cho cùng kết luận: khoảng cách lấy nhỏ nhất, hàm quyết định lấy lớn nhất."
+      },
+      {
+       "say": "Hàm quyết định chỉ cần nhân và cộng; khoảng cách cần khai căn."
+      },
+      {
+       "say": "Đối sánh tương quan làm trên ảnh, lấy hệ số tương quan lớn nhất."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Cách",
+       "Chọn lớp có",
+       "Ghi chú"
+      ],
+      "rows": [
+       [
+        "Khoảng cách D_j",
+        "Giá trị NHỎ nhất",
+        "Cần khai căn"
+       ],
+       [
+        "Hàm quyết định d_j",
+        "Giá trị LỚN nhất",
+        "Chỉ nhân và cộng"
+       ],
+       [
+        "Tương quan (template)",
+        "Tương quan LỚN nhất",
+        "Làm trực tiếp trên ảnh"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Nguyên mẫu ở đâu",
+     "points": [
+      {
+       "say": "Đối sánh mẫu được dùng để tìm logo, ký tự, linh kiện trên dây chuyền: những thứ có hình dạng gần như cố định.",
+       "text": "Tìm ký tự, logo, linh kiện"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Chỉ nhìn trung bình",
+     "points": [
+      {
+       "say": "Khoảng cách tối thiểu chỉ nhìn trung bình mỗi lớp. Nó bỏ qua lớp nào trải rộng, lớp nào co cụm, và lớp nào phổ biến hơn.",
+       "text": "Bỏ qua độ trải và tần suất"
+      },
+      {
+       "say": "Hướng thống kê dùng xác suất để tính cả hai điều đó: bộ phân loại Bayes.",
+       "text": "→ Bayes"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Khoảng cách tối thiểu",
+       "Bayes",
+       "Perceptron",
+       "Mạng nơ-ron",
+       "CNN kinh điển"
+      ],
+      "current": 2
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: khoảng cách chọn nhỏ nhất, hàm quyết định chọn lớn nhất. Đề hay đảo chiều."
+      },
+      {
+       "say": "Bẫy hai: nguyên mẫu là vector trung bình của lớp."
+      },
+      {
+       "say": "Bẫy ba: template matching chính là đối sánh tương quan."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Khoảng cách và hàm quyết định chọn thế nào?",
+        "Khoảng cách NHỎ nhất ⇔ d LỚN nhất"
+       ],
+       [
+        "Nguyên mẫu là gì?",
+        "Vector trung bình của lớp"
+       ],
+       [
+        "Template matching tên khác?",
+        "Đối sánh tương quan (correlation)"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "bayes",
+   "title": "Bộ phân loại Bayes",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Giống hiếm hay giống phổ biến?",
+     "points": [
+      {
+       "say": "Trong vườn ươm, giống thứ nhất chiếm bảy mươi phần trăm số cây, giống thứ hai chỉ ba mươi. Bông hoa mới lại rất giống giống thứ hai. Máy nên chọn gì?",
+       "text": "Phổ biến hơn hay giống hơn?"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Khoảng cách tới trung bình",
+     "points": [
+      {
+       "say": "Khoảng cách tối thiểu chỉ so với trung bình, không biết lớp nào phổ biến, cũng không biết lớp nào trải rộng.",
+       "text": "Không biết tần suất, độ trải"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Như một bác sĩ chẩn đoán",
+     "points": [
+      {
+       "say": "Một bệnh nhân sốt và ho. Triệu chứng khớp cả cảm cúm lẫn một bệnh hiếm. Bác sĩ cân nhắc: triệu chứng giống bệnh nào hơn, và bệnh nào phổ biến hơn.",
+       "text": "Như bác sĩ: triệu chứng + độ phổ biến"
+      },
+      {
+       "say": "Bayes làm đúng vậy. Hàm mật độ cho biết mẫu giống lớp j đến đâu, xác suất tiên nghiệm cho biết lớp j phổ biến đến đâu.",
+       "text": "Mật độ p(x|c) × tiên nghiệm P(c)"
+      },
+      {
+       "say": "Mỗi lần gán sai sinh ra một tổn thất. Bộ phân loại làm nhỏ nhất tổng tổn thất trung bình gọi là bộ phân loại Bayes.",
+       "text": "Tối thiểu tổn thất trung bình"
+      }
+     ]
+    },
+    {
+     "kicker": "Công thức",
+     "title": "Hàm quyết định với tổn thất 0–1",
+     "points": [
+      {
+       "say": "Với tổn thất không một, đúng mất không, sai mất một, hàm quyết định là tích của hai phần. Chọn lớp có tích lớn nhất.",
+       "text": "Chọn lớp có tích lớn nhất"
+      },
+      {
+       "say": "Để đạt tối ưu, phải biết hàm mật độ và xác suất của mỗi lớp. Thực tế phải ước lượng từ dữ liệu, và chỉ tối ưu khi ước lượng đúng.",
+       "text": "Phải biết, hoặc ước lượng đúng, p và P"
+      }
+     ],
+     "formula": "d_j(x) = \\underbrace{p(x \\mid c_j)}_{\\text{giống lớp } j \\text{ đến đâu}} \\cdot \\underbrace{P(c_j)}_{\\text{lớp } j \\text{ phổ biến đến đâu}}"
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Lớp phổ biến chưa chắc thắng",
+     "points": [
+      {
+       "say": "Lớp một phổ biến, tiên nghiệm không phẩy bảy, nhưng mẫu không giống lắm, mật độ không phẩy hai. Tích là không phẩy một bốn.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: lớp hai hiếm, tiên nghiệm không phẩy ba, nhưng mật độ không phẩy sáu. Lớp nào thắng?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Tích của lớp hai là không phẩy một tám, lớn hơn. Bayes chọn lớp hai, dù lớp một phổ biến gấp hơn hai lần.",
+       "reveal": 2
+      },
+      {
+       "say": "Chia mỗi tích cho tổng không phẩy ba hai được xác suất hậu nghiệm: khoảng bốn mươi bốn và năm mươi sáu phần trăm.",
+       "reveal": 2
+      }
+     ],
+     "table": {
+      "headers": [
+       "Lớp",
+       "p(x|c)",
+       "P(c)",
+       "d = p·P",
+       "Hậu nghiệm"
+      ],
+      "rows": [
+       [
+        "c1",
+        "0,2",
+        "0,7",
+        "0,14",
+        "≈ 0,44"
+       ],
+       [
+        "c2",
+        "0,6",
+        "0,3",
+        "0,18 ✓",
+        "≈ 0,56"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bayes cho lớp phân phối Gauss",
+     "points": [
+      {
+       "say": "Khi các lớp có phân phối Gauss, lấy logarit tự nhiên của hàm quyết định. Logarit biến tích thành tổng mà không đổi thứ tự lớn nhỏ.",
+       "text": "Lấy ln: tích → tổng, giữ thứ tự"
+      },
+      {
+       "say": "Số hạng giống nhau ở mọi lớp, n chia hai nhân logarit hai pi, được bỏ đi.",
+       "text": "Bỏ hằng số chung"
+      },
+      {
+       "say": "Phần còn lại gồm logarit tiên nghiệm, logarit định thức ma trận hiệp phương sai, và khoảng cách tới trung bình có tính hình dạng phân bố.",
+       "text": "ln P, ln|C|, khoảng cách tới trung bình"
+      },
+      {
+       "say": "Vì x xuất hiện ở dạng bình phương, các hàm quyết định là siêu mặt bậc hai, hyperquadrics.",
+       "text": "→ Siêu mặt bậc hai"
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Bayes so với khoảng cách tối thiểu",
+     "points": [
+      {
+       "say": "Khoảng cách tối thiểu chỉ dùng trung bình."
+      },
+      {
+       "say": "Bayes dùng cả độ giống và độ phổ biến, tối ưu theo nghĩa tổn thất trung bình nhỏ nhất."
+      },
+      {
+       "say": "Đổi lại, Bayes cần biết hoặc ước lượng được phân phối của từng lớp."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Khoảng cách tối thiểu",
+       "Bayes"
+      ],
+      "rows": [
+       [
+        "Dùng",
+        "Trung bình lớp",
+        "Mật độ p(x|c) và tiên nghiệm P(c)"
+       ],
+       [
+        "Tối ưu?",
+        "Không đảm bảo",
+        "Tối thiểu tổn thất trung bình"
+       ],
+       [
+        "Cần",
+        "Ít dữ liệu",
+        "Phân phối của từng lớp"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Bayes ở đâu",
+     "points": [
+      {
+       "say": "Lọc thư rác, chẩn đoán y khoa, và nhiều hệ thống ra quyết định dựa trên xác suất đều dùng tư duy Bayes.",
+       "text": "Lọc thư rác, chẩn đoán"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Phải biết phân phối",
+     "points": [
+      {
+       "say": "Bayes chỉ tối ưu khi biết đúng phân phối. Với ảnh thật, phân phối rất phức tạp và khó ước lượng.",
+       "text": "Phân phối khó ước lượng"
+      },
+      {
+       "say": "Có cách nào học thẳng biên quyết định từ dữ liệu, không cần biết phân phối? Đó là perceptron.",
+       "text": "→ Perceptron"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Khoảng cách tối thiểu",
+       "Bayes",
+       "Perceptron",
+       "Mạng nơ-ron",
+       "CNN kinh điển"
+      ],
+      "current": 3
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: với tổn thất không một, chọn lớp có tích mật độ nhân tiên nghiệm lớn nhất."
+      },
+      {
+       "say": "Bẫy hai: hạn chế của Bayes là phải biết hàm mật độ và xác suất của từng lớp."
+      },
+      {
+       "say": "Bẫy ba: với lớp Gauss, hàm quyết định là siêu mặt bậc hai."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Hàm quyết định Bayes (0–1)?",
+        "p(x|c_j)·P(c_j), chọn lớn nhất"
+       ],
+       [
+        "Hạn chế của Bayes?",
+        "Phải biết / ước lượng đúng p và P"
+       ],
+       [
+        "Bayes Gauss cho biên dạng gì?",
+        "Siêu mặt bậc hai (hyperquadrics)"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "perceptron",
+   "title": "Perceptron",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Học biên quyết định từ ví dụ",
+     "points": [
+      {
+       "say": "Ta không biết phân phối của từng giống hoa, nhưng có sẵn nhiều bông đã gán nhãn. Có thể học thẳng ranh giới từ chúng không?",
+       "text": "Có ví dụ gán nhãn, không biết phân phối"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Bayes cần phân phối",
+     "points": [
+      {
+       "say": "Bayes chỉ tối ưu khi biết đúng hàm mật độ và tiên nghiệm. Ước lượng sai thì không còn tối ưu.",
+       "text": "Bayes: cần phân phối đúng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Một đường thẳng tự sửa sai",
+     "points": [
+      {
+       "say": "Perceptron nhân mỗi đặc trưng với một trọng số, cộng lại, cộng bias, rồi qua hàm kích hoạt ra cộng một hoặc trừ một.",
+       "text": "Tổng có trọng số + bias → ±1"
+      },
+      {
+       "say": "Các điểm có tổng bằng không tạo thành một siêu phẳng, trong hai chiều là một đường thẳng chia mặt phẳng làm hai.",
+       "text": "Biên: siêu phẳng"
+      },
+      {
+       "say": "Nó học như người tập ném phi tiêu: ném lệch bên nào thì chỉnh tay một chút. Sai thì xê dịch trọng số một bước alpha, đúng thì giữ nguyên.",
+       "text": "Sai thì chỉnh một bước α"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Thuật toán perceptron",
+     "points": [
+      {
+       "say": "Chọn hệ số học alpha dương, khởi tạo trọng số và bias tùy ý.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Lớp một muốn đầu ra dương. Nếu mẫu lớp một cho đầu ra nhỏ hơn hoặc bằng không, cộng alpha nhân mẫu vào trọng số và alpha vào bias.",
+       "reveal": [
+        3,
+        4
+       ]
+      },
+      {
+       "say": "Lớp hai muốn đầu ra âm. Nếu mẫu lớp hai cho đầu ra lớn hơn hoặc bằng không, trừ đi.",
+       "reveal": [
+        5,
+        6
+       ]
+      },
+      {
+       "say": "Lặp đến khi đi hết một vòng không phải sửa lần nào.",
+       "reveal": [
+        7,
+        8
+       ]
+      }
+     ],
+     "code": {
+      "lines": [
+       "chọn α > 0; w và bias tùy ý",
+       "for từng mẫu x(k):",
+       "    if x(k) ∈ c1 và wᵀx + b ≤ 0:",
+       "        w ← w + α·x;  b ← b + α",
+       "    elif x(k) ∈ c2 và wᵀx + b ≥ 0:",
+       "        w ← w − α·x;  b ← b − α",
+       "    else: giữ nguyên",
+       "dừng khi một vòng không sửa mẫu nào"
+      ]
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Chạy perceptron bằng tay",
+     "points": [
+      {
+       "say": "Bốn mẫu: lớp một gồm không không và không một, lớp hai gồm một không và một một. Bắt đầu từ không, alpha bằng một. Mẫu không không cho đầu ra không, không dương, nên sai: bias tăng lên một.",
+       "reveal": 1
+      },
+      {
+       "say": "Mẫu không một cho đầu ra một, dương, đúng.",
+       "reveal": 2
+      },
+      {
+       "say": "Mẫu một không cho đầu ra một, không âm, sai: trọng số thành âm một và không, bias về không.",
+       "reveal": 3
+      },
+      {
+       "say": "Mẫu một một cho âm một, đúng. Hết vòng một, sửa hai lần.",
+       "reveal": 4
+      },
+      {
+       "say": "Thử đoán: thuật toán còn phải sửa thêm mấy lần nữa?",
+       "reveal": 4,
+       "ask": true
+      },
+      {
+       "say": "Vòng hai và ba sửa thêm ba lần. Trọng số dừng ở âm hai và không, bias bằng một. Vòng bốn không sai mẫu nào, dừng.",
+       "reveal": 6
+      }
+     ],
+     "table": {
+      "headers": [
+       "Bước",
+       "Mẫu",
+       "Đầu ra",
+       "Kết luận",
+       "w và b sau bước"
+      ],
+      "rows": [
+       [
+        "1",
+        "(0,0) lớp 1",
+        "0 ≤ 0",
+        "Sai → cộng",
+        "w = (0, 0), b = 1"
+       ],
+       [
+        "2",
+        "(0,1) lớp 1",
+        "1 > 0",
+        "Đúng",
+        "giữ nguyên"
+       ],
+       [
+        "3",
+        "(1,0) lớp 2",
+        "1 ≥ 0",
+        "Sai → trừ",
+        "w = (−1, 0), b = 0"
+       ],
+       [
+        "4",
+        "(1,1) lớp 2",
+        "−1 < 0",
+        "Đúng",
+        "giữ nguyên"
+       ],
+       [
+        "Vòng 2–3",
+        "cả 4 mẫu",
+        "—",
+        "Sửa thêm 3 lần",
+        "w = (−2, 0), b = 1"
+       ],
+       [
+        "Vòng 4",
+        "cả 4 mẫu",
+        "—",
+        "Không sai",
+        "Dừng"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Biên quyết định học được",
+     "points": [
+      {
+       "say": "Bốn mẫu trên mặt phẳng: hai mẫu lớp một bên trái, hai mẫu lớp hai bên phải.",
+       "reveal": 1
+      },
+      {
+       "say": "Biên là âm hai nhân x một cộng một bằng không, tức đường thẳng đứng x một bằng không phẩy năm, nằm đúng giữa hai lớp. Năm lần sửa là đủ, đúng như định lý hội tụ hứa hẹn, vì hai lớp khả phân tuyến tính.",
+       "reveal": 2
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "a",
+        "label": "(0,0)",
+        "x": 0,
+        "y": 4,
+        "shape": "dot",
+        "marks": [
+         {
+          "step": 1,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "b",
+        "label": "(0,1)",
+        "x": 0,
+        "y": 0,
+        "shape": "dot",
+        "marks": [
+         {
+          "step": 1,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "c",
+        "label": "(1,0)",
+        "x": 4,
+        "y": 4,
+        "shape": "dot",
+        "marks": [
+         {
+          "step": 1,
+          "style": "warn"
+         }
+        ]
+       },
+       {
+        "id": "d",
+        "label": "(1,1)",
+        "x": 4,
+        "y": 0,
+        "shape": "dot",
+        "marks": [
+         {
+          "step": 1,
+          "style": "warn"
+         }
+        ]
+       },
+       {
+        "id": "top",
+        "x": 2,
+        "y": -0.8,
+        "shape": "dot",
+        "step": 2
+       },
+       {
+        "id": "bot",
+        "x": 2,
+        "y": 4.8,
+        "shape": "dot",
+        "step": 2,
+        "note": "biên: x₁ = 0,5"
+       }
+      ],
+      "edges": [
+       {
+        "a": "top",
+        "b": "bot",
+        "step": 2,
+        "marks": [
+         {
+          "step": 2,
+          "style": "cut"
+         }
+        ]
+       }
+      ],
+      "caption": "Xanh: lớp 1 · cam: lớp 2 · nét đứt: biên quyết định học được"
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Perceptron so với Bayes",
+     "points": [
+      {
+       "say": "Bayes cần phân phối của lớp; perceptron chỉ cần ví dụ có nhãn."
+      },
+      {
+       "say": "Perceptron chỉ học được biên tuyến tính, và chỉ hội tụ chắc chắn khi hai lớp khả phân tuyến tính."
+      },
+      {
+       "say": "Bayes cho biên bậc hai với lớp Gauss, perceptron cho một siêu phẳng."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Bayes",
+       "Perceptron"
+      ],
+      "rows": [
+       [
+        "Cần",
+        "Phân phối p, P",
+        "Ví dụ có nhãn"
+       ],
+       [
+        "Biên",
+        "Bậc hai (lớp Gauss)",
+        "Siêu phẳng tuyến tính"
+       ],
+       [
+        "Đảm bảo",
+        "Tối ưu nếu biết đúng phân phối",
+        "Hội tụ nếu khả phân tuyến tính"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Perceptron là viên gạch đầu tiên",
+     "points": [
+      {
+       "say": "Perceptron là đơn vị nhỏ nhất của mọi mạng nơ-ron hiện đại. Mỗi nơ-ron trong mạng sâu vẫn làm đúng việc: tổng có trọng số cộng bias, rồi qua hàm kích hoạt.",
+       "text": "Viên gạch của mạng nơ-ron"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Một đường thẳng là không đủ",
+     "points": [
+      {
+       "say": "Một perceptron chỉ vẽ được một đường thẳng. Nếu các giống hoa xen kẽ nhau, không đường thẳng nào tách được.",
+       "text": "Chỉ một siêu phẳng"
+      },
+      {
+       "say": "Ghép nhiều perceptron thành nhiều lớp thì sao? Đó là mạng nơ-ron.",
+       "text": "→ Mạng nơ-ron"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Khoảng cách tối thiểu",
+       "Bayes",
+       "Perceptron",
+       "Mạng nơ-ron",
+       "CNN kinh điển"
+      ],
+      "current": 4
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: định lý hội tụ chỉ đảm bảo khi hai lớp khả phân tuyến tính."
+      },
+      {
+       "say": "Bẫy hai: mẫu lớp một bị coi là sai khi đầu ra nhỏ hơn hoặc bằng không, kể cả bằng không."
+      },
+      {
+       "say": "Bẫy ba: một perceptron chỉ học được biên tuyến tính."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Perceptron hội tụ khi nào?",
+        "Hai lớp khả phân tuyến tính → hữu hạn bước"
+       ],
+       [
+        "Mẫu lớp 1 bị sai khi nào?",
+        "Đầu ra ≤ 0"
+       ],
+       [
+        "Perceptron học biên gì?",
+        "Siêu phẳng tuyến tính"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "mang-no-ron",
+   "title": "Mạng nơ-ron và lan truyền ngược",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Các lớp không tách được bằng một đường thẳng",
+     "points": [
+      {
+       "say": "Ảnh thật phức tạp hơn bốn điểm. Các lớp đan xen, cần những biên cong và phức tạp.",
+       "text": "Cần biên phức tạp"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Một perceptron",
+     "points": [
+      {
+       "say": "Một perceptron chỉ vẽ một siêu phẳng.",
+       "text": "Một siêu phẳng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Ghép nhiều nơ-ron thành nhiều lớp",
+     "points": [
+      {
+       "say": "Ghép nhiều nơ-ron thành nhiều lớp. Mỗi nơ-ron ở lớp l vẫn làm việc cũ: tổng có trọng số các đầu vào cộng bias, rồi qua hàm kích hoạt.",
+       "text": "Nhiều lớp nơ-ron"
+      },
+      {
+       "say": "Lớp sau xây trên kết quả của lớp trước, nên mạng ghép được nhiều đường thẳng thành biên phức tạp.",
+       "text": "Ghép nhiều biên đơn giản"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Lan truyền ngược bốn bước",
+     "points": [
+      {
+       "say": "Một: đưa các vector mẫu vào mạng.",
+       "text": "1. Đưa mẫu vào",
+       "reveal": 1
+      },
+      {
+       "say": "Hai: lan truyền tiến qua từng lớp để phân loại toàn bộ mẫu huấn luyện và tính sai số.",
+       "text": "2. Lan truyền tiến, tính sai số",
+       "reveal": 2
+      },
+      {
+       "say": "Ba: lan truyền ngược sai số đầu ra qua mạng để tính lượng thay đổi cần cho từng tham số.",
+       "text": "3. Lan truyền ngược sai số",
+       "reveal": 3
+      },
+      {
+       "say": "Bốn: cập nhật trọng số và bias. Về tinh thần vẫn là quy tắc sửa sai của perceptron, áp cho nhiều lớp cùng lúc.",
+       "text": "4. Cập nhật w và bias",
+       "reveal": 4
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "n0",
+        "label": "Mẫu huấn luyện",
+        "x": 0,
+        "y": 0,
+        "shape": "box",
+        "step": 1
+       },
+       {
+        "id": "n1",
+        "label": "Lan truyền tiến",
+        "x": 0,
+        "y": 1,
+        "shape": "box",
+        "step": 2
+       },
+       {
+        "id": "n2",
+        "label": "Sai số đầu ra",
+        "x": 0,
+        "y": 2,
+        "shape": "box",
+        "step": 2
+       },
+       {
+        "id": "n3",
+        "label": "Lan truyền ngược",
+        "x": 0,
+        "y": 3,
+        "shape": "box",
+        "step": 3
+       },
+       {
+        "id": "n4",
+        "label": "Cập nhật w, b",
+        "x": 0,
+        "y": 4,
+        "shape": "box",
+        "step": 4
+       }
+      ],
+      "edges": [
+       {
+        "a": "n0",
+        "b": "n1",
+        "step": 2
+       },
+       {
+        "a": "n1",
+        "b": "n2",
+        "step": 2
+       },
+       {
+        "a": "n2",
+        "b": "n3",
+        "step": 3
+       },
+       {
+        "a": "n3",
+        "b": "n4",
+        "step": 4
+       }
+      ],
+      "arrows": true
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Perceptron so với mạng nhiều lớp",
+     "points": [
+      {
+       "say": "Perceptron: một nơ-ron, một siêu phẳng, quy tắc sửa sai đơn giản."
+      },
+      {
+       "say": "Mạng nhiều lớp: nhiều nơ-ron, biên phức tạp, huấn luyện bằng lan truyền ngược."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Perceptron",
+       "Mạng nhiều lớp"
+      ],
+      "rows": [
+       [
+        "Biên",
+        "Siêu phẳng",
+        "Phức tạp, phi tuyến"
+       ],
+       [
+        "Huấn luyện",
+        "Sửa sai từng mẫu",
+        "Lan truyền ngược"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Mạng nơ-ron ở đâu",
+     "points": [
+      {
+       "say": "Mọi hệ thống nhận dạng hiện đại, từ nhận dạng chữ viết tay đến nhận diện khuôn mặt, đều là mạng nơ-ron huấn luyện bằng lan truyền ngược.",
+       "text": "Nhận dạng chữ, khuôn mặt"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Ảnh có quá nhiều pixel",
+     "points": [
+      {
+       "say": "Đưa thẳng mọi pixel của ảnh vào một mạng kết nối đầy đủ thì số trọng số khổng lồ, và mạng không tận dụng việc pixel gần nhau liên quan với nhau.",
+       "text": "Quá nhiều trọng số, bỏ qua cấu trúc ảnh"
+      },
+      {
+       "say": "Mạng nơ-ron tích chập giải quyết điều đó. Video sau: các kiến trúc CNN kinh điển.",
+       "text": "→ CNN"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Khoảng cách tối thiểu",
+       "Bayes",
+       "Perceptron",
+       "Mạng nơ-ron",
+       "CNN kinh điển"
+      ],
+      "current": 5
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: thứ tự bốn bước là đưa mẫu vào, lan truyền tiến và tính sai số, lan truyền ngược sai số, rồi cập nhật trọng số và bias."
+      },
+      {
+       "say": "Bẫy hai: mỗi nơ-ron tính tổng có trọng số cộng bias rồi qua hàm kích hoạt."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Bốn bước lan truyền ngược?",
+        "Đưa mẫu → lan truyền tiến, tính sai số → lan truyền ngược → cập nhật"
+       ],
+       [
+        "Nơ-ron lớp l làm gì?",
+        "Tổng có trọng số + bias → hàm kích hoạt"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "cnn",
+   "title": "Các kiến trúc CNN kinh điển",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Phân loại thẳng từ ảnh",
+     "points": [
+      {
+       "say": "Thay vì tự thiết kế đặc trưng như chương mười, ta muốn mạng nhìn thẳng vào ảnh cánh hoa và tự học đặc trưng.",
+       "text": "Tự học đặc trưng từ ảnh"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Đặc trưng thủ công + bộ phân loại",
+     "points": [
+      {
+       "say": "Trước đây đặc trưng do con người thiết kế, rồi mới đưa vào bộ phân loại. Đặc trưng chọn kém thì bộ phân loại tốt mấy cũng không cứu được.",
+       "text": "Đặc trưng tay quyết định chất lượng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Tích chập và pooling lặp lại",
+     "points": [
+      {
+       "say": "CNN dùng các bộ lọc tích chập nhỏ trượt trên ảnh, giống các bộ lọc ở chương hai, nhưng hệ số được học. Pooling thu nhỏ bản đồ đặc trưng.",
+       "text": "Bộ lọc tích chập được học + pooling"
+      },
+      {
+       "say": "Các khối tích chập và pooling lặp lại: lớp đầu học cạnh, lớp sau học hình dạng, lớp sâu học bộ phận.",
+       "text": "Cạnh → hình dạng → bộ phận"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bốn kiến trúc, mỗi đời một bước",
+     "points": [
+      {
+       "say": "LeNet năm là kiến trúc kinh điển đầu tiên: ảnh vào cố định, khối tích chập pooling lặp lại, số bộ lọc tăng theo độ sâu, tách phần trích đặc trưng khỏi phần phân loại.",
+       "reveal": 1
+      },
+      {
+       "say": "AlexNet mang đến ReLU sau tích chập, softmax ở đầu ra, max pooling thay average pooling, dropout, cho tích chập nối thẳng tích chập, và tăng cường dữ liệu.",
+       "reveal": 2
+      },
+      {
+       "say": "VGG mười sáu dùng bộ lọc rất nhỏ ba nhân ba và một nhân một với bước trượt một, max pooling hai nhân hai, xếp chồng nhiều tích chập trước mỗi pooling, sâu mười sáu và mười chín lớp.",
+       "reveal": 3
+      },
+      {
+       "say": "Thử đoán: mạng càng sâu càng khó huấn luyện vì gradient yếu dần. ResNet giải quyết thế nào?",
+       "reveal": 3,
+       "ask": true
+      },
+      {
+       "say": "ResNet thêm kết nối tắt, cho gradient đi thẳng qua nhiều lớp, và lặp lại các khối residual. Nhờ vậy huấn luyện được tới một trăm năm mươi hai lớp.",
+       "reveal": 4
+      }
+     ],
+     "table": {
+      "headers": [
+       "Mạng",
+       "Điểm mới cần nhớ"
+      ],
+      "rows": [
+       [
+        "LeNet-5",
+        "CNN kinh điển đầu tiên; khối conv–pool lặp lại; tách trích đặc trưng và phân loại"
+       ],
+       [
+        "AlexNet",
+        "ReLU, softmax, max pooling, dropout, data augmentation; conv nối conv"
+       ],
+       [
+        "VGG16",
+        "Bộ lọc 3×3 và 1×1, stride 1; max pool 2×2; 16 và 19 lớp"
+       ],
+       [
+        "ResNet50",
+        "Kết nối tắt + khối residual; tới 152 lớp, chống vanishing gradient"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "CNN so với đặc trưng thủ công",
+     "points": [
+      {
+       "say": "Đặc trưng thủ công do con người chọn; CNN tự học từ dữ liệu."
+      },
+      {
+       "say": "CNN cần nhiều dữ liệu và tính toán, nhưng cho kết quả vượt trội trên ảnh thật."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Đặc trưng thủ công + phân loại",
+       "CNN"
+      ],
+      "rows": [
+       [
+        "Đặc trưng",
+        "Người thiết kế",
+        "Mạng tự học"
+       ],
+       [
+        "Cần",
+        "Ít dữ liệu",
+        "Nhiều dữ liệu, GPU"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "CNN ở khắp nơi",
+     "points": [
+      {
+       "say": "Các mạng này làm backbone cho phát hiện đối tượng ở chương mười một và phân đoạn ở chương chín: VGG, ResNet xuất hiện ở khắp nơi.",
+       "text": "Backbone cho phát hiện, phân đoạn"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Cần rất nhiều dữ liệu",
+     "points": [
+      {
+       "say": "CNN mạnh nhưng đói dữ liệu và tính toán. Đây là điểm dừng của môn học, và là điểm khởi đầu của học sâu.",
+       "text": "Đói dữ liệu, tính toán"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Khoảng cách tối thiểu",
+       "Bayes",
+       "Perceptron",
+       "Mạng nơ-ron",
+       "CNN kinh điển"
+      ],
+      "current": 5
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: AlexNet dùng ReLU, softmax, max pooling, dropout và tăng cường dữ liệu."
+      },
+      {
+       "say": "Bẫy hai: VGG mười sáu dùng bộ lọc ba nhân ba và một nhân một, bước trượt một."
+      },
+      {
+       "say": "Bẫy ba: ResNet chống suy giảm gradient bằng kết nối tắt, sâu tới một trăm năm mươi hai lớp."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "AlexNet mang đến gì?",
+        "ReLU, softmax, max pooling, dropout, augmentation"
+       ],
+       [
+        "VGG16 dùng bộ lọc cỡ nào?",
+        "3×3 và 1×1, stride 1"
+       ],
+       [
+        "ResNet giải quyết gì?",
+        "Vanishing gradient nhờ kết nối tắt"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "tong-ket",
+   "title": "Tổng kết chương 12 và toàn môn",
+   "kind": "summary",
+   "scenes": [
+    {
+     "kicker": "Tổng kết",
+     "title": "Ba hướng phân loại",
+     "points": [
+      {
+       "say": "Nhìn lại chiếc máy phân loại hoa. Khoảng cách tối thiểu so với trung bình mỗi lớp."
+      },
+      {
+       "say": "Bayes thêm độ phổ biến và độ trải, tối ưu nếu biết phân phối."
+      },
+      {
+       "say": "Perceptron học thẳng biên từ ví dụ, mạng nơ-ron ghép nhiều perceptron, và CNN tự học đặc trưng từ ảnh."
+      }
+     ],
+     "chain": {
+      "items": [
+       "Khoảng cách tối thiểu",
+       "Bayes",
+       "Perceptron",
+       "Mạng nơ-ron",
+       "CNN kinh điển"
+      ],
+      "current": 5
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Năm bẫy chung",
+     "points": [
+      {
+       "say": "Một: khoảng cách chọn nhỏ nhất, hàm quyết định chọn lớn nhất."
+      },
+      {
+       "say": "Hai: Bayes với tổn thất không một chọn tích mật độ nhân tiên nghiệm lớn nhất."
+      },
+      {
+       "say": "Ba: Bayes Gauss cho siêu mặt bậc hai."
+      },
+      {
+       "say": "Bốn: perceptron hội tụ khi khả phân tuyến tính."
+      },
+      {
+       "say": "Năm: ResNet dùng kết nối tắt chống suy giảm gradient."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Khoảng cách / hàm quyết định?",
+        "Nhỏ nhất / lớn nhất"
+       ],
+       [
+        "Bayes 0–1?",
+        "max p(x|c)·P(c)"
+       ],
+       [
+        "Bayes Gauss?",
+        "Siêu mặt bậc hai"
+       ],
+       [
+        "Perceptron hội tụ?",
+        "Khi khả phân tuyến tính"
+       ],
+       [
+        "ResNet?",
+        "Kết nối tắt, chống vanishing gradient"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Tổng kết",
+     "title": "Toàn môn trong một mạch",
+     "points": [
+      {
+       "say": "Cả môn học là một chuỗi: xử lý ảnh mức xám và lọc ảnh ở chương một, hai; phục hồi và biến đổi ở chương ba, bốn; nén ảnh và video ở chương năm, sáu; thu nhận và hiển thị ở chương bảy, tám; rồi phân đoạn, đặc trưng, phát hiện và phân loại ở chương chín đến mười hai.",
+       "text": "Xử lý → nén → thu nhận, hiển thị → hiểu ảnh"
+      },
+      {
+       "say": "Chúc các bạn ôn tập tốt và thi thật tốt.",
+       "text": "Chúc các bạn thi tốt!"
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }

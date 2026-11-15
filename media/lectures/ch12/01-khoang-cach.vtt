@@ -1,0 +1,130 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.412 line:98%,end
+Máy đo được một bông hoa mới: cánh dài ba, rộng một.
+
+00:00:04.362 --> 00:00:07.721 line:98%,end
+Nó giống giống hoa thứ nhất hay thứ hai hơn?
+
+00:00:09.226 --> 00:00:13.733 line:98%,end
+Cách ngây thơ là nhớ mọi bông hoa từng gặp rồi so với từng bông một.
+
+00:00:13.683 --> 00:00:15.962 line:98%,end
+Tốn bộ nhớ và chậm.
+
+00:00:17.464 --> 00:00:20.067 line:98%,end
+Mỗi lớp được đại diện bằng một nguyên mẫu,
+
+00:00:20.067 --> 00:00:23.104 line:98%,end
+chính là vector trung bình của mọi mẫu trong lớp.
+
+00:00:23.054 --> 00:00:25.880 line:98%,end
+Như hình dung một quả táo điển hình.
+
+00:00:26.482 --> 00:00:30.846 line:98%,end
+Mẫu mới đi về lớp có nguyên mẫu gần nhất theo khoảng cách Euclid.
+
+00:00:32.296 --> 00:00:38.483 line:98%,end
+Nguyên mẫu là trung bình các mẫu của lớp j. Khoảng cách là độ dài vector từ x đến nguyên mẫu.
+
+00:00:39.034 --> 00:00:45.533 line:98%,end
+Slide còn viết tương đương bằng hàm quyết định d: chọn khoảng cách nhỏ nhất tương đương với chọn hàm quyết định lớn nhất.
+
+00:00:46.984 --> 00:00:50.671 line:98%,end
+Lớp một có nguyên mẫu bốn phẩy ba và một phẩy ba.
+
+00:00:50.621 --> 00:00:54.436 line:98%,end
+Lớp hai có nguyên mẫu một phẩy năm và không phẩy ba.
+
+00:00:54.436 --> 00:00:56.845 line:98%,end
+Hoa mới ở ba và một.
+
+00:00:57.466 --> 00:01:01.531 line:98%,end
+Thử đoán: nhìn hình, hoa mới gần lớp nào hơn?
+
+00:01:04.092 --> 00:01:06.986 line:98%,end
+Khoảng cách tới lớp một khoảng một phẩy ba ba,
+
+00:01:06.986 --> 00:01:09.250 line:98%,end
+tới lớp hai khoảng một phẩy sáu sáu.
+
+00:01:09.822 --> 00:01:13.431 line:98%,end
+Lớp một gần hơn, nên bông hoa thuộc lớp một.
+
+00:01:14.892 --> 00:01:19.237 line:98%,end
+Tích vô hướng của nguyên mẫu với x: lớp một được mười bốn phẩy hai,
+
+00:01:19.237 --> 00:01:20.923 line:98%,end
+lớp hai được bốn phẩy tám.
+
+00:01:21.486 --> 00:01:23.711 line:98%,end
+Một nửa bình phương độ dài nguyên mẫu,
+
+00:01:23.711 --> 00:01:27.694 line:98%,end
+không phụ thuộc x nên tính sẵn: lớp một khoảng mười phẩy không chín,
+
+00:01:27.694 --> 00:01:29.626 line:98%,end
+lớp hai khoảng một phẩy mười bảy.
+
+00:01:30.192 --> 00:01:35.389 line:98%,end
+Trừ ra: lớp một khoảng bốn phẩy một một, lớp hai khoảng ba phẩy sáu ba.
+
+00:01:35.339 --> 00:01:38.556 line:98%,end
+Lớn nhất là lớp một, trùng kết luận.
+
+00:01:38.556 --> 00:01:42.709 line:98%,end
+Ưu điểm: chỉ cần nhân và cộng, không cần khai căn.
+
+00:01:44.214 --> 00:01:48.943 line:98%,end
+Cũng thuộc hướng nguyên mẫu, đối sánh tương quan làm việc trực tiếp với ảnh.
+
+00:01:48.893 --> 00:01:53.307 line:98%,end
+Có một ảnh con nguyên mẫu w, ví dụ hình một chữ cái.
+
+00:01:53.928 --> 00:01:58.409 line:98%,end
+Trượt w trên ảnh, tại mỗi vị trí tính hệ số tương quan.
+
+00:01:58.359 --> 00:02:01.654 line:98%,end
+Nơi tương quan lớn nhất là nơi giống mẫu nhất.
+
+00:02:01.654 --> 00:02:04.687 line:98%,end
+Còn gọi là template matching.
+
+00:02:06.198 --> 00:02:09.701 line:98%,end
+Hai cách cho cùng kết luận: khoảng cách lấy nhỏ nhất,
+
+00:02:09.701 --> 00:02:11.552 line:98%,end
+hàm quyết định lấy lớn nhất.
+
+00:02:12.120 --> 00:02:16.406 line:98%,end
+Hàm quyết định chỉ cần nhân và cộng; khoảng cách cần khai căn.
+
+00:02:16.962 --> 00:02:21.482 line:98%,end
+Đối sánh tương quan làm trên ảnh, lấy hệ số tương quan lớn nhất.
+
+00:02:22.944 --> 00:02:25.831 line:98%,end
+Đối sánh mẫu được dùng để tìm logo, ký tự,
+
+00:02:25.831 --> 00:02:30.368 line:98%,end
+linh kiện trên dây chuyền: những thứ có hình dạng gần như cố định.
+
+00:02:31.830 --> 00:02:35.061 line:98%,end
+Khoảng cách tối thiểu chỉ nhìn trung bình mỗi lớp.
+
+00:02:35.011 --> 00:02:40.545 line:98%,end
+Nó bỏ qua lớp nào trải rộng, lớp nào co cụm, và lớp nào phổ biến hơn.
+
+00:02:41.160 --> 00:02:46.253 line:98%,end
+Hướng thống kê dùng xác suất để tính cả hai điều đó: bộ phân loại Bayes.
+
+00:02:47.718 --> 00:02:52.225 line:98%,end
+Bẫy một: khoảng cách chọn nhỏ nhất, hàm quyết định chọn lớn nhất.
+
+00:02:52.175 --> 00:02:54.285 line:98%,end
+Đề hay đảo chiều.
+
+00:02:54.888 --> 00:02:58.848 line:98%,end
+Bẫy hai: nguyên mẫu là vector trung bình của lớp.
+
+00:02:59.418 --> 00:03:03.730 line:98%,end
+Bẫy ba: template matching chính là đối sánh tương quan.
