@@ -1,4 +1,4 @@
-import {lectures} from './lecture-data.js?v=4';
+import {lectures} from './lecture-data.js?v=5';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const time=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 const SPEED_KEY='lecture-speed',WATCHED_KEY='lecture-watched-v1';
