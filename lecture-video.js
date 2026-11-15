@@ -8,6 +8,9 @@ const readSpeed=()=>{try{return Number(localStorage.getItem(SPEED_KEY))||1}catch
 const saveSpeed=v=>{try{localStorage.setItem(SPEED_KEY,String(v))}catch{}};
 const readWatched=()=>{try{return JSON.parse(localStorage.getItem(WATCHED_KEY)||'{}')||{}}catch{return {}}};
 const saveWatched=w=>{try{localStorage.setItem(WATCHED_KEY,JSON.stringify(w))}catch{}};
+const AUTO_KEY='lecture-autonext';
+const readAuto=()=>{try{return localStorage.getItem(AUTO_KEY)!=='off'}catch{return true}};
+const saveAuto=on=>{try{localStorage.setItem(AUTO_KEY,on?'on':'off')}catch{}};
 const readTab=()=>{try{return localStorage.getItem(TAB_KEY)==='old'?'old':'new'}catch{return 'new'}};
 const saveTab=t=>{try{localStorage.setItem(TAB_KEY,t)}catch{}};
 const speedSelect=speed=>`<label>Tốc độ <select class="lecture-speed" aria-label="Tốc độ phát">${[.75,1,1.25,1.5,1.75,2].map(v=>`<option value="${v}" ${v===speed?'selected':''}>${v}×</option>`).join('')}</select></label><button class="text-button lecture-cc" type="button" aria-pressed="true">CC Phụ đề</button>`;
@@ -48,8 +51,8 @@ function renderStories(chapter,l){
  const first=l.stories[Math.max(0,l.stories.findIndex(s=>!watched.has(s.id)))];
  return `<section class="lecture" data-lecture-chapter="${chapter}" aria-label="Video kể chuyện chương ${chapter}">
 <div class="lecture-player"><video class="lecture-video" controls playsinline preload="metadata" poster="${esc(first.poster)}">${videoInner(first)}</video></div>
-<div class="lecture-tools"><span class="lecture-now" aria-live="polite"></span>${speedSelect(readSpeed())}</div>
-<div class="lecture-next" hidden><span>Xong video này.</span><button class="primary lecture-next-button" type="button"></button></div>
+<div class="lecture-tools"><span class="lecture-now" aria-live="polite"></span>${speedSelect(readSpeed())}<button class="text-button lecture-auto" type="button" aria-pressed="${readAuto()}">⏭ Tự qua video: ${readAuto()?'Bật':'Tắt'}</button></div>
+<div class="lecture-next" hidden><span class="lecture-next-text">Xong video này.</span><button class="secondary lecture-next-cancel" type="button" hidden>Ở lại</button><button class="primary lecture-next-button" type="button"></button></div>
 <div class="story-list"><div class="story-list-head"><h2>${l.stories.length} video · ${time(l.duration)}</h2><span class="story-progress"></span></div>
 <ol>${l.stories.map((s,i)=>`<li><button type="button" data-story="${i}"><span class="story-num">${String(i).padStart(2,'0')}</span><span class="story-text"><strong>${esc(s.title)}</strong><small>${KIND[s.kind]||''} · ${time(s.duration)}</small></span><span class="story-tick" aria-label="Đã xem">✓</span></button></li>`).join('')}</ol></div>
 <details class="story-beats" open><summary>Các nhịp của video đang xem · nhấn để tua</summary><ol class="lecture-outline"></ol></details>
@@ -96,7 +99,11 @@ function bindSection(section,onFinish){
  const stories=lectures[chapter].stories,buttons=[...section.querySelectorAll('[data-story]')];
  const outline=section.querySelector('.story-beats ol'),next=section.querySelector('.lecture-next'),nextButton=section.querySelector('.lecture-next-button'),progress=section.querySelector('.story-progress');
  const watched=new Set(readWatched()[chapter]||[]);
- let current=-1,counted=false;
+ const auto=section.querySelector('.lecture-auto'),nextText=section.querySelector('.lecture-next-text'),cancel=section.querySelector('.lecture-next-cancel');
+ let current=-1,counted=false,countdown=null;
+ const stopCountdown=()=>{clearInterval(countdown);countdown=null;cancel.hidden=true;nextText.textContent='Xong video này.';};
+ auto.onclick=()=>{const on=!readAuto();saveAuto(on);auto.setAttribute('aria-pressed',String(on));auto.textContent=`⏭ Tự qua video: ${on?'Bật':'Tắt'}`;if(!on)stopCountdown();};
+ cancel.onclick=stopCountdown;
  const paint=()=>{
   buttons.forEach((b,i)=>{b.classList.toggle('active',i===current);b.classList.toggle('watched',watched.has(stories[i].id));if(i===current)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');});
   progress.textContent=`Đã xem ${stories.filter(s=>watched.has(s.id)).length}/${stories.length}`;
@@ -107,7 +114,7 @@ function bindSection(section,onFinish){
   if(stories.every(s=>watched.has(s.id)))onFinish?.();
  };
  const load=(i,play)=>{
-  current=i;counted=false;const s=stories[i];
+  stopCountdown();current=i;counted=false;const s=stories[i];
   label=`Video ${String(i).padStart(2,'0')} · `;
   video.poster=s.poster;video.innerHTML=videoInner(s);video.load();
   outline.innerHTML=outlineItems(s);bindOutline();
@@ -119,7 +126,13 @@ function bindSection(section,onFinish){
  video.addEventListener('timeupdate',()=>{showPart();if(video.duration&&video.currentTime/video.duration>.9)markWatched();});
  video.addEventListener('ended',()=>{
   markWatched();
-  if(current+1<stories.length){nextButton.textContent=`Tiếp: ${stories[current+1].title} →`;next.hidden=false;nextButton.onclick=()=>load(current+1,true);}
+  if(current+1>=stories.length)return;
+  const target=current+1;
+  nextButton.textContent=`Tiếp: ${stories[target].title} →`;next.hidden=false;nextButton.onclick=()=>load(target,true);
+  if(!readAuto())return;
+  let left=3;cancel.hidden=false;nextText.textContent=`Tự chuyển sau ${left} giây…`;
+  countdown=setInterval(()=>{left--;if(left<=0)load(target,true);else nextText.textContent=`Tự chuyển sau ${left} giây…`;},1000);
  });
+ video.addEventListener('play',stopCountdown);
  load(Math.max(0,stories.findIndex(s=>!watched.has(s.id))),false);
 }
