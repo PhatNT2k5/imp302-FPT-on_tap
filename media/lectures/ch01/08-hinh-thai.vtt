@@ -1,0 +1,73 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.128 line:98%,end
+Ảnh nhị phân của tế bào có đốm nhiễu nhỏ trên nền và lỗ thủng trong tế bào.
+
+00:00:06.586 --> 00:00:09.542 line:98%,end
+Đếm thẳng thì đốm nhiễu bị tính là tế bào,
+
+00:00:09.542 --> 00:00:12.356 line:98%,end
+lỗ thủng có thể tách một tế bào làm hai.
+
+00:00:13.716 --> 00:00:19.126 line:98%,end
+Hình thái học nhị phân dùng các toán tử logic NOT, AND, OR và MAJ,
+
+00:00:19.126 --> 00:00:22.404 line:98%,end
+tức phép đa số, áp qua một cửa sổ trượt.
+
+00:00:22.954 --> 00:00:26.550 line:98%,end
+Erosion co vật, loại pixel biên.
+
+00:00:26.500 --> 00:00:30.042 line:98%,end
+Dilation giãn vật, thêm pixel biên.
+
+00:00:30.042 --> 00:00:36.903 line:98%,end
+Opening là erosion rồi dilation; closing là dilation rồi erosion.
+
+00:00:38.416 --> 00:00:45.267 line:98%,end
+Một hàng có lỗ thủng một pixel giữa tế bào: không, một, một, không, một, một,
+
+00:00:45.267 --> 00:00:45.801 line:98%,end
+không.
+
+00:00:46.354 --> 00:00:52.567 line:98%,end
+Dilation, OR qua cửa sổ ba: lỗ được lấp, nhưng tế bào cũng phình ra tới mép.
+
+00:00:53.116 --> 00:00:58.313 line:98%,end
+Thử đoán: erosion tiếp theo, AND qua cửa sổ ba, cho gì?
+
+00:01:00.870 --> 00:01:08.242 line:98%,end
+Hai mép co về như cũ, lỗ vẫn được lấp: không, một, một, một, một, một, không.
+
+00:01:08.192 --> 00:01:10.431 line:98%,end
+Đó là closing.
+
+00:01:11.940 --> 00:01:18.439 line:98%,end
+Opening, erosion rồi dilation, xóa đốm nhiễu nhỏ, giữ hình vật lớn.
+
+00:01:18.990 --> 00:01:24.578 line:98%,end
+Closing, dilation rồi erosion, lấp lỗ và khe nhỏ.
+
+00:01:24.528 --> 00:01:30.231 line:98%,end
+Mẹo nhớ: opening mở ra để xóa đốm, closing đóng lại để lấp lỗ.
+
+00:01:31.740 --> 00:01:36.030 line:98%,end
+Làm sạch ảnh nhị phân trước khi đếm và đo, trong kính hiển vi,
+
+00:01:36.030 --> 00:01:38.383 line:98%,end
+kiểm tra linh kiện, nhận dạng chữ.
+
+00:01:39.834 --> 00:01:42.610 line:98%,end
+Giờ ta đếm đúng số tế bào.
+
+00:01:42.560 --> 00:01:48.224 line:98%,end
+Chương hai mở rộng sang lọc ảnh: không chỉ nhìn từng pixel mà nhìn cả vùng lân cận.
+
+00:01:49.728 --> 00:01:55.967 line:98%,end
+Bẫy một: opening là erosion rồi dilation, dùng để xóa đốm nhỏ.
+
+00:01:56.538 --> 00:02:02.634 line:98%,end
+Bẫy hai: closing là dilation rồi erosion, dùng để lấp lỗ.
+
+00:02:03.204 --> 00:02:06.878 line:98%,end
+Bẫy ba: MAJ là phép đa số.

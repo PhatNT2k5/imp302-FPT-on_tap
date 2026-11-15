@@ -1,0 +1,58 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.894 line:98%,end
+Xin chào các bạn, chào mừng đến với môn xử lý ảnh và video.
+
+00:00:04.844 --> 00:00:07.682 line:98%,end
+Chương một đặt nền móng cho cả môn.
+
+00:00:07.682 --> 00:00:12.074 line:98%,end
+Ví dụ của chương: ảnh chụp tế bào dưới kính hiển vi, tối,
+
+00:00:12.074 --> 00:00:14.154 line:98%,end
+kém tương phản và có nhiễu.
+
+00:00:14.154 --> 00:00:18.086 line:98%,end
+Ta muốn làm rõ ảnh rồi đếm xem có bao nhiêu tế bào.
+
+00:00:18.694 --> 00:00:21.391 line:98%,end
+Ba nhóm phép toán trên ảnh xám.
+
+00:00:21.341 --> 00:00:24.753 line:98%,end
+Phép toán điểm chỉ nhìn giá trị từng pixel.
+
+00:00:24.753 --> 00:00:28.151 line:98%,end
+Phép toán số học kết hợp nhiều ảnh cùng kích thước.
+
+00:00:28.151 --> 00:00:32.422 line:98%,end
+Phép toán hình học dời vị trí pixel mà không đổi giá trị.
+
+00:00:32.940 --> 00:00:34.644 line:98%,end
+Thử nghĩ:
+
+00:00:34.644 --> 00:00:40.692 line:98%,end
+muốn đếm tế bào, máy cần biết pixel nào là tế bào, pixel nào là nền.
+
+00:00:40.692 --> 00:00:42.828 line:98%,end
+Bắt đầu từ đâu?
+
+00:00:46.278 --> 00:00:48.494 line:98%,end
+Phần một: ảnh xám.
+
+00:00:48.444 --> 00:00:53.456 line:98%,end
+Histogram, kéo giãn tuyến tính, cân bằng histogram, trung bình nhiều ảnh,
+
+00:00:53.456 --> 00:00:54.967 line:98%,end
+và phép toán hình học.
+
+00:00:55.584 --> 00:00:58.177 line:98%,end
+Phần hai: ảnh nhị phân.
+
+00:00:58.127 --> 00:01:01.157 line:98%,end
+Ngưỡng hóa và Otsu, gán nhãn vùng để đếm,
+
+00:01:01.157 --> 00:01:04.039 line:98%,end
+và hình thái học để làm sạch hình dạng.
+
+00:01:04.650 --> 00:01:09.066 line:98%,end
+Mỗi bước vá chỗ hụt của bước trước, các bạn xem theo thứ tự.

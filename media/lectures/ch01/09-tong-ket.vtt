@@ -1,0 +1,31 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.394 line:98%,end
+Nhìn lại ảnh tế bào.
+
+00:00:02.344 --> 00:00:09.857 line:98%,end
+Histogram cho biết phân bố độ sáng; FSHS kéo giãn dải; cân bằng histogram phân phối lại khi dải đã đầy.
+
+00:00:10.462 --> 00:00:15.269 line:98%,end
+Trung bình nhiều ảnh giảm nhiễu; phép toán hình học dời và xoay cho khớp.
+
+00:00:15.832 --> 00:00:22.279 line:98%,end
+Ngưỡng hóa và Otsu tạo ảnh nhị phân; hình thái học làm sạch; gán nhãn vùng đếm số tế bào.
+
+00:00:23.734 --> 00:00:28.215 line:98%,end
+Một: phép toán hình học đổi vị trí, không đổi giá trị.
+
+00:00:28.768 --> 00:00:32.077 line:98%,end
+Hai: histogram mất thông tin vị trí.
+
+00:00:32.626 --> 00:00:36.652 line:98%,end
+Ba: cân bằng histogram dùng tích lũy làm ánh xạ.
+
+00:00:37.204 --> 00:00:41.086 line:98%,end
+Bốn: Otsu chọn phương sai giữa hai lớp lớn nhất.
+
+00:00:41.638 --> 00:00:45.820 line:98%,end
+Năm: opening xóa đốm, closing lấp lỗ.
+
+00:00:47.284 --> 00:00:52.039 line:98%,end
+Chương hai: lọc ảnh, nhìn cả vùng lân cận của mỗi pixel.

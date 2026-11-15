@@ -1,0 +1,88 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.227 line:98%,end
+Ảnh nhị phân có nhiều cụm pixel trắng.
+
+00:00:03.177 --> 00:00:06.107 line:98%,end
+Mỗi cụm liền nhau là một tế bào.
+
+00:00:06.107 --> 00:00:08.815 line:98%,end
+Cần đánh số từng cụm để đếm.
+
+00:00:10.330 --> 00:00:12.389 line:98%,end
+Ảnh nhị phân chỉ có không và một,
+
+00:00:12.389 --> 00:00:16.257 line:98%,end
+không biết hai pixel trắng có thuộc cùng một tế bào hay không.
+
+00:00:17.728 --> 00:00:21.037 line:98%,end
+Quét từ trái sang phải, trên xuống dưới.
+
+00:00:20.987 --> 00:00:25.441 line:98%,end
+Với mỗi pixel một, nhìn pixel bên trái và bên trên.
+
+00:00:26.050 --> 00:00:29.164 line:98%,end
+Cả hai là nền: gán nhãn mới.
+
+00:00:29.114 --> 00:00:32.382 line:98%,end
+Một bên có nhãn: kế thừa nhãn đó.
+
+00:00:32.382 --> 00:00:36.484 line:98%,end
+Hai bên có nhãn khác nhau: ghi nhận hai nhãn tương đương.
+
+00:00:37.984 --> 00:00:41.671 line:98%,end
+Hàng đầu: hai pixel bên trái nhận nhãn một.
+
+00:00:41.621 --> 00:00:46.660 line:98%,end
+Hai pixel tiếp theo không nối với nhãn một, nên nhận nhãn mới là hai.
+
+00:00:47.266 --> 00:00:51.386 line:98%,end
+Hàng hai và hàng ba kế thừa nhãn từ bên trên và bên trái,
+
+00:00:51.386 --> 00:00:53.193 line:98%,end
+dần nối thành hình chữ U.
+
+00:00:53.764 --> 00:01:00.029 line:98%,end
+Thử đoán: ô có dấu sao, bên trái là nhãn một, bên trên là nhãn hai, thì sao?
+
+00:01:02.598 --> 00:01:09.670 line:98%,end
+Gán nhãn một và ghi nhận một tương đương hai: thật ra cùng một vật hình chữ U. Pixel lẻ ở góc dưới nhận nhãn ba.
+
+00:01:09.620 --> 00:01:12.719 line:98%,end
+Gộp tương đương, ta đếm được hai vật.
+
+00:01:14.220 --> 00:01:17.555 line:98%,end
+Trái và trên đều là nền: nhãn mới.
+
+00:01:18.126 --> 00:01:20.915 line:98%,end
+Một bên có nhãn: kế thừa.
+
+00:01:21.480 --> 00:01:26.795 line:98%,end
+Hai bên khác nhãn: lấy một nhãn, ghi nhận tương đương, gộp ở cuối.
+
+00:01:28.254 --> 00:01:29.696 line:98%,end
+Đếm tế bào, đếm hạt,
+
+00:01:29.696 --> 00:01:35.392 line:98%,end
+đếm xe; đo diện tích từng vật; là bước trước khi trích đặc trưng ở chương mười.
+
+00:01:36.852 --> 00:01:41.190 line:98%,end
+Một đốm nhiễu nhỏ cũng nhận một nhãn và bị đếm như tế bào.
+
+00:01:41.140 --> 00:01:44.408 line:98%,end
+Tế bào có lỗ thủng có thể bị tách đôi.
+
+00:01:44.408 --> 00:01:46.869 line:98%,end
+Cần làm sạch hình dạng trước.
+
+00:01:47.478 --> 00:01:51.074 line:98%,end
+Video sau: hình thái học ảnh nhị phân.
+
+00:01:52.524 --> 00:01:56.732 line:98%,end
+Bẫy một: thuật toán xét pixel bên trái và bên trên.
+
+00:01:57.294 --> 00:02:02.713 line:98%,end
+Bẫy hai: hai nhãn khác nhau gặp nhau thì ghi nhận tương đương, vì cùng một vật.
+
+00:02:03.264 --> 00:02:07.589 line:98%,end
+Bẫy ba: quét từ trái sang phải, từ trên xuống dưới.

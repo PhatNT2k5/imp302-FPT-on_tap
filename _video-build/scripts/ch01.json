@@ -1,113 +1,2139 @@
 {
-  "title": "Xử lý ảnh cơ bản",
-  "scenes": [
+ "title": "Xử lý ảnh cơ bản",
+ "example": "Ảnh chụp tế bào dưới kính hiển vi: tối, kém tương phản, có nhiễu — cần làm rõ rồi đếm xem có bao nhiêu tế bào",
+ "stories": [
+  {
+   "id": "mo-dau",
+   "title": "Mở đầu: nền móng của mọi phép xử lý",
+   "kind": "intro",
+   "scenes": [
     {
-      "kind": "intro",
-      "title": "Giới thiệu chương",
-      "points": [
-        {"text": "Mở đầu", "say": "Xin chào các bạn, chào mừng các bạn đến với chương một của môn xử lý ảnh và video, IMP302. Chương này có tên là xử lý ảnh cơ bản. Đây là chương đặt nền móng cho toàn bộ môn học, vì gần như mọi kỹ thuật phức tạp mà chúng ta học sau này, như lọc ảnh, phục hồi ảnh, nén ảnh hay phân đoạn ảnh, đều được xây dựng từ những phép toán rất đơn giản áp dụng lên từng điểm ảnh."},
-        {"text": "Lộ trình", "say": "Chương được chia thành hai phần lớn. Phần thứ nhất là xử lý ảnh mức xám, gồm histogram, các phép toán điểm, phép toán số học và phép toán hình học. Phần thứ hai là xử lý ảnh nhị phân, gồm ngưỡng hóa, phương pháp Otsu, gán nhãn vùng và hình thái học. Nào, chúng ta cùng bắt đầu nhé."}
-      ]
+     "kicker": "Mở đầu",
+     "title": "Ảnh kính hiển vi tối và kém tương phản",
+     "points": [
+      {
+       "say": "Xin chào các bạn, chào mừng đến với môn xử lý ảnh và video. Chương một đặt nền móng cho cả môn. Ví dụ của chương: ảnh chụp tế bào dưới kính hiển vi, tối, kém tương phản và có nhiễu. Ta muốn làm rõ ảnh rồi đếm xem có bao nhiêu tế bào.",
+       "text": "Ví dụ: ảnh tế bào dưới kính hiển vi"
+      },
+      {
+       "say": "Ba nhóm phép toán trên ảnh xám. Phép toán điểm chỉ nhìn giá trị từng pixel. Phép toán số học kết hợp nhiều ảnh cùng kích thước. Phép toán hình học dời vị trí pixel mà không đổi giá trị.",
+       "text": "Điểm · số học · hình học"
+      },
+      {
+       "say": "Thử nghĩ: muốn đếm tế bào, máy cần biết pixel nào là tế bào, pixel nào là nền. Bắt đầu từ đâu?",
+       "text": "Pixel nào là tế bào?",
+       "ask": true
+      }
+     ]
     },
     {
-      "title": "Ba nhóm phép toán trên ảnh mức xám",
-      "slide": 3,
-      "points": [
-        {"text": "Phép toán điểm: chỉ nhìn giá trị của từng pixel, không quan tâm hàng xóm", "say": "Đầu tiên, các bạn cần phân biệt rõ ba nhóm phép toán. Nhóm thứ nhất là phép toán điểm. Phép toán điểm chỉ nhìn vào giá trị cường độ của một pixel duy nhất để tính ra giá trị mới, hoàn toàn không quan tâm đến các pixel lân cận. Công cụ quan trọng nhất của nhóm này là histogram."},
-        {"text": "Phép toán số học: cộng, trừ, nhân, chia giữa nhiều ảnh cùng kích thước", "say": "Nhóm thứ hai là phép toán số học. Ở đây chúng ta thực hiện cộng, trừ, nhân hoặc chia giữa nhiều ảnh có cùng kích thước, theo từng vị trí pixel tương ứng. Ví dụ, trừ hai khung hình liên tiếp để phát hiện chuyển động, hoặc lấy trung bình nhiều ảnh để giảm nhiễu."},
-        {"text": "Phép toán hình học: dời vị trí pixel, không đổi giá trị cường độ", "say": "Nhóm thứ ba là phép toán hình học, như tịnh tiến hay xoay ảnh. Điểm mấu chốt cần nhớ là phép toán hình học thay đổi vị trí không gian của pixel, chứ không thay đổi giá trị cường độ. Đây là một ý rất hay xuất hiện trong câu hỏi trắc nghiệm."}
-      ]
-    },
-    {
-      "title": "Histogram ảnh",
-      "slide": 4,
-      "points": [
-        {"text": "Histogram đếm số pixel có mỗi mức xám k từ 0 đến K-1", "say": "Bây giờ chúng ta nói về histogram. Histogram của một ảnh là một hàm một chiều. Với mỗi mức xám k, từ 0 cho đến K trừ 1, histogram cho biết có bao nhiêu pixel trong ảnh mang đúng mức xám đó. Nói đơn giản, histogram là một bảng đếm tần suất."},
-        {"text": "Histogram mất thông tin vị trí: nhiều ảnh khác nhau có thể cùng histogram", "say": "Các bạn hãy chú ý điểm này. Histogram chỉ đếm, nó không lưu lại pixel nằm ở đâu. Vì vậy, hai ảnh trông hoàn toàn khác nhau, ví dụ một ảnh bàn cờ và một ảnh chia đôi trắng đen, vẫn có thể có cùng một histogram. Đây là sự mất thông tin cố hữu của histogram."},
-        {"text": "AOD: chỉ số đơn giản ước lượng tâm của phân bố mức xám", "say": "Một ứng dụng thực tế của histogram là tính AOD, viết tắt của Average Optical Density, tức mật độ quang trung bình. Đây là một chỉ số đơn giản giúp ước lượng tâm của phân bố mức xám, tức là ảnh nhìn chung đang sáng hay tối."}
-      ]
-    },
-    {
-      "title": "Phép toán điểm tuyến tính",
-      "slide": 6,
-      "points": [
-        {"text": "Pixel mới = P × pixel cũ + L (P: hệ số nhân, L: offset)", "say": "Phép toán điểm tuyến tính biến mỗi pixel thành một hàm tuyến tính của pixel gốc. Công thức rất quen thuộc: pixel mới bằng P nhân pixel cũ, cộng L. Trong đó L là offset, hay hệ số cộng, còn P là hệ số nhân."},
-        {"text": "Offset L dịch độ sáng; P > 1 giãn histogram, P < 1 nén histogram", "say": "Offset L dùng để dịch toàn bộ ảnh sáng lên hoặc tối đi, đưa ảnh về một mức sáng trung bình mong muốn. Còn hệ số P thì ảnh hưởng đến độ tương phản. Nếu P lớn hơn 1, histogram bị giãn ra, ảnh tương phản hơn. Nếu P nhỏ hơn 1, histogram bị nén lại, ảnh trở nên nhạt hơn."},
-        {"text": "FSHS: kéo giãn dải mức xám hiện có ra phủ kín 0 đến K-1", "say": "Một trường hợp đặc biệt rất quan trọng là FSHS, Full Scale Histogram Stretch. Ý tưởng là lấy dải mức xám mà ảnh đang có, ví dụ từ 80 đến 150, rồi kéo giãn nó ra phủ kín toàn bộ dải từ 0 đến 255. Nhờ vậy, độ tương phản được tăng lên một cách tự động."}
-      ]
-    },
-    {
-      "title": "Phép toán điểm phi tuyến và cân bằng histogram",
-      "slide": 10,
-      "points": [
-        {"text": "Phép logarit: nén vùng sáng, giãn vùng tối, hợp với ảnh dải động lớn", "say": "Tiếp theo là các phép toán điểm phi tuyến. Phép logarit nén vùng sáng cao và giãn vùng tối. Nó đặc biệt hữu ích khi ảnh có dải động rất lớn, điển hình là khi các bạn hiển thị phổ Fourier, nơi có vài giá trị cực lớn lấn át tất cả phần còn lại."},
-        {"text": "Cân bằng histogram: chuẩn hóa → tích lũy → dùng làm hàm ánh xạ", "say": "Kỹ thuật quan trọng nhất ở đây là cân bằng histogram. Quy trình gồm ba bước. Bước một, chuẩn hóa histogram bằng cách chia cho tổng số pixel. Bước hai, tính histogram tích lũy chuẩn hóa. Bước ba, dùng chính hàm tích lũy đó làm hàm ánh xạ để tính mức xám mới."},
-        {"text": "Kết quả: histogram gần đồng đều, tăng tương phản không cần chọn tham số", "say": "Kết quả là một ảnh có histogram trải đều hơn, nhờ đó độ tương phản tổng thể tăng lên. Ưu điểm lớn là hoàn toàn tự động, các bạn không cần phải chọn tham số thủ công như phép tuyến tính."}
-      ]
-    },
-    {
-      "title": "Phép toán số học: trung bình hóa để giảm nhiễu",
-      "slide": 11,
-      "points": [
-        {"text": "Nguồn nhiễu: tán xạ, cảm biến, kênh truyền, lỗi bit sau số hóa", "say": "Bây giờ chúng ta chuyển sang phép toán số học giữa các ảnh. Trong thực tế, nhiễu đến từ rất nhiều nguồn: tán xạ bức xạ trước khi tới cảm biến, nhiễu điện tử trong camera, nhiễu kênh truyền, và cả lỗi bit sau khi số hóa."},
-        {"text": "Trung bình nhiều ảnh nhiễu của cùng một cảnh: nhiễu triệt tiêu, tín hiệu giữ nguyên", "say": "Một kỹ thuật cổ điển để giảm nhiễu là trung bình hóa ảnh. Giả sử chúng ta chụp cùng một cảnh nhiều lần. Tín hiệu ảnh thì không đổi qua các lần chụp, còn nhiễu thì ngẫu nhiên và độc lập. Khi lấy trung bình theo từng pixel, phần nhiễu sẽ triệt tiêu dần, còn tín hiệu thì được giữ lại."},
-        {"text": "Điều kiện: nhiễu có trung bình bằng 0 và độc lập giữa các lần chụp", "say": "Các bạn nhớ điều kiện để kỹ thuật này hoạt động: nhiễu phải có trung bình bằng không và độc lập giữa các lần chụp. Càng nhiều ảnh được lấy trung bình thì nhiễu càng giảm."}
-      ]
-    },
-    {
-      "title": "Phép toán hình học",
-      "slide": 14,
-      "points": [
-        {"text": "Bước 1: ánh xạ tọa độ từ ảnh gốc f sang ảnh mới g", "say": "Phép toán hình học thay đổi quan hệ không gian giữa các pixel, ví dụ xoay, tịnh tiến hay biến đổi phối cảnh. Nó gồm hai bước. Bước thứ nhất là ánh xạ tọa độ, tức là tính xem mỗi pixel của ảnh gốc f sẽ đi đến vị trí nào trong ảnh mới g."},
-        {"text": "Bước 2: nội suy tọa độ không nguyên về lưới pixel nguyên", "say": "Vấn đề là sau khi xoay chẳng hạn, tọa độ mới thường không phải số nguyên. Vì vậy cần bước thứ hai là nội suy, đưa các tọa độ lẻ đó về lưới hàng cột chuẩn của ảnh."},
-        {"text": "Nearest neighbor: làm tròn về tọa độ nguyên gần nhất, đơn giản nhất", "say": "Cách nội suy đơn giản nhất là nội suy lân cận gần nhất, nearest neighbor. Tọa độ sau biến đổi được làm tròn về tọa độ nguyên gần nhất. Cách này rất nhanh, nhưng ảnh có thể bị răng cưa ở các cạnh."}
-      ]
-    },
-    {
-      "title": "Ảnh nhị phân và ngưỡng hóa",
-      "slide": 19,
-      "points": [
-        {"text": "Ảnh nhị phân: chỉ 2 mức 0 và 1, mỗi pixel 1 bit, xử lý bằng phép logic", "say": "Chúng ta chuyển sang phần thứ hai: ảnh nhị phân. Ảnh nhị phân chỉ có hai mức là 0 và 1, mỗi pixel chỉ cần một bit. Nhờ vậy có thể xử lý cực nhanh bằng các toán tử logic. Ảnh nhị phân thường biểu diễn thông tin cốt lõi, như vị trí và biên của đối tượng."},
-        {"text": "Ngưỡng hóa: pixel > T thì gán 1, ngược lại gán 0", "say": "Cách đơn giản nhất để tạo ảnh nhị phân là ngưỡng hóa. Ta so sánh mỗi pixel với một ngưỡng T. Nếu lớn hơn T thì gán 1, còn lại gán 0. Việc chọn T là quyết định quan trọng nhất, vì nó kiểm soát thông tin nào được giữ lại."},
-        {"text": "Ưu: gọn, đơn giản hóa xử lý sau. Nhược: mất chi tiết, nhạy với T", "say": "Ưu điểm của ngưỡng hóa là giảm mạnh dung lượng, đơn giản hóa dữ liệu cho các bước sau như phát hiện biên hay nhận dạng, và làm nổi bật vật thể so với nền. Nhược điểm là mất nhiều chi tiết gradient của ảnh xám, rất nhạy với việc chọn ngưỡng, và không hiệu quả khi cường độ thay đổi từ từ."}
-      ]
-    },
-    {
-      "title": "Phương pháp Otsu",
-      "slide": 21,
-      "points": [
-        {"text": "Otsu tự động chọn ngưỡng tối ưu từ histogram", "say": "Vậy làm sao chọn ngưỡng T một cách tự động? Câu trả lời là phương pháp Otsu. Otsu bắt đầu bằng việc tính histogram và xác suất của từng mức cường độ."},
-        {"text": "Thử mọi ngưỡng t, chia ảnh thành hai lớp: nền và vật thể", "say": "Sau đó, với mỗi ngưỡng khả dĩ t, thuật toán chia các pixel thành hai lớp: lớp nền và lớp vật thể, rồi tính phương sai của hai lớp đó."},
-        {"text": "Ngưỡng tối ưu = ngưỡng làm phương sai giữa hai lớp lớn nhất", "say": "Ngưỡng tối ưu là ngưỡng làm cho phương sai giữa hai lớp, between class variance, đạt giá trị lớn nhất. Nói cách khác, đó là ngưỡng tách hai lớp ra xa nhau nhất. Các bạn nhớ kỹ chữ lớn nhất, giữa hai lớp nhé, vì đề thi rất hay hỏi chỗ này."}
-      ]
-    },
-    {
-      "title": "Gán nhãn vùng",
-      "slide": 25,
-      "points": [
-        {"text": "Mục đích: tìm và đánh số các nhóm pixel liên thông, ví dụ để đếm vật thể", "say": "Sau khi có ảnh nhị phân, chúng ta thường muốn biết có bao nhiêu đối tượng. Đó là nhiệm vụ của gán nhãn vùng, region labeling. Thuật toán tìm các nhóm pixel liên thông có cùng giá trị và gán cho mỗi nhóm một nhãn riêng."},
-        {"text": "Quét trái sang phải, trên xuống dưới; xét pixel bên trái và bên trên", "say": "Thuật toán quét ảnh từ trái sang phải, từ trên xuống dưới. Với mỗi pixel có giá trị 1, ta nhìn pixel bên trái và pixel bên trên. Nếu cả hai đều là nền, ta gán một nhãn mới. Nếu chỉ một bên có nhãn, pixel hiện tại kế thừa nhãn đó."},
-        {"text": "Hai nhãn khác nhau gặp nhau: ghi nhận là tương đương", "say": "Trường hợp đặc biệt là khi cả hai bên đều có nhãn nhưng lại khác nhau. Lúc đó ta ghi nhận hai nhãn này là tương đương, vì thực chất chúng thuộc cùng một đối tượng nối liền, chỉ là được phát hiện từ hai nhánh khác nhau."}
-      ]
-    },
-    {
-      "title": "Hình thái học ảnh nhị phân",
-      "slide": 28,
-      "points": [
-        {"text": "Dùng phép logic NOT, AND, OR, MAJ qua một cửa sổ trượt", "say": "Phần cuối của chương là hình thái học ảnh nhị phân. Đây là nhóm phép toán thay đổi hình dạng đối tượng, dựa trên các toán tử logic như NOT, AND, OR và MAJ, tức là phép đa số, áp dụng qua một cửa sổ trượt trên ảnh."},
-        {"text": "Erosion: co đối tượng lại. Dilation: giãn đối tượng ra", "say": "Có bốn phép toán nền tảng. Erosion, tức là co, loại bỏ các pixel biên làm đối tượng nhỏ đi. Dilation, tức là giãn, thêm pixel vào biên làm đối tượng to ra."},
-        {"text": "Opening = Erosion rồi Dilation: xóa nhiễu nhỏ", "say": "Opening là erosion trước rồi dilation sau. Erosion xóa sạch các đốm nhiễu nhỏ, sau đó dilation khôi phục lại kích thước cho các đối tượng lớn. Kết quả là nhiễu nhỏ biến mất, còn đối tượng chính vẫn giữ hình dạng."},
-        {"text": "Closing = Dilation rồi Erosion: lấp lỗ và khe nhỏ", "say": "Ngược lại, closing là dilation trước rồi erosion sau. Dilation lấp đầy các lỗ hổng và khe nhỏ, rồi erosion đưa đối tượng về kích thước ban đầu. Mẹo nhớ: Opening mở ra để xóa đốm, Closing đóng lại để lấp lỗ."}
-      ]
-    },
-    {
-      "title": "Tổng kết chương 1",
-      "points": [
-        {"text": "Ba nhóm phép toán: điểm, số học, hình học", "say": "Chúng ta cùng tổng kết lại chương một. Có ba nhóm phép toán trên ảnh xám: phép toán điểm chỉ nhìn từng pixel, phép toán số học kết hợp nhiều ảnh, và phép toán hình học dời vị trí pixel."},
-        {"text": "Histogram, FSHS, cân bằng histogram để tăng tương phản", "say": "Histogram là công cụ trung tâm, và từ đó chúng ta có FSHS và cân bằng histogram để tăng tương phản một cách tự động."},
-        {"text": "Ngưỡng hóa, Otsu (max between-class variance), gán nhãn vùng", "say": "Với ảnh nhị phân, ngưỡng hóa là bước đầu tiên, Otsu chọn ngưỡng làm phương sai giữa hai lớp lớn nhất, và gán nhãn vùng giúp đếm đối tượng."},
-        {"text": "Erosion, Dilation, Opening xóa đốm, Closing lấp lỗ", "say": "Cuối cùng là bốn phép hình thái học: erosion, dilation, opening và closing. Cảm ơn các bạn đã theo dõi. Hãy làm thử các câu hỏi ôn tập của chương một để củng cố kiến thức nhé."}
-      ]
+     "kicker": "Mở đầu",
+     "title": "Lộ trình của chương",
+     "points": [
+      {
+       "say": "Phần một: ảnh xám. Histogram, kéo giãn tuyến tính, cân bằng histogram, trung bình nhiều ảnh, và phép toán hình học.",
+       "text": "Ảnh xám"
+      },
+      {
+       "say": "Phần hai: ảnh nhị phân. Ngưỡng hóa và Otsu, gán nhãn vùng để đếm, và hình thái học để làm sạch hình dạng.",
+       "text": "Ảnh nhị phân"
+      },
+      {
+       "say": "Mỗi bước vá chỗ hụt của bước trước, các bạn xem theo thứ tự.",
+       "text": "Xem theo thứ tự"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 0
+     }
     }
-  ]
+   ]
+  },
+  {
+   "id": "histogram",
+   "title": "Histogram ảnh",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Ảnh tối đến mức nào?",
+     "points": [
+      {
+       "say": "Trước khi sửa ảnh, cần một cách nhìn tổng quát: ảnh dùng những mức xám nào, nhiều hay ít.",
+       "text": "Ảnh dùng những mức xám nào?"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Nhìn bằng mắt",
+     "points": [
+      {
+       "say": "Nhìn bằng mắt chỉ cho cảm giác tối hay sáng, không cho con số để máy quyết định.",
+       "text": "Mắt: cảm giác, không phải số"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Đếm số pixel ở mỗi mức xám",
+     "points": [
+      {
+       "say": "Histogram là hàm một chiều: với mỗi mức xám k từ không đến K trừ một, đếm có bao nhiêu pixel mang đúng mức đó.",
+       "text": "Đếm pixel mỗi mức k"
+      },
+      {
+       "say": "Giống thống kê điểm thi của một lớp: biết bao nhiêu bạn được mỗi mức điểm, nhưng không biết ai ngồi ở đâu.",
+       "text": "Như phổ điểm của lớp"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Histogram mất thông tin vị trí",
+     "points": [
+      {
+       "say": "Ảnh bên trái là bàn cờ trắng đen xen kẽ. Ảnh bên phải chia đôi: nửa trên trắng, nửa dưới đen.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: hai ảnh này có cùng histogram không?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Có. Cả hai có tám pixel trắng và tám pixel đen. Histogram chỉ đếm, không lưu vị trí, nên ảnh rất khác nhau vẫn có thể cùng histogram.",
+       "reveal": 2
+      }
+     ],
+     "compare": {
+      "left": {
+       "label": "Bàn cờ: 8 trắng, 8 đen",
+       "grid": {
+        "cells": [
+         [
+          1,
+          0,
+          1,
+          0
+         ],
+         [
+          0,
+          1,
+          0,
+          1
+         ],
+         [
+          1,
+          0,
+          1,
+          0
+         ],
+         [
+          0,
+          1,
+          0,
+          1
+         ]
+        ],
+        "accent": [
+         [
+          0,
+          0
+         ],
+         [
+          0,
+          2
+         ],
+         [
+          1,
+          1
+         ],
+         [
+          1,
+          3
+         ],
+         [
+          2,
+          0
+         ],
+         [
+          2,
+          2
+         ],
+         [
+          3,
+          1
+         ],
+         [
+          3,
+          3
+         ]
+        ]
+       }
+      },
+      "right": {
+       "label": "Chia đôi: 8 trắng, 8 đen",
+       "grid": {
+        "cells": [
+         [
+          1,
+          1,
+          1,
+          1
+         ],
+         [
+          1,
+          1,
+          1,
+          1
+         ],
+         [
+          0,
+          0,
+          0,
+          0
+         ],
+         [
+          0,
+          0,
+          0,
+          0
+         ]
+        ],
+        "accent": [
+         [
+          0,
+          0
+         ],
+         [
+          0,
+          1
+         ],
+         [
+          0,
+          2
+         ],
+         [
+          0,
+          3
+         ],
+         [
+          1,
+          0
+         ],
+         [
+          1,
+          1
+         ],
+         [
+          1,
+          2
+         ],
+         [
+          1,
+          3
+         ]
+        ]
+       }
+      },
+      "arrow": "cùng histogram"
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Histogram cho biết gì, không cho biết gì",
+     "points": [
+      {
+       "say": "Histogram cho biết phân bố độ sáng: ảnh tối, sáng, hay tương phản thấp.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Nó không cho biết vị trí pixel, nên không phân biệt được bàn cờ với ảnh chia đôi.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Histogram cho biết",
+       "Histogram không cho biết"
+      ],
+      "rows": [
+       [
+        "Ảnh tối hay sáng, dải mức xám",
+        "Pixel nằm ở đâu"
+       ],
+       [
+        "Tương phản cao hay thấp",
+        "Hình dạng, cấu trúc không gian"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Histogram ở đâu",
+     "points": [
+      {
+       "say": "Slide nêu AOD, mật độ quang trung bình, một chỉ số đơn giản ước lượng tâm của phân bố mức xám, tức ảnh nhìn chung sáng hay tối.",
+       "text": "AOD: tâm phân bố mức xám"
+      },
+      {
+       "say": "Máy ảnh hiển thị histogram để người chụp biết ảnh có bị quá tối hay cháy sáng không.",
+       "text": "Máy ảnh hiển thị histogram"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Biết ảnh tối rồi, sửa thế nào?",
+     "points": [
+      {
+       "say": "Histogram cho thấy ảnh tế bào chỉ dùng một dải mức xám hẹp. Video sau: kéo giãn tuyến tính.",
+       "text": "→ Kéo giãn tuyến tính"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 2
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: histogram đếm số pixel ở mỗi mức xám."
+      },
+      {
+       "say": "Bẫy hai: histogram không lưu vị trí, nên ảnh khác nhau có thể cùng histogram."
+      },
+      {
+       "say": "Bẫy ba: AOD là mật độ quang trung bình, ước lượng tâm phân bố mức xám."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Histogram đếm gì?",
+        "Số pixel có mỗi mức xám k"
+       ],
+       [
+        "Hai ảnh khác nhau có thể cùng histogram?",
+        "Có: histogram mất thông tin vị trí"
+       ],
+       [
+        "AOD là gì?",
+        "Mật độ quang trung bình: tâm phân bố mức xám"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "keo-gian",
+   "title": "Phép toán điểm tuyến tính và FSHS",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Ảnh chỉ dùng dải 80 đến 150",
+     "points": [
+      {
+       "say": "Histogram ảnh tế bào dồn trong dải tám mươi đến một trăm năm mươi, bỏ phí cả hai đầu không đến hai trăm năm mươi lăm. Ảnh xám đục, tế bào khó thấy.",
+       "text": "Dải 80–150: xám đục"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Để nguyên ảnh",
+     "points": [
+      {
+       "say": "Không xử lý thì các mức xám tế bào và nền quá gần nhau, mắt khó phân biệt.",
+       "text": "Tế bào và nền quá gần nhau"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Nhân rồi cộng",
+     "points": [
+      {
+       "say": "Phép toán điểm tuyến tính: pixel mới bằng P nhân pixel cũ cộng L.",
+       "text": "g = P·f + L"
+      },
+      {
+       "say": "L dịch độ sáng lên hay xuống. P lớn hơn một giãn histogram, ảnh tương phản hơn; P nhỏ hơn một nén histogram.",
+       "text": "L: dịch sáng · P > 1: giãn"
+      },
+      {
+       "say": "FSHS, kéo giãn toàn dải, chọn P và L sao cho dải đang có phủ kín từ không đến K trừ một.",
+       "text": "FSHS: phủ kín 0 → K−1"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Kéo giãn 80–150 thành 0–255",
+     "points": [
+      {
+       "say": "Trừ tám mươi rồi nhân hai trăm năm mươi lăm chia bảy mươi. Mức tám mươi thành không.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: mức một trăm mười lăm, chính giữa dải cũ, thành bao nhiêu?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Một trăm hai mươi bảy phẩy năm, chính giữa dải mới. Mức một trăm năm mươi thành hai trăm năm mươi lăm. Histogram giãn ra phủ kín, tế bào nổi bật hơn hẳn.",
+       "reveal": 2
+      }
+     ],
+     "compare": {
+      "left": {
+       "label": "Trước: dồn trong 80–150",
+       "histogram": {
+        "bars": [
+         {
+          "label": "0",
+          "value": 0
+         },
+         {
+          "label": "",
+          "value": 0
+         },
+         {
+          "label": "80",
+          "value": 3
+         },
+         {
+          "label": "",
+          "value": 8
+         },
+         {
+          "label": "",
+          "value": 6
+         },
+         {
+          "label": "150",
+          "value": 2
+         },
+         {
+          "label": "",
+          "value": 0
+         },
+         {
+          "label": "255",
+          "value": 0
+         }
+        ],
+        "top": 8
+       }
+      },
+      "right": {
+       "label": "Sau FSHS: phủ 0–255",
+       "histogram": {
+        "bars": [
+         {
+          "label": "0",
+          "value": 3
+         },
+         {
+          "label": "",
+          "value": 3
+         },
+         {
+          "label": "",
+          "value": 4
+         },
+         {
+          "label": "",
+          "value": 4
+         },
+         {
+          "label": "",
+          "value": 3
+         },
+         {
+          "label": "",
+          "value": 3
+         },
+         {
+          "label": "",
+          "value": 2
+         },
+         {
+          "label": "255",
+          "value": 1
+         }
+        ],
+        "top": 8
+       }
+      },
+      "arrow": "g = (f − 80) · 255 / 70"
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Offset L so với hệ số P",
+     "points": [
+      {
+       "say": "L chỉ dịch histogram sang trái hay phải, không đổi độ rộng.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "P đổi độ rộng: lớn hơn một giãn, nhỏ hơn một nén. FSHS chọn cả hai cho vừa khít dải.",
+       "reveal": [
+        2,
+        3
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Tham số",
+       "Tác dụng lên histogram",
+       "Ảnh"
+      ],
+      "rows": [
+       [
+        "L (offset)",
+        "Dịch trái / phải",
+        "Sáng lên / tối đi"
+       ],
+       [
+        "P > 1",
+        "Giãn ra",
+        "Tương phản hơn"
+       ],
+       [
+        "P < 1",
+        "Nén lại",
+        "Kém tương phản hơn"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Kéo giãn ở đâu",
+     "points": [
+      {
+       "say": "Nút chỉnh độ sáng và độ tương phản trong mọi phần mềm ảnh chính là chỉnh L và P.",
+       "text": "Nút độ sáng, độ tương phản"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Khi dải đã đầy mà vẫn dồn cục",
+     "points": [
+      {
+       "say": "Nếu ảnh có vài điểm cực tối và cực sáng, dải đã phủ từ không đến hai trăm năm mươi lăm nhưng phần lớn pixel vẫn dồn một chỗ. FSHS không đổi gì cả.",
+       "text": "Dải đầy nhưng dồn cục → FSHS vô dụng"
+      },
+      {
+       "say": "Video sau: cân bằng histogram.",
+       "text": "→ Cân bằng histogram"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 3
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: phép toán điểm tuyến tính là pixel mới bằng P nhân pixel cũ cộng L."
+      },
+      {
+       "say": "Bẫy hai: P lớn hơn một giãn histogram; L chỉ dịch độ sáng."
+      },
+      {
+       "say": "Bẫy ba: FSHS kéo dải mức xám hiện có phủ kín từ không đến K trừ một."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Phép toán điểm tuyến tính?",
+        "g = P·f + L"
+       ],
+       [
+        "P > 1 làm gì?",
+        "Giãn histogram, tăng tương phản"
+       ],
+       [
+        "FSHS?",
+        "Kéo dải hiện có phủ kín 0 → K−1"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "can-bang",
+   "title": "Phép toán phi tuyến và cân bằng histogram",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Pixel dồn cục giữa dải đã đầy",
+     "points": [
+      {
+       "say": "Ảnh tế bào có vài điểm bụi đen và vài điểm sáng chói, nên dải đã phủ kín, nhưng phần lớn pixel dồn vào một mức.",
+       "text": "Dải đầy, pixel dồn cục"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "FSHS",
+     "points": [
+      {
+       "say": "FSHS chỉ kéo hai đầu dải ra hai biên. Dải đã đầy thì nó không làm gì.",
+       "text": "FSHS: dải đầy thì vô dụng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Dùng chính histogram tích lũy làm hàm ánh xạ",
+     "points": [
+      {
+       "say": "Phép toán phi tuyến: logarit nén vùng sáng, giãn vùng tối, hợp với ảnh dải động lớn như phổ Fourier.",
+       "text": "Logarit: nén sáng, giãn tối"
+      },
+      {
+       "say": "Cân bằng histogram: mức xám nào đông pixel thì được dành nhiều chỗ trên thang mới, đẩy các mức đông ra xa nhau. Hoàn toàn tự động, không cần chọn tham số.",
+       "text": "Mức đông pixel → được nhiều chỗ"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bốn mức xám, mười sáu pixel",
+     "points": [
+      {
+       "say": "Bước một, chuẩn hóa: số pixel ở bốn mức là hai, mười, hai, hai; chia mười sáu được không phẩy một hai lăm, không phẩy sáu hai lăm, và hai lần không phẩy một hai lăm.",
+       "reveal": 1
+      },
+      {
+       "say": "Bước hai, tích lũy: không phẩy một hai lăm, không phẩy bảy lăm, không phẩy tám bảy lăm, một.",
+       "reveal": 2
+      },
+      {
+       "say": "Thử đoán: mức một, mức đông nhất, sẽ được ánh xạ sang mức nào?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Bước ba, nhân tích lũy với ba rồi làm tròn: mức không thành không, mức một thành hai, mức hai và ba thành ba. Mức đông bị đẩy lên giữa thang, tách xa mức tối.",
+       "reveal": [
+        2,
+        3,
+        4
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Mức k",
+       "Số pixel",
+       "Chuẩn hóa",
+       "Tích lũy",
+       "Mức mới = round(3 · tích lũy)"
+      ],
+      "rows": [
+       [
+        "0",
+        "2",
+        "0,125",
+        "0,125",
+        "0"
+       ],
+       [
+        "1",
+        "10",
+        "0,625",
+        "0,75",
+        "2"
+       ],
+       [
+        "2",
+        "2",
+        "0,125",
+        "0,875",
+        "3"
+       ],
+       [
+        "3",
+        "2",
+        "0,125",
+        "1",
+        "3"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "FSHS so với cân bằng histogram",
+     "points": [
+      {
+       "say": "FSHS là tuyến tính, chỉ kéo hai đầu dải.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Cân bằng là phi tuyến, phân phối lại theo số pixel, cho histogram gần đồng đều hơn, kể cả khi dải đã đầy.",
+       "reveal": [
+        2,
+        3
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "FSHS",
+       "Cân bằng histogram"
+      ],
+      "rows": [
+       [
+        "Loại",
+        "Tuyến tính",
+        "Phi tuyến"
+       ],
+       [
+        "Dải đã đầy",
+        "Không đổi gì",
+        "Vẫn tách mức đông"
+       ],
+       [
+        "Tham số",
+        "Từ min, max",
+        "Tự động từ tích lũy"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Cân bằng histogram ở đâu",
+     "points": [
+      {
+       "say": "Ảnh y tế, ảnh vệ tinh, ảnh camera thiếu sáng: tăng tương phản tự động trước khi người hoặc máy phân tích.",
+       "text": "Y tế, vệ tinh, thiếu sáng"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Tương phản tốt, nhưng nhiễu cũng rõ hơn",
+     "points": [
+      {
+       "say": "Tăng tương phản làm cả nhiễu hạt cũng nổi rõ. Các phép toán điểm không phân biệt được tế bào với nhiễu.",
+       "text": "Nhiễu cũng nổi rõ"
+      },
+      {
+       "say": "Video sau dùng nhiều ảnh để giảm nhiễu: phép toán số học.",
+       "text": "→ Trung bình nhiều ảnh"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 4
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: cân bằng histogram gồm chuẩn hóa, tính tích lũy chuẩn hóa, rồi dùng tích lũy làm hàm ánh xạ."
+      },
+      {
+       "say": "Bẫy hai: logarit nén vùng sáng, giãn vùng tối, hợp với ảnh dải động lớn."
+      },
+      {
+       "say": "Bẫy ba: cân bằng histogram hoàn toàn tự động."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Ba bước cân bằng histogram?",
+        "Chuẩn hóa → tích lũy → dùng tích lũy làm ánh xạ"
+       ],
+       [
+        "Phép logarit làm gì?",
+        "Nén vùng sáng, giãn vùng tối"
+       ],
+       [
+        "Cân bằng có cần chọn tham số?",
+        "Không, tự động"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "trung-binh-anh",
+   "title": "Phép toán số học: trung bình nhiều ảnh",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Nhiễu hạt trên ảnh tế bào",
+     "points": [
+      {
+       "say": "Nhiễu đến từ nhiều nguồn: tán xạ bức xạ trước cảm biến, nhiễu điện tử trong camera, nhiễu kênh truyền, lỗi bit sau số hóa.",
+       "text": "Nhiều nguồn nhiễu"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Chụp một lần",
+     "points": [
+      {
+       "say": "Với một ảnh duy nhất, ta không phân biệt được phần nào là tế bào, phần nào là nhiễu.",
+       "text": "Một ảnh: không tách được nhiễu"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Chụp nhiều lần rồi lấy trung bình",
+     "points": [
+      {
+       "say": "Chụp cùng cảnh nhiều lần. Tín hiệu không đổi qua các lần chụp, còn nhiễu thì ngẫu nhiên. Lấy trung bình từng pixel, nhiễu dương và âm triệt tiêu nhau.",
+       "text": "Tín hiệu giữ nguyên, nhiễu triệt tiêu"
+      },
+      {
+       "say": "Điều kiện: nhiễu có trung bình bằng không và độc lập giữa các lần chụp. Càng nhiều ảnh, nhiễu càng giảm.",
+       "text": "Điều kiện: trung bình 0, độc lập"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bốn lần chụp một pixel",
+     "points": [
+      {
+       "say": "Pixel thật bằng một trăm. Bốn lần chụp có nhiễu cộng tám, trừ sáu, cộng ba, trừ năm: ra một trăm lẻ tám, chín mươi tư, một trăm lẻ ba, chín mươi lăm.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: trung bình bốn lần chụp là bao nhiêu?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Đúng một trăm: nhiễu đã triệt tiêu. Với nhiễu thật, kết quả không khít như vậy, nhưng càng nhiều ảnh càng gần giá trị thật.",
+       "reveal": 2
+      }
+     ],
+     "grid": [
+      {
+       "label": "4 lần chụp (thật = 100)",
+       "cells": [
+        [
+         108,
+         94,
+         103,
+         95
+        ]
+       ],
+       "warn": [
+        [
+         0,
+         0
+        ],
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         2
+        ],
+        [
+         0,
+         3
+        ]
+       ]
+      },
+      {
+       "label": "Trung bình",
+       "cells": [
+        [
+         100
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         0
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Các phép toán số học giữa ảnh",
+     "points": [
+      {
+       "say": "Cộng và lấy trung bình: giảm nhiễu.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Trừ hai khung liên tiếp: phát hiện chuyển động, như tế bào đang bơi.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Phép",
+       "Dùng để"
+      ],
+      "rows": [
+       [
+        "Cộng / trung bình",
+        "Giảm nhiễu"
+       ],
+       [
+        "Trừ",
+        "Phát hiện thay đổi, chuyển động"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Trung bình ảnh ở đâu",
+     "points": [
+      {
+       "say": "Chụp thiên văn, chụp đêm trên điện thoại ghép nhiều khung, kính hiển vi huỳnh quang: đều lấy trung bình nhiều ảnh để giảm nhiễu.",
+       "text": "Thiên văn, chụp đêm, hiển vi"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Ảnh chụp lệch góc",
+     "points": [
+      {
+       "say": "Nếu các lần chụp bị lệch hay xoay so với nhau, trung bình từng pixel sẽ làm nhòe. Phải dời ảnh về đúng vị trí trước.",
+       "text": "Lệch góc → phải dời ảnh"
+      },
+      {
+       "say": "Video sau: phép toán hình học.",
+       "text": "→ Phép toán hình học"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 5
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: trung bình hóa cần nhiễu có trung bình không và độc lập giữa các lần chụp."
+      },
+      {
+       "say": "Bẫy hai: trừ hai khung liên tiếp dùng để phát hiện chuyển động."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Điều kiện trung bình hóa?",
+        "Nhiễu trung bình 0, độc lập giữa các lần chụp"
+       ],
+       [
+        "Trừ hai ảnh dùng để?",
+        "Phát hiện chuyển động"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "hinh-hoc",
+   "title": "Phép toán hình học",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Dời và xoay ảnh",
+     "points": [
+      {
+       "say": "Các lần chụp lệch nhau vài pixel và hơi xoay. Ta cần dời và xoay ảnh cho khớp.",
+       "text": "Dời, xoay cho khớp"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Phép toán điểm",
+     "points": [
+      {
+       "say": "Phép toán điểm chỉ đổi giá trị pixel tại chỗ, không đổi vị trí.",
+       "text": "Đổi giá trị, không đổi vị trí"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Ánh xạ tọa độ rồi nội suy",
+     "points": [
+      {
+       "say": "Phép toán hình học thay đổi quan hệ không gian giữa các pixel, như xoay, tịnh tiến, biến đổi phối cảnh, mà không đổi giá trị mức xám.",
+       "text": "Đổi vị trí, không đổi mức xám"
+      },
+      {
+       "say": "Hai bước: ánh xạ tọa độ từ ảnh gốc sang ảnh mới, rồi nội suy các tọa độ không nguyên về lưới hàng cột.",
+       "text": "1. Ánh xạ · 2. Nội suy"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Một pixel sau khi xoay nhẹ",
+     "points": [
+      {
+       "say": "Tịnh tiến là cộng một hằng số vào tọa độ; xoay là nhân tọa độ với ma trận xoay. Sau khi ánh xạ, phần lớn tọa độ mới không còn là số nguyên.",
+       "text": "Tịnh tiến: cộng · xoay: nhân ma trận"
+      },
+      {
+       "say": "Sau phép xoay, pixel ở hàng hai cột ba được ánh xạ tới tọa độ ba phẩy bốn và hai phẩy sáu, không phải số nguyên.",
+       "text": "(2, 3) → (3,4 ; 2,6)"
+      },
+      {
+       "say": "Thử đoán: nội suy lân cận gần nhất đưa nó về ô nào?",
+       "text": "Thử đoán: về ô nào?",
+       "ask": true
+      },
+      {
+       "say": "Làm tròn về ô gần nhất: hàng ba, cột ba. Nhanh nhất, nhưng cạnh có thể bị răng cưa.",
+       "text": "Nearest → (3, 3); có thể răng cưa"
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Phép toán điểm so với hình học",
+     "points": [
+      {
+       "say": "Phép toán điểm đổi giá trị, giữ vị trí.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Phép toán hình học đổi vị trí, giữ giá trị, và cần nội suy.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Phép toán điểm",
+       "Phép toán hình học"
+      ],
+      "rows": [
+       [
+        "Đổi",
+        "Giá trị mức xám",
+        "Vị trí pixel"
+       ],
+       [
+        "Cần nội suy",
+        "Không",
+        "Có (tọa độ không nguyên)"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Phép toán hình học ở đâu",
+     "points": [
+      {
+       "say": "Căn chỉnh nhiều ảnh trước khi ghép hay lấy trung bình, xoay ảnh tài liệu bị nghiêng, sửa méo phối cảnh.",
+       "text": "Căn chỉnh, xoay tài liệu, sửa phối cảnh"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Ảnh đẹp rồi, giờ đếm tế bào",
+     "points": [
+      {
+       "say": "Ảnh đã rõ, sạch và thẳng. Để đếm tế bào, trước hết phải quyết định pixel nào là tế bào, pixel nào là nền. Phần hai: ảnh nhị phân.",
+       "text": "→ Ngưỡng hóa"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 6
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: phép toán hình học đổi vị trí pixel, không đổi giá trị cường độ."
+      },
+      {
+       "say": "Bẫy hai: gồm hai bước, ánh xạ tọa độ rồi nội suy."
+      },
+      {
+       "say": "Bẫy ba: nội suy đơn giản nhất là lân cận gần nhất."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Phép toán hình học đổi gì?",
+        "Vị trí pixel, không đổi giá trị"
+       ],
+       [
+        "Hai bước?",
+        "Ánh xạ tọa độ, rồi nội suy"
+       ],
+       [
+        "Nội suy đơn giản nhất?",
+        "Lân cận gần nhất"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "nguong-otsu",
+   "title": "Ngưỡng hóa và phương pháp Otsu",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Pixel nào là tế bào?",
+     "points": [
+      {
+       "say": "Để đếm, ta cần ảnh nhị phân: tế bào là một, nền là không. Ảnh nhị phân mỗi pixel chỉ một bit, xử lý cực nhanh bằng phép logic.",
+       "text": "Ảnh nhị phân: 1 bit, phép logic"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Chọn ngưỡng bằng tay",
+     "points": [
+      {
+       "say": "Ngưỡng hóa so mỗi pixel với ngưỡng T: lớn hơn thì một, còn lại không. Nhưng T chọn tay thì mỗi ảnh một kiểu, và kết quả rất nhạy với T.",
+       "text": "Chọn T bằng tay: nhạy"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Chọn ngưỡng tách hai lớp xa nhau nhất",
+     "points": [
+      {
+       "say": "Otsu thử mọi ngưỡng t. Mỗi t chia pixel thành hai lớp, nền và vật thể.",
+       "text": "Thử mọi ngưỡng t"
+      },
+      {
+       "say": "Ngưỡng tối ưu là ngưỡng làm phương sai giữa hai lớp lớn nhất: hai lớp vừa đông vừa xa nhau.",
+       "text": "Max phương sai giữa hai lớp"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Histogram có hai đỉnh",
+     "points": [
+      {
+       "say": "Mười bốn pixel trên tám mức xám: một đỉnh tối quanh mức hai, một đỉnh sáng quanh mức sáu.",
+       "reveal": 0
+      },
+      {
+       "say": "Thử đoán: ngưỡng nên đặt ở đâu?",
+       "reveal": 0,
+       "ask": true
+      },
+      {
+       "say": "Otsu cho ngưỡng bằng bốn: dưới bốn là nền, từ bốn trở lên là tế bào, đúng thung lũng giữa hai đỉnh.",
+       "reveal": 1
+      }
+     ],
+     "histogram": {
+      "bars": [
+       {
+        "label": "0",
+        "value": 0
+       },
+       {
+        "label": "1",
+        "value": 2
+       },
+       {
+        "label": "2",
+        "value": 4
+       },
+       {
+        "label": "3",
+        "value": 1
+       },
+       {
+        "label": "4",
+        "value": 0
+       },
+       {
+        "label": "5",
+        "value": 1
+       },
+       {
+        "label": "6",
+        "value": 4
+       },
+       {
+        "label": "7",
+        "value": 2
+       }
+      ],
+      "lines": [
+       {
+        "at": 4,
+        "label": "T = 4",
+        "step": 1
+       }
+      ],
+      "caption": "Histogram 14 pixel, mức 0–7"
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Phương sai giữa hai lớp theo từng ngưỡng",
+     "points": [
+      {
+       "say": "Ngưỡng hai: lớp tối quá ít, phương sai giữa lớp chỉ một phẩy năm.",
+       "reveal": 1
+      },
+      {
+       "say": "Ngưỡng ba: tăng lên bốn phẩy không tám.",
+       "reveal": 2
+      },
+      {
+       "say": "Ngưỡng bốn và năm: lớn nhất, bốn phẩy năm chín. Hai ngưỡng bằng nhau vì mức bốn không có pixel nào.",
+       "reveal": 3
+      },
+      {
+       "say": "Ngưỡng sáu và bảy giảm lại. Vậy chọn ngưỡng bốn.",
+       "reveal": 4
+      }
+     ],
+     "table": {
+      "headers": [
+       "Ngưỡng t",
+       "2",
+       "3",
+       "4",
+       "5",
+       "6",
+       "7"
+      ],
+      "rows": [
+       [
+        "ω₀ (tỉ lệ lớp tối)",
+        "0,14",
+        "0,43",
+        "0,50",
+        "0,50",
+        "0,57",
+        "0,86"
+       ],
+       [
+        "μ₀ / μ₁",
+        "1 / 4,5",
+        "1,67 / 5,75",
+        "1,86 / 6,14",
+        "1,86 / 6,14",
+        "2,25 / 6,33",
+        "3,5 / 7"
+       ],
+       [
+        "σ²B (giữa hai lớp)",
+        "1,50",
+        "4,08",
+        "4,59 ✓",
+        "4,59 ✓",
+        "4,08",
+        "1,50"
+       ],
+       [
+        "Kết luận",
+        "",
+        "",
+        "Chọn T = 4",
+        "",
+        "",
+        ""
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Ngưỡng tay so với Otsu",
+     "points": [
+      {
+       "say": "Ngưỡng tay phụ thuộc người chọn.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Otsu tự động, chọn theo phương sai giữa hai lớp lớn nhất.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Ngưỡng chọn tay",
+       "Otsu"
+      ],
+      "rows": [
+       [
+        "Cách chọn T",
+        "Thử bằng mắt",
+        "Max phương sai giữa hai lớp"
+       ],
+       [
+        "Tự động",
+        "Không",
+        "Có"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Ngưỡng hóa ở đâu",
+     "points": [
+      {
+       "say": "Ưu điểm: giảm mạnh dung lượng, đơn giản hóa dữ liệu, làm nổi vật so với nền. Nhược điểm: mất chi tiết gradient, nhạy với ngưỡng, kém với ảnh sáng thay đổi từ từ.",
+       "text": "Gọn, nổi vật · mất chi tiết, nhạy T"
+      },
+      {
+       "say": "Quét tài liệu thành đen trắng, tách tế bào, tách vật trên băng chuyền.",
+       "text": "Tài liệu, tế bào, băng chuyền"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Có ảnh nhị phân, nhưng bao nhiêu tế bào?",
+     "points": [
+      {
+       "say": "Ảnh nhị phân chỉ cho biết pixel nào là tế bào, chưa cho biết pixel nào thuộc tế bào nào. Video sau: gán nhãn vùng.",
+       "text": "→ Gán nhãn vùng"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 7
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: Otsu chọn ngưỡng làm phương sai giữa hai lớp lớn nhất. Nhớ chữ giữa và chữ lớn nhất."
+      },
+      {
+       "say": "Bẫy hai: pixel lớn hơn ngưỡng thì gán một."
+      },
+      {
+       "say": "Bẫy ba: ngưỡng hóa mất chi tiết gradient và rất nhạy với ngưỡng."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Otsu chọn ngưỡng theo gì?",
+        "Phương sai GIỮA hai lớp LỚN nhất"
+       ],
+       [
+        "Ngưỡng hóa gán 1 khi nào?",
+        "Pixel > T"
+       ],
+       [
+        "Nhược điểm ngưỡng hóa?",
+        "Mất chi tiết, nhạy T, kém với sáng thay đổi từ từ"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "gan-nhan",
+   "title": "Gán nhãn vùng",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Đếm số tế bào",
+     "points": [
+      {
+       "say": "Ảnh nhị phân có nhiều cụm pixel trắng. Mỗi cụm liền nhau là một tế bào. Cần đánh số từng cụm để đếm.",
+       "text": "Đánh số từng cụm liền nhau"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Ảnh nhị phân chưa có nhãn",
+     "points": [
+      {
+       "say": "Ảnh nhị phân chỉ có không và một, không biết hai pixel trắng có thuộc cùng một tế bào hay không.",
+       "text": "Không biết pixel thuộc cụm nào"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Quét và kế thừa nhãn từ hàng xóm",
+     "points": [
+      {
+       "say": "Quét từ trái sang phải, trên xuống dưới. Với mỗi pixel một, nhìn pixel bên trái và bên trên.",
+       "text": "Nhìn trái và trên"
+      },
+      {
+       "say": "Cả hai là nền: gán nhãn mới. Một bên có nhãn: kế thừa nhãn đó. Hai bên có nhãn khác nhau: ghi nhận hai nhãn tương đương.",
+       "text": "Mới · kế thừa · tương đương"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Gán nhãn một ảnh nhỏ",
+     "points": [
+      {
+       "say": "Hàng đầu: hai pixel bên trái nhận nhãn một. Hai pixel tiếp theo không nối với nhãn một, nên nhận nhãn mới là hai.",
+       "reveal": 1
+      },
+      {
+       "say": "Hàng hai và hàng ba kế thừa nhãn từ bên trên và bên trái, dần nối thành hình chữ U.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: ô có dấu sao, bên trái là nhãn một, bên trên là nhãn hai, thì sao?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Gán nhãn một và ghi nhận một tương đương hai: thật ra cùng một vật hình chữ U. Pixel lẻ ở góc dưới nhận nhãn ba. Gộp tương đương, ta đếm được hai vật.",
+       "reveal": 1
+      }
+     ],
+     "grid": {
+      "label": "Nhãn sau lượt quét; * = chỗ ghi nhận 1 ≡ 2",
+      "cells": [
+       [
+        "1",
+        "1",
+        "·",
+        "2",
+        "2",
+        "·"
+       ],
+       [
+        "1",
+        "·",
+        "·",
+        "·",
+        "2",
+        "·"
+       ],
+       [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1*",
+        "·"
+       ],
+       [
+        "·",
+        "·",
+        "·",
+        "·",
+        "·",
+        "3"
+       ]
+      ],
+      "warn": [
+       [
+        2,
+        4
+       ]
+      ],
+      "accent": [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        1,
+        0
+       ],
+       [
+        2,
+        0
+       ],
+       [
+        2,
+        1
+       ],
+       [
+        2,
+        2
+       ],
+       [
+        2,
+        3
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Ba trường hợp khi gặp pixel 1",
+     "points": [
+      {
+       "say": "Trái và trên đều là nền: nhãn mới.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Một bên có nhãn: kế thừa.",
+       "reveal": [
+        2
+       ]
+      },
+      {
+       "say": "Hai bên khác nhãn: lấy một nhãn, ghi nhận tương đương, gộp ở cuối.",
+       "reveal": [
+        3
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Trái / trên",
+       "Hành động"
+      ],
+      "rows": [
+       [
+        "Cả hai là nền",
+        "Gán nhãn mới"
+       ],
+       [
+        "Một bên có nhãn",
+        "Kế thừa nhãn đó"
+       ],
+       [
+        "Hai nhãn khác nhau",
+        "Ghi nhận tương đương, gộp sau"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Gán nhãn vùng ở đâu",
+     "points": [
+      {
+       "say": "Đếm tế bào, đếm hạt, đếm xe; đo diện tích từng vật; là bước trước khi trích đặc trưng ở chương mười.",
+       "text": "Đếm vật, đo diện tích"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Đốm nhiễu cũng bị đếm",
+     "points": [
+      {
+       "say": "Một đốm nhiễu nhỏ cũng nhận một nhãn và bị đếm như tế bào. Tế bào có lỗ thủng có thể bị tách đôi. Cần làm sạch hình dạng trước.",
+       "text": "Nhiễu bị đếm nhầm"
+      },
+      {
+       "say": "Video sau: hình thái học ảnh nhị phân.",
+       "text": "→ Hình thái học"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 8
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: thuật toán xét pixel bên trái và bên trên."
+      },
+      {
+       "say": "Bẫy hai: hai nhãn khác nhau gặp nhau thì ghi nhận tương đương, vì cùng một vật."
+      },
+      {
+       "say": "Bẫy ba: quét từ trái sang phải, từ trên xuống dưới."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Gán nhãn xét pixel nào?",
+        "Bên trái và bên trên"
+       ],
+       [
+        "Hai nhãn khác nhau gặp nhau?",
+        "Ghi nhận tương đương"
+       ],
+       [
+        "Thứ tự quét?",
+        "Trái → phải, trên → dưới"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "hinh-thai",
+   "title": "Hình thái học ảnh nhị phân",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Đốm nhiễu và lỗ thủng",
+     "points": [
+      {
+       "say": "Ảnh nhị phân của tế bào có đốm nhiễu nhỏ trên nền và lỗ thủng trong tế bào.",
+       "text": "Đốm nhiễu, lỗ thủng"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Đếm thẳng",
+     "points": [
+      {
+       "say": "Đếm thẳng thì đốm nhiễu bị tính là tế bào, lỗ thủng có thể tách một tế bào làm hai.",
+       "text": "Đếm sai"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Phép logic qua cửa sổ trượt",
+     "points": [
+      {
+       "say": "Hình thái học nhị phân dùng các toán tử logic NOT, AND, OR và MAJ, tức phép đa số, áp qua một cửa sổ trượt.",
+       "text": "NOT, AND, OR, MAJ qua cửa sổ"
+      },
+      {
+       "say": "Erosion co vật, loại pixel biên. Dilation giãn vật, thêm pixel biên. Opening là erosion rồi dilation; closing là dilation rồi erosion.",
+       "text": "Erosion co · dilation giãn"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Closing lấp một lỗ thủng",
+     "points": [
+      {
+       "say": "Một hàng có lỗ thủng một pixel giữa tế bào: không, một, một, không, một, một, không.",
+       "reveal": 1
+      },
+      {
+       "say": "Dilation, OR qua cửa sổ ba: lỗ được lấp, nhưng tế bào cũng phình ra tới mép.",
+       "reveal": 2
+      },
+      {
+       "say": "Thử đoán: erosion tiếp theo, AND qua cửa sổ ba, cho gì?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Hai mép co về như cũ, lỗ vẫn được lấp: không, một, một, một, một, một, không. Đó là closing.",
+       "reveal": 3
+      }
+     ],
+     "grid": [
+      {
+       "label": "Gốc: có lỗ",
+       "cells": [
+        [
+         0,
+         1,
+         1,
+         0,
+         1,
+         1,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         2
+        ],
+        [
+         0,
+         4
+        ],
+        [
+         0,
+         5
+        ]
+       ],
+       "warn": [
+        [
+         0,
+         3
+        ]
+       ]
+      },
+      {
+       "label": "Dilation (OR)",
+       "cells": [
+        [
+         1,
+         1,
+         1,
+         1,
+         1,
+         1,
+         1
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         0
+        ],
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         2
+        ],
+        [
+         0,
+         3
+        ],
+        [
+         0,
+         4
+        ],
+        [
+         0,
+         5
+        ],
+        [
+         0,
+         6
+        ]
+       ]
+      },
+      {
+       "label": "Erosion (AND) → closing",
+       "cells": [
+        [
+         0,
+         1,
+         1,
+         1,
+         1,
+         1,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         2
+        ],
+        [
+         0,
+         3
+        ],
+        [
+         0,
+         4
+        ],
+        [
+         0,
+         5
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Opening và closing",
+     "points": [
+      {
+       "say": "Opening, erosion rồi dilation, xóa đốm nhiễu nhỏ, giữ hình vật lớn.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Closing, dilation rồi erosion, lấp lỗ và khe nhỏ. Mẹo nhớ: opening mở ra để xóa đốm, closing đóng lại để lấp lỗ.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Phép",
+       "Thứ tự",
+       "Tác dụng"
+      ],
+      "rows": [
+       [
+        "Opening",
+        "Erosion → dilation",
+        "Xóa đốm nhỏ"
+       ],
+       [
+        "Closing",
+        "Dilation → erosion",
+        "Lấp lỗ, khe nhỏ"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Hình thái học ở đâu",
+     "points": [
+      {
+       "say": "Làm sạch ảnh nhị phân trước khi đếm và đo, trong kính hiển vi, kiểm tra linh kiện, nhận dạng chữ.",
+       "text": "Làm sạch trước khi đếm"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Xong nền móng",
+     "points": [
+      {
+       "say": "Giờ ta đếm đúng số tế bào. Chương hai mở rộng sang lọc ảnh: không chỉ nhìn từng pixel mà nhìn cả vùng lân cận.",
+       "text": "→ Chương 2: lọc ảnh"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 8
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: opening là erosion rồi dilation, dùng để xóa đốm nhỏ."
+      },
+      {
+       "say": "Bẫy hai: closing là dilation rồi erosion, dùng để lấp lỗ."
+      },
+      {
+       "say": "Bẫy ba: MAJ là phép đa số."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Opening là gì?",
+        "Erosion rồi dilation: xóa đốm"
+       ],
+       [
+        "Closing là gì?",
+        "Dilation rồi erosion: lấp lỗ"
+       ],
+       [
+        "MAJ là phép gì?",
+        "Phép đa số"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "tong-ket",
+   "title": "Tổng kết chương 1",
+   "kind": "summary",
+   "scenes": [
+    {
+     "kicker": "Tổng kết",
+     "title": "Nền móng trong một mạch",
+     "points": [
+      {
+       "say": "Nhìn lại ảnh tế bào. Histogram cho biết phân bố độ sáng; FSHS kéo giãn dải; cân bằng histogram phân phối lại khi dải đã đầy."
+      },
+      {
+       "say": "Trung bình nhiều ảnh giảm nhiễu; phép toán hình học dời và xoay cho khớp."
+      },
+      {
+       "say": "Ngưỡng hóa và Otsu tạo ảnh nhị phân; hình thái học làm sạch; gán nhãn vùng đếm số tế bào."
+      }
+     ],
+     "chain": {
+      "items": [
+       "Histogram",
+       "Kéo giãn tuyến tính",
+       "Cân bằng histogram",
+       "Trung bình nhiều ảnh",
+       "Phép toán hình học",
+       "Ngưỡng & Otsu",
+       "Gán nhãn vùng",
+       "Hình thái nhị phân"
+      ],
+      "current": 8
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Năm bẫy chung",
+     "points": [
+      {
+       "say": "Một: phép toán hình học đổi vị trí, không đổi giá trị."
+      },
+      {
+       "say": "Hai: histogram mất thông tin vị trí."
+      },
+      {
+       "say": "Ba: cân bằng histogram dùng tích lũy làm ánh xạ."
+      },
+      {
+       "say": "Bốn: Otsu chọn phương sai giữa hai lớp lớn nhất."
+      },
+      {
+       "say": "Năm: opening xóa đốm, closing lấp lỗ."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Phép toán hình học?",
+        "Đổi vị trí, giữ giá trị"
+       ],
+       [
+        "Histogram?",
+        "Mất vị trí"
+       ],
+       [
+        "Cân bằng histogram?",
+        "Tích lũy làm ánh xạ"
+       ],
+       [
+        "Otsu?",
+        "Max phương sai giữa hai lớp"
+       ],
+       [
+        "Opening / closing?",
+        "Xóa đốm / lấp lỗ"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Tổng kết",
+     "title": "Sang chương 2",
+     "points": [
+      {
+       "say": "Chương hai: lọc ảnh, nhìn cả vùng lân cận của mỗi pixel.",
+       "text": "Chương 2: lọc ảnh"
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }

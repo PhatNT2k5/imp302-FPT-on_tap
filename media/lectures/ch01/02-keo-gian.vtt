@@ -1,0 +1,82 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.154 line:98%,end
+Histogram ảnh tế bào dồn trong dải tám mươi đến một trăm năm mươi,
+
+00:00:04.154 --> 00:00:07.224 line:98%,end
+bỏ phí cả hai đầu không đến hai trăm năm mươi lăm.
+
+00:00:07.174 --> 00:00:10.117 line:98%,end
+Ảnh xám đục, tế bào khó thấy.
+
+00:00:11.626 --> 00:00:16.889 line:98%,end
+Không xử lý thì các mức xám tế bào và nền quá gần nhau, mắt khó phân biệt.
+
+00:00:18.352 --> 00:00:23.615 line:98%,end
+Phép toán điểm tuyến tính: pixel mới bằng P nhân pixel cũ cộng L.
+
+00:00:24.178 --> 00:00:27.045 line:98%,end
+L dịch độ sáng lên hay xuống.
+
+00:00:26.995 --> 00:00:32.789 line:98%,end
+P lớn hơn một giãn histogram, ảnh tương phản hơn; P nhỏ hơn một nén histogram.
+
+00:00:33.412 --> 00:00:35.403 line:98%,end
+FSHS, kéo giãn toàn dải,
+
+00:00:35.403 --> 00:00:40.628 line:98%,end
+chọn P và L sao cho dải đang có phủ kín từ không đến K trừ một.
+
+00:00:42.082 --> 00:00:45.964 line:98%,end
+Trừ tám mươi rồi nhân hai trăm năm mươi lăm chia bảy mươi.
+
+00:00:45.914 --> 00:00:48.180 line:98%,end
+Mức tám mươi thành không.
+
+00:00:48.796 --> 00:00:53.863 line:98%,end
+Thử đoán: mức một trăm mười lăm, chính giữa dải cũ, thành bao nhiêu?
+
+00:00:56.430 --> 00:01:00.286 line:98%,end
+Một trăm hai mươi bảy phẩy năm, chính giữa dải mới.
+
+00:01:00.236 --> 00:01:03.557 line:98%,end
+Mức một trăm năm mươi thành hai trăm năm mươi lăm.
+
+00:01:03.557 --> 00:01:07.619 line:98%,end
+Histogram giãn ra phủ kín, tế bào nổi bật hơn hẳn.
+
+00:01:09.132 --> 00:01:13.743 line:98%,end
+L chỉ dịch histogram sang trái hay phải, không đổi độ rộng.
+
+00:01:14.210 --> 00:01:16.442 line:98%,end
+P đổi độ rộng:
+
+00:01:16.442 --> 00:01:20.018 line:98%,end
+lớn hơn một giãn, nhỏ hơn một nén.
+
+00:01:20.018 --> 00:01:23.810 line:98%,end
+FSHS chọn cả hai cho vừa khít dải.
+
+00:01:25.260 --> 00:01:30.848 line:98%,end
+Nút chỉnh độ sáng và độ tương phản trong mọi phần mềm ảnh chính là chỉnh L và P.
+
+00:01:32.298 --> 00:01:34.861 line:98%,end
+Nếu ảnh có vài điểm cực tối và cực sáng,
+
+00:01:34.861 --> 00:01:40.178 line:98%,end
+dải đã phủ từ không đến hai trăm năm mươi lăm nhưng phần lớn pixel vẫn dồn một chỗ.
+
+00:01:40.128 --> 00:01:43.005 line:98%,end
+FSHS không đổi gì cả.
+
+00:01:43.620 --> 00:01:46.812 line:98%,end
+Video sau: cân bằng histogram.
+
+00:01:48.282 --> 00:01:54.248 line:98%,end
+Bẫy một: phép toán điểm tuyến tính là pixel mới bằng P nhân pixel cũ cộng L.
+
+00:01:54.804 --> 00:01:59.689 line:98%,end
+Bẫy hai: P lớn hơn một giãn histogram; L chỉ dịch độ sáng.
+
+00:02:00.246 --> 00:02:05.964 line:98%,end
+Bẫy ba: FSHS kéo dải mức xám hiện có phủ kín từ không đến K trừ một.

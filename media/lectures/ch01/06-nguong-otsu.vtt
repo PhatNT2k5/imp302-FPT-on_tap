@@ -1,0 +1,94 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.288 line:98%,end
+Để đếm, ta cần ảnh nhị phân:
+
+00:00:03.288 --> 00:00:06.504 line:98%,end
+tế bào là một, nền là không.
+
+00:00:06.504 --> 00:00:11.736 line:98%,end
+Ảnh nhị phân mỗi pixel chỉ một bit, xử lý cực nhanh bằng phép logic.
+
+00:00:13.186 --> 00:00:18.696 line:98%,end
+Ngưỡng hóa so mỗi pixel với ngưỡng T: lớn hơn thì một, còn lại không.
+
+00:00:18.646 --> 00:00:23.646 line:98%,end
+Nhưng T chọn tay thì mỗi ảnh một kiểu, và kết quả rất nhạy với T.
+
+00:00:25.168 --> 00:00:30.743 line:98%,end
+Otsu thử mọi ngưỡng t. Mỗi t chia pixel thành hai lớp, nền và vật thể.
+
+00:00:31.306 --> 00:00:37.141 line:98%,end
+Ngưỡng tối ưu là ngưỡng làm phương sai giữa hai lớp lớn nhất: hai lớp vừa đông vừa xa nhau.
+
+00:00:38.608 --> 00:00:42.791 line:98%,end
+Mười bốn pixel trên tám mức xám: một đỉnh tối quanh mức hai,
+
+00:00:42.791 --> 00:00:44.743 line:98%,end
+một đỉnh sáng quanh mức sáu.
+
+00:00:45.298 --> 00:00:48.100 line:98%,end
+Thử đoán: ngưỡng nên đặt ở đâu?
+
+00:00:50.652 --> 00:00:55.532 line:98%,end
+Otsu cho ngưỡng bằng bốn: dưới bốn là nền, từ bốn trở lên là tế bào,
+
+00:00:55.532 --> 00:00:57.685 line:98%,end
+đúng thung lũng giữa hai đỉnh.
+
+00:00:59.154 --> 00:01:03.961 line:98%,end
+Ngưỡng hai: lớp tối quá ít, phương sai giữa lớp chỉ một phẩy năm.
+
+00:01:04.524 --> 00:01:07.807 line:98%,end
+Ngưỡng ba: tăng lên bốn phẩy không tám.
+
+00:01:08.358 --> 00:01:12.436 line:98%,end
+Ngưỡng bốn và năm: lớn nhất, bốn phẩy năm chín.
+
+00:01:12.386 --> 00:01:16.214 line:98%,end
+Hai ngưỡng bằng nhau vì mức bốn không có pixel nào.
+
+00:01:16.824 --> 00:01:19.391 line:98%,end
+Ngưỡng sáu và bảy giảm lại.
+
+00:01:19.341 --> 00:01:21.464 line:98%,end
+Vậy chọn ngưỡng bốn.
+
+00:01:22.974 --> 00:01:25.528 line:98%,end
+Ngưỡng tay phụ thuộc người chọn.
+
+00:01:26.088 --> 00:01:30.322 line:98%,end
+Otsu tự động, chọn theo phương sai giữa hai lớp lớn nhất.
+
+00:01:31.782 --> 00:01:37.761 line:98%,end
+Ưu điểm: giảm mạnh dung lượng, đơn giản hóa dữ liệu, làm nổi vật so với nền.
+
+00:01:37.711 --> 00:01:41.687 line:98%,end
+Nhược điểm: mất chi tiết gradient, nhạy với ngưỡng,
+
+00:01:41.687 --> 00:01:44.182 line:98%,end
+kém với ảnh sáng thay đổi từ từ.
+
+00:01:44.784 --> 00:01:49.552 line:98%,end
+Quét tài liệu thành đen trắng, tách tế bào, tách vật trên băng chuyền.
+
+00:01:51.006 --> 00:01:54.215 line:98%,end
+Ảnh nhị phân chỉ cho biết pixel nào là tế bào,
+
+00:01:54.215 --> 00:01:57.076 line:98%,end
+chưa cho biết pixel nào thuộc tế bào nào.
+
+00:01:57.026 --> 00:01:59.995 line:98%,end
+Video sau: gán nhãn vùng.
+
+00:02:01.500 --> 00:02:05.929 line:98%,end
+Bẫy một: Otsu chọn ngưỡng làm phương sai giữa hai lớp lớn nhất.
+
+00:02:05.879 --> 00:02:08.679 line:98%,end
+Nhớ chữ giữa và chữ lớn nhất.
+
+00:02:09.294 --> 00:02:13.059 line:98%,end
+Bẫy hai: pixel lớn hơn ngưỡng thì gán một.
+
+00:02:13.608 --> 00:02:18.558 line:98%,end
+Bẫy ba: ngưỡng hóa mất chi tiết gradient và rất nhạy với ngưỡng.

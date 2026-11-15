@@ -1,0 +1,82 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.812 line:98%,end
+Nhiễu đến từ nhiều nguồn: tán xạ bức xạ trước cảm biến,
+
+00:00:03.812 --> 00:00:08.266 line:98%,end
+nhiễu điện tử trong camera, nhiễu kênh truyền, lỗi bit sau số hóa.
+
+00:00:09.730 --> 00:00:14.229 line:98%,end
+Với một ảnh duy nhất, ta không phân biệt được phần nào là tế bào,
+
+00:00:14.229 --> 00:00:15.474 line:98%,end
+phần nào là nhiễu.
+
+00:00:16.936 --> 00:00:19.178 line:98%,end
+Chụp cùng cảnh nhiều lần.
+
+00:00:19.128 --> 00:00:23.359 line:98%,end
+Tín hiệu không đổi qua các lần chụp, còn nhiễu thì ngẫu nhiên.
+
+00:00:23.359 --> 00:00:27.800 line:98%,end
+Lấy trung bình từng pixel, nhiễu dương và âm triệt tiêu nhau.
+
+00:00:28.402 --> 00:00:33.118 line:98%,end
+Điều kiện: nhiễu có trung bình bằng không và độc lập giữa các lần chụp.
+
+00:00:33.068 --> 00:00:35.997 line:98%,end
+Càng nhiều ảnh, nhiễu càng giảm.
+
+00:00:37.504 --> 00:00:39.915 line:98%,end
+Pixel thật bằng một trăm.
+
+00:00:39.865 --> 00:00:45.817 line:98%,end
+Bốn lần chụp có nhiễu cộng tám, trừ sáu, cộng ba, trừ năm: ra một trăm lẻ tám,
+
+00:00:45.817 --> 00:00:49.175 line:98%,end
+chín mươi tư, một trăm lẻ ba, chín mươi lăm.
+
+00:00:49.786 --> 00:00:53.330 line:98%,end
+Thử đoán: trung bình bốn lần chụp là bao nhiêu?
+
+00:00:55.884 --> 00:00:58.894 line:98%,end
+Đúng một trăm: nhiễu đã triệt tiêu.
+
+00:00:58.844 --> 00:01:01.565 line:98%,end
+Với nhiễu thật, kết quả không khít như vậy,
+
+00:01:01.565 --> 00:01:04.287 line:98%,end
+nhưng càng nhiều ảnh càng gần giá trị thật.
+
+00:01:05.802 --> 00:01:08.851 line:98%,end
+Cộng và lấy trung bình: giảm nhiễu.
+
+00:01:09.420 --> 00:01:14.201 line:98%,end
+Trừ hai khung liên tiếp: phát hiện chuyển động, như tế bào đang bơi.
+
+00:01:15.566 --> 00:01:19.306 line:98%,end
+Chụp thiên văn, chụp đêm trên điện thoại ghép nhiều khung,
+
+00:01:19.306 --> 00:01:20.918 line:98%,end
+kính hiển vi huỳnh quang:
+
+00:01:20.918 --> 00:01:24.326 line:98%,end
+đều lấy trung bình nhiều ảnh để giảm nhiễu.
+
+00:01:25.776 --> 00:01:28.952 line:98%,end
+Nếu các lần chụp bị lệch hay xoay so với nhau,
+
+00:01:28.952 --> 00:01:31.299 line:98%,end
+trung bình từng pixel sẽ làm nhòe.
+
+00:01:31.249 --> 00:01:34.205 line:98%,end
+Phải dời ảnh về đúng vị trí trước.
+
+00:01:34.818 --> 00:01:37.854 line:98%,end
+Video sau: phép toán hình học.
+
+00:01:39.312 --> 00:01:44.548 line:98%,end
+Bẫy một: trung bình hóa cần nhiễu có trung bình không và độc lập giữa các lần chụp.
+
+00:01:45.114 --> 00:01:49.439 line:98%,end
+Bẫy hai: trừ hai khung liên tiếp dùng để phát hiện chuyển động.
