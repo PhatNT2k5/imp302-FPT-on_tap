@@ -1,0 +1,124 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.882 line:98%,end
+Ảnh in cần sát ảnh gốc hơn,
+
+00:00:01.882 --> 00:00:07.029 line:98%,end
+đặc biệt trên máy in độ phân giải thấp và trung bình, không để lộ hoa văn lặp.
+
+00:00:08.482 --> 00:00:12.751 line:98%,end
+Ordered dithering làm tròn từng pixel rồi bỏ phần sai số,
+
+00:00:12.751 --> 00:00:15.073 line:98%,end
+và ma trận lặp lại tạo hoa văn.
+
+00:00:16.528 --> 00:00:21.304 line:98%,end
+Giống trả tiền thiếu: lần này làm tròn thiếu bao nhiêu thì ghi nợ,
+
+00:00:21.304 --> 00:00:22.389 line:98%,end
+lần sau bù lại.
+
+00:00:22.954 --> 00:00:28.021 line:98%,end
+Mỗi pixel trước khi ngưỡng hóa được cộng thêm sai số các pixel trước chuyển sang,
+
+00:00:28.021 --> 00:00:31.836 line:98%,end
+gọi là đầu vào đã điều chỉnh u. Sai số e bằng u trừ đầu ra b.
+
+00:00:32.404 --> 00:00:38.087 line:98%,end
+Sai số chia cho các hàng xóm chưa xử lý theo trọng số của nhân khuếch tán h. Về lâu dài,
+
+00:00:38.087 --> 00:00:40.088 line:98%,end
+sai số trung bình xấp xỉ không.
+
+00:00:41.554 --> 00:00:46.361 line:98%,end
+Dùng nhân đơn giản nhất: toàn bộ sai số đẩy sang pixel bên phải.
+
+00:00:46.311 --> 00:00:52.053 line:98%,end
+Pixel một: u bằng một trăm, dưới ngưỡng, ra không, nợ cộng một trăm.
+
+00:00:52.660 --> 00:00:57.493 line:98%,end
+Thử đoán: pixel hai nhận món nợ đó, sẽ ra đen hay trắng?
+
+00:01:00.054 --> 00:01:05.264 line:98%,end
+Một trăm cộng một trăm bằng hai trăm, vượt ngưỡng, ra hai trăm năm mươi lăm.
+
+00:01:05.214 --> 00:01:08.405 line:98%,end
+Trả dư, sai số âm năm mươi lăm.
+
+00:01:09.024 --> 00:01:13.612 line:98%,end
+Pixel ba: một trăm trừ năm mươi lăm còn bốn mươi lăm, ra không,
+
+00:01:13.612 --> 00:01:15.432 line:98%,end
+sai số cộng bốn mươi lăm.
+
+00:01:16.002 --> 00:01:20.679 line:98%,end
+Pixel bốn: một trăm bốn mươi lăm, ra hai trăm năm mươi lăm.
+
+00:01:20.629 --> 00:01:25.399 line:98%,end
+Cả hàng đen, trắng, đen, trắng, trung bình khoảng một trăm hai mươi bảy,
+
+00:01:25.399 --> 00:01:28.116 line:98%,end
+trong khi ngưỡng hóa thường cho toàn đen.
+
+00:01:29.616 --> 00:01:35.152 line:98%,end
+Đi qua từng pixel theo thứ tự quét, cộng phần sai số đã nhận được giá trị u.
+
+00:01:35.706 --> 00:01:40.487 line:98%,end
+Ngưỡng hóa u để có đầu ra, tính sai số bằng u trừ đầu ra.
+
+00:01:41.052 --> 00:01:46.573 line:98%,end
+Chia sai số cho các hàng xóm chưa xử lý theo nhân h. Vì chỉ chia cho pixel chưa xử lý,
+
+00:01:46.573 --> 00:01:48.242 line:98%,end
+chỉ cần quét ảnh một lượt.
+
+00:01:49.698 --> 00:01:54.579 line:98%,end
+Ordered dithering so với ma trận ngưỡng cố định, mỗi pixel độc lập,
+
+00:01:54.579 --> 00:01:55.599 line:98%,end
+đơn giản nhất.
+
+00:01:56.148 --> 00:01:59.585 line:98%,end
+Error diffusion ngưỡng hóa rồi khuếch tán sai số,
+
+00:01:59.585 --> 00:02:03.233 line:98%,end
+pixel sau phụ thuộc pixel trước, chất lượng cao hơn.
+
+00:02:03.798 --> 00:02:08.474 line:98%,end
+Kỹ thuật tối ưu hóa tìm trực tiếp ảnh halftone làm nhỏ nhất tiêu chí méo,
+
+00:02:08.474 --> 00:02:10.011 line:98%,end
+tốt nhất nhưng tốn nhất.
+
+00:02:11.484 --> 00:02:16.004 line:98%,end
+Error diffusion phổ biến trong máy in phun và khi giảm số màu của ảnh,
+
+00:02:16.004 --> 00:02:19.038 line:98%,end
+nhờ cho chất lượng cao mà không lộ hoa văn lặp.
+
+00:02:20.490 --> 00:02:23.005 line:98%,end
+Ta mới xử lý ảnh xám.
+
+00:02:22.955 --> 00:02:25.667 line:98%,end
+Ảnh màu hai mươi bốn bit có hàng triệu màu,
+
+00:02:25.667 --> 00:02:28.567 line:98%,end
+nhưng màn hình chỉ hiển thị được vài trăm màu.
+
+00:02:28.567 --> 00:02:30.546 line:98%,end
+Chọn những màu nào?
+
+00:02:31.164 --> 00:02:35.424 line:98%,end
+Video sau: lượng tử hóa màu và median cut.
+
+00:02:36.882 --> 00:02:41.650 line:98%,end
+Bẫy một: sai số bằng đầu vào đã điều chỉnh trừ đầu ra nhị phân.
+
+00:02:42.204 --> 00:02:47.362 line:98%,end
+Bẫy hai: sai số chỉ chia cho hàng xóm chưa xử lý, theo nhân h.
+
+00:02:47.934 --> 00:02:53.755 line:98%,end
+Bẫy ba: độ phức tạp tăng dần là ordered dithering, error diffusion,
+
+00:02:53.755 --> 00:02:55.058 line:98%,end
+rồi tối ưu hóa.

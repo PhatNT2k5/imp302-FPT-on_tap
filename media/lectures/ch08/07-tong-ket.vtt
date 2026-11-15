@@ -1,0 +1,40 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.355 line:98%,end
+Nhìn lại bức chân dung.
+
+00:00:02.305 --> 00:00:08.128 line:98%,end
+Ordered dithering in xám bằng ma trận ngưỡng, error diffusion giữ và bù sai số,
+
+00:00:08.128 --> 00:00:11.003 line:98%,end
+median cut chọn bảng màu theo số pixel.
+
+00:00:11.614 --> 00:00:14.553 line:98%,end
+Minkowski chấm bằng sai số từng pixel,
+
+00:00:14.553 --> 00:00:20.122 line:98%,end
+mắt người cho ta các đặc tính CSF và che lấp, và SSIM chấm theo độ chói,
+
+00:00:20.122 --> 00:00:21.746 line:98%,end
+tương phản, cấu trúc.
+
+00:00:23.212 --> 00:00:26.508 line:98%,end
+Một: halftoning là K bằng hai.
+
+00:00:27.070 --> 00:00:33.765 line:98%,end
+Hai: độ phức tạp tăng dần là ordered dithering, error diffusion, tối ưu hóa.
+
+00:00:34.336 --> 00:00:37.776 line:98%,end
+Ba: median cut cắt tại trung vị.
+
+00:00:38.338 --> 00:00:41.491 line:98%,end
+Bốn: CSF là thông dải.
+
+00:00:42.052 --> 00:00:46.885 line:98%,end
+Năm: SSIM gồm độ chói, tương phản và cấu trúc.
+
+00:00:48.346 --> 00:00:49.425 line:98%,end
+Sang chương chín,
+
+00:00:49.425 --> 00:00:54.754 line:98%,end
+ta bắt đầu phần hiểu ảnh với bài toán phân đoạn: chia ảnh thành các vùng có ý nghĩa.

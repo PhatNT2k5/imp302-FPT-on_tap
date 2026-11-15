@@ -1,0 +1,121 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.957 line:98%,end
+Ảnh chân dung màu có hai mươi bốn bit mỗi pixel, nhưng thiết bị chỉ có L bit,
+
+00:00:05.957 --> 00:00:07.251 line:98%,end
+tức hai mũ L màu.
+
+00:00:07.822 --> 00:00:10.351 line:98%,end
+Phải làm hai việc: thiết kế bảng màu,
+
+00:00:10.351 --> 00:00:13.631 line:98%,end
+và quyết định mỗi pixel dùng màu nào trong bảng.
+
+00:00:15.100 --> 00:00:19.034 line:98%,end
+Cách ngây thơ là chia đều dải màu thành các khoảng bằng nhau.
+
+00:00:18.984 --> 00:00:22.095 line:98%,end
+Nhưng ảnh chân dung chủ yếu là màu da và tóc,
+
+00:00:22.095 --> 00:00:25.482 line:98%,end
+nhiều khoảng màu chẳng có pixel nào, bị lãng phí.
+
+00:00:26.986 --> 00:00:33.980 line:98%,end
+Median cut thiết kế bảng màu theo nguyên tắc công bằng: mỗi màu trong bảng đại diện cho số pixel xấp xỉ bằng nhau.
+
+00:00:34.540 --> 00:00:39.698 line:98%,end
+Vùng màu nào nhiều pixel, như màu da, thì được chia nhiều màu hơn.
+
+00:00:41.170 --> 00:00:45.821 line:98%,end
+Tính histogram màu: ảnh hai mươi bốn bit có tới mười sáu triệu màu.
+
+00:00:46.372 --> 00:00:49.519 line:98%,end
+Tiền lượng tử xuống mười lăm bit, mỗi kênh năm bit,
+
+00:00:49.519 --> 00:00:52.481 line:98%,end
+còn ba mươi hai nghìn bảy trăm sáu mươi tám màu.
+
+00:00:53.038 --> 00:00:56.123 line:98%,end
+Tìm hộp chữ nhật bao khít mọi màu có trong ảnh,
+
+00:00:56.123 --> 00:01:01.243 line:98%,end
+cắt tại trung vị để mỗi nửa có khoảng nửa số pixel, rồi lặp đến khi đủ số màu.
+
+00:01:02.716 --> 00:01:08.798 line:98%,end
+Một kênh màu, tám pixel đã sắp xếp: mười, mười hai, hai mươi, hai mươi hai,
+
+00:01:08.798 --> 00:01:13.096 line:98%,end
+một trăm, một trăm mười, hai trăm, hai trăm hai mươi.
+
+00:01:13.654 --> 00:01:17.706 line:98%,end
+Thử đoán: lần cắt đầu tiên sẽ nằm ở giá trị nào?
+
+00:01:20.256 --> 00:01:25.519 line:98%,end
+Cắt tại trung vị, mỗi bên bốn pixel: giữa hai mươi hai và một trăm.
+
+00:01:25.469 --> 00:01:30.846 line:98%,end
+Không phải giữa dải giá trị, vì cắt theo số pixel chứ không theo khoảng giá trị.
+
+00:01:31.458 --> 00:01:35.523 line:98%,end
+Cắt lần hai, mỗi hộp chia đôi tại trung vị của nó.
+
+00:01:35.473 --> 00:01:38.493 line:98%,end
+Bốn hộp, mỗi hộp hai pixel.
+
+00:01:39.108 --> 00:01:44.541 line:98%,end
+Màu đại diện là trung bình mỗi hộp: mười một, hai mươi mốt, một trăm lẻ năm,
+
+00:01:44.541 --> 00:01:45.542 line:98%,end
+hai trăm mười.
+
+00:01:45.492 --> 00:01:48.748 line:98%,end
+Vùng tối nhiều pixel được hẳn hai màu.
+
+00:01:50.250 --> 00:01:55.239 line:98%,end
+Chia đều cắt theo khoảng giá trị, dễ phí màu cho vùng không có pixel.
+
+00:01:55.812 --> 00:02:00.918 line:98%,end
+Median cut cắt theo số pixel, dồn màu vào nơi ảnh thật sự dùng.
+
+00:02:00.868 --> 00:02:03.778 line:98%,end
+Sau đó mỗi pixel ánh xạ về màu gần nhất,
+
+00:02:03.778 --> 00:02:07.561 line:98%,end
+hoặc dùng error diffusion với bảng màu làm codebook.
+
+00:02:09.066 --> 00:02:12.440 line:98%,end
+Ảnh GIF chỉ có tối đa hai trăm năm mươi sáu màu,
+
+00:02:12.440 --> 00:02:16.868 line:98%,end
+nên phải chọn bảng màu; median cut là một cách cổ điển để chọn.
+
+00:02:18.336 --> 00:02:23.768 line:98%,end
+Dithering, error diffusion, median cut, cùng với nén ở chương năm,
+
+00:02:23.768 --> 00:02:25.825 line:98%,end
+đều làm ảnh khác ảnh gốc.
+
+00:02:25.775 --> 00:02:27.754 line:98%,end
+Ảnh nào tốt hơn?
+
+00:02:27.754 --> 00:02:30.176 line:98%,end
+Cần một con số để chấm.
+
+00:02:30.786 --> 00:02:35.020 line:98%,end
+Con số đầu tiên ai cũng nghĩ tới: so từng pixel.
+
+00:02:34.970 --> 00:02:37.756 line:98%,end
+Đó là độ đo Minkowski.
+
+00:02:39.264 --> 00:02:45.334 line:98%,end
+Bẫy một: median cut cắt tại trung vị theo số pixel, không phải giữa dải giá trị.
+
+00:02:45.882 --> 00:02:49.506 line:98%,end
+Bẫy hai: trước khi cắt, tiền lượng tử xuống mười lăm bit,
+
+00:02:49.506 --> 00:02:52.303 line:98%,end
+ba mươi hai nghìn bảy trăm sáu mươi tám màu.
+
+00:02:52.860 --> 00:02:57.875 line:98%,end
+Bẫy ba: mỗi màu trong bảng đại diện cho số pixel xấp xỉ bằng nhau.

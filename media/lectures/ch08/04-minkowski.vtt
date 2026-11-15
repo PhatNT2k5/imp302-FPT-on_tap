@@ -1,0 +1,88 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.245 line:98%,end
+Có ảnh chân dung gốc, coi là hoàn hảo, và vài ảnh đã qua xử lý.
+
+00:00:05.195 --> 00:00:08.620 line:98%,end
+Cần một con số cho biết mỗi ảnh lệch bao nhiêu.
+
+00:00:10.138 --> 00:00:13.955 line:98%,end
+Cách chắc chắn nhất là mời nhiều người xem và chấm điểm.
+
+00:00:13.905 --> 00:00:18.137 line:98%,end
+Nhưng tốn thời gian, tốn công, không làm tự động được.
+
+00:00:19.648 --> 00:00:24.982 line:98%,end
+Ý tưởng tự nhiên nhất: lấy độ chênh lệch tại từng pixel giữa ảnh gốc và ảnh méo,
+
+00:00:24.982 --> 00:00:26.916 line:98%,end
+rồi gộp lại thành một con số.
+
+00:00:28.366 --> 00:00:34.436 line:98%,end
+Lấy chênh lệch từng pixel, nâng lũy thừa p, cộng lại, rồi lấy căn bậc p.
+
+00:00:34.984 --> 00:00:38.059 line:98%,end
+p bằng một là tổng sai khác tuyệt đối.
+
+00:00:38.009 --> 00:00:42.814 line:98%,end
+p bằng hai gắn với sai số bình phương trung bình, MSE.
+
+00:00:42.814 --> 00:00:46.173 line:98%,end
+p càng lớn, lỗi lớn càng chi phối.
+
+00:00:47.686 --> 00:00:53.534 line:98%,end
+Ảnh gốc bốn pixel: một trăm, một trăm mười, một trăm, một trăm mười.
+
+00:00:53.484 --> 00:00:56.701 line:98%,end
+Ảnh méo sáng hơn mười ở mọi pixel.
+
+00:00:56.701 --> 00:00:59.201 line:98%,end
+Mỗi pixel chênh đúng mười.
+
+00:00:59.824 --> 00:01:04.123 line:98%,end
+Với p bằng một: cộng bốn lần mười, được bốn mươi.
+
+00:01:04.690 --> 00:01:08.820 line:98%,end
+Thử đoán: với p bằng hai, kết quả là bao nhiêu?
+
+00:01:11.388 --> 00:01:15.323 line:98%,end
+Bình phương mỗi chênh lệch được một trăm, cộng lại bốn trăm,
+
+00:01:15.323 --> 00:01:17.028 line:98%,end
+căn bậc hai được hai mươi.
+
+00:01:16.978 --> 00:01:21.496 line:98%,end
+Còn MSE chia bốn trăm cho bốn pixel, bằng một trăm.
+
+00:01:23.010 --> 00:01:26.424 line:98%,end
+Người chấm phản ánh đúng cảm nhận nhưng tốn kém.
+
+00:01:26.988 --> 00:01:32.537 line:98%,end
+Minkowski tự động, nhanh, đơn giản, nhưng coi mỗi pixel độc lập.
+
+00:01:34.002 --> 00:01:39.472 line:98%,end
+MSE và các độ đo dựa trên nó có mặt khắp nơi: làm hàm mất mát khi huấn luyện,
+
+00:01:39.472 --> 00:01:42.598 line:98%,end
+chấm điểm nén ảnh, so sánh bộ lọc khử nhiễu.
+
+00:01:44.064 --> 00:01:47.790 line:98%,end
+Slide hỏi: độ đo này có thật sự tốt không?
+
+00:01:47.740 --> 00:01:48.912 line:98%,end
+Không.
+
+00:01:48.912 --> 00:01:51.829 line:98%,end
+Nó không biết gì về cấu trúc ảnh.
+
+00:01:51.829 --> 00:01:56.112 line:98%,end
+Hai ảnh méo cùng sai số có thể trông khác nhau một trời một vực.
+
+00:01:56.730 --> 00:02:00.886 line:98%,end
+Muốn đo đúng, trước hết phải hiểu mắt người nhìn ảnh thế nào.
+
+00:02:02.352 --> 00:02:07.628 line:98%,end
+Bẫy một: Minkowski với p bằng hai gắn với sai số bình phương trung bình.
+
+00:02:08.178 --> 00:02:13.792 line:98%,end
+Bẫy hai: Minkowski không phản ánh tốt cảm nhận thị giác vì coi pixel độc lập.

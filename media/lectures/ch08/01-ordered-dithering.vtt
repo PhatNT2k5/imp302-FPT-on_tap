@@ -1,0 +1,121 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.399 line:98%,end
+Máy in laser chỉ có hai trạng thái: có mực hoặc không.
+
+00:00:04.349 --> 00:00:07.773 line:98%,end
+Bức chân dung có hai trăm năm mươi sáu mức xám.
+
+00:00:08.374 --> 00:00:13.839 line:98%,end
+Phát biểu trong slide: lượng tử mỗi pixel từ D mức về K mức, K nhỏ hơn D,
+
+00:00:13.839 --> 00:00:16.084 line:98%,end
+sao cho tiêu chí méo nhỏ nhất.
+
+00:00:16.034 --> 00:00:20.917 line:98%,end
+K bằng hai chính là halftoning, hai mức là không và D trừ một.
+
+00:00:22.320 --> 00:00:26.424 line:98%,end
+Cách đơn giản nhất là ngưỡng hóa ở một trăm hai mươi tám:
+
+00:00:26.424 --> 00:00:29.928 line:98%,end
+sáng hơn thì trắng, tối hơn thì đen.
+
+00:00:30.478 --> 00:00:33.931 line:98%,end
+Vùng má có mức xám một trăm sẽ thành đen kịt.
+
+00:00:33.881 --> 00:00:36.511 line:98%,end
+Mọi sắc độ trung gian biến mất.
+
+00:00:38.020 --> 00:00:42.801 line:98%,end
+Nhìn sát một bức ảnh trên báo giấy, chỉ có chấm mực đen trên nền trắng.
+
+00:00:42.751 --> 00:00:46.266 line:98%,end
+Nhìn từ xa, ta vẫn thấy đủ sắc xám.
+
+00:00:46.870 --> 00:00:51.429 line:98%,end
+Mắt hoạt động như bộ lọc thông thấp, tự lấy trung bình trên vùng nhỏ.
+
+00:00:51.379 --> 00:00:54.687 line:98%,end
+Nhiều chấm thì tối, ít chấm thì sáng.
+
+00:00:55.288 --> 00:00:59.318 line:98%,end
+Ordered dithering thay một ngưỡng duy nhất bằng một ma trận ngưỡng,
+
+00:00:59.318 --> 00:01:03.168 line:98%,end
+mỗi vị trí một ngưỡng riêng, lặp lại như lát gạch trên khắp ảnh.
+
+00:01:04.630 --> 00:01:07.939 line:98%,end
+Vùng bốn pixel, mức xám một trăm.
+
+00:01:08.488 --> 00:01:13.778 line:98%,end
+Ma trận ngưỡng: ba mươi hai, một trăm năm mươi chín, hai trăm hai mươi ba,
+
+00:01:13.778 --> 00:01:14.779 line:98%,end
+chín mươi sáu.
+
+00:01:15.346 --> 00:01:18.720 line:98%,end
+Thử đoán: có mấy pixel được bật sáng?
+
+00:01:21.276 --> 00:01:24.390 line:98%,end
+Một trăm lớn hơn ba mươi hai, bật.
+
+00:01:24.340 --> 00:01:27.322 line:98%,end
+Nhỏ hơn một trăm năm mươi chín, tắt.
+
+00:01:27.322 --> 00:01:30.382 line:98%,end
+Nhỏ hơn hai trăm hai mươi ba, tắt.
+
+00:01:30.382 --> 00:01:33.103 line:98%,end
+Lớn hơn chín mươi sáu, bật.
+
+00:01:33.103 --> 00:01:35.590 line:98%,end
+Hai trên bốn pixel sáng.
+
+00:01:36.198 --> 00:01:39.389 line:98%,end
+Nhìn từ xa mắt thấy khoảng một trăm hai mươi bảy,
+
+00:01:39.389 --> 00:01:41.864 line:98%,end
+gần một trăm hơn nhiều so với màu đen.
+
+00:01:41.814 --> 00:01:45.473 line:98%,end
+Vùng càng sáng, càng nhiều pixel vượt ngưỡng.
+
+00:01:46.980 --> 00:01:49.033 line:98%,end
+Ngưỡng hóa thường dùng một ngưỡng,
+
+00:01:49.033 --> 00:01:52.112 line:98%,end
+vùng xám trung gian thành đen hoặc trắng hoàn toàn.
+
+00:01:52.662 --> 00:01:57.820 line:98%,end
+Ordered dithering dùng ma trận ngưỡng, giữ được sắc độ khi nhìn từ xa.
+
+00:01:58.392 --> 00:02:02.326 line:98%,end
+Cả hai đều xử lý từng pixel độc lập, rất nhanh.
+
+00:02:03.798 --> 00:02:06.535 line:98%,end
+Máy in laser, máy in phun, báo in,
+
+00:02:06.535 --> 00:02:10.962 line:98%,end
+và màn hình ít màu đều dùng các biến thể của dithering.
+
+00:02:12.420 --> 00:02:16.576 line:98%,end
+Ordered dithering làm tròn rồi bỏ luôn phần sai số.
+
+00:02:16.526 --> 00:02:20.640 line:98%,end
+Ma trận lặp lại còn để lộ những hoa văn đều đặn trên ảnh.
+
+00:02:21.246 --> 00:02:25.480 line:98%,end
+Nếu giữ lại sai số và bù cho các pixel sau thì sao?
+
+00:02:25.430 --> 00:02:28.242 line:98%,end
+Đó là error diffusion.
+
+00:02:29.748 --> 00:02:35.427 line:98%,end
+Bẫy một: halftoning là trường hợp K bằng hai, hai mức không và D trừ một.
+
+00:02:35.982 --> 00:02:41.883 line:98%,end
+Bẫy hai: ordered dithering so mỗi pixel với ma trận ngưỡng cố định lặp tuần hoàn.
+
+00:02:42.432 --> 00:02:46.913 line:98%,end
+Bẫy ba: nhìn từ xa thấy xám vì mắt như bộ lọc thông thấp.

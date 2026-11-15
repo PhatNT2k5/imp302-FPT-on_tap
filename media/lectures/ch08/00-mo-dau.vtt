@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:05.039 line:98%,end
+Chương tám là hiển thị và đánh giá ảnh.
+
+00:00:05.039 --> 00:00:10.065 line:98%,end
+Ví dụ của cả chương: một bức ảnh chân dung hai trăm năm mươi sáu mức xám.
+
+00:00:10.678 --> 00:00:14.348 line:98%,end
+Ta cần in nó ra máy in laser chỉ có mực đen và giấy trắng,
+
+00:00:14.348 --> 00:00:17.005 line:98%,end
+hiển thị bản màu trên một màn hình ít màu,
+
+00:00:17.005 --> 00:00:20.042 line:98%,end
+rồi chấm điểm xem ảnh sau xử lý còn tốt đến đâu.
+
+00:00:20.608 --> 00:00:25.844 line:98%,end
+Thử nghĩ trước: máy in chỉ có mực đen, làm sao in ra được màu xám?
+
+00:00:29.310 --> 00:00:32.177 line:98%,end
+Phần một: hiển thị với ít mức.
+
+00:00:32.127 --> 00:00:38.377 line:98%,end
+Ordered dithering, error diffusion cho ảnh xám, và median cut cho ảnh màu.
+
+00:00:38.976 --> 00:00:41.309 line:98%,end
+Phần hai: chấm điểm.
+
+00:00:41.259 --> 00:00:46.754 line:98%,end
+Từ độ đo Minkowski, qua đặc tính mắt người, đến SSIM.
+
+00:00:47.370 --> 00:00:52.255 line:98%,end
+Mỗi phương pháp vá chỗ hụt của phương pháp trước, các bạn xem theo thứ tự.

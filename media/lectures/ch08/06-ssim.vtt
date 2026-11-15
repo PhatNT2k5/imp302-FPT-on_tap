@@ -1,0 +1,106 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.985 line:98%,end
+Mắt người nhạy với cấu trúc: cạnh, hoa văn, chi tiết khuôn mặt.
+
+00:00:04.935 --> 00:00:09.310 line:98%,end
+Ta cần độ đo chú ý đến cấu trúc chứ không chỉ cộng sai số.
+
+00:00:10.810 --> 00:00:16.281 line:98%,end
+Minkowski coi mỗi pixel độc lập, không biết pixel nào đi cùng pixel nào.
+
+00:00:17.752 --> 00:00:21.556 line:98%,end
+SSIM tách sự giống nhau thành ba câu hỏi.
+
+00:00:21.506 --> 00:00:24.813 line:98%,end
+Độ chói: hai ảnh sáng như nhau không?
+
+00:00:24.813 --> 00:00:26.962 line:98%,end
+Ước lượng bằng trung bình.
+
+00:00:27.586 --> 00:00:30.817 line:98%,end
+Tương phản: dao động mạnh như nhau không?
+
+00:00:30.767 --> 00:00:33.228 line:98%,end
+Ước lượng bằng độ lệch chuẩn.
+
+00:00:33.844 --> 00:00:37.293 line:98%,end
+Cấu trúc: sau khi trừ trung bình và chia độ lệch chuẩn,
+
+00:00:37.293 --> 00:00:39.927 line:98%,end
+hai tín hiệu có lên xuống cùng nhau không?
+
+00:00:41.386 --> 00:00:44.526 line:98%,end
+Ba thành phần nhân lại thành một chỉ số.
+
+00:00:45.076 --> 00:00:49.903 line:98%,end
+Thực tế SSIM tính cục bộ qua cửa sổ Gauss đối xứng tròn trượt trên ảnh,
+
+00:00:49.903 --> 00:00:53.711 line:98%,end
+tạo bản đồ chất lượng, rồi lấy trung bình làm điểm cuối.
+
+00:00:55.162 --> 00:01:00.125 line:98%,end
+Ảnh gốc là kết cấu sọc: một trăm, một trăm mười, lặp lại.
+
+00:01:00.075 --> 00:01:04.541 line:98%,end
+Méo cách một: cộng mười mọi pixel, ảnh chỉ sáng hơn.
+
+00:01:04.541 --> 00:01:09.255 line:98%,end
+Méo cách hai: cộng trừ xen kẽ, đảo sọc sáng thành tối.
+
+00:01:09.868 --> 00:01:15.365 line:98%,end
+Mỗi pixel đều lệch đúng mười, nên MSE của cả hai đều bằng một trăm.
+
+00:01:15.315 --> 00:01:18.778 line:98%,end
+Theo MSE, hai ảnh tệ như nhau.
+
+00:01:19.390 --> 00:01:23.806 line:98%,end
+Thử đoán: SSIM có cho hai ảnh này cùng điểm không?
+
+00:01:26.376 --> 00:01:31.326 line:98%,end
+Độ chói: ảnh một khoảng không phẩy chín chín sáu, ảnh hai bằng một.
+
+00:01:31.276 --> 00:01:33.984 line:98%,end
+Tương phản: cả hai bằng một.
+
+00:01:34.602 --> 00:01:40.061 line:98%,end
+Cấu trúc: ảnh một lên xuống cùng nhịp, bằng một; ảnh hai lên đúng lúc gốc xuống,
+
+00:01:40.061 --> 00:01:40.880 line:98%,end
+bằng âm một.
+
+00:01:41.436 --> 00:01:47.597 line:98%,end
+SSIM: ảnh một xấp xỉ một, gần hoàn hảo; ảnh hai âm một, tệ nhất.
+
+00:01:47.547 --> 00:01:53.784 line:98%,end
+Cùng MSE, nhưng SSIM phân biệt được ảnh chỉ sáng lên với ảnh bị phá cấu trúc.
+
+00:01:55.290 --> 00:01:59.563 line:98%,end
+MSE cộng sai số từng pixel, không biết cấu trúc.
+
+00:02:00.132 --> 00:02:06.085 line:98%,end
+SSIM so độ chói, tương phản và cấu trúc, khớp với cảm nhận của mắt hơn.
+
+00:02:07.554 --> 00:02:11.873 line:98%,end
+SSIM được dùng rộng rãi để chấm chất lượng ảnh và video nén,
+
+00:02:11.873 --> 00:02:15.759 line:98%,end
+đánh giá bộ khử nhiễu, phục hồi và siêu phân giải ảnh.
+
+00:02:17.208 --> 00:02:22.497 line:98%,end
+SSIM cần ảnh tham chiếu hoàn hảo và hai ảnh phải được đăng ký khớp nhau.
+
+00:02:22.447 --> 00:02:26.613 line:98%,end
+Ở các chương sau, ta chuyển từ làm đẹp ảnh sang hiểu ảnh.
+
+00:02:28.134 --> 00:02:34.229 line:98%,end
+Bẫy một: SSIM gồm độ chói đo bằng trung bình, tương phản đo bằng độ lệch chuẩn,
+
+00:02:34.229 --> 00:02:35.154 line:98%,end
+và cấu trúc.
+
+00:02:35.712 --> 00:02:42.277 line:98%,end
+Bẫy hai: SSIM tính cục bộ qua cửa sổ Gauss đối xứng tròn, rồi lấy trung bình.
+
+00:02:42.834 --> 00:02:47.458 line:98%,end
+Bẫy ba: cùng MSE chưa chắc cùng SSIM.

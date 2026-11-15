@@ -1,0 +1,58 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.493 line:98%,end
+Một độ đo cảm nhận phải tìm ra khác biệt giữa hai ảnh mà mắt người thật sự nhận thấy.
+
+00:00:05.443 --> 00:00:07.708 line:98%,end
+Vậy mắt nhạy với gì?
+
+00:00:09.226 --> 00:00:13.639 line:98%,end
+Hàm độ nhạy tương phản, CSF, mô tả đáp ứng tần số của mắt,
+
+00:00:13.639 --> 00:00:17.900 line:98%,end
+có dạng bộ lọc thông dải: nhạy nhất với chi tiết cỡ vừa.
+
+00:00:17.850 --> 00:00:20.832 line:98%,end
+Đo bằng ngưỡng nhìn thấy lưới sóng sin.
+
+00:00:21.436 --> 00:00:25.173 line:98%,end
+Thích nghi ánh sáng: mắt cảm nhận tương phản so với nền,
+
+00:00:25.173 --> 00:00:27.376 line:98%,end
+không cảm nhận độ sáng tuyệt đối.
+
+00:00:27.934 --> 00:00:31.464 line:98%,end
+Che lấp tương phản: nhiễu trên nền trời phẳng rất dễ thấy,
+
+00:00:31.464 --> 00:00:34.811 line:98%,end
+nhưng cùng lượng nhiễu trên bãi cỏ thì gần như vô hình.
+
+00:00:35.368 --> 00:00:36.491 line:98%,end
+Che lấp thời gian,
+
+00:00:36.491 --> 00:00:42.232 line:98%,end
+quan trọng với video: cảm nhận vật chuyển động phụ thuộc mắt có đang bám theo vật hay không.
+
+00:00:43.702 --> 00:00:48.229 line:98%,end
+Hiệu chỉnh: ảnh đến từ nhiều thiết bị, qua nhiều phép biến đổi,
+
+00:00:48.229 --> 00:00:50.097 line:98%,end
+phải quy về cùng thang đo.
+
+00:00:50.656 --> 00:00:53.861 line:98%,end
+Đăng ký: hai ảnh phải khớp từng điểm.
+
+00:00:53.811 --> 00:00:57.913 line:98%,end
+Lệch một pixel là mọi so sánh theo pixel vô nghĩa.
+
+00:00:58.522 --> 00:01:03.537 line:98%,end
+Mô hình hiển thị: mắt chỉ thấy những gì màn hình hay máy in tái tạo được.
+
+00:01:05.008 --> 00:01:08.325 line:98%,end
+Bẫy một: hàm độ nhạy tương phản có dạng thông dải,
+
+00:01:08.325 --> 00:01:10.713 line:98%,end
+không phải thông thấp hay thông cao.
+
+00:01:11.266 --> 00:01:16.463 line:98%,end
+Bẫy hai: ba điều kiện là hiệu chỉnh, đăng ký và mô hình hiển thị.
