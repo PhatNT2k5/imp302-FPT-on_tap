@@ -1,0 +1,55 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:04.401 line:98%,end
+Chương sáu là nén video.
+
+00:00:04.401 --> 00:00:07.748 line:98%,end
+Ví dụ của cả chương: phát trực tiếp một bản tin thời sự,
+
+00:00:07.748 --> 00:00:12.409 line:98%,end
+khung ba trăm năm mươi hai nhân hai trăm tám mươi tám, ba mươi khung mỗi giây.
+
+00:00:13.030 --> 00:00:16.391 line:98%,end
+Mỗi khung khoảng một trăm linh một nghìn pixel.
+
+00:00:16.341 --> 00:00:21.216 line:98%,end
+Mỗi macroblock gồm một khối độ chói mười sáu nhân mười sáu và hai khối màu tám nhân tám,
+
+00:00:21.216 --> 00:00:23.376 line:98%,end
+trung bình một phẩy năm byte mỗi pixel,
+
+00:00:23.376 --> 00:00:26.368 line:98%,end
+tức khoảng một trăm năm mươi hai nghìn byte mỗi khung.
+
+00:00:26.968 --> 00:00:27.838 line:98%,end
+Nhân tám bit,
+
+00:00:27.838 --> 00:00:32.790 line:98%,end
+nhân ba mươi khung mỗi giây: khoảng ba mươi sáu phẩy năm megabit mỗi giây.
+
+00:00:32.740 --> 00:00:37.207 line:98%,end
+Đường truyền chỉ một phẩy năm, nên phải nén khoảng hai mươi bốn lần.
+
+00:00:37.810 --> 00:00:42.057 line:98%,end
+Thử nghĩ: nén không mất dữ liệu chỉ được hai đến ba lần.
+
+00:00:42.007 --> 00:00:45.796 line:98%,end
+Video còn dư thừa ở đâu mà ảnh tĩnh không có?
+
+00:00:49.296 --> 00:00:53.569 line:98%,end
+Câu trả lời là thời gian: các khung liên tiếp rất giống nhau.
+
+00:00:53.519 --> 00:00:57.481 line:98%,end
+Ta đi từ gửi phần sai khác, đến bù chuyển động,
+
+00:00:57.481 --> 00:01:00.264 line:98%,end
+rồi vòng lặp của bộ mã hóa H.261.
+
+00:01:00.882 --> 00:01:09.816 line:98%,end
+Sau đó là MPEG-1 với khung I, P, B, mã hóa khả mở MC-EZBC, và chuyển mã video.
+
+00:01:10.380 --> 00:01:14.796 line:98%,end
+Mỗi bước vá chỗ hụt của bước trước, các bạn xem theo thứ tự.

@@ -1,0 +1,106 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.412 line:98%,end
+Khi vật dịch đi vài pixel, trừ hai khung ở đúng vị trí cũ cho ra hiệu lớn,
+
+00:00:05.412 --> 00:00:06.560 line:98%,end
+mất hết lợi ích.
+
+00:00:08.026 --> 00:00:12.400 line:98%,end
+Sai khác khung luôn so pixel với pixel cùng vị trí ở khung trước,
+
+00:00:12.400 --> 00:00:14.083 line:98%,end
+không biết vật đã đi đâu.
+
+00:00:15.544 --> 00:00:20.650 line:98%,end
+Khi chuyển nhà, các bạn không mua lại đồ, chỉ ghi món nào dời đi đâu.
+
+00:00:20.600 --> 00:00:25.783 line:98%,end
+Với video: lấy khối này ở khung trước rồi dời sang phải ba pixel.
+
+00:00:26.386 --> 00:00:29.617 line:98%,end
+Lời chỉ dẫn đó là vector chuyển động.
+
+00:00:29.567 --> 00:00:36.195 line:98%,end
+Ước lượng chuyển động là đi tìm vector; bù chuyển động là dùng vector và khung trước để dựng khung dự đoán.
+
+00:00:36.796 --> 00:00:41.850 line:98%,end
+Giả định đằng sau: khác biệt giữa các khung chủ yếu do vật thể cứng chuyển động.
+
+00:00:43.306 --> 00:00:46.446 line:98%,end
+Bên trái là khung tham chiếu bốn nhân bốn.
+
+00:00:46.396 --> 00:00:51.839 line:98%,end
+Ở giữa là một khối hai nhân hai của khung hiện tại, nằm ở cột ba, bốn.
+
+00:00:51.839 --> 00:00:55.341 line:98%,end
+Tìm vùng nào trong khung tham chiếu giống khối này nhất.
+
+00:00:55.948 --> 00:01:00.677 line:98%,end
+Thử vùng đúng vị trí cũ: tám, hai, chín, hai.
+
+00:01:00.627 --> 00:01:04.338 line:98%,end
+Tổng sai khác tuyệt đối là mười bảy, khá lớn.
+
+00:01:04.942 --> 00:01:08.564 line:98%,end
+Thử đoán: vùng nào trong khung tham chiếu khớp nhất?
+
+00:01:11.136 --> 00:01:16.150 line:98%,end
+Vùng lệch trái một pixel, được tô sáng, chín, tám, bảy, chín,
+
+00:01:16.150 --> 00:01:18.287 line:98%,end
+cho tổng sai khác chỉ một.
+
+00:01:18.237 --> 00:01:21.765 line:98%,end
+Hai vị trí khác cho mười tám và hai mươi hai.
+
+00:01:21.765 --> 00:01:26.531 line:98%,end
+Vậy vật đã đi sang phải một pixel: đó là vector chuyển động.
+
+00:01:27.138 --> 00:01:32.453 line:98%,end
+Lấy khối hiện tại trừ vùng tìm được, phần dư là ba số không và một số một.
+
+00:01:32.403 --> 00:01:36.244 line:98%,end
+Chỉ cần gửi vector và phần dư gần như toàn không.
+
+00:01:37.752 --> 00:01:43.184 line:98%,end
+Sai khác thô so cùng vị trí; bù chuyển động so với vị trí vật đã dịch tới.
+
+00:01:43.746 --> 00:01:49.204 line:98%,end
+Trong ví dụ, cùng vị trí cho tổng sai khác mười bảy, sau khi bù chỉ còn một.
+
+00:01:49.764 --> 00:01:52.668 line:98%,end
+Đổi lại phải gửi thêm vector chuyển động,
+
+00:01:52.668 --> 00:01:55.430 line:98%,end
+và tìm kiếm tốn tính toán ở bên mã hóa.
+
+00:01:56.898 --> 00:02:02.461 line:98%,end
+Mọi chuẩn nén video phổ biến, từ H.261, MPEG đến các chuẩn hiện đại,
+
+00:02:02.461 --> 00:02:05.897 line:98%,end
+đều xây quanh ước lượng và bù chuyển động.
+
+00:02:07.368 --> 00:02:11.823 line:98%,end
+Bên giải mã chỉ có khung đã bị lượng tử, không có khung gốc.
+
+00:02:11.773 --> 00:02:16.422 line:98%,end
+Nếu bên mã hóa dự đoán từ khung gốc, hai bên sẽ lệch nhau dần.
+
+00:02:17.034 --> 00:02:20.330 line:98%,end
+Cần một vòng lặp hoàn chỉnh trong bộ mã hóa.
+
+00:02:20.280 --> 00:02:24.252 line:98%,end
+Video sau: hệ thống H.261.
+
+00:02:25.752 --> 00:02:32.434 line:98%,end
+Bẫy một: ước lượng chuyển động là đi tìm vector; bù chuyển động là dùng vector để dựng khung dự đoán.
+
+00:02:32.384 --> 00:02:34.923 line:98%,end
+Đề hay đảo hai định nghĩa.
+
+00:02:35.538 --> 00:02:40.436 line:98%,end
+Bẫy hai: giả định là khác biệt giữa các khung do vật thể cứng chuyển động.
+
+00:02:41.004 --> 00:02:45.615 line:98%,end
+Bẫy ba: bộ mã hóa gửi vector chuyển động và phần dư.

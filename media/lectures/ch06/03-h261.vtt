@@ -1,0 +1,106 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.297 line:98%,end
+Ta có dự đoán bằng bù chuyển động, có biến đổi và lượng tử từ chương năm.
+
+00:00:05.247 --> 00:00:09.857 line:98%,end
+Cần ghép thành một hệ thống mà bên mã hóa và giải mã luôn đồng bộ.
+
+00:00:11.362 --> 00:00:16.975 line:98%,end
+Nếu dự đoán từ khung gốc, sai số lượng tử ở bên giải mã cộng dồn qua từng khung,
+
+00:00:16.975 --> 00:00:17.888 line:98%,end
+ảnh trôi dần.
+
+00:00:19.360 --> 00:00:24.141 line:98%,end
+Bộ mã hóa tự giải mã lại khung vừa mã hóa và lưu làm tham chiếu.
+
+00:00:24.091 --> 00:00:28.127 line:98%,end
+Như vậy nó dự đoán từ đúng khung mà bên giải mã có.
+
+00:00:29.638 --> 00:00:32.980 line:98%,end
+Khối dự đoán: dự đoán trong khung dùng pixel lân cận,
+
+00:00:32.980 --> 00:00:36.385 line:98%,end
+dự đoán liên khung dùng khung khác qua bù chuyển động.
+
+00:00:36.952 --> 00:00:43.660 line:98%,end
+Phần sai khác đi qua biến đổi: một phép biến đổi tuyến tính đơn vị hai chiều dồn năng lượng vào ít hệ số.
+
+00:00:44.218 --> 00:00:48.921 line:98%,end
+Rồi lượng tử hóa, mã entropy, và định dạng dòng bit.
+
+00:00:50.392 --> 00:00:54.782 line:98%,end
+Với khung I, không dự đoán gì, nén như ảnh tĩnh.
+
+00:00:55.354 --> 00:00:58.928 line:98%,end
+Với các khung khác, ước lượng chuyển động để có vector,
+
+00:00:58.928 --> 00:01:01.593 line:98%,end
+rồi bù chuyển động để dựng khung dự đoán.
+
+00:01:02.164 --> 00:01:08.078 line:98%,end
+Phần sai khác được biến đổi, lượng tử; hệ số và vector được mã entropy.
+
+00:01:08.638 --> 00:01:13.276 line:98%,end
+Thử đoán: dòng cuối cùng làm gì, và vì sao không được bỏ?
+
+00:01:15.840 --> 00:01:20.901 line:98%,end
+Giải lượng tử, biến đổi ngược, cộng khung dự đoán để có khung tái tạo,
+
+00:01:20.901 --> 00:01:22.274 line:98%,end
+lưu làm tham chiếu.
+
+00:01:22.224 --> 00:01:26.092 line:98%,end
+Đó là vai trò của toán tử ngược và bộ nhớ khung.
+
+00:01:27.606 --> 00:01:28.732 line:98%,end
+Ngoài tỉ lệ nén,
+
+00:01:28.732 --> 00:01:34.079 line:98%,end
+phải cân nhắc đánh đổi giữa tốc độ bit và độ méo: càng ít bit hình càng xấu.
+
+00:01:34.632 --> 00:01:39.847 line:98%,end
+Độ phức tạp và tính đối xứng: phim mã hóa một lần, giải mã hàng triệu lần,
+
+00:01:39.847 --> 00:01:43.371 line:98%,end
+nên bộ mã hóa được phép nặng, bộ giải mã phải nhẹ.
+
+00:01:43.938 --> 00:01:49.402 line:98%,end
+Còn có đặc tính kênh truyền, thống kê nguồn video, tốc độ cố định hay biến đổi,
+
+00:01:49.402 --> 00:01:50.854 line:98%,end
+và tương thích chuẩn.
+
+00:01:52.320 --> 00:01:56.059 line:98%,end
+Dự đoán từ khung gốc: bên giải mã lệch dần.
+
+00:01:56.610 --> 00:02:01.755 line:98%,end
+Dự đoán từ khung tái tạo: hai bên dùng đúng một tham chiếu, không trôi.
+
+00:02:03.216 --> 00:02:08.661 line:98%,end
+H.261 là chuẩn nền tảng cho hội nghị truyền hình qua đường điện thoại số.
+
+00:02:08.611 --> 00:02:11.723 line:98%,end
+Các chuẩn sau đều kế thừa vòng lặp này.
+
+00:02:13.230 --> 00:02:18.740 line:98%,end
+H.261 chỉ dự đoán tiến từ khung trước, với vector nguyên pixel.
+
+00:02:18.690 --> 00:02:21.194 line:98%,end
+Khi một người bước ra từ sau cánh cửa,
+
+00:02:21.194 --> 00:02:24.159 line:98%,end
+vùng mới lộ ra không hề có trong khung trước.
+
+00:02:24.768 --> 00:02:28.572 line:98%,end
+MPEG-1 cho phép nhìn cả về tương lai.
+
+00:02:30.030 --> 00:02:36.712 line:98%,end
+Bẫy một: bộ mã hóa có toán tử ngược và bộ nhớ khung để tự tái tạo đúng khung mà bộ giải mã có.
+
+00:02:37.272 --> 00:02:41.714 line:98%,end
+Bẫy hai: khung I không dự đoán, nén như ảnh tĩnh.
+
+00:02:42.282 --> 00:02:47.076 line:98%,end
+Bẫy ba: tính đối xứng so độ phức tạp giữa mã hóa và giải mã.

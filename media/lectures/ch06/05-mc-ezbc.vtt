@@ -1,0 +1,82 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.402 line:98%,end
+Cùng bản tin, người xem trên điện thoại mạng yếu, người xem trên TV lớn.
+
+00:00:05.352 --> 00:00:08.503 line:98%,end
+Mã hóa riêng cho từng người thì quá tốn.
+
+00:00:10.018 --> 00:00:14.004 line:98%,end
+Dòng bit MPEG được tối ưu cho một tốc độ.
+
+00:00:13.954 --> 00:00:16.546 line:98%,end
+Cắt bớt thì không giải mã được.
+
+00:00:18.064 --> 00:00:20.452 line:98%,end
+Mã hóa khả mở: chỉ mã hóa một lần,
+
+00:00:20.452 --> 00:00:24.736 line:98%,end
+dòng bit có thể bị cắt bớt mà vẫn giải mã được, ở chất lượng,
+
+00:00:24.736 --> 00:00:27.545 line:98%,end
+độ phân giải hoặc tốc độ khung thấp hơn.
+
+00:00:28.114 --> 00:00:32.681 line:98%,end
+Như một bài báo viết theo kiểu tháp ngược: đọc đoạn đầu đã nắm ý chính,
+
+00:00:32.681 --> 00:00:34.418 line:98%,end
+đọc thêm thì thêm chi tiết.
+
+00:00:35.872 --> 00:00:41.226 line:98%,end
+MC-EZBC là họ bộ mã băng con và wavelet có bù chuyển động.
+
+00:00:41.176 --> 00:00:45.629 line:98%,end
+Nó vẫn khai thác tương quan thời gian, nhưng khả mở hoàn toàn.
+
+00:00:46.234 --> 00:00:51.352 line:98%,end
+Khả mở theo ba chiều: chất lượng hay tốc độ bit, độ phân giải không gian,
+
+00:00:51.352 --> 00:00:52.825 line:98%,end
+và tốc độ khung hình.
+
+00:00:53.380 --> 00:00:56.766 line:98%,end
+Cốt lõi là bộ lọc thời gian có bù chuyển động, MCTF,
+
+00:00:56.766 --> 00:00:59.241 line:98%,end
+thường cài bằng kỹ thuật nâng lifting,
+
+00:00:59.241 --> 00:01:02.757 line:98%,end
+tạo hệ số thông thấp và thông cao theo trục thời gian.
+
+00:01:04.210 --> 00:01:07.819 line:98%,end
+MPEG cho một dòng bit ở một tốc độ.
+
+00:01:08.380 --> 00:01:14.541 line:98%,end
+MC-EZBC cho một dòng bit cắt được theo chất lượng, độ phân giải và tốc độ khung.
+
+00:01:15.994 --> 00:01:18.468 line:98%,end
+Phát video tới nhiều thiết bị cùng lúc,
+
+00:01:18.468 --> 00:01:22.845 line:98%,end
+mạng có băng thông thay đổi: bên nhận lấy phần dòng bit vừa với mình.
+
+00:01:24.304 --> 00:01:28.694 line:98%,end
+Phần lớn video đã có sẵn được nén bằng chuẩn không khả mở.
+
+00:01:28.644 --> 00:01:32.329 line:98%,end
+Muốn đưa chúng tới thiết bị khác, phải đổi dạng.
+
+00:01:32.938 --> 00:01:35.661 line:98%,end
+Video sau: chuyển mã.
+
+00:01:37.120 --> 00:01:40.904 line:98%,end
+Bẫy một: MC-EZBC khả mở hoàn toàn theo chất lượng,
+
+00:01:40.904 --> 00:01:44.310 line:98%,end
+độ phân giải không gian và tốc độ khung hình.
+
+00:01:44.866 --> 00:01:48.809 line:98%,end
+Bẫy hai: MCTF thường được cài bằng kỹ thuật nâng lifting,
+
+00:01:48.809 --> 00:01:52.199 line:98%,end
+cho hệ số thông thấp và thông cao theo thời gian.

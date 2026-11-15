@@ -1,0 +1,67 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.422 line:98%,end
+Bản tin đã nén chất lượng cao cho truyền hình.
+
+00:00:03.372 --> 00:00:05.558 line:98%,end
+Giờ cần một bản nhẹ cho điện thoại,
+
+00:00:05.558 --> 00:00:08.867 line:98%,end
+hoặc một bản theo chuẩn khác mà thiết bị cũ đọc được.
+
+00:00:10.378 --> 00:00:14.612 line:98%,end
+Cách thô là tìm lại video gốc chưa nén rồi mã hóa lại.
+
+00:00:14.562 --> 00:00:19.380 line:98%,end
+Nhưng thường không còn video gốc, và mã hóa lại toàn bộ rất tốn.
+
+00:00:20.896 --> 00:00:24.110 line:98%,end
+Chuyển mã là đổi một video đã nén sang dạng nén khác,
+
+00:00:24.110 --> 00:00:28.294 line:98%,end
+như phát hành thêm bản nhẹ cho điện thoại mà không cần quay lại phim.
+
+00:00:29.758 --> 00:00:32.599 line:98%,end
+Giảm tốc độ bit cho hợp băng thông.
+
+00:00:33.160 --> 00:00:37.329 line:98%,end
+Giảm độ phân giải không gian hoặc tốc độ khung cho hợp thiết bị.
+
+00:00:37.882 --> 00:00:40.605 line:98%,end
+Chuyển đổi giữa các chuẩn mã hóa.
+
+00:00:40.555 --> 00:00:46.415 line:98%,end
+Chuyển mã dị thể là khi chuẩn vào khác chuẩn ra: cho phép truy cập đa phương tiện trên mọi thiết bị,
+
+00:00:46.415 --> 00:00:49.462 line:98%,end
+nhưng cần một vòng giải mã và một vòng mã hóa riêng.
+
+00:00:50.968 --> 00:00:54.616 line:98%,end
+Mã hóa khả mở chuẩn bị trước một dòng bit cắt được.
+
+00:00:55.186 --> 00:01:00.240 line:98%,end
+Chuyển mã xử lý sau, với video đã nén sẵn ở bất kỳ chuẩn nào.
+
+00:01:01.696 --> 00:01:09.094 line:98%,end
+Các nền tảng video tạo nhiều phiên bản độ phân giải cho cùng một video để người xem chọn hoặc tự động chuyển theo tốc độ mạng.
+
+00:01:10.558 --> 00:01:15.742 line:98%,end
+Mọi khối từ ước lượng chuyển động đến mã entropy đều do con người thiết kế.
+
+00:01:15.692 --> 00:01:16.449 line:98%,end
+Cuối chương,
+
+00:01:16.449 --> 00:01:20.928 line:98%,end
+slide giới thiệu hướng dùng mạng nơ-ron sâu thay hoặc bổ trợ từng khối,
+
+00:01:20.928 --> 00:01:23.388 line:98%,end
+tiến tới nén video học từ đầu đến cuối.
+
+00:01:24.892 --> 00:01:27.636 line:98%,end
+Bẫy một: ba ứng dụng là giảm tốc độ bit,
+
+00:01:27.636 --> 00:01:32.095 line:98%,end
+giảm độ phân giải không gian hoặc thời gian, và đổi chuẩn mã hóa.
+
+00:01:32.662 --> 00:01:37.521 line:98%,end
+Bẫy hai: chuyển mã dị thể là khi chuẩn đầu vào khác chuẩn đầu ra.

@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.628 line:98%,end
+Nhìn lại bản tin thời sự.
+
+00:00:02.578 --> 00:00:05.483 line:98%,end
+Video bắt buộc nén khoảng hai mươi bốn lần,
+
+00:00:05.483 --> 00:00:07.982 line:98%,end
+nên phải khai thác dư thừa thời gian.
+
+00:00:08.590 --> 00:00:12.268 line:98%,end
+Gửi sai khác khung, rồi bù chuyển động bằng vector,
+
+00:00:12.268 --> 00:00:17.173 line:98%,end
+ghép thành vòng lặp H.261 với bộ mã hóa tự tái tạo khung tham chiếu.
+
+00:00:17.728 --> 00:00:23.040 line:98%,end
+MPEG-1 thêm khung B và nửa pixel, MPEG-2 cho chất lượng cao,
+
+00:00:23.040 --> 00:00:28.707 line:98%,end
+MC-EZBC cho dòng bit khả mở, và chuyển mã đổi dạng video đã nén.
+
+00:00:30.166 --> 00:00:33.306 line:98%,end
+Một: khung I cho truy cập ngẫu nhiên.
+
+00:00:33.880 --> 00:00:38.765 line:98%,end
+Hai: khung B tham chiếu I hoặc P ở cả quá khứ và tương lai.
+
+00:00:39.322 --> 00:00:43.504 line:98%,end
+Ba: ước lượng tìm vector, bù dùng vector.
+
+00:00:44.068 --> 00:00:48.107 line:98%,end
+Bốn: MPEG-1 chính xác nửa pixel.
+
+00:00:48.670 --> 00:00:52.969 line:98%,end
+Năm: khung D chỉ có DC, để tìm kiếm nhanh.
+
+00:00:54.436 --> 00:00:58.858 line:98%,end
+Chương bảy quay về điểm xuất phát: ảnh và video được thu nhận,
+
+00:00:58.858 --> 00:01:00.284 line:98%,end
+lấy mẫu như thế nào.

@@ -1,0 +1,73 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.552 line:98%,end
+Trong bản tin, phông nền phía sau đứng yên suốt mấy phút,
+
+00:00:03.552 --> 00:00:06.157 line:98%,end
+chỉ có khuôn mặt người dẫn cử động chút ít.
+
+00:00:06.107 --> 00:00:10.365 line:98%,end
+Gửi lại toàn bộ phông nền ba mươi lần mỗi giây là lãng phí.
+
+00:00:11.866 --> 00:00:16.165 line:98%,end
+Cách đầu tiên là nén mỗi khung như một ảnh JPEG riêng.
+
+00:00:16.115 --> 00:00:20.256 line:98%,end
+Nhưng làm vậy chỉ khai thác dư thừa không gian bên trong mỗi khung.
+
+00:00:20.860 --> 00:00:25.081 line:98%,end
+Tương quan thời gian giữa các khung liên tiếp hoàn toàn bị bỏ qua.
+
+00:00:26.530 --> 00:00:28.980 line:98%,end
+Bên nhận đã có khung trước.
+
+00:00:28.930 --> 00:00:33.279 line:98%,end
+Vậy chỉ cần gửi phần khác biệt giữa khung hiện tại và khung trước.
+
+00:00:33.892 --> 00:00:38.035 line:98%,end
+Phần khác biệt phần lớn là số không, nên nén rất tốt.
+
+00:00:39.490 --> 00:00:44.427 line:98%,end
+Khung trước: phông nền mười, người dẫn ở giữa có giá trị năm mươi.
+
+00:00:44.980 --> 00:00:50.229 line:98%,end
+Thử đoán: khung sau người dẫn chỉ hơi đổi sắc mặt, khung hiệu sẽ trông thế nào?
+
+00:00:52.782 --> 00:00:57.315 line:98%,end
+Gần như toàn số không, chỉ ô người dẫn khác đi hai đơn vị.
+
+00:00:57.265 --> 00:01:00.937 line:98%,end
+Chỉ cần gửi vài con số nhỏ thay vì cả khung.
+
+00:01:02.460 --> 00:01:05.717 line:98%,end
+Nén từng khung chỉ dùng dư thừa không gian.
+
+00:01:06.270 --> 00:01:11.480 line:98%,end
+Gửi sai khác dùng thêm dư thừa thời gian, rất hiệu quả khi cảnh ít thay đổi.
+
+00:01:12.948 --> 00:01:17.968 line:98%,end
+Gọi video, chia sẻ màn hình, camera giám sát: cảnh phần lớn đứng yên,
+
+00:01:17.968 --> 00:01:21.023 line:98%,end
+nên gửi phần thay đổi tiết kiệm cực nhiều.
+
+00:01:22.482 --> 00:01:27.536 line:98%,end
+Khi người dẫn quay đầu hay camera lia, mọi thứ dịch đi vài pixel.
+
+00:01:27.486 --> 00:01:30.820 line:98%,end
+Hiệu giữa hai khung lại lớn ở khắp các cạnh.
+
+00:01:31.428 --> 00:01:36.105 line:98%,end
+Thay vì trừ ở đúng vị trí cũ, hãy tìm xem vật đã dịch đi đâu.
+
+00:01:36.055 --> 00:01:38.307 line:98%,end
+Đó là bù chuyển động.
+
+00:01:39.810 --> 00:01:41.609 line:98%,end
+Bẫy một: so với ảnh tĩnh,
+
+00:01:41.609 --> 00:01:45.711 line:98%,end
+video có thêm dư thừa thời gian giữa các khung liên tiếp.
+
+00:01:46.260 --> 00:01:51.562 line:98%,end
+Bẫy hai: khung hiệu nén tốt vì phần lớn là số không khi cảnh ít thay đổi.
