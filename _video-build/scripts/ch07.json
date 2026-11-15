@@ -1,231 +1,1457 @@
 {
-  "title": "Thu nhận ảnh",
-  "scenes": [
+ "title": "Thu nhận ảnh",
+ "example": "Điện thoại chụp một chiếc áo sơ mi kẻ sọc: thu nhỏ để gửi tin nhắn, phóng to để in, và đổi video phim 24 lên 60 khung/giây",
+ "stories": [
+  {
+   "id": "mo-dau",
+   "title": "Mở đầu: từ thế giới liên tục đến mảng số",
+   "kind": "intro",
+   "scenes": [
     {
-      "kind": "intro",
-      "title": "Giới thiệu chương",
-      "points": [
-        {"text": "Mở đầu", "say": "Chào các bạn, chương bảy là thu nhận ảnh và video. Sau sáu chương xử lý và nén, bây giờ ta quay lại câu hỏi gốc: một cảnh thật, liên tục, trở thành một mảng số như thế nào, và ta mất gì trong lúc đó."},
-        {"text": "Lộ trình", "say": "Chương này xoay quanh ba từ khóa: lấy mẫu, lượng tử hóa và nội suy. Ta sẽ hiểu vì sao có hiện tượng răng cưa, tính tay một ví dụ giảm mẫu, một ví dụ tăng mẫu, một ví dụ nội suy song tuyến, rồi mở rộng sang video với chuyển đổi tốc độ khung hình."}
-      ]
-    },
-    {
-      "kicker": "Recap",
-      "title": "Những gì ta đã có từ các chương trước",
-      "points": [
-        {"text": "Chương 1: nội suy nearest neighbor khi xoay, phóng ảnh", "say": "Ba thứ cần nhặt lại. Một, ở chương một, khi xoay hay phóng ảnh, tọa độ mới thường bị lẻ và ta đã dùng nội suy lân cận gần nhất để đưa về lưới pixel. Hôm nay ta hiểu sâu hơn và học thêm nội suy song tuyến."},
-        {"text": "Chương 2: lọc thông thấp bỏ tần số cao; tích chập ↔ nhân trong miền tần số", "say": "Hai, ở chương hai, bộ lọc thông thấp loại bỏ các tần số cao, tức là các chi tiết thay đổi nhanh. Hôm nay bộ lọc đó có một nhiệm vụ mới: chống răng cưa."},
-        {"text": "Chương 6: video là chuỗi khung hình, ví dụ 30 khung mỗi giây", "say": "Ba, ở chương sáu, video là một chuỗi khung hình theo thời gian. Như vậy video được lấy mẫu cả theo không gian lẫn theo thời gian, và cả hai đều có thể bị răng cưa."}
-      ]
-    },
-    {
-      "kicker": "Intuition",
-      "title": "Lấy mẫu và lượng tử hóa trong đời thường",
-      "slide": 3,
-      "points": [
-        {"text": "Sampling: chỉ đo ở một số vị trí rời rạc (ô lưới pixel)", "say": "Hãy tưởng tượng các bạn ghi lại nhiệt độ trong ngày. Các bạn không thể ghi liên tục, nên chỉ đo mỗi giờ một lần. Đó là lấy mẫu: chọn những vị trí rời rạc để đo. Với ảnh, các vị trí đó là lưới pixel."},
-        {"text": "Quantization: làm tròn giá trị đo về một tập hữu hạn mức", "say": "Mỗi lần đo, các bạn làm tròn đến một độ, không ghi mười chữ số thập phân. Đó là lượng tử hóa: đưa biên độ liên tục về một tập hữu hạn giá trị. Với ảnh tám bit, đó là hai trăm năm mươi sáu mức xám."},
-        {"text": "Đo quá thưa → hiểu sai tín hiệu: aliasing (răng cưa, moiré, bánh xe quay ngược)", "say": "Nếu đo quá thưa thì sao? Nhiệt độ lên xuống giữa hai lần đo sẽ bị bỏ sót. Tệ hơn, ta còn nhìn thấy một quy luật giả. Trong phim, bánh xe quay nhanh trông như quay ngược. Trên ảnh, áo kẻ sọc nhỏ hiện ra những vân lạ. Tất cả đều là một hiện tượng: aliasing."}
-      ]
-    },
-    {
-      "kicker": "Formula",
-      "title": "Điều kiện Nyquist",
-      "slide": 6,
-      "formula": "\\underbrace{f_s}_{\\text{tần số lấy mẫu}} \\;\\ge\\; 2 \\times \\underbrace{f_{max}}_{\\text{chi tiết nhanh nhất}}",
-      "points": [
-        {"text": "Mỗi chu kỳ sáng – tối cần ít nhất 2 mẫu", "say": "Điều kiện Nyquist nói một điều rất đời thường: muốn ghi lại một sọc sáng tối, mỗi chu kỳ phải có ít nhất hai mẫu, một mẫu cho phần sáng và một mẫu cho phần tối. Vậy tần số lấy mẫu phải ít nhất gấp đôi tần số cao nhất có trong ảnh."},
-        {"text": "CSFT: chu kỳ / đơn vị khoảng cách. DSFT: chu kỳ / pixel, tối đa 0.5", "say": "Về đơn vị, biến đổi Fourier của ảnh liên tục đo tần số bằng chu kỳ trên đơn vị khoảng cách. Biến đổi Fourier của ảnh rời rạc đo bằng chu kỳ trên pixel. Vì cần hai pixel cho một chu kỳ, tần số cao nhất biểu diễn được là không phẩy năm chu kỳ mỗi pixel."},
-        {"text": "Lấy mẫu = lặp lại phổ; các bản sao chồng nhau → aliasing", "say": "Slide giải thích bằng phổ: lấy mẫu làm phổ của ảnh liên tục bị lặp lại theo chu kỳ. Nếu lấy mẫu đủ dày, các bản sao nằm tách nhau. Nếu lấy mẫu thưa, các bản sao chồng lên nhau, và phần chồng lấn đó chính là aliasing."}
-      ]
-    },
-    {
-      "title": "Giảm mẫu (downsampling)",
-      "slide": 11,
-      "points": [
-        {"text": "Giữ lại mỗi mẫu thứ $C$ theo hướng $m$ và thứ $D$ theo hướng $n$", "say": "Giảm mẫu là giảm tốc độ lấy mẫu của một ảnh đã số hóa, theo hệ số nguyên C và D. Thao tác rất đơn giản: theo chiều ngang giữ lại mỗi mẫu thứ C, theo chiều dọc giữ mỗi mẫu thứ D, bỏ hết phần còn lại."},
-        {"text": "Phổ DSFT giãn ra $C$ lần theo $u$ và $D$ lần theo $v$", "say": "Trong miền tần số, giảm mẫu làm phổ giãn ra C lần theo một hướng và D lần theo hướng kia. Dễ hiểu thôi: ảnh nhỏ đi một nửa thì mỗi sọc chỉ còn một nửa số pixel, nên tính theo pixel, sọc đó dao động nhanh gấp đôi."},
-        {"text": "Hệ quả: có thể sinh thêm aliasing", "say": "Hệ quả quan trọng nhất: phần phổ bị giãn ra có thể vượt quá giới hạn không phẩy năm và gây thêm aliasing."},
-        {"text": "Prefilter thông thấp + downsampler = decimator", "say": "Cách phòng tránh là lọc thông thấp ảnh trước khi giảm mẫu. Bộ lọc này gọi là bộ lọc trước, prefilter. Ghép bộ lọc và bộ giảm mẫu lại, ta có một decimator."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Giảm mẫu 2 lần một ảnh sọc",
-      "table": {
-        "headers": ["Bước", "Phép tính", "Kết quả"],
-        "rows": [
-          ["Ảnh gốc", "sọc 0.4 chu kỳ/pixel", "< 0.5 → biểu diễn đúng"],
-          ["Giảm mẫu $C = 2$", "0.4 × 2", "0.8 chu kỳ/pixel"],
-          ["Vượt 0.5 → gập lại", "|0.8 − 1|", "sọc giả 0.2 chu kỳ/pixel"],
-          ["Giới hạn an toàn", "1 / (2C) = 1 / 4", "0.25 chu kỳ/pixel"],
-          ["Lọc trước rồi mới giảm", "bỏ phần trên 0.25", "không còn sọc giả"]
-        ]
+     "kicker": "Mở đầu",
+     "title": "Chiếc áo kẻ sọc trước ống kính",
+     "points": [
+      {
+       "say": "Chào các bạn. Chương bảy quay về điểm xuất phát của mọi thứ: thu nhận ảnh. Ví dụ của cả chương: điện thoại chụp một chiếc áo sơ mi kẻ sọc nhỏ.",
+       "text": "Ví dụ: áo sơ mi kẻ sọc"
       },
-      "points": [
-        {"say": "Tính thử với số. Ảnh gốc có các sọc với tần số không phẩy bốn chu kỳ mỗi pixel, tức là cứ hai pixel rưỡi thì hết một chu kỳ sáng tối. Con số này nhỏ hơn không phẩy năm, nên ảnh gốc biểu diễn sọc hoàn toàn đúng."},
-        {"say": "Bây giờ giảm mẫu hai lần, tức là bỏ đi mỗi pixel thứ hai. Tần số tính theo pixel mới tăng gấp đôi, thành không phẩy tám chu kỳ mỗi pixel."},
-        {"say": "Không phẩy tám vượt quá giới hạn không phẩy năm. Nó không biến mất, mà bị gập lại: lấy không phẩy tám trừ một rồi lấy trị tuyệt đối, được không phẩy hai. Trên ảnh nhỏ, ta thấy các sọc thưa hơn hẳn sọc thật. Đó là sọc giả."},
-        {"say": "Muốn an toàn khi giảm C lần, tần số trong ảnh gốc phải nhỏ hơn một chia hai C. Với C bằng hai, giới hạn là không phẩy hai lăm chu kỳ mỗi pixel."},
-        {"say": "Sọc không phẩy bốn nằm trên giới hạn đó. Vì vậy ta lọc thông thấp trước để bỏ nó đi, rồi mới giảm mẫu. Ảnh nhỏ sẽ mất các sọc mịn, nhưng không xuất hiện sọc giả. Thà mất chi tiết còn hơn có chi tiết sai."}
-      ]
-    },
-    {
-      "title": "Tăng mẫu và nội suy",
-      "slide": 17,
-      "points": [
-        {"text": "Upsampling: chèn $C-1$ và $D-1$ số 0 vào giữa các mẫu", "say": "Chiều ngược lại là tăng mẫu. Để tăng C lần, ta chèn C trừ một số không vào giữa hai mẫu liền nhau, tương tự với D theo chiều kia."},
-        {"text": "Phổ co lại, không sinh aliasing vì không mất thông tin", "say": "Lần này phổ co lại chứ không giãn ra. Vì không bỏ đi mẫu nào nên không mất thông tin, và không có aliasing."},
-        {"text": "Upsampler + bộ lọc (bỏ bản sao phổ thừa) = interpolator", "say": "Nhưng các số không vừa chèn tạo ra các bản sao phổ thừa, nhìn trên ảnh là các lỗ đen xen kẽ. Một bộ lọc thông thấp đặt phía sau sẽ xóa các bản sao đó, tức là lấp đầy các lỗ. Bộ tăng mẫu cộng bộ lọc gọi là interpolator."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Tăng mẫu 2 lần một hàng pixel",
-      "table": {
-        "headers": ["Bước", "Dãy giá trị"],
-        "rows": [
-          ["Hàng gốc", "10, 20, 30"],
-          ["Chèn số 0 xen kẽ", "10, 0, 20, 0, 30"],
-          ["Lọc: mỗi số 0 = trung bình hai bên", "10, 15, 20, 25, 30"]
-        ]
+      {
+       "say": "Sau đó ta thu nhỏ ảnh để gửi tin nhắn, phóng to để in, và đổi một đoạn phim từ hai mươi bốn lên sáu mươi khung mỗi giây.",
+       "text": "Thu nhỏ, phóng to, đổi tốc độ khung"
       },
-      "points": [
-        {"say": "Thử trên một hàng chỉ có ba pixel: mười, hai mươi, ba mươi."},
-        {"say": "Tăng mẫu hai lần: chèn một số không vào giữa mỗi cặp. Hàng mới có năm phần tử: mười, không, hai mươi, không, ba mươi. Nếu hiển thị ngay, ta thấy các vạch đen xen kẽ."},
-        {"say": "Cho hàng này qua một bộ lọc đơn giản, thay mỗi số không bằng trung bình của hai mẫu hai bên. Ta được mười, mười lăm, hai mươi, hai mươi lăm, ba mươi. Hàng pixel dài gấp đôi và thay đổi mượt. Đây chính là nội suy tuyến tính, và cũng là lý do bộ lọc phải đứng sau bộ tăng mẫu."}
-      ]
+      {
+       "say": "Thử nghĩ: chụp áo kẻ sọc rồi thu nhỏ, đôi khi trên ảnh hiện ra những vân lạ không có trên áo. Vân đó từ đâu ra?",
+       "text": "Vân lạ từ đâu ra?",
+       "ask": true
+      }
+     ]
     },
     {
-      "kicker": "Algorithm",
-      "title": "Decimator và interpolator",
-      "code": {
-        "lines": [
-          "# Decimator: giảm mẫu C lần",
-          "g ← lowpass(f, cutoff = 1/(2C))     # lọc TRƯỚC",
-          "out[m] ← g[C·m]                     # giữ mỗi mẫu thứ C",
-          "",
-          "# Interpolator: tăng mẫu C lần",
-          "up[C·m] ← f[m], các vị trí khác ← 0 # chèn số 0",
-          "out ← lowpass(up, cutoff = 1/(2C))  # lọc SAU"
-        ]
+     "kicker": "Mở đầu",
+     "title": "Lộ trình của chương",
+     "points": [
+      {
+       "say": "Ta bắt đầu từ lấy mẫu, lượng tử và điều kiện Nyquist, rồi giảm mẫu và tăng mẫu.",
+       "text": "Lấy mẫu → giảm mẫu → tăng mẫu"
       },
-      "points": [
-        {"reveal": [2, 3], "say": "Đặt hai hệ cạnh nhau. Decimator: lọc thông thấp trước với tần số cắt bằng một chia hai C, sau đó mới giữ lại mỗi mẫu thứ C. Lọc trước để chặn aliasing trước khi nó xảy ra."},
-        {"reveal": [6, 7], "say": "Interpolator thì ngược thứ tự: chèn số không trước, rồi lọc thông thấp sau để lấp các lỗ. Mẹo nhớ: giảm mẫu thì lọc trước, tăng mẫu thì lọc sau."}
-      ]
-    },
-    {
-      "title": "Hai phương pháp nội suy ảnh",
-      "slide": 18,
-      "points": [
-        {"text": "Nearest neighbor = zero-order = pixel replication: lặp lại pixel gần nhất", "say": "Slide trình bày hai phương pháp nội suy theo hướng lọc tuyến tính. Đơn giản nhất về tính toán là lân cận gần nhất, còn gọi là nội suy bậc không hay lặp pixel: tọa độ lẻ được làm tròn về pixel gần nhất, rồi lấy luôn giá trị của nó."},
-        {"text": "Bilinear = first-order: nội suy tuyến tính theo hai chiều", "say": "Muốn mượt hơn, các mẫu ở giữa được nội suy tuyến tính từ các mẫu lân cận. Mở rộng ra hai chiều, ta có nội suy song tuyến, còn gọi là nội suy bậc một."},
-        {"text": "Bilinear dùng 4 pixel xung quanh, pixel càng gần càng nặng ký", "say": "Nội suy song tuyến dùng bốn pixel bao quanh điểm cần tính. Pixel nào càng gần điểm đó thì trọng số càng lớn. Ta tính thử ngay sau đây."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Nội suy song tuyến tại một điểm",
-      "grid": {"label": "4 pixel bao quanh điểm cần tính", "cells": [[10, 20], [30, 40]], "warn": [[1, 0]]},
-      "points": [
-        {"text": "Điểm cần tính: cách mép trái 0.25, cách hàng trên 0.75", "say": "Bốn pixel bao quanh có giá trị: hàng trên là mười và hai mươi, hàng dưới là ba mươi và bốn mươi. Điểm cần tính nằm cách mép trái một phần tư ô, và cách hàng trên ba phần tư ô."},
-        {"text": "Hàng trên: 10 + 0.25 × (20 − 10) = 12.5", "say": "Bước một, nội suy theo chiều ngang trên hàng trên. Đi một phần tư quãng đường từ mười đến hai mươi, được mười hai phẩy năm."},
-        {"text": "Hàng dưới: 30 + 0.25 × (40 − 30) = 32.5", "say": "Bước hai, làm tương tự trên hàng dưới. Đi một phần tư quãng đường từ ba mươi đến bốn mươi, được ba mươi hai phẩy năm."},
-        {"text": "Theo chiều dọc: 12.5 + 0.75 × (32.5 − 12.5) = 27.5", "say": "Bước ba, nội suy theo chiều dọc giữa hai kết quả vừa có. Đi ba phần tư quãng đường từ mười hai phẩy năm đến ba mươi hai phẩy năm, được hai mươi bảy phẩy năm. Đó là kết quả nội suy song tuyến."},
-        {"text": "Nearest neighbor sẽ cho 30 (pixel dưới – trái gần nhất)", "say": "Còn nếu dùng lân cận gần nhất, ta chỉ lấy pixel gần nhất là pixel dưới bên trái, giá trị ba mươi. Hai mươi bảy phẩy năm phản ánh cả bốn hàng xóm, còn ba mươi chỉ phản ánh một."}
-      ]
-    },
-    {
-      "kicker": "Compare",
-      "title": "Nearest neighbor và bilinear",
-      "table": {
-        "headers": ["Tiêu chí", "Nearest neighbor", "Bilinear"],
-        "rows": [
-          ["Tên khác", "Zero-order, pixel replication", "First-order"],
-          ["Số pixel dùng", "1 pixel gần nhất", "4 pixel bao quanh"],
-          ["Chi phí tính toán", "Thấp nhất", "Cao hơn một chút"],
-          ["Kết quả", "Khối vuông, răng cưa ở cạnh", "Mượt hơn"]
-        ]
+      {
+       "say": "Tiếp theo là hai cách nội suy ảnh, lấy mẫu video bằng lưới, và đổi tốc độ khung hình.",
+       "text": "Nội suy → lưới video → tốc độ khung"
       },
-      "points": [
-        {"say": "So sánh nhanh. Lân cận gần nhất còn gọi là nội suy bậc không hay lặp pixel. Song tuyến là nội suy bậc một."},
-        {"say": "Lân cận gần nhất chỉ dùng một pixel. Song tuyến dùng bốn pixel bao quanh."},
-        {"say": "Lân cận gần nhất có chi phí tính toán thấp nhất, nên vẫn được dùng rất rộng rãi. Song tuyến tốn thêm vài phép nhân."},
-        {"say": "Về kết quả, lân cận gần nhất làm ảnh phóng to hiện rõ từng khối vuông và răng cưa ở các cạnh. Song tuyến cho ảnh mượt hơn."}
-      ]
-    },
-    {
-      "title": "Lấy mẫu video và cấu trúc lưới",
-      "slide": 23,
-      "points": [
-        {"text": "Thu nhận = lọc trước không gian – thời gian + lấy mẫu lý tưởng trên một cấu trúc lấy mẫu", "say": "Sang video. Bước thu nhận và quét ban đầu đặc biệt quan trọng, vì nó quyết định thông tin nào có mặt trong dữ liệu. Quá trình này được mô hình hóa thành hai phần: một bộ lọc trước theo không gian và thời gian, rồi lấy mẫu lý tưởng trên một cấu trúc lấy mẫu."},
-        {"text": "Cấu trúc lấy mẫu quyết định lượng thông tin; bộ lọc trước giới hạn aliasing", "say": "Cấu trúc lấy mẫu quyết định tín hiệu mang được bao nhiêu thông tin không gian và thời gian. Bộ lọc trước thì giới hạn lượng aliasing, đúng vai trò của prefilter mà ta vừa học."},
-        {"text": "Lattice $D$ chiều: tổ hợp hệ số nguyên của các vector độc lập tuyến tính", "say": "Cấu trúc lấy mẫu được mô tả bằng một lưới, lattice. Một lưới D chiều là tập các điểm tạo bởi tổ hợp tuyến tính với hệ số nguyên của các vector độc lập tuyến tính. Nói đơn giản, đó là một mẫu điểm lặp lại đều đặn."},
-        {"text": "Lưới 1D: chu kỳ khung $T$. Lưới 2D dọc – thời gian: quét xen kẽ (interlaced)", "say": "Lấy mẫu theo thời gian là lưới một chiều, xác định bởi chu kỳ khung hình T. Lấy mẫu dọc và thời gian cùng lúc là lưới hai chiều. Ví dụ quét xen kẽ: lượt này ghi các dòng lẻ, lượt sau ghi các dòng chẵn."}
-      ]
-    },
-    {
-      "title": "Chuyển đổi tốc độ khung hình",
-      "slide": 30,
-      "points": [
-        {"text": "Pure temporal interpolation: 24 → 48 hoặc 60 khung/s", "say": "Chuyển đổi tốc độ khung hình chính là tăng mẫu theo trục thời gian. Ví dụ trong slide: tăng phim điện ảnh từ hai mươi bốn lên bốn mươi tám hoặc sáu mươi khung hình mỗi giây để chuyển động mượt hơn. Cách đơn giản là nội suy thời gian thuần túy: khung mới được tính từ các khung lân cận tại cùng vị trí pixel."},
-        {"text": "Nếu phổ thời gian thỏa Nyquist: dùng nội suy sinc lý tưởng", "say": "Nếu phổ thời gian của tín hiệu thỏa tiêu chí Nyquist, các điểm đầu ra có thể tính bằng nội suy sinc lý tưởng."},
-        {"text": "Vật chuyển động nhanh → ghosting: hai bóng mờ ở vị trí cũ và mới", "say": "Vấn đề xuất hiện khi vật chuyển động nhanh. Giả sử quả bóng ở vị trí mười trong khung trước và vị trí hai mươi trong khung sau. Lấy trung bình hai khung tại từng pixel, ta không được một quả bóng ở vị trí mười lăm, mà được hai quả bóng mờ, một ở mười và một ở hai mươi. Đó là bóng ma, ghosting."},
-        {"text": "Motion-compensated interpolation: nội suy dọc theo quỹ đạo chuyển động", "say": "Nội suy có bù chuyển động giải quyết việc này. Nó ước lượng chuyển động trước, giống chương sáu, rồi nội suy dọc theo quỹ đạo, nên đặt quả bóng đúng vào vị trí mười lăm."}
-      ]
-    },
-    {
-      "kicker": "Compare",
-      "title": "Giảm mẫu và tăng mẫu",
-      "table": {
-        "headers": ["Tiêu chí", "Giảm mẫu", "Tăng mẫu"],
-        "rows": [
-          ["Thao tác", "Giữ mỗi mẫu thứ $C$", "Chèn $C-1$ số 0"],
-          ["Phổ tần số", "Giãn ra $C$ lần", "Co lại $C$ lần"],
-          ["Aliasing", "Có thể xảy ra", "Không"],
-          ["Bộ lọc thông thấp", "Đặt TRƯỚC (prefilter)", "Đặt SAU"],
-          ["Tên hệ ghép", "Decimator", "Interpolator"]
-        ]
-      },
-      "points": [
-        {"say": "Bảng này gom lại phần hay bị nhầm nhất của chương. Giảm mẫu giữ lại mỗi mẫu thứ C. Tăng mẫu chèn C trừ một số không."},
-        {"say": "Giảm mẫu làm phổ giãn ra. Tăng mẫu làm phổ co lại."},
-        {"say": "Giảm mẫu có thể gây aliasing vì bỏ bớt thông tin. Tăng mẫu thì không."},
-        {"say": "Bộ lọc thông thấp đứng trước bộ giảm mẫu, nhưng đứng sau bộ tăng mẫu."},
-        {"say": "Và tên của hệ ghép: lọc cộng giảm mẫu là decimator, tăng mẫu cộng lọc là interpolator."}
-      ]
-    },
-    {
-      "kicker": "Exam traps",
-      "title": "Những chỗ đề thi hay gài",
-      "table": {
-        "headers": ["Câu hỏi", "Đáp án đúng"],
-        "rows": [
-          ["Sampling khác quantization?", "Sampling rời rạc hóa vị trí; quantization rời rạc hóa biên độ"],
-          ["Đơn vị tần số của DSFT?", "Chu kỳ / pixel (CSFT: chu kỳ / đơn vị khoảng cách)"],
-          ["Giảm mẫu làm phổ thế nào?", "Giãn ra → có thể aliasing → lọc TRƯỚC"],
-          ["Tăng mẫu có gây aliasing không?", "Không, vì không mất thông tin"],
-          ["Vì sao cần motion-compensated interpolation?", "Nội suy thời gian thuần túy gây ghosting khi chuyển động nhanh"]
-        ]
-      },
-      "points": [
-        {"say": "Năm cái bẫy. Một: lấy mẫu rời rạc hóa vị trí, tức là tham số. Lượng tử hóa rời rạc hóa biên độ. Đề rất hay đảo hai định nghĩa này."},
-        {"say": "Hai: đơn vị tần số của biến đổi Fourier rời rạc là chu kỳ trên pixel. Của biến đổi liên tục là chu kỳ trên đơn vị khoảng cách."},
-        {"say": "Ba: giảm mẫu làm phổ giãn ra, có thể gây aliasing, nên phải lọc thông thấp trước."},
-        {"say": "Bốn: tăng mẫu không gây aliasing, vì không mất thông tin. Bộ lọc phía sau chỉ để xóa các bản sao phổ thừa."},
-        {"say": "Năm: nội suy thời gian thuần túy gây bóng ma khi vật chuyển động nhanh. Vì thế mới cần nội suy có bù chuyển động."}
-      ]
-    },
-    {
-      "kicker": "Summary",
-      "title": "Tổng kết chương 7",
-      "points": [
-        {"text": "Sampling rời rạc hóa vị trí, quantization rời rạc hóa biên độ", "say": "Tổng kết chương bảy. Lấy mẫu rời rạc hóa vị trí, lượng tử hóa rời rạc hóa biên độ."},
-        {"text": "Lấy mẫu quá thưa → phổ chồng nhau → aliasing", "say": "Lấy mẫu quá thưa so với điều kiện Nyquist thì các bản sao phổ chồng nhau và sinh ra aliasing."},
-        {"text": "Decimator: lọc rồi giảm. Interpolator: chèn 0 rồi lọc", "say": "Decimator lọc trước rồi giảm mẫu. Interpolator chèn số không rồi lọc. Nội suy có hai mức: lân cận gần nhất và song tuyến."},
-        {"text": "Video: lattice, interlaced, đổi tốc độ khung hình có bù chuyển động", "say": "Với video, cấu trúc lấy mẫu là một lưới, và đổi tốc độ khung hình nên có bù chuyển động để tránh bóng ma. Chương tám đi đến đầu bên kia của đường ống: hiển thị ảnh lên thiết bị ít mức xám, và đo xem ảnh đẹp hay xấu."}
-      ]
+      {
+       "say": "Mỗi bước vá chỗ hụt của bước trước, các bạn xem theo thứ tự.",
+       "text": "Xem theo thứ tự"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Lấy mẫu & Nyquist",
+       "Giảm mẫu",
+       "Tăng mẫu",
+       "Nearest & bilinear",
+       "Lấy mẫu video",
+       "Đổi tốc độ khung"
+      ],
+      "current": 0
+     }
     }
-  ]
+   ]
+  },
+  {
+   "id": "lay-mau",
+   "title": "Lấy mẫu, lượng tử hóa và Nyquist",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Thế giới liên tục, máy tính rời rạc",
+     "points": [
+      {
+       "say": "Ánh sáng trên chiếc áo thay đổi liên tục theo vị trí, độ sáng cũng là số thực. Máy tính chỉ lưu được hữu hạn con số.",
+       "text": "Liên tục → hữu hạn con số"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Ghi liên tục là không thể",
+     "points": [
+      {
+       "say": "Không thiết bị nào ghi được giá trị tại vô số vị trí với độ chính xác vô hạn. Phải chọn đo ở đâu và làm tròn đến đâu.",
+       "text": "Phải chọn: đo ở đâu, làm tròn đến đâu"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Đo theo lưới, làm tròn theo bậc",
+     "points": [
+      {
+       "say": "Ghi nhiệt độ trong ngày, các bạn đo mỗi giờ một lần: đó là lấy mẫu, rời rạc hóa vị trí. Với ảnh, các vị trí đó là lưới pixel.",
+       "text": "Lấy mẫu: rời rạc hóa vị trí"
+      },
+      {
+       "say": "Mỗi lần đo làm tròn đến một độ: đó là lượng tử hóa, rời rạc hóa biên độ. Ảnh tám bit có hai trăm năm mươi sáu mức.",
+       "text": "Lượng tử: rời rạc hóa biên độ"
+      },
+      {
+       "say": "Đo quá thưa thì bỏ sót, tệ hơn còn thấy quy luật giả: bánh xe trong phim quay ngược, áo kẻ sọc hiện vân lạ. Đó là aliasing.",
+       "text": "Đo thưa → aliasing"
+      }
+     ]
+    },
+    {
+     "kicker": "Công thức",
+     "title": "Điều kiện Nyquist",
+     "points": [
+      {
+       "say": "Muốn ghi một sọc sáng tối, mỗi chu kỳ cần ít nhất hai mẫu, một cho sáng và một cho tối. Tần số lấy mẫu phải ít nhất gấp đôi tần số cao nhất.",
+       "text": "Ít nhất 2 mẫu mỗi chu kỳ"
+      },
+      {
+       "say": "Fourier của ảnh liên tục đo tần số theo chu kỳ trên đơn vị khoảng cách; của ảnh rời rạc theo chu kỳ trên pixel. Tần số cao nhất biểu diễn được là không phẩy năm chu kỳ mỗi pixel.",
+       "text": "CSFT: chu kỳ/khoảng cách · DSFT: chu kỳ/pixel · tối đa 0,5"
+      },
+      {
+       "say": "Lấy mẫu làm phổ bị lặp lại theo chu kỳ. Đủ dày thì các bản sao tách nhau; thưa thì chồng lên nhau, và phần chồng chính là aliasing.",
+       "text": "Bản sao phổ chồng nhau = aliasing"
+      }
+     ],
+     "formula": "\\underbrace{f_s}_{\\text{tần số lấy mẫu}} \\;\\ge\\; 2 \\times \\underbrace{f_{max}}_{\\text{chi tiết nhanh nhất}}"
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Sọc 0,4 chu kỳ mỗi pixel",
+     "points": [
+      {
+       "say": "Sọc trên áo có tần số không phẩy bốn chu kỳ mỗi pixel, cứ hai pixel rưỡi hết một chu kỳ sáng tối. Mười mẫu đầu tiên trông như hình.",
+       "reveal": 0
+      },
+      {
+       "say": "Thử đoán: không phẩy bốn có thỏa điều kiện Nyquist không?",
+       "reveal": 0,
+       "ask": true
+      },
+      {
+       "say": "Có, vì nhỏ hơn không phẩy năm. Mỗi chu kỳ có hai phẩy năm mẫu, nhiều hơn hai, nên ảnh gốc biểu diễn đúng sọc.",
+       "reveal": 0
+      }
+     ],
+     "histogram": {
+      "bars": [
+       {
+        "label": "0",
+        "value": 90
+       },
+       {
+        "label": "1",
+        "value": 18
+       },
+       {
+        "label": "2",
+        "value": 62
+       },
+       {
+        "label": "3",
+        "value": 62
+       },
+       {
+        "label": "4",
+        "value": 18
+       },
+       {
+        "label": "5",
+        "value": 90
+       },
+       {
+        "label": "6",
+        "value": 18
+       },
+       {
+        "label": "7",
+        "value": 62
+       },
+       {
+        "label": "8",
+        "value": 62
+       },
+       {
+        "label": "9",
+        "value": 18
+       }
+      ],
+      "caption": "Độ sáng của 10 pixel đầu trên sọc 0,4 chu kỳ/pixel"
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Lấy mẫu so với lượng tử hóa",
+     "points": [
+      {
+       "say": "Lấy mẫu rời rạc hóa vị trí, tức tham số; lượng tử hóa rời rạc hóa biên độ.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Lấy mẫu thưa sinh aliasing; lượng tử thô sinh sai số lượng tử, như các dải màu loang.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Lấy mẫu",
+       "Lượng tử hóa"
+      ],
+      "rows": [
+       [
+        "Rời rạc hóa",
+        "Vị trí (tham số)",
+        "Biên độ"
+       ],
+       [
+        "Làm thô quá thì",
+        "Aliasing",
+        "Sai số lượng tử, dải loang"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Nyquist ở đâu",
+     "points": [
+      {
+       "say": "Âm thanh CD lấy mẫu bốn mươi bốn phẩy một kilohertz, hơn gấp đôi giới hạn nghe khoảng hai mươi kilohertz. Máy ảnh có bộ lọc chống răng cưa trước cảm biến cũng vì Nyquist.",
+       "text": "CD 44,1 kHz; bộ lọc chống răng cưa trong máy ảnh"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Ảnh đã chụp, giờ phải thu nhỏ",
+     "points": [
+      {
+       "say": "Ảnh gốc ổn. Nhưng để gửi tin nhắn, ta phải thu nhỏ, tức là giảm số mẫu. Liệu sọc có còn thỏa Nyquist?",
+       "text": "Thu nhỏ có còn thỏa Nyquist?"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Lấy mẫu & Nyquist",
+       "Giảm mẫu",
+       "Tăng mẫu",
+       "Nearest & bilinear",
+       "Lấy mẫu video",
+       "Đổi tốc độ khung"
+      ],
+      "current": 2
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: lấy mẫu rời rạc hóa vị trí, lượng tử hóa rời rạc hóa biên độ. Đề rất hay đảo."
+      },
+      {
+       "say": "Bẫy hai: biến đổi Fourier rời rạc dùng chu kỳ trên pixel, liên tục dùng chu kỳ trên đơn vị khoảng cách."
+      },
+      {
+       "say": "Bẫy ba: tần số cao nhất biểu diễn được là không phẩy năm chu kỳ mỗi pixel."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Lấy mẫu và lượng tử khác nhau thế nào?",
+        "Lấy mẫu: vị trí · lượng tử: biên độ"
+       ],
+       [
+        "Đơn vị tần số DSFT?",
+        "Chu kỳ / pixel"
+       ],
+       [
+        "Tần số cao nhất biểu diễn được?",
+        "0,5 chu kỳ / pixel"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "giam-mau",
+   "title": "Giảm mẫu và decimator",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Thu nhỏ ảnh để gửi tin nhắn",
+     "points": [
+      {
+       "say": "Ảnh áo quá lớn để gửi. Ta muốn thu nhỏ một nửa mỗi chiều.",
+       "text": "Thu nhỏ một nửa"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Bỏ bớt pixel trực tiếp",
+     "points": [
+      {
+       "say": "Cách nhanh nhất: giữ một pixel, bỏ một pixel. Đơn giản, nhưng có an toàn không?",
+       "text": "Giữ một, bỏ một"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Giữ mỗi mẫu thứ C, nhưng lọc trước",
+     "points": [
+      {
+       "say": "Giảm mẫu theo hệ số nguyên C và D: giữ mỗi mẫu thứ C theo chiều ngang, thứ D theo chiều dọc.",
+       "text": "Giữ mỗi mẫu thứ C, thứ D"
+      },
+      {
+       "say": "Trong miền tần số, phổ giãn ra C lần. Ảnh nhỏ đi một nửa thì mỗi sọc chỉ còn nửa số pixel, nên tính theo pixel nó dao động nhanh gấp đôi.",
+       "text": "Phổ giãn C lần"
+      },
+      {
+       "say": "Muốn an toàn, lọc thông thấp trước để bỏ chi tiết quá mịn, rồi mới giảm. Bộ lọc trước cộng bộ giảm mẫu gọi là decimator.",
+       "text": "Lọc trước + giảm mẫu = decimator"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Giảm mẫu hai lần một ảnh sọc",
+     "points": [
+      {
+       "say": "Bên trái là mười mẫu của sọc không phẩy bốn. Giảm mẫu hai lần: chỉ giữ mẫu số không, hai, bốn, sáu, tám.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: năm mẫu còn lại trông giống sọc nhanh hay sọc chậm?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Sọc chậm hẳn: chín mươi, sáu mươi hai, mười tám, mười tám, sáu mươi hai, năm mẫu mới hết một chu kỳ. Tần số thật thành không phẩy tám, vượt không phẩy năm, bị gập lại thành không phẩy hai. Đó là sọc giả.",
+       "reveal": 2
+      }
+     ],
+     "compare": {
+      "left": {
+       "label": "Gốc: 0,4 chu kỳ/pixel",
+       "histogram": {
+        "bars": [
+         {
+          "label": "0",
+          "value": 90
+         },
+         {
+          "label": "1",
+          "value": 18
+         },
+         {
+          "label": "2",
+          "value": 62
+         },
+         {
+          "label": "3",
+          "value": 62
+         },
+         {
+          "label": "4",
+          "value": 18
+         },
+         {
+          "label": "5",
+          "value": 90
+         },
+         {
+          "label": "6",
+          "value": 18
+         },
+         {
+          "label": "7",
+          "value": 62
+         },
+         {
+          "label": "8",
+          "value": 62
+         },
+         {
+          "label": "9",
+          "value": 18
+         }
+        ]
+       }
+      },
+      "right": {
+       "label": "Giữ mỗi mẫu thứ 2: sọc giả 0,2",
+       "histogram": {
+        "bars": [
+         {
+          "label": "0",
+          "value": 90
+         },
+         {
+          "label": "2",
+          "value": 62
+         },
+         {
+          "label": "4",
+          "value": 18
+         },
+         {
+          "label": "6",
+          "value": 18
+         },
+         {
+          "label": "8",
+          "value": 62
+         }
+        ]
+       }
+      },
+      "arrow": "bỏ một, giữ một"
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Giới hạn an toàn và lọc trước",
+     "points": [
+      {
+       "say": "Ảnh gốc có sọc không phẩy bốn chu kỳ mỗi pixel.",
+       "reveal": 1
+      },
+      {
+       "say": "Giảm hai lần, tần số theo pixel mới thành không phẩy tám.",
+       "reveal": 2
+      },
+      {
+       "say": "Vượt không phẩy năm, gập lại thành không phẩy hai: sọc giả.",
+       "reveal": 3
+      },
+      {
+       "say": "Muốn an toàn khi giảm C lần, tần số gốc phải nhỏ hơn một chia hai C, tức không phẩy hai lăm với C bằng hai.",
+       "reveal": 4
+      },
+      {
+       "say": "Sọc không phẩy bốn vượt giới hạn, nên lọc thông thấp bỏ nó đi rồi mới giảm. Ảnh nhỏ mất sọc mịn nhưng không có sọc giả. Thà mất chi tiết còn hơn chi tiết sai.",
+       "reveal": 5
+      }
+     ],
+     "table": {
+      "headers": [
+       "Bước",
+       "Phép tính",
+       "Kết quả"
+      ],
+      "rows": [
+       [
+        "Ảnh gốc",
+        "sọc 0,4 chu kỳ/pixel",
+        "< 0,5 → đúng"
+       ],
+       [
+        "Giảm mẫu C = 2",
+        "0,4 × 2",
+        "0,8 chu kỳ/pixel"
+       ],
+       [
+        "Vượt 0,5 → gập lại",
+        "|0,8 − 1|",
+        "sọc giả 0,2"
+       ],
+       [
+        "Giới hạn an toàn",
+        "1 / (2C)",
+        "0,25 chu kỳ/pixel"
+       ],
+       [
+        "Lọc trước rồi giảm",
+        "bỏ phần trên 0,25",
+        "không còn sọc giả"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Bỏ pixel trực tiếp so với decimator",
+     "points": [
+      {
+       "say": "Bỏ pixel trực tiếp nhanh nhưng có thể sinh sọc giả.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Decimator lọc trước nên chặn được aliasing, đổi lại ảnh mềm hơn.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Bỏ pixel trực tiếp",
+       "Decimator (lọc trước)"
+      ],
+      "rows": [
+       [
+        "Aliasing",
+        "Có thể xảy ra",
+        "Bị chặn"
+       ],
+       [
+        "Chi tiết mịn",
+        "Thành sọc giả",
+        "Bị lọc mất, không sai"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Giảm mẫu ở đâu",
+     "points": [
+      {
+       "say": "Tạo ảnh thu nhỏ, giảm độ phân giải video cho điện thoại, xây kim tự tháp ảnh nhiều tầng: đều cần lọc trước khi giảm.",
+       "text": "Ảnh thu nhỏ, video độ phân giải thấp"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Giờ phải phóng to để in",
+     "points": [
+      {
+       "say": "Giảm mẫu xong, ta lại cần phóng to ảnh để in khổ lớn. Phải tạo thêm những pixel chưa từng được đo.",
+       "text": "Tạo thêm pixel"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Lấy mẫu & Nyquist",
+       "Giảm mẫu",
+       "Tăng mẫu",
+       "Nearest & bilinear",
+       "Lấy mẫu video",
+       "Đổi tốc độ khung"
+      ],
+      "current": 3
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: giảm mẫu làm phổ giãn ra, có thể gây aliasing."
+      },
+      {
+       "say": "Bẫy hai: bộ lọc thông thấp đặt trước bộ giảm mẫu; ghép lại gọi là decimator."
+      },
+      {
+       "say": "Bẫy ba: khi giảm C lần, tần số gốc phải nhỏ hơn một chia hai C."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Giảm mẫu làm phổ thế nào?",
+        "Giãn ra C lần → có thể aliasing"
+       ],
+       [
+        "Bộ lọc đặt ở đâu?",
+        "TRƯỚC bộ giảm mẫu (prefilter)"
+       ],
+       [
+        "Giới hạn an toàn khi giảm C lần?",
+        "f < 1/(2C)"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "tang-mau",
+   "title": "Tăng mẫu và interpolator",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Phóng to ảnh để in",
+     "points": [
+      {
+       "say": "Ta cần ảnh to gấp đôi mỗi chiều. Các pixel mới phải có giá trị hợp lý.",
+       "text": "Cần thêm pixel hợp lý"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Chèn số không",
+     "points": [
+      {
+       "say": "Bước đầu của tăng mẫu là chèn C trừ một số không vào giữa các mẫu. Hiển thị ngay thì thấy các vạch đen xen kẽ.",
+       "text": "Chèn 0 → vạch đen xen kẽ"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Chèn rồi lọc để lấp lỗ",
+     "points": [
+      {
+       "say": "Tăng mẫu làm phổ co lại, không bỏ mẫu nào nên không mất thông tin, không có aliasing.",
+       "text": "Phổ co lại, không aliasing"
+      },
+      {
+       "say": "Nhưng số không tạo ra bản sao phổ thừa, chính là các lỗ đen. Bộ lọc thông thấp phía sau xóa bản sao, tức lấp lỗ. Tăng mẫu cộng bộ lọc là interpolator.",
+       "text": "Tăng mẫu + lọc sau = interpolator"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Tăng mẫu một hàng pixel",
+     "points": [
+      {
+       "say": "Hàng gốc ba pixel: mười, hai mươi, ba mươi.",
+       "reveal": 1
+      },
+      {
+       "say": "Chèn một số không vào giữa mỗi cặp: mười, không, hai mươi, không, ba mươi.",
+       "reveal": 2
+      },
+      {
+       "say": "Thử đoán: bộ lọc nên điền gì vào chỗ số không?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Trung bình hai bên: mười, mười lăm, hai mươi, hai mươi lăm, ba mươi. Hàng dài gấp đôi và mượt. Đó là nội suy tuyến tính.",
+       "reveal": 3
+      }
+     ],
+     "table": {
+      "headers": [
+       "Bước",
+       "Dãy giá trị"
+      ],
+      "rows": [
+       [
+        "Hàng gốc",
+        "10, 20, 30"
+       ],
+       [
+        "Chèn số 0 xen kẽ",
+        "10, 0, 20, 0, 30"
+       ],
+       [
+        "Lọc: số 0 = trung bình hai bên",
+        "10, 15, 20, 25, 30"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Decimator và interpolator",
+     "points": [
+      {
+       "say": "Decimator: lọc thông thấp trước với tần số cắt một chia hai C, rồi giữ mỗi mẫu thứ C.",
+       "reveal": [
+        1,
+        2,
+        3
+       ]
+      },
+      {
+       "say": "Interpolator ngược thứ tự: chèn số không trước, lọc sau. Mẹo nhớ: giảm mẫu lọc trước, tăng mẫu lọc sau.",
+       "reveal": [
+        5,
+        6,
+        7
+       ]
+      }
+     ],
+     "code": {
+      "lines": [
+       "# Decimator: giảm mẫu C lần",
+       "g ← lowpass(f, cutoff = 1/(2C))     # lọc TRƯỚC",
+       "out[m] ← g[C·m]                     # giữ mỗi mẫu thứ C",
+       "",
+       "# Interpolator: tăng mẫu C lần",
+       "up[C·m] ← f[m], vị trí khác ← 0    # chèn số 0",
+       "out ← lowpass(up, cutoff = 1/(2C))  # lọc SAU"
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Giảm mẫu so với tăng mẫu",
+     "points": [
+      {
+       "say": "Giảm mẫu giữ mỗi mẫu thứ C, phổ giãn, có thể aliasing, lọc trước.",
+       "reveal": [
+        1,
+        2,
+        3
+       ]
+      },
+      {
+       "say": "Tăng mẫu chèn C trừ một số không, phổ co, không aliasing, lọc sau.",
+       "reveal": [
+        4,
+        5
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Tiêu chí",
+       "Giảm mẫu",
+       "Tăng mẫu"
+      ],
+      "rows": [
+       [
+        "Thao tác",
+        "Giữ mỗi mẫu thứ C",
+        "Chèn C−1 số 0"
+       ],
+       [
+        "Phổ",
+        "Giãn C lần",
+        "Co C lần"
+       ],
+       [
+        "Aliasing",
+        "Có thể",
+        "Không"
+       ],
+       [
+        "Bộ lọc",
+        "TRƯỚC (prefilter)",
+        "SAU"
+       ],
+       [
+        "Hệ ghép",
+        "Decimator",
+        "Interpolator"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Tăng mẫu ở đâu",
+     "points": [
+      {
+       "say": "Phóng to ảnh, tăng độ phân giải video, đổi tần số lấy mẫu âm thanh: đều chèn mẫu rồi lọc.",
+       "text": "Phóng to ảnh, video, âm thanh"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Bộ lọc cụ thể nào?",
+     "points": [
+      {
+       "say": "Bộ lọc phía sau có thể đơn giản hay phức tạp. Slide nêu hai cách nội suy ảnh phổ biến nhất. Video sau.",
+       "text": "→ Nearest và bilinear"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Lấy mẫu & Nyquist",
+       "Giảm mẫu",
+       "Tăng mẫu",
+       "Nearest & bilinear",
+       "Lấy mẫu video",
+       "Đổi tốc độ khung"
+      ],
+      "current": 4
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: tăng mẫu không gây aliasing vì không bỏ mẫu nào."
+      },
+      {
+       "say": "Bẫy hai: bộ lọc của interpolator đặt sau bộ tăng mẫu, ngược với decimator."
+      },
+      {
+       "say": "Bẫy ba: tăng C lần thì chèn C trừ một số không giữa hai mẫu."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Tăng mẫu có gây aliasing?",
+        "Không, vì không mất thông tin"
+       ],
+       [
+        "Bộ lọc của interpolator đặt đâu?",
+        "SAU bộ tăng mẫu"
+       ],
+       [
+        "Chèn bao nhiêu số 0?",
+        "C − 1 giữa hai mẫu"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "noi-suy",
+   "title": "Nội suy nearest neighbor và bilinear",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Giá trị tại một điểm lẻ",
+     "points": [
+      {
+       "say": "Khi phóng to hay xoay ảnh, điểm cần tính rơi vào giữa các pixel, tọa độ lẻ. Lấy giá trị nào?",
+       "text": "Tọa độ lẻ: lấy giá trị nào?"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Lấy pixel gần nhất",
+     "points": [
+      {
+       "say": "Nội suy lân cận gần nhất, còn gọi là bậc không hay lặp pixel: làm tròn tọa độ về pixel gần nhất rồi lấy giá trị của nó. Rẻ nhất về tính toán.",
+       "text": "Nearest: làm tròn về pixel gần nhất"
+      },
+      {
+       "say": "Nhưng phóng to thì hiện rõ khối vuông và răng cưa ở cạnh.",
+       "text": "Khối vuông, răng cưa"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Pha trộn theo khoảng cách",
+     "points": [
+      {
+       "say": "Nội suy song tuyến, bậc một, dùng bốn pixel bao quanh. Pixel càng gần thì trọng số càng lớn, như pha màu theo tỉ lệ.",
+       "text": "Bilinear: 4 pixel, gần thì nặng hơn"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Nội suy song tuyến tại một điểm",
+     "points": [
+      {
+       "say": "Bốn pixel: hàng trên mười và hai mươi, hàng dưới ba mươi và bốn mươi. Điểm cần tính cách mép trái một phần tư ô, cách hàng trên ba phần tư ô.",
+       "reveal": 1
+      },
+      {
+       "say": "Bước một, hàng trên: đi một phần tư từ mười tới hai mươi, được mười hai phẩy năm.",
+       "reveal": 1
+      },
+      {
+       "say": "Bước hai, hàng dưới: một phần tư từ ba mươi tới bốn mươi, được ba mươi hai phẩy năm.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: kết quả cuối gần mười hai phẩy năm hay gần ba mươi hai phẩy năm?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Bước ba, theo chiều dọc: ba phần tư từ mười hai phẩy năm tới ba mươi hai phẩy năm, được hai mươi bảy phẩy năm, gần hàng dưới vì điểm nằm gần hàng dưới.",
+       "reveal": 1
+      },
+      {
+       "say": "Nearest chỉ lấy pixel gần nhất là ba mươi. Hai mươi bảy phẩy năm phản ánh cả bốn hàng xóm, ba mươi chỉ phản ánh một.",
+       "reveal": 1
+      }
+     ],
+     "grid": {
+      "label": "4 pixel bao quanh; ô cam = pixel gần nhất",
+      "cells": [
+       [
+        10,
+        20
+       ],
+       [
+        30,
+        40
+       ]
+      ],
+      "warn": [
+       [
+        1,
+        0
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Nearest so với bilinear",
+     "points": [
+      {
+       "say": "Nearest là bậc không, lặp pixel; bilinear là bậc một.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Nearest dùng một pixel, bilinear dùng bốn.",
+       "reveal": [
+        2
+       ]
+      },
+      {
+       "say": "Nearest rẻ nhất; bilinear tốn thêm vài phép nhân.",
+       "reveal": [
+        3
+       ]
+      },
+      {
+       "say": "Nearest ra khối vuông và răng cưa; bilinear mượt hơn.",
+       "reveal": [
+        4
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Tiêu chí",
+       "Nearest neighbor",
+       "Bilinear"
+      ],
+      "rows": [
+       [
+        "Tên khác",
+        "Zero-order, pixel replication",
+        "First-order"
+       ],
+       [
+        "Số pixel dùng",
+        "1",
+        "4 bao quanh"
+       ],
+       [
+        "Chi phí",
+        "Thấp nhất",
+        "Cao hơn một chút"
+       ],
+       [
+        "Kết quả",
+        "Khối vuông, răng cưa",
+        "Mượt hơn"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Nội suy ở đâu",
+     "points": [
+      {
+       "say": "Nearest được dùng khi cần giữ đúng giá trị pixel, như ảnh nhãn phân đoạn hay ảnh điểm ảnh nghệ thuật. Bilinear là mặc định khi phóng to ảnh thường.",
+       "text": "Nearest: ảnh nhãn, pixel art · bilinear: phóng to thường"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Ảnh tĩnh xong, còn video",
+     "points": [
+      {
+       "say": "Đến giờ ta chỉ lấy mẫu theo không gian. Video còn lấy mẫu theo thời gian, và cách quét quyết định thông tin nào được ghi lại.",
+       "text": "Video: lấy mẫu theo thời gian"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Lấy mẫu & Nyquist",
+       "Giảm mẫu",
+       "Tăng mẫu",
+       "Nearest & bilinear",
+       "Lấy mẫu video",
+       "Đổi tốc độ khung"
+      ],
+      "current": 5
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: nearest neighbor còn gọi là nội suy bậc không hay lặp pixel."
+      },
+      {
+       "say": "Bẫy hai: bilinear là bậc một và dùng bốn pixel bao quanh."
+      },
+      {
+       "say": "Bẫy ba: trong ví dụ, bilinear cho hai mươi bảy phẩy năm, nearest cho ba mươi."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Nearest còn gọi là gì?",
+        "Zero-order, pixel replication"
+       ],
+       [
+        "Bilinear dùng mấy pixel?",
+        "4 pixel bao quanh"
+       ],
+       [
+        "Ví dụ: bilinear và nearest cho bao nhiêu?",
+        "27,5 và 30"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "lay-mau-video",
+   "title": "Lấy mẫu video và cấu trúc lưới",
+   "kind": "extra",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Video lấy mẫu cả không gian lẫn thời gian",
+     "points": [
+      {
+       "say": "Video không chỉ có lưới pixel mà còn có chuỗi khung theo thời gian. Bước thu nhận và quét ban đầu quyết định thông tin nào có trong dữ liệu.",
+       "text": "Quét ban đầu quyết định thông tin có trong dữ liệu"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Lọc trước rồi lấy mẫu trên một lưới",
+     "points": [
+      {
+       "say": "Thu nhận được mô hình hóa thành hai phần: bộ lọc trước theo không gian và thời gian, rồi lấy mẫu lý tưởng trên một cấu trúc lấy mẫu.",
+       "text": "Lọc trước + lấy mẫu lý tưởng"
+      },
+      {
+       "say": "Cấu trúc lấy mẫu quyết định lượng thông tin không gian thời gian; bộ lọc trước giới hạn aliasing.",
+       "text": "Cấu trúc → thông tin · lọc → aliasing"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Lưới",
+     "points": [
+      {
+       "say": "Lưới D chiều là tập điểm tạo bởi tổ hợp tuyến tính hệ số nguyên của các vector độc lập tuyến tính. Nói đơn giản, một mẫu điểm lặp đều đặn.",
+       "text": "Lattice: mẫu điểm lặp đều"
+      },
+      {
+       "say": "Lấy mẫu theo thời gian là lưới một chiều, xác định bởi chu kỳ khung hình T.",
+       "text": "1D: chu kỳ khung T"
+      },
+      {
+       "say": "Lấy mẫu dọc và thời gian là lưới hai chiều, ví dụ quét xen kẽ: lượt này ghi dòng lẻ, lượt sau ghi dòng chẵn.",
+       "text": "2D: quét xen kẽ"
+      }
+     ]
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: lưới là tập điểm tạo bởi tổ hợp tuyến tính với hệ số nguyên của các vector độc lập tuyến tính."
+      },
+      {
+       "say": "Bẫy hai: quét xen kẽ là lưới hai chiều theo dọc và thời gian; lấy mẫu thời gian thuần là lưới một chiều."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Lưới D chiều là gì?",
+        "Tổ hợp tuyến tính hệ số nguyên của vector độc lập"
+       ],
+       [
+        "Quét xen kẽ là lưới mấy chiều?",
+        "2 chiều (dọc – thời gian)"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "toc-do-khung",
+   "title": "Chuyển đổi tốc độ khung hình",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Phim 24 khung, màn hình 60 khung",
+     "points": [
+      {
+       "say": "Phim điện ảnh quay hai mươi bốn khung mỗi giây. Muốn chiếu mượt ở bốn mươi tám hay sáu mươi khung, phải tạo thêm khung chưa từng được quay.",
+       "text": "24 → 48 hoặc 60 khung/giây"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Nội suy thời gian thuần túy",
+     "points": [
+      {
+       "say": "Cách đơn giản: khung mới tính từ các khung lân cận tại cùng vị trí pixel. Nếu phổ thời gian thỏa Nyquist, có thể dùng nội suy sinc lý tưởng.",
+       "text": "Nội suy tại cùng vị trí"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Nội suy dọc theo quỹ đạo",
+     "points": [
+      {
+       "say": "Vật chuyển động không đứng yên ở một pixel. Hãy ước lượng chuyển động trước, như chương sáu, rồi nội suy dọc theo quỹ đạo của vật.",
+       "text": "Ước lượng chuyển động, nội suy theo quỹ đạo"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Quả bóng giữa hai khung",
+     "points": [
+      {
+       "say": "Khung trước: quả bóng ở ô số một.",
+       "reveal": 1
+      },
+      {
+       "say": "Khung sau: quả bóng ở ô số ba.",
+       "reveal": 2
+      },
+      {
+       "say": "Thử đoán: lấy trung bình hai khung tại từng pixel, khung giữa trông thế nào?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Hai quả bóng mờ, mỗi quả một nửa độ sáng, ở ô một và ô ba. Đó là bóng ma, ghosting.",
+       "reveal": 3
+      },
+      {
+       "say": "Nội suy có bù chuyển động biết bóng đi từ ô một sang ô ba, nên đặt một quả bóng rõ nét ở ô hai.",
+       "reveal": 4
+      }
+     ],
+     "grid": [
+      {
+       "label": "Khung trước",
+       "cells": [
+        [
+         0,
+         100,
+         0,
+         0,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         1
+        ]
+       ]
+      },
+      {
+       "label": "Khung sau",
+       "cells": [
+        [
+         0,
+         0,
+         0,
+         100,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         3
+        ]
+       ]
+      },
+      {
+       "label": "Trung bình: bóng ma",
+       "cells": [
+        [
+         0,
+         50,
+         0,
+         50,
+         0
+        ]
+       ],
+       "warn": [
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         3
+        ]
+       ]
+      },
+      {
+       "label": "Bù chuyển động",
+       "cells": [
+        [
+         0,
+         0,
+         100,
+         0,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         2
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Nội suy thuần so với bù chuyển động",
+     "points": [
+      {
+       "say": "Nội suy thuần đơn giản, nhưng gây bóng ma khi vật chuyển động nhanh.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Bù chuyển động tốn công ước lượng, nhưng đặt vật đúng chỗ.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Nội suy thời gian thuần",
+       "Có bù chuyển động"
+      ],
+      "rows": [
+       [
+        "Vật nhanh",
+        "Bóng ma (ghosting)",
+        "Đúng vị trí"
+       ],
+       [
+        "Chi phí",
+        "Thấp",
+        "Cần ước lượng chuyển động"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Đổi tốc độ khung ở đâu",
+     "points": [
+      {
+       "say": "Chế độ làm mượt chuyển động trên TV, chuyển phim hai mươi bốn khung sang chuẩn truyền hình, tạo video chuyển động chậm từ video thường.",
+       "text": "Làm mượt trên TV, slow motion"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Ảnh thu được, giờ phải hiển thị",
+     "points": [
+      {
+       "say": "Thu nhận và lấy mẫu xong. Đầu bên kia của đường ống là hiển thị ảnh lên thiết bị ít mức xám, và đo xem ảnh đẹp hay xấu. Đó là chương tám.",
+       "text": "→ Chương 8: hiển thị và đánh giá"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Lấy mẫu & Nyquist",
+       "Giảm mẫu",
+       "Tăng mẫu",
+       "Nearest & bilinear",
+       "Lấy mẫu video",
+       "Đổi tốc độ khung"
+      ],
+      "current": 6
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: nội suy thời gian thuần túy gây bóng ma khi vật chuyển động nhanh, nên cần bù chuyển động."
+      },
+      {
+       "say": "Bẫy hai: ví dụ trong slide là tăng phim từ hai mươi bốn lên bốn mươi tám hoặc sáu mươi khung mỗi giây."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Vì sao cần nội suy có bù chuyển động?",
+        "Nội suy thuần gây ghosting khi chuyển động nhanh"
+       ],
+       [
+        "Ví dụ trong slide?",
+        "Phim 24 → 48 hoặc 60 khung/giây"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "tong-ket",
+   "title": "Tổng kết chương 7",
+   "kind": "summary",
+   "scenes": [
+    {
+     "kicker": "Tổng kết",
+     "title": "Thu nhận ảnh trong một mạch",
+     "points": [
+      {
+       "say": "Nhìn lại chiếc áo kẻ sọc. Lấy mẫu rời rạc hóa vị trí, lượng tử rời rạc hóa biên độ, và Nyquist đòi ít nhất hai mẫu mỗi chu kỳ."
+      },
+      {
+       "say": "Giảm mẫu cần lọc trước để tránh sọc giả; tăng mẫu chèn số không rồi lọc sau; nearest và bilinear là hai cách nội suy."
+      },
+      {
+       "say": "Video lấy mẫu trên lưới, và đổi tốc độ khung nên bù chuyển động để tránh bóng ma."
+      }
+     ],
+     "chain": {
+      "items": [
+       "Lấy mẫu & Nyquist",
+       "Giảm mẫu",
+       "Tăng mẫu",
+       "Nearest & bilinear",
+       "Lấy mẫu video",
+       "Đổi tốc độ khung"
+      ],
+      "current": 6
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Năm bẫy chung",
+     "points": [
+      {
+       "say": "Một: lấy mẫu là vị trí, lượng tử là biên độ."
+      },
+      {
+       "say": "Hai: DSFT dùng chu kỳ trên pixel."
+      },
+      {
+       "say": "Ba: giảm mẫu phổ giãn, lọc trước."
+      },
+      {
+       "say": "Bốn: tăng mẫu không aliasing, lọc sau."
+      },
+      {
+       "say": "Năm: nội suy thuần gây bóng ma."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Lấy mẫu / lượng tử?",
+        "Vị trí / biên độ"
+       ],
+       [
+        "Đơn vị DSFT?",
+        "Chu kỳ / pixel"
+       ],
+       [
+        "Giảm mẫu?",
+        "Phổ giãn, lọc TRƯỚC"
+       ],
+       [
+        "Tăng mẫu?",
+        "Không aliasing, lọc SAU"
+       ],
+       [
+        "Đổi tốc độ khung?",
+        "Bù chuyển động tránh ghosting"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Tổng kết",
+     "title": "Sang chương 8",
+     "points": [
+      {
+       "say": "Chương tám đi tới đầu bên kia: hiển thị ảnh lên thiết bị ít mức xám, và đo chất lượng ảnh.",
+       "text": "Chương 8: hiển thị và đánh giá"
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }

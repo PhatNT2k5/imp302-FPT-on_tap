@@ -1,0 +1,109 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.576 line:98%,end
+Ảnh áo quá lớn để gửi.
+
+00:00:02.526 --> 00:00:05.443 line:98%,end
+Ta muốn thu nhỏ một nửa mỗi chiều.
+
+00:00:06.946 --> 00:00:11.089 line:98%,end
+Cách nhanh nhất: giữ một pixel, bỏ một pixel.
+
+00:00:11.039 --> 00:00:14.086 line:98%,end
+Đơn giản, nhưng có an toàn không?
+
+00:00:15.592 --> 00:00:20.712 line:98%,end
+Giảm mẫu theo hệ số nguyên C và D: giữ mỗi mẫu thứ C theo chiều ngang,
+
+00:00:20.712 --> 00:00:22.248 line:98%,end
+thứ D theo chiều dọc.
+
+00:00:22.810 --> 00:00:26.263 line:98%,end
+Trong miền tần số, phổ giãn ra C lần.
+
+00:00:26.213 --> 00:00:29.757 line:98%,end
+Ảnh nhỏ đi một nửa thì mỗi sọc chỉ còn nửa số pixel,
+
+00:00:29.757 --> 00:00:32.892 line:98%,end
+nên tính theo pixel nó dao động nhanh gấp đôi.
+
+00:00:33.508 --> 00:00:38.823 line:98%,end
+Muốn an toàn, lọc thông thấp trước để bỏ chi tiết quá mịn, rồi mới giảm.
+
+00:00:38.773 --> 00:00:42.822 line:98%,end
+Bộ lọc trước cộng bộ giảm mẫu gọi là decimator.
+
+00:00:44.338 --> 00:00:47.647 line:98%,end
+Bên trái là mười mẫu của sọc không phẩy bốn.
+
+00:00:47.597 --> 00:00:53.405 line:98%,end
+Giảm mẫu hai lần: chỉ giữ mẫu số không, hai, bốn, sáu, tám.
+
+00:00:54.028 --> 00:00:58.340 line:98%,end
+Thử đoán: năm mẫu còn lại trông giống sọc nhanh hay sọc chậm?
+
+00:01:00.894 --> 00:01:06.833 line:98%,end
+Sọc chậm hẳn: chín mươi, sáu mươi hai, mười tám, mười tám, sáu mươi hai,
+
+00:01:06.833 --> 00:01:09.060 line:98%,end
+năm mẫu mới hết một chu kỳ.
+
+00:01:09.010 --> 00:01:12.616 line:98%,end
+Tần số thật thành không phẩy tám, vượt không phẩy năm,
+
+00:01:12.616 --> 00:01:14.752 line:98%,end
+bị gập lại thành không phẩy hai.
+
+00:01:14.752 --> 00:01:16.823 line:98%,end
+Đó là sọc giả.
+
+00:01:18.248 --> 00:01:22.160 line:98%,end
+Ảnh gốc có sọc không phẩy bốn chu kỳ mỗi pixel.
+
+00:01:22.710 --> 00:01:27.152 line:98%,end
+Giảm hai lần, tần số theo pixel mới thành không phẩy tám.
+
+00:01:27.720 --> 00:01:32.344 line:98%,end
+Vượt không phẩy năm, gập lại thành không phẩy hai: sọc giả.
+
+00:01:32.898 --> 00:01:37.569 line:98%,end
+Muốn an toàn khi giảm C lần, tần số gốc phải nhỏ hơn một chia hai C,
+
+00:01:37.569 --> 00:01:40.179 line:98%,end
+tức không phẩy hai lăm với C bằng hai.
+
+00:01:40.740 --> 00:01:46.029 line:98%,end
+Sọc không phẩy bốn vượt giới hạn, nên lọc thông thấp bỏ nó đi rồi mới giảm.
+
+00:01:45.979 --> 00:01:49.416 line:98%,end
+Ảnh nhỏ mất sọc mịn nhưng không có sọc giả.
+
+00:01:49.416 --> 00:01:52.528 line:98%,end
+Thà mất chi tiết còn hơn chi tiết sai.
+
+00:01:54.042 --> 00:01:57.859 line:98%,end
+Bỏ pixel trực tiếp nhanh nhưng có thể sinh sọc giả.
+
+00:01:58.428 --> 00:02:03.508 line:98%,end
+Decimator lọc trước nên chặn được aliasing, đổi lại ảnh mềm hơn.
+
+00:02:04.962 --> 00:02:08.780 line:98%,end
+Tạo ảnh thu nhỏ, giảm độ phân giải video cho điện thoại,
+
+00:02:08.780 --> 00:02:12.803 line:98%,end
+xây kim tự tháp ảnh nhiều tầng: đều cần lọc trước khi giảm.
+
+00:02:14.256 --> 00:02:18.646 line:98%,end
+Giảm mẫu xong, ta lại cần phóng to ảnh để in khổ lớn.
+
+00:02:18.596 --> 00:02:21.955 line:98%,end
+Phải tạo thêm những pixel chưa từng được đo.
+
+00:02:23.478 --> 00:02:28.480 line:98%,end
+Bẫy một: giảm mẫu làm phổ giãn ra, có thể gây aliasing.
+
+00:02:29.040 --> 00:02:35.032 line:98%,end
+Bẫy hai: bộ lọc thông thấp đặt trước bộ giảm mẫu; ghép lại gọi là decimator.
+
+00:02:35.586 --> 00:02:40.809 line:98%,end
+Bẫy ba: khi giảm C lần, tần số gốc phải nhỏ hơn một chia hai C.

@@ -1,0 +1,100 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.857 line:98%,end
+Khi phóng to hay xoay ảnh, điểm cần tính rơi vào giữa các pixel, tọa độ lẻ.
+
+00:00:05.807 --> 00:00:07.839 line:98%,end
+Lấy giá trị nào?
+
+00:00:09.346 --> 00:00:11.060 line:98%,end
+Nội suy lân cận gần nhất,
+
+00:00:11.060 --> 00:00:17.434 line:98%,end
+còn gọi là bậc không hay lặp pixel: làm tròn tọa độ về pixel gần nhất rồi lấy giá trị của nó.
+
+00:00:17.384 --> 00:00:19.650 line:98%,end
+Rẻ nhất về tính toán.
+
+00:00:20.260 --> 00:00:24.403 line:98%,end
+Nhưng phóng to thì hiện rõ khối vuông và răng cưa ở cạnh.
+
+00:00:25.858 --> 00:00:30.352 line:98%,end
+Nội suy song tuyến, bậc một, dùng bốn pixel bao quanh.
+
+00:00:30.302 --> 00:00:35.146 line:98%,end
+Pixel càng gần thì trọng số càng lớn, như pha màu theo tỉ lệ.
+
+00:00:36.664 --> 00:00:42.213 line:98%,end
+Bốn pixel: hàng trên mười và hai mươi, hàng dưới ba mươi và bốn mươi.
+
+00:00:42.163 --> 00:00:47.150 line:98%,end
+Điểm cần tính cách mép trái một phần tư ô, cách hàng trên ba phần tư ô.
+
+00:00:47.770 --> 00:00:51.946 line:98%,end
+Bước một, hàng trên: đi một phần tư từ mười tới hai mươi,
+
+00:00:51.946 --> 00:00:53.631 line:98%,end
+được mười hai phẩy năm.
+
+00:00:54.196 --> 00:00:58.454 line:98%,end
+Bước hai, hàng dưới: một phần tư từ ba mươi tới bốn mươi,
+
+00:00:58.454 --> 00:01:00.396 line:98%,end
+được ba mươi hai phẩy năm.
+
+00:01:00.958 --> 00:01:05.817 line:98%,end
+Thử đoán: kết quả cuối gần mười hai phẩy năm hay gần ba mươi hai phẩy năm?
+
+00:01:08.376 --> 00:01:08.885 line:98%,end
+Bước ba,
+
+00:01:08.885 --> 00:01:13.530 line:98%,end
+theo chiều dọc: ba phần tư từ mười hai phẩy năm tới ba mươi hai phẩy năm,
+
+00:01:13.530 --> 00:01:17.857 line:98%,end
+được hai mươi bảy phẩy năm, gần hàng dưới vì điểm nằm gần hàng dưới.
+
+00:01:18.426 --> 00:01:22.100 line:98%,end
+Nearest chỉ lấy pixel gần nhất là ba mươi.
+
+00:01:22.050 --> 00:01:27.050 line:98%,end
+Hai mươi bảy phẩy năm phản ánh cả bốn hàng xóm, ba mươi chỉ phản ánh một.
+
+00:01:28.560 --> 00:01:33.562 line:98%,end
+Nearest là bậc không, lặp pixel; bilinear là bậc một.
+
+00:01:34.122 --> 00:01:38.174 line:98%,end
+Nearest dùng một pixel, bilinear dùng bốn.
+
+00:01:38.724 --> 00:01:42.971 line:98%,end
+Nearest rẻ nhất; bilinear tốn thêm vài phép nhân.
+
+00:01:43.542 --> 00:01:48.049 line:98%,end
+Nearest ra khối vuông và răng cưa; bilinear mượt hơn.
+
+00:01:49.500 --> 00:01:52.519 line:98%,end
+Nearest được dùng khi cần giữ đúng giá trị pixel,
+
+00:01:52.519 --> 00:01:55.661 line:98%,end
+như ảnh nhãn phân đoạn hay ảnh điểm ảnh nghệ thuật.
+
+00:01:55.611 --> 00:01:59.231 line:98%,end
+Bilinear là mặc định khi phóng to ảnh thường.
+
+00:02:00.738 --> 00:02:03.943 line:98%,end
+Đến giờ ta chỉ lấy mẫu theo không gian.
+
+00:02:03.893 --> 00:02:06.108 line:98%,end
+Video còn lấy mẫu theo thời gian,
+
+00:02:06.108 --> 00:02:09.531 line:98%,end
+và cách quét quyết định thông tin nào được ghi lại.
+
+00:02:11.040 --> 00:02:16.185 line:98%,end
+Bẫy một: nearest neighbor còn gọi là nội suy bậc không hay lặp pixel.
+
+00:02:16.746 --> 00:02:21.800 line:98%,end
+Bẫy hai: bilinear là bậc một và dùng bốn pixel bao quanh.
+
+00:02:22.356 --> 00:02:28.647 line:98%,end
+Bẫy ba: trong ví dụ, bilinear cho hai mươi bảy phẩy năm, nearest cho ba mươi.

@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:06.081 line:98%,end
+Chương bảy quay về điểm xuất phát của mọi thứ: thu nhận ảnh.
+
+00:00:06.081 --> 00:00:11.094 line:98%,end
+Ví dụ của cả chương: điện thoại chụp một chiếc áo sơ mi kẻ sọc nhỏ.
+
+00:00:11.710 --> 00:00:15.215 line:98%,end
+Sau đó ta thu nhỏ ảnh để gửi tin nhắn, phóng to để in,
+
+00:00:15.215 --> 00:00:19.433 line:98%,end
+và đổi một đoạn phim từ hai mươi bốn lên sáu mươi khung mỗi giây.
+
+00:00:19.984 --> 00:00:22.614 line:98%,end
+Thử nghĩ: chụp áo kẻ sọc rồi thu nhỏ,
+
+00:00:22.614 --> 00:00:26.523 line:98%,end
+đôi khi trên ảnh hiện ra những vân lạ không có trên áo.
+
+00:00:26.473 --> 00:00:28.699 line:98%,end
+Vân đó từ đâu ra?
+
+00:00:32.214 --> 00:00:38.232 line:98%,end
+Ta bắt đầu từ lấy mẫu, lượng tử và điều kiện Nyquist, rồi giảm mẫu và tăng mẫu.
+
+00:00:38.784 --> 00:00:43.157 line:98%,end
+Tiếp theo là hai cách nội suy ảnh, lấy mẫu video bằng lưới,
+
+00:00:43.157 --> 00:00:45.010 line:98%,end
+và đổi tốc độ khung hình.
+
+00:00:45.570 --> 00:00:49.986 line:98%,end
+Mỗi bước vá chỗ hụt của bước trước, các bạn xem theo thứ tự.

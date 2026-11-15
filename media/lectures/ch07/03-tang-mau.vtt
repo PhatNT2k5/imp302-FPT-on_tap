@@ -1,0 +1,88 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.045 line:98%,end
+Ta cần ảnh to gấp đôi mỗi chiều.
+
+00:00:02.995 --> 00:00:06.406 line:98%,end
+Các pixel mới phải có giá trị hợp lý.
+
+00:00:07.906 --> 00:00:12.609 line:98%,end
+Bước đầu của tăng mẫu là chèn C trừ một số không vào giữa các mẫu.
+
+00:00:12.559 --> 00:00:15.983 line:98%,end
+Hiển thị ngay thì thấy các vạch đen xen kẽ.
+
+00:00:17.488 --> 00:00:22.278 line:98%,end
+Tăng mẫu làm phổ co lại, không bỏ mẫu nào nên không mất thông tin,
+
+00:00:22.278 --> 00:00:23.584 line:98%,end
+không có aliasing.
+
+00:00:24.154 --> 00:00:28.752 line:98%,end
+Nhưng số không tạo ra bản sao phổ thừa, chính là các lỗ đen.
+
+00:00:28.702 --> 00:00:32.791 line:98%,end
+Bộ lọc thông thấp phía sau xóa bản sao, tức lấp lỗ.
+
+00:00:32.791 --> 00:00:36.176 line:98%,end
+Tăng mẫu cộng bộ lọc là interpolator.
+
+00:00:37.696 --> 00:00:42.320 line:98%,end
+Hàng gốc ba pixel: mười, hai mươi, ba mươi.
+
+00:00:42.874 --> 00:00:49.048 line:98%,end
+Chèn một số không vào giữa mỗi cặp: mười, không, hai mươi, không, ba mươi.
+
+00:00:49.612 --> 00:00:53.507 line:98%,end
+Thử đoán: bộ lọc nên điền gì vào chỗ số không?
+
+00:00:56.070 --> 00:01:02.101 line:98%,end
+Trung bình hai bên: mười, mười lăm, hai mươi, hai mươi lăm, ba mươi.
+
+00:01:02.051 --> 00:01:04.564 line:98%,end
+Hàng dài gấp đôi và mượt.
+
+00:01:04.564 --> 00:01:07.051 line:98%,end
+Đó là nội suy tuyến tính.
+
+00:01:08.556 --> 00:01:13.363 line:98%,end
+Decimator: lọc thông thấp trước với tần số cắt một chia hai C,
+
+00:01:13.363 --> 00:01:15.069 line:98%,end
+rồi giữ mỗi mẫu thứ C.
+
+00:01:15.630 --> 00:01:20.346 line:98%,end
+Interpolator ngược thứ tự: chèn số không trước, lọc sau.
+
+00:01:20.296 --> 00:01:24.397 line:98%,end
+Mẹo nhớ: giảm mẫu lọc trước, tăng mẫu lọc sau.
+
+00:01:25.908 --> 00:01:31.769 line:98%,end
+Giảm mẫu giữ mỗi mẫu thứ C, phổ giãn, có thể aliasing, lọc trước.
+
+00:01:32.334 --> 00:01:38.156 line:98%,end
+Tăng mẫu chèn C trừ một số không, phổ co, không aliasing, lọc sau.
+
+00:01:39.612 --> 00:01:42.582 line:98%,end
+Phóng to ảnh, tăng độ phân giải video,
+
+00:01:42.582 --> 00:01:46.489 line:98%,end
+đổi tần số lấy mẫu âm thanh: đều chèn mẫu rồi lọc.
+
+00:01:47.946 --> 00:01:51.425 line:98%,end
+Bộ lọc phía sau có thể đơn giản hay phức tạp.
+
+00:01:51.375 --> 00:01:54.643 line:98%,end
+Slide nêu hai cách nội suy ảnh phổ biến nhất.
+
+00:01:54.643 --> 00:01:56.544 line:98%,end
+Video sau.
+
+00:01:58.056 --> 00:02:02.733 line:98%,end
+Bẫy một: tăng mẫu không gây aliasing vì không bỏ mẫu nào.
+
+00:02:03.282 --> 00:02:09.612 line:98%,end
+Bẫy hai: bộ lọc của interpolator đặt sau bộ tăng mẫu, ngược với decimator.
+
+00:02:10.164 --> 00:02:14.984 line:98%,end
+Bẫy ba: tăng C lần thì chèn C trừ một số không giữa hai mẫu.

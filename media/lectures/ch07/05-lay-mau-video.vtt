@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.868 line:98%,end
+Video không chỉ có lưới pixel mà còn có chuỗi khung theo thời gian.
+
+00:00:04.818 --> 00:00:09.388 line:98%,end
+Bước thu nhận và quét ban đầu quyết định thông tin nào có trong dữ liệu.
+
+00:00:10.906 --> 00:00:15.925 line:98%,end
+Thu nhận được mô hình hóa thành hai phần: bộ lọc trước theo không gian và thời gian,
+
+00:00:15.925 --> 00:00:18.734 line:98%,end
+rồi lấy mẫu lý tưởng trên một cấu trúc lấy mẫu.
+
+00:00:19.300 --> 00:00:25.331 line:98%,end
+Cấu trúc lấy mẫu quyết định lượng thông tin không gian thời gian; bộ lọc trước giới hạn aliasing.
+
+00:00:26.794 --> 00:00:32.721 line:98%,end
+Lưới D chiều là tập điểm tạo bởi tổ hợp tuyến tính hệ số nguyên của các vector độc lập tuyến tính.
+
+00:00:32.671 --> 00:00:36.121 line:98%,end
+Nói đơn giản, một mẫu điểm lặp đều đặn.
+
+00:00:36.724 --> 00:00:41.869 line:98%,end
+Lấy mẫu theo thời gian là lưới một chiều, xác định bởi chu kỳ khung hình T.
+
+00:00:42.430 --> 00:00:45.550 line:98%,end
+Lấy mẫu dọc và thời gian là lưới hai chiều,
+
+00:00:45.550 --> 00:00:50.193 line:98%,end
+ví dụ quét xen kẽ: lượt này ghi dòng lẻ, lượt sau ghi dòng chẵn.
+
+00:00:51.652 --> 00:00:58.138 line:98%,end
+Bẫy một: lưới là tập điểm tạo bởi tổ hợp tuyến tính với hệ số nguyên của các vector độc lập tuyến tính.
+
+00:00:58.702 --> 00:01:05.631 line:98%,end
+Bẫy hai: quét xen kẽ là lưới hai chiều theo dọc và thời gian; lấy mẫu thời gian thuần là lưới một chiều.

@@ -1,0 +1,40 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.550 line:98%,end
+Nhìn lại chiếc áo kẻ sọc.
+
+00:00:02.500 --> 00:00:06.668 line:98%,end
+Lấy mẫu rời rạc hóa vị trí, lượng tử rời rạc hóa biên độ,
+
+00:00:06.668 --> 00:00:09.740 line:98%,end
+và Nyquist đòi ít nhất hai mẫu mỗi chu kỳ.
+
+00:00:10.342 --> 00:00:18.443 line:98%,end
+Giảm mẫu cần lọc trước để tránh sọc giả; tăng mẫu chèn số không rồi lọc sau; nearest và bilinear là hai cách nội suy.
+
+00:00:19.000 --> 00:00:20.696 line:98%,end
+Video lấy mẫu trên lưới,
+
+00:00:20.696 --> 00:00:24.653 line:98%,end
+và đổi tốc độ khung nên bù chuyển động để tránh bóng ma.
+
+00:00:26.110 --> 00:00:30.474 line:98%,end
+Một: lấy mẫu là vị trí, lượng tử là biên độ.
+
+00:00:31.048 --> 00:00:35.126 line:98%,end
+Hai: DSFT dùng chu kỳ trên pixel.
+
+00:00:35.698 --> 00:00:39.125 line:98%,end
+Ba: giảm mẫu phổ giãn, lọc trước.
+
+00:00:39.676 --> 00:00:43.662 line:98%,end
+Bốn: tăng mẫu không aliasing, lọc sau.
+
+00:00:44.230 --> 00:00:47.370 line:98%,end
+Năm: nội suy thuần gây bóng ma.
+
+00:00:48.820 --> 00:00:53.567 line:98%,end
+Chương tám đi tới đầu bên kia: hiển thị ảnh lên thiết bị ít mức xám,
+
+00:00:53.567 --> 00:00:55.033 line:98%,end
+và đo chất lượng ảnh.

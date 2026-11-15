@@ -1,0 +1,124 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.363 line:98%,end
+Ánh sáng trên chiếc áo thay đổi liên tục theo vị trí, độ sáng cũng là số thực.
+
+00:00:05.313 --> 00:00:08.438 line:98%,end
+Máy tính chỉ lưu được hữu hạn con số.
+
+00:00:09.946 --> 00:00:15.235 line:98%,end
+Không thiết bị nào ghi được giá trị tại vô số vị trí với độ chính xác vô hạn.
+
+00:00:15.185 --> 00:00:18.544 line:98%,end
+Phải chọn đo ở đâu và làm tròn đến đâu.
+
+00:00:20.056 --> 00:00:25.272 line:98%,end
+Ghi nhiệt độ trong ngày, các bạn đo mỗi giờ một lần: đó là lấy mẫu,
+
+00:00:25.272 --> 00:00:26.751 line:98%,end
+rời rạc hóa vị trí.
+
+00:00:26.701 --> 00:00:30.438 line:98%,end
+Với ảnh, các vị trí đó là lưới pixel.
+
+00:00:31.042 --> 00:00:36.903 line:98%,end
+Mỗi lần đo làm tròn đến một độ: đó là lượng tử hóa, rời rạc hóa biên độ.
+
+00:00:36.853 --> 00:00:39.952 line:98%,end
+Ảnh tám bit có hai trăm năm mươi sáu mức.
+
+00:00:40.564 --> 00:00:42.173 line:98%,end
+Đo quá thưa thì bỏ sót,
+
+00:00:42.173 --> 00:00:46.371 line:98%,end
+tệ hơn còn thấy quy luật giả: bánh xe trong phim quay ngược,
+
+00:00:46.371 --> 00:00:47.910 line:98%,end
+áo kẻ sọc hiện vân lạ.
+
+00:00:47.860 --> 00:00:50.295 line:98%,end
+Đó là aliasing.
+
+00:00:51.802 --> 00:00:56.027 line:98%,end
+Muốn ghi một sọc sáng tối, mỗi chu kỳ cần ít nhất hai mẫu,
+
+00:00:56.027 --> 00:00:58.067 line:98%,end
+một cho sáng và một cho tối.
+
+00:00:58.017 --> 00:01:01.949 line:98%,end
+Tần số lấy mẫu phải ít nhất gấp đôi tần số cao nhất.
+
+00:01:02.572 --> 00:01:09.605 line:98%,end
+Fourier của ảnh liên tục đo tần số theo chu kỳ trên đơn vị khoảng cách; của ảnh rời rạc theo chu kỳ trên pixel.
+
+00:01:09.555 --> 00:01:14.191 line:98%,end
+Tần số cao nhất biểu diễn được là không phẩy năm chu kỳ mỗi pixel.
+
+00:01:14.806 --> 00:01:18.259 line:98%,end
+Lấy mẫu làm phổ bị lặp lại theo chu kỳ.
+
+00:01:18.209 --> 00:01:22.312 line:98%,end
+Đủ dày thì các bản sao tách nhau; thưa thì chồng lên nhau,
+
+00:01:22.312 --> 00:01:24.576 line:98%,end
+và phần chồng chính là aliasing.
+
+00:01:26.092 --> 00:01:29.880 line:98%,end
+Sọc trên áo có tần số không phẩy bốn chu kỳ mỗi pixel,
+
+00:01:29.880 --> 00:01:32.826 line:98%,end
+cứ hai pixel rưỡi hết một chu kỳ sáng tối.
+
+00:01:32.776 --> 00:01:35.419 line:98%,end
+Mười mẫu đầu tiên trông như hình.
+
+00:01:36.022 --> 00:01:39.995 line:98%,end
+Thử đoán: không phẩy bốn có thỏa điều kiện Nyquist không?
+
+00:01:42.552 --> 00:01:45.614 line:98%,end
+Có, vì nhỏ hơn không phẩy năm.
+
+00:01:45.564 --> 00:01:51.215 line:98%,end
+Mỗi chu kỳ có hai phẩy năm mẫu, nhiều hơn hai, nên ảnh gốc biểu diễn đúng sọc.
+
+00:01:52.734 --> 00:01:58.582 line:98%,end
+Lấy mẫu rời rạc hóa vị trí, tức tham số; lượng tử hóa rời rạc hóa biên độ.
+
+00:01:59.136 --> 00:02:03.856 line:98%,end
+Lấy mẫu thưa sinh aliasing; lượng tử thô sinh sai số lượng tử,
+
+00:02:03.856 --> 00:02:05.531 line:98%,end
+như các dải màu loang.
+
+00:02:06.990 --> 00:02:10.285 line:98%,end
+Âm thanh CD lấy mẫu bốn mươi bốn phẩy một kilohertz,
+
+00:02:10.285 --> 00:02:13.581 line:98%,end
+hơn gấp đôi giới hạn nghe khoảng hai mươi kilohertz.
+
+00:02:13.531 --> 00:02:17.814 line:98%,end
+Máy ảnh có bộ lọc chống răng cưa trước cảm biến cũng vì Nyquist.
+
+00:02:19.332 --> 00:02:21.066 line:98%,end
+Ảnh gốc ổn.
+
+00:02:21.016 --> 00:02:25.899 line:98%,end
+Nhưng để gửi tin nhắn, ta phải thu nhỏ, tức là giảm số mẫu.
+
+00:02:25.899 --> 00:02:28.529 line:98%,end
+Liệu sọc có còn thỏa Nyquist?
+
+00:02:30.042 --> 00:02:35.760 line:98%,end
+Bẫy một: lấy mẫu rời rạc hóa vị trí, lượng tử hóa rời rạc hóa biên độ.
+
+00:02:35.710 --> 00:02:37.728 line:98%,end
+Đề rất hay đảo.
+
+00:02:38.340 --> 00:02:42.241 line:98%,end
+Bẫy hai: biến đổi Fourier rời rạc dùng chu kỳ trên pixel,
+
+00:02:42.241 --> 00:02:45.321 line:98%,end
+liên tục dùng chu kỳ trên đơn vị khoảng cách.
+
+00:02:45.870 --> 00:02:51.302 line:98%,end
+Bẫy ba: tần số cao nhất biểu diễn được là không phẩy năm chu kỳ mỗi pixel.
