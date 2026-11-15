@@ -1,0 +1,130 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.258 line:98%,end
+Hai con ốc cùng hình dạng, nhưng một con bề mặt bóng mịn,
+
+00:00:04.258 --> 00:00:05.935 line:98%,end
+một con gỉ sét sần sùi.
+
+00:00:05.885 --> 00:00:10.547 line:98%,end
+Cần đặc trưng đo độ mịn, độ thô, độ đều của bề mặt.
+
+00:00:12.058 --> 00:00:16.911 line:98%,end
+Shape number, Fourier hay moment bất biến chỉ tả đường viền và hình dạng,
+
+00:00:16.911 --> 00:00:19.104 line:98%,end
+không nói gì về bề mặt bên trong.
+
+00:00:20.560 --> 00:00:26.096 line:98%,end
+Bề mặt mịn thì các pixel có cường độ gần nhau, bề mặt thô thì chênh lệch nhiều.
+
+00:00:26.046 --> 00:00:28.754 line:98%,end
+Nhìn phân bố cường độ là biết.
+
+00:00:30.262 --> 00:00:34.756 line:98%,end
+Bề mặt mịn có histogram hẹp, bề mặt thô có histogram rộng.
+
+00:00:35.320 --> 00:00:39.944 line:98%,end
+Thử đoán: moment bậc mấy của histogram đo được sự khác biệt này?
+
+00:00:42.498 --> 00:00:44.841 line:98%,end
+Moment bậc hai, tức phương sai,
+
+00:00:44.841 --> 00:00:48.620 line:98%,end
+đo độ tương phản cường độ và dùng để mô tả độ mịn.
+
+00:00:48.570 --> 00:00:52.606 line:98%,end
+Moment bậc ba đo độ lệch, bậc bốn đo độ phẳng.
+
+00:00:53.220 --> 00:00:58.046 line:98%,end
+Thêm độ đồng nhất, lớn khi vùng đều màu, và entropy trung bình,
+
+00:00:58.046 --> 00:00:59.654 line:98%,end
+lớn khi vùng lộn xộn.
+
+00:00:59.604 --> 00:01:03.110 line:98%,end
+Nhược điểm: histogram không biết pixel nằm ở đâu,
+
+00:01:03.110 --> 00:01:05.828 line:98%,end
+sọc ngang và sọc dọc cho cùng kết quả.
+
+00:01:07.338 --> 00:01:11.129 line:98%,end
+Ma trận đồng hiện đếm cặp pixel để biết vị trí.
+
+00:01:11.079 --> 00:01:16.457 line:98%,end
+Chọn toán tử Q mô tả vị trí tương đối, ở đây là pixel ngay bên phải.
+
+00:01:16.457 --> 00:01:18.683 line:98%,end
+Ảnh có ba mức xám.
+
+00:01:19.284 --> 00:01:24.846 line:98%,end
+Phần tử hàng i cột j đếm số lần pixel mức i có pixel mức j ngay bên phải.
+
+00:01:24.796 --> 00:01:29.796 line:98%,end
+Cặp một rồi hai xuất hiện hai lần, nên ô hàng một cột hai bằng hai.
+
+00:01:30.414 --> 00:01:34.240 line:98%,end
+Tổng các phần tử là sáu, chia cho sáu ra xác suất từng cặp,
+
+00:01:34.240 --> 00:01:36.640 line:98%,end
+rồi tính đặc trưng như độ tương quan.
+
+00:01:36.590 --> 00:01:42.176 line:98%,end
+Đổi Q thành pixel bên dưới thì G khác, nên phân biệt được sọc ngang và sọc dọc.
+
+00:01:43.692 --> 00:01:48.525 line:98%,end
+Với kết cấu lặp lại như vải dệt hay ren ốc, phổ Fourier rất hợp.
+
+00:01:48.475 --> 00:01:51.574 line:98%,end
+Đỉnh nổi bật cho biết hướng chính của mẫu.
+
+00:01:52.182 --> 00:01:55.726 line:98%,end
+Vị trí đỉnh cho biết chu kỳ không gian cơ bản.
+
+00:01:55.676 --> 00:01:59.738 line:98%,end
+Lọc bỏ thành phần tuần hoàn thì còn lại phần không tuần hoàn.
+
+00:02:00.360 --> 00:02:04.231 line:98%,end
+Viết phổ trong tọa độ cực: cố định góc để xem dọc một tia,
+
+00:02:04.231 --> 00:02:06.833 line:98%,end
+cố định bán kính để xem quanh một vòng.
+
+00:02:08.286 --> 00:02:12.481 line:98%,end
+Moment histogram đơn giản nhưng không biết vị trí pixel.
+
+00:02:13.032 --> 00:02:16.615 line:98%,end
+Ma trận đồng hiện biết vị trí tương đối qua Q.
+
+00:02:17.178 --> 00:02:21.776 line:98%,end
+Phương pháp phổ hợp với kết cấu tuần hoàn, cho hướng và chu kỳ.
+
+00:02:23.232 --> 00:02:24.941 line:98%,end
+Kiểm tra bề mặt vải, gỗ,
+
+00:02:24.941 --> 00:02:31.138 line:98%,end
+kim loại; phân loại đất trong ảnh vệ tinh; phân biệt mô lành và mô bệnh trong ảnh y tế.
+
+00:02:32.598 --> 00:02:35.972 line:98%,end
+Mọi đặc trưng đến giờ đều cần tách vùng trước.
+
+00:02:35.922 --> 00:02:39.256 line:98%,end
+Nếu phân đoạn sai, đặc trưng cũng sai.
+
+00:02:39.864 --> 00:02:44.111 line:98%,end
+Có những đặc trưng tìm thẳng trên toàn ảnh, không cần phân đoạn.
+
+00:02:44.061 --> 00:02:45.962 line:98%,end
+Video sau.
+
+00:02:47.478 --> 00:02:52.644 line:98%,end
+Bẫy một: moment histogram bậc hai đo tương phản, bậc ba đo độ lệch,
+
+00:02:52.644 --> 00:02:54.186 line:98%,end
+bậc bốn đo độ phẳng.
+
+00:02:54.744 --> 00:02:59.173 line:98%,end
+Bẫy hai: ma trận đồng hiện phụ thuộc toán tử vị trí Q.
+
+00:02:59.730 --> 00:03:05.214 line:98%,end
+Bẫy ba: đỉnh phổ cho hướng chính, vị trí đỉnh cho chu kỳ không gian cơ bản.

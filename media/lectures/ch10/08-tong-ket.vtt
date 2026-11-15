@@ -1,0 +1,49 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.363 line:98%,end
+Độ dài biên và diện tích không đổi khi dời hay xoay, nhưng đổi theo kích thước.
+
+00:00:05.926 --> 00:00:10.381 line:98%,end
+Shape number bất biến với điểm bắt đầu và xoay bội chín mươi độ.
+
+00:00:10.331 --> 00:00:13.990 line:98%,end
+Fourier descriptors phải chuẩn hóa mới bất biến.
+
+00:00:14.608 --> 00:00:20.079 line:98%,end
+Compactness và bảy moment bất biến chịu được cả tịnh tiến, xoay và co giãn.
+
+00:00:21.550 --> 00:00:25.094 line:98%,end
+Một: shape number dùng mã chuỗi bốn hướng.
+
+00:00:25.648 --> 00:00:28.814 line:98%,end
+Hai: tịnh tiến chỉ đổi a không.
+
+00:00:29.386 --> 00:00:35.768 line:98%,end
+Ba: moment histogram hai, ba, bốn đo tương phản, độ lệch, độ phẳng.
+
+00:00:36.340 --> 00:00:39.311 line:98%,end
+Bốn: có bảy moment bất biến.
+
+00:00:39.862 --> 00:00:43.614 line:98%,end
+Năm: ma trận đồng hiện phụ thuộc toán tử Q.
+
+00:00:45.076 --> 00:00:49.173 line:98%,end
+Ta đi từ đường viền với shape number và Fourier descriptors,
+
+00:00:49.173 --> 00:00:54.089 line:98%,end
+sang cả vùng với compactness và moment bất biến, rồi bề mặt với kết cấu.
+
+00:00:54.646 --> 00:01:00.456 line:98%,end
+Sau đó là điểm mốc trên toàn ảnh với Harris, MSER, giảm chiều với PCA,
+
+00:01:00.456 --> 00:01:03.776 line:98%,end
+và cuối cùng là đặc trưng do CNN tự học.
+
+00:01:05.236 --> 00:01:06.365 line:98%,end
+Có đặc trưng rồi,
+
+00:01:06.365 --> 00:01:11.415 line:98%,end
+chương mười một dùng chúng để trả lời hai câu hỏi cùng lúc: trong ảnh có gì,
+
+00:01:11.415 --> 00:01:12.478 line:98%,end
+và nó nằm ở đâu.

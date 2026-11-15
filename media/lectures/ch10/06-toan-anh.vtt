@@ -1,0 +1,100 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.684 line:98%,end
+Muốn ghép hai ảnh băng chuyền chụp lệch nhau,
+
+00:00:02.684 --> 00:00:04.923 line:98%,end
+hay đối chiếu một chi tiết với ảnh mẫu,
+
+00:00:04.923 --> 00:00:07.967 line:98%,end
+ta cần những điểm mốc nổi bật tìm được trên toàn ảnh.
+
+00:00:08.518 --> 00:00:13.012 line:98%,end
+Và với ảnh nhiều băng phổ, cần cách giảm số chiều dữ liệu.
+
+00:00:14.476 --> 00:00:19.426 line:98%,end
+Đặc trưng biên, vùng, kết cấu đều mô tả một vùng đã tách sẵn.
+
+00:00:19.376 --> 00:00:22.228 line:98%,end
+Phân đoạn sai thì đặc trưng hỏng theo.
+
+00:00:23.746 --> 00:00:29.178 line:98%,end
+Góc là chỗ đặc biệt nhất: dịch một cửa sổ nhỏ theo hướng nào cũng thấy thay đổi mạnh.
+
+00:00:29.128 --> 00:00:32.800 line:98%,end
+Vùng ổn định là vùng giữ nguyên qua nhiều mức ngưỡng.
+
+00:00:34.312 --> 00:00:36.541 line:98%,end
+Trượt một cửa sổ nhỏ.
+
+00:00:36.491 --> 00:00:40.032 line:98%,end
+Ở vùng phẳng, dịch hướng nào cũng không đổi.
+
+00:00:40.642 --> 00:00:44.173 line:98%,end
+Ở cạnh, chỉ đổi khi dịch vuông góc với cạnh.
+
+00:00:44.740 --> 00:00:47.372 line:98%,end
+Thử đoán: ở góc thì sao?
+
+00:00:49.926 --> 00:00:53.066 line:98%,end
+Ở góc, dịch hướng nào cũng đổi mạnh.
+
+00:00:53.016 --> 00:00:56.454 line:98%,end
+Đó là dấu hiệu Harris dùng để tìm góc.
+
+00:00:57.972 --> 00:01:00.392 line:98%,end
+MSER, vùng cực trị ổn định cực đại,
+
+00:01:00.392 --> 00:01:04.680 line:98%,end
+là những vùng gần như không đổi khi thay ngưỡng qua nhiều mức,
+
+00:01:04.680 --> 00:01:06.685 line:98%,end
+nên rất bền cho đối sánh ảnh.
+
+00:01:07.254 --> 00:01:11.953 line:98%,end
+PCA: với n ảnh đã đăng ký khớp nhau, như các băng phổ,
+
+00:01:11.953 --> 00:01:14.912 line:98%,end
+mỗi vị trí cho một vector n chiều.
+
+00:01:14.862 --> 00:01:19.081 line:98%,end
+Tính trung bình, ma trận hiệp phương sai, vector riêng.
+
+00:01:19.704 --> 00:01:24.758 line:98%,end
+Xếp vector riêng thành ma trận biến đổi A để chiếu sang không gian thành phần chính.
+
+00:01:24.708 --> 00:01:28.745 line:98%,end
+Vài thành phần đầu giữ gần hết phương sai: giảm chiều.
+
+00:01:30.246 --> 00:01:35.847 line:98%,end
+Đặc trưng vùng cần phân đoạn trước; Harris và MSER tìm thẳng trên ảnh.
+
+00:01:36.408 --> 00:01:41.176 line:98%,end
+PCA giảm chiều cho dữ liệu nhiều băng, không phải để tìm điểm mốc.
+
+00:01:42.630 --> 00:01:44.965 line:98%,end
+Ghép ảnh toàn cảnh, đối sánh ảnh,
+
+00:01:44.965 --> 00:01:48.999 line:98%,end
+theo dõi điểm qua video đều dựa vào các điểm mốc như góc.
+
+00:01:48.949 --> 00:01:52.569 line:98%,end
+PCA dùng nhiều cho ảnh vệ tinh đa phổ.
+
+00:01:54.084 --> 00:01:59.516 line:98%,end
+Từ shape number đến Harris, mọi đặc trưng đều do con người nghĩ ra công thức.
+
+00:01:59.466 --> 00:02:03.033 line:98%,end
+Chọn sai đặc trưng thì bộ phân loại cũng bó tay.
+
+00:02:03.654 --> 00:02:07.237 line:98%,end
+Video sau: để mạng tự học đặc trưng.
+
+00:02:08.700 --> 00:02:12.752 line:98%,end
+Bẫy một: Harris Stephens là bộ dò góc.
+
+00:02:13.302 --> 00:02:18.682 line:98%,end
+Bẫy hai: MSER là các vùng gần như không đổi qua nhiều mức ngưỡng.
+
+00:02:19.248 --> 00:02:25.526 line:98%,end
+Bẫy ba: PCA dùng ma trận các vector riêng của ma trận hiệp phương sai làm ma trận biến đổi.

@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.232 line:98%,end
+Với hàng trăm loại dụng cụ, không ai biết trước đặc trưng thủ công nào là đủ.
+
+00:00:06.682 --> 00:00:14.210 line:98%,end
+Các lớp tích chập của một mạng CNN đã huấn luyện sẵn như VGG mười sáu tự sinh ra bản đồ đặc trưng ở nhiều mức trừu tượng.
+
+00:00:15.664 --> 00:00:20.458 line:98%,end
+Lớp đầu học những thứ như cạnh và góc, gần giống các bộ lọc thủ công.
+
+00:00:21.010 --> 00:00:25.869 line:98%,end
+Lớp sâu hơn ghép chúng thành hình dạng, rồi thành bộ phận của vật thể.
+
+00:00:26.428 --> 00:00:30.230 line:98%,end
+Đây là bước chuyển từ đặc trưng thủ công sang đặc trưng học được,
+
+00:00:30.230 --> 00:00:32.628 line:98%,end
+nền tảng cho chương mười một và mười hai.
+
+00:00:34.090 --> 00:00:38.525 line:98%,end
+Đặc trưng thủ công như shape number hay moment có công thức rõ ràng,
+
+00:00:38.525 --> 00:00:42.113 line:98%,end
+dễ giải thích, cần ít dữ liệu, nhưng do con người chọn.
+
+00:00:42.676 --> 00:00:47.424 line:98%,end
+Đặc trưng học được tự thích nghi với dữ liệu và thường mạnh hơn trên ảnh thật,
+
+00:00:47.424 --> 00:00:51.077 line:98%,end
+đổi lại cần nhiều dữ liệu, tính toán, và khó giải thích hơn.
+
+00:00:52.546 --> 00:01:01.283 line:98%,end
+Các bộ phát hiện đối tượng ở chương mười một và bộ phân loại CNN ở chương mười hai đều dùng mạng như VGG hay ResNet làm phần trích đặc trưng,
+
+00:01:01.283 --> 00:01:02.275 line:98%,end
+gọi là backbone.
+
+00:01:03.736 --> 00:01:08.959 line:98%,end
+Bẫy một: slide dùng VGG mười sáu đã huấn luyện sẵn để trích đặc trưng.
+
+00:01:09.514 --> 00:01:15.154 line:98%,end
+Bẫy hai: lớp đầu học đặc trưng cấp thấp như cạnh và góc, lớp sâu học bộ phận.

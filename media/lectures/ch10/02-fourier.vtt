@@ -1,0 +1,106 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.597 line:98%,end
+Trên băng chuyền, cờ lê nằm nghiêng ba mươi độ, ở xa hơn, lệch sang trái.
+
+00:00:05.547 --> 00:00:08.763 line:98%,end
+Mô tả đường viền vẫn phải nhận ra nó.
+
+00:00:10.282 --> 00:00:13.969 line:98%,end
+Shape number chỉ chịu được phép xoay bội chín mươi độ.
+
+00:00:15.424 --> 00:00:21.283 line:98%,end
+Mẹo: mỗi điểm biên có hai tọa độ, gộp thành một số phức, hoành độ là phần thực,
+
+00:00:21.283 --> 00:00:22.692 line:98%,end
+tung độ là phần ảo.
+
+00:00:22.642 --> 00:00:25.610 line:98%,end
+Đường biên thành một dãy số một chiều.
+
+00:00:26.218 --> 00:00:29.215 line:98%,end
+Lấy biến đổi Fourier của dãy đó.
+
+00:00:29.165 --> 00:00:32.374 line:98%,end
+Vài hệ số tần số thấp mô tả dáng tổng thể,
+
+00:00:32.374 --> 00:00:35.506 line:98%,end
+hệ số cao mô tả góc nhọn và chi tiết nhỏ.
+
+00:00:37.024 --> 00:00:41.044 line:98%,end
+Công thức chỉ nói: đem đường biên so với từng sóng tần số u,
+
+00:00:41.044 --> 00:00:43.523 line:98%,end
+xem biên chứa bao nhiêu phần sóng đó.
+
+00:00:43.473 --> 00:00:47.354 line:98%,end
+Các hệ số a của u là Fourier descriptors.
+
+00:00:47.962 --> 00:00:52.652 line:98%,end
+Giữ vài hệ số đầu rồi biến đổi ngược, ta được hình đã bo tròn.
+
+00:00:52.602 --> 00:00:55.531 line:98%,end
+Thêm hệ số thì chi tiết hiện dần.
+
+00:00:57.040 --> 00:01:01.170 line:98%,end
+Hình vuông đơn vị: bốn điểm là không, một, một cộng j,
+
+00:01:01.170 --> 00:01:05.987 line:98%,end
+và j. Hệ số a không bằng hai cộng hai j, chia bốn ra trọng tâm.
+
+00:01:05.937 --> 00:01:10.664 line:98%,end
+a một bằng âm hai trừ hai j, hai hệ số còn lại bằng không.
+
+00:01:11.266 --> 00:01:16.060 line:98%,end
+Thử đoán: dời hình sang phải ba đơn vị thì hệ số nào thay đổi?
+
+00:01:18.612 --> 00:01:19.464 line:98%,end
+Chỉ a không,
+
+00:01:19.464 --> 00:01:24.434 line:98%,end
+thành mười bốn cộng hai j. Muốn bất biến với tịnh tiến thì bỏ a không.
+
+00:01:24.990 --> 00:01:28.612 line:98%,end
+Phóng to gấp đôi, mọi hệ số nhân hai.
+
+00:01:28.562 --> 00:01:32.716 line:98%,end
+Muốn bất biến với co giãn thì chia cho độ lớn của a một.
+
+00:01:32.716 --> 00:01:37.716 line:98%,end
+Xoay hay đổi điểm bắt đầu chỉ đổi pha, nên dùng độ lớn là bất biến.
+
+00:01:39.228 --> 00:01:42.967 line:98%,end
+Tịnh tiến chỉ ảnh hưởng a không: bỏ a không.
+
+00:01:43.518 --> 00:01:47.700 line:98%,end
+Xoay và đổi điểm bắt đầu chỉ đổi pha: dùng độ lớn.
+
+00:01:48.264 --> 00:01:52.250 line:98%,end
+Co giãn nhân mọi hệ số: chia cho độ lớn a một.
+
+00:01:53.718 --> 00:01:58.888 line:98%,end
+Fourier descriptors được dùng để so khớp hình dạng, nhận dạng dáng vật thể,
+
+00:01:58.888 --> 00:02:03.369 line:98%,end
+lá cây, chữ viết, vì vài hệ số đầu đã tóm tắt được dáng tổng thể.
+
+00:02:04.836 --> 00:02:08.067 line:98%,end
+Fourier descriptors chỉ nhìn đường viền.
+
+00:02:08.017 --> 00:02:11.663 line:98%,end
+Vòng đệm có lỗ ở giữa, cờ lê thì đặc.
+
+00:02:11.663 --> 00:02:14.397 line:98%,end
+Phần bên trong vùng bị bỏ qua.
+
+00:02:15.006 --> 00:02:17.821 line:98%,end
+Video sau mô tả cả vùng.
+
+00:02:19.284 --> 00:02:23.179 line:98%,end
+Bẫy một: tịnh tiến chỉ làm đổi hệ số a không.
+
+00:02:23.742 --> 00:02:31.270 line:98%,end
+Bẫy hai: chia cho độ lớn a một để bất biến với co giãn; dùng độ lớn để bất biến với xoay và điểm bắt đầu.
+
+00:02:31.824 --> 00:02:37.516 line:98%,end
+Bẫy ba: mỗi điểm biên là một số phức, hoành độ phần thực, tung độ phần ảo.

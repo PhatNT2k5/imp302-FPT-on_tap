@@ -1,0 +1,106 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:06.198 line:98%,end
+Ta cần nhiều con số mô tả hình dạng vùng, và tất cả không đổi khi vật dời, xoay,
+
+00:00:06.198 --> 00:00:06.808 line:98%,end
+co giãn.
+
+00:00:08.266 --> 00:00:13.164 line:98%,end
+Compactness chỉ là một con số, nhiều hình khác nhau dễ trùng giá trị.
+
+00:00:14.632 --> 00:00:18.618 line:98%,end
+Moment là tổng các pixel nhân với lũy thừa tọa độ.
+
+00:00:18.568 --> 00:00:22.030 line:98%,end
+Moment bậc thấp rất quen: moment không không là diện tích,
+
+00:00:22.030 --> 00:00:25.730 line:98%,end
+moment một không và không một chia diện tích cho ra trọng tâm.
+
+00:00:26.338 --> 00:00:32.058 line:98%,end
+Đo tọa độ từ trọng tâm thay vì từ góc ảnh: vật dời đi đâu thì trọng tâm dời theo,
+
+00:00:32.058 --> 00:00:33.541 line:98%,end
+nên con số không đổi.
+
+00:00:35.008 --> 00:00:37.744 line:98%,end
+Moment thường đo từ gốc ảnh.
+
+00:00:37.694 --> 00:00:42.330 line:98%,end
+Moment trung tâm đo từ trọng tâm, nên bất biến với tịnh tiến.
+
+00:00:42.946 --> 00:00:46.482 line:98%,end
+Chia moment trung tâm cho lũy thừa thích hợp của diện tích,
+
+00:00:46.482 --> 00:00:50.018 line:98%,end
+được moment trung tâm chuẩn hóa, thêm bất biến với co giãn.
+
+00:00:50.572 --> 00:00:56.778 line:98%,end
+Từ moment chuẩn hóa bậc hai và bậc ba suy ra bộ bảy moment bất biến: không đổi khi tịnh tiến,
+
+00:00:56.778 --> 00:01:00.249 line:98%,end
+co giãn, xoay; phản chiếu gương thì chỉ sai một dấu.
+
+00:01:01.714 --> 00:01:04.984 line:98%,end
+Vùng hình chữ T ngược gồm bốn pixel.
+
+00:01:04.934 --> 00:01:07.395 line:98%,end
+Moment không không bằng bốn.
+
+00:01:07.395 --> 00:01:11.132 line:98%,end
+Dời vùng năm ngang, ba dọc, vẫn là bốn.
+
+00:01:11.740 --> 00:01:15.245 line:98%,end
+Moment một không bằng tám, không một bằng năm.
+
+00:01:15.195 --> 00:01:20.025 line:98%,end
+Sau khi dời thành hai mươi tám và mười bảy: moment thường không bất biến.
+
+00:01:20.638 --> 00:01:25.822 line:98%,end
+Trọng tâm hai và một phẩy hai lăm, sau khi dời cũng dời đúng năm và ba.
+
+00:01:26.392 --> 00:01:30.808 line:98%,end
+Thử đoán: moment trung tâm bậc hai có đổi sau khi dời không?
+
+00:01:33.378 --> 00:01:37.859 line:98%,end
+Không đổi chút nào: hai và không phẩy bảy lăm ở cả hai cột.
+
+00:01:37.809 --> 00:01:41.637 line:98%,end
+Ngang lớn hơn dọc cho biết vùng trải rộng theo chiều ngang.
+
+00:01:43.152 --> 00:01:45.628 line:98%,end
+Moment thường không bất biến.
+
+00:01:46.194 --> 00:01:51.027 line:98%,end
+Moment trung tâm bất biến với tịnh tiến; chuẩn hóa thì thêm co giãn.
+
+00:01:51.588 --> 00:01:56.004 line:98%,end
+Bảy moment bất biến chịu được tịnh tiến, co giãn và xoay.
+
+00:01:57.474 --> 00:02:02.436 line:98%,end
+Bảy moment bất biến là đặc trưng hình dạng kinh điển, dùng nhận dạng ký tự,
+
+00:02:02.436 --> 00:02:05.809 line:98%,end
+chi tiết máy, vật thể đơn giản dù xoay hay co giãn.
+
+00:02:07.272 --> 00:02:12.378 line:98%,end
+Một con ốc mạ bóng và một con ốc gỉ sét có cùng hình dạng, cùng moment.
+
+00:02:12.328 --> 00:02:14.698 line:98%,end
+Thứ khác nhau là bề mặt.
+
+00:02:15.306 --> 00:02:19.240 line:98%,end
+Video sau mô tả bề mặt: đặc trưng kết cấu.
+
+00:02:20.712 --> 00:02:23.093 line:98%,end
+Bẫy một: có bảy moment bất biến,
+
+00:02:23.093 --> 00:02:27.185 line:98%,end
+suy ra từ moment trung tâm chuẩn hóa bậc hai và bậc ba.
+
+00:02:27.738 --> 00:02:34.094 line:98%,end
+Bẫy hai: moment trung tâm bất biến với tịnh tiến; cần chuẩn hóa mới bất biến với co giãn.
+
+00:02:34.644 --> 00:02:39.646 line:98%,end
+Bẫy ba: với phản chiếu gương, moment bất biến chỉ sai một dấu.

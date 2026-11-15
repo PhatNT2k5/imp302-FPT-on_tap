@@ -1,0 +1,97 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.710 line:98%,end
+Ta muốn một con số nói nhanh vùng tròn trịa hay dài dẹt,
+
+00:00:03.710 --> 00:00:06.482 line:98%,end
+để tách vòng đệm tròn khỏi chiếc cờ lê dài.
+
+00:00:07.954 --> 00:00:12.500 line:98%,end
+Diện tích là số pixel trong vùng, chu vi là độ dài biên.
+
+00:00:12.450 --> 00:00:17.242 line:98%,end
+Nhưng chụp gần thì cả hai đều tăng, nên riêng lẻ chúng ít ý nghĩa.
+
+00:00:18.760 --> 00:00:24.765 line:98%,end
+Ghép hai số lại để bỏ ảnh hưởng của kích thước: độ compact là chu vi bình phương chia diện tích.
+
+00:00:25.330 --> 00:00:29.091 line:98%,end
+Phóng hình to gấp đôi, chu vi bình phương tăng bốn lần,
+
+00:00:29.091 --> 00:00:32.441 line:98%,end
+diện tích cũng tăng bốn lần, nên tỉ số không đổi.
+
+00:00:33.904 --> 00:00:36.601 line:98%,end
+Ba hình cùng diện tích mười sáu.
+
+00:00:37.162 --> 00:00:42.116 line:98%,end
+Hình tròn luôn có độ compact bằng bốn pi, khoảng mười hai phẩy năm bảy,
+
+00:00:42.116 --> 00:00:43.232 line:98%,end
+bất kể bán kính.
+
+00:00:43.182 --> 00:00:46.085 line:98%,end
+Đây là giá trị nhỏ nhất có thể.
+
+00:00:46.708 --> 00:00:51.120 line:98%,end
+Thử đoán: hình vuông bốn nhân bốn và hình chữ nhật tám nhân hai,
+
+00:00:51.120 --> 00:00:52.843 line:98%,end
+hình nào compact lớn hơn?
+
+00:00:55.398 --> 00:00:59.463 line:98%,end
+Hình vuông có chu vi mười sáu, compact bằng mười sáu.
+
+00:00:59.413 --> 00:01:03.853 line:98%,end
+Hình chữ nhật có chu vi hai mươi, compact bằng hai mươi lăm.
+
+00:01:03.853 --> 00:01:07.238 line:98%,end
+Càng dài, càng lồi lõm thì càng lớn.
+
+00:01:08.748 --> 00:01:11.875 line:98%,end
+Độ lệch tâm đo vùng dẹt đến mức nào.
+
+00:01:11.825 --> 00:01:16.656 line:98%,end
+Nó được định nghĩa qua một ellipse có cùng moment trung tâm bậc hai với vùng.
+
+00:01:17.262 --> 00:01:21.209 line:98%,end
+Tính từ trị riêng của ma trận hiệp phương sai các tọa độ.
+
+00:01:21.159 --> 00:01:25.665 line:98%,end
+Hình tròn có độ lệch tâm bằng không, càng dài thì càng gần một.
+
+00:01:27.180 --> 00:01:30.711 line:98%,end
+Diện tích và chu vi riêng lẻ đổi theo kích thước.
+
+00:01:31.278 --> 00:01:36.397 line:98%,end
+Compactness và độ lệch tâm bất biến với tịnh tiến, xoay và co giãn.
+
+00:01:37.860 --> 00:01:39.334 line:98%,end
+Kiểm tra hạt, tế bào,
+
+00:01:39.334 --> 00:01:45.089 line:98%,end
+viên thuốc trên dây chuyền: một con số compact là đủ để phát hiện viên méo hay vỡ.
+
+00:01:46.554 --> 00:01:49.447 line:98%,end
+Compactness chỉ là một con số.
+
+00:01:49.397 --> 00:01:52.470 line:98%,end
+Nhiều hình khác nhau có thể cùng compact.
+
+00:01:53.076 --> 00:01:56.398 line:98%,end
+Cần một bộ số giàu hơn mà vẫn bất biến.
+
+00:01:56.348 --> 00:01:58.796 line:98%,end
+Đó là moment bất biến.
+
+00:02:00.306 --> 00:02:05.074 line:98%,end
+Bẫy một: compactness nhỏ nhất với hình tròn, bằng bốn pi.
+
+00:02:05.628 --> 00:02:09.757 line:98%,end
+Bẫy hai: độ lệch tâm định nghĩa qua ellipse cùng moment bậc hai,
+
+00:02:09.757 --> 00:02:12.466 line:98%,end
+tính từ trị riêng ma trận hiệp phương sai.
+
+00:02:13.038 --> 00:02:17.871 line:98%,end
+Bẫy ba: diện tích và chu vi riêng lẻ không bất biến với co giãn.

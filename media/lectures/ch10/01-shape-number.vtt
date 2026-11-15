@@ -1,0 +1,130 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.748 line:98%,end
+Cờ lê và vòng đệm có đường viền rất khác nhau.
+
+00:00:03.698 --> 00:00:09.154 line:98%,end
+Ta muốn một mô tả đường viền không đổi khi vật xoay hay khi ta bắt đầu đi từ điểm khác.
+
+00:00:10.666 --> 00:00:15.629 line:98%,end
+Mô tả đơn giản nhất: độ dài biên xấp xỉ bằng số pixel dọc biên.
+
+00:00:15.579 --> 00:00:19.342 line:98%,end
+Đường kính là khoảng cách lớn nhất giữa hai điểm trên biên.
+
+00:00:19.948 --> 00:00:24.664 line:98%,end
+Đoạn nối hai điểm xa nhất là trục chính; trục phụ vuông góc với nó.
+
+00:00:24.614 --> 00:00:29.978 line:98%,end
+Độ cong đo qua mã chuỗi độ dốc, tổng trị tuyệt đối của chuỗi đo độ ngoằn ngoèo.
+
+00:00:30.598 --> 00:00:35.678 line:98%,end
+Chỗ hụt: vài con số đó không ghi lại được hình dạng cụ thể của đường viền.
+
+00:00:37.132 --> 00:00:43.284 line:98%,end
+Đi một vòng quanh biên và ghi lại hướng của từng bước, như ghi đường đi: phải,
+
+00:00:43.284 --> 00:00:45.572 line:98%,end
+phải, xuống, trái, trái, lên.
+
+00:00:45.522 --> 00:00:48.490 line:98%,end
+Đó là mã chuỗi Freeman bốn hướng.
+
+00:00:49.102 --> 00:00:51.864 line:98%,end
+Nhưng xoay vật thì mọi hướng đổi.
+
+00:00:51.814 --> 00:00:55.786 line:98%,end
+Nên ta ghi số lần rẽ, không ghi hướng tuyệt đối.
+
+00:00:55.786 --> 00:00:59.796 line:98%,end
+Rẽ thì vẫn là rẽ, dù vật quay về phía nào.
+
+00:01:01.300 --> 00:01:03.711 line:98%,end
+Hình chữ nhật trong slide.
+
+00:01:03.661 --> 00:01:07.919 line:98%,end
+Bắt đầu ở góc trên trái, đi sang phải: mã không.
+
+00:01:08.518 --> 00:01:10.799 line:98%,end
+Sang phải tiếp: không.
+
+00:01:11.368 --> 00:01:13.466 line:98%,end
+Đi xuống: ba.
+
+00:01:14.026 --> 00:01:17.140 line:98%,end
+Sang trái hai bước: hai, hai.
+
+00:01:17.692 --> 00:01:20.402 line:98%,end
+Đi lên về điểm đầu: một.
+
+00:01:20.352 --> 00:01:25.274 line:98%,end
+Mã chuỗi là không, không, ba, hai, hai, một.
+
+00:01:26.794 --> 00:01:30.715 line:98%,end
+Bước một, mã chuỗi: không không ba hai hai một.
+
+00:01:30.665 --> 00:01:33.947 line:98%,end
+Xoay hình chín mươi độ thì mọi số đều đổi.
+
+00:01:34.564 --> 00:01:37.128 line:98%,end
+Bước hai, hiệu sai bậc một: với mỗi bước,
+
+00:01:37.128 --> 00:01:42.318 line:98%,end
+đếm số lần quay ngược chiều kim đồng hồ chín mươi độ từ hướng trước sang hướng này,
+
+00:01:42.318 --> 00:01:44.319 line:98%,end
+phần tử đầu so với phần tử cuối.
+
+00:01:44.269 --> 00:01:46.925 line:98%,end
+Được ba không ba ba không ba.
+
+00:01:47.542 --> 00:01:51.190 line:98%,end
+Thử đoán: dãy này còn phụ thuộc vào điều gì?
+
+00:01:53.760 --> 00:01:56.197 line:98%,end
+Còn phụ thuộc điểm bắt đầu.
+
+00:01:56.147 --> 00:02:01.811 line:98%,end
+Bước ba: xoay vòng dãy và chọn cách viết nhỏ nhất, được không ba ba không ba ba.
+
+00:02:01.811 --> 00:02:05.509 line:98%,end
+Đó là shape number, bậc của hình là sáu.
+
+00:02:07.014 --> 00:02:10.883 line:98%,end
+Độ dài và đường kính chỉ là vài con số tổng quát.
+
+00:02:11.448 --> 00:02:13.964 line:98%,end
+Shape number mô tả cả dáng đường viền,
+
+00:02:13.964 --> 00:02:17.869 line:98%,end
+và bất biến với điểm bắt đầu và phép xoay bội chín mươi độ.
+
+00:02:19.326 --> 00:02:22.884 line:98%,end
+Mã chuỗi được dùng để lưu và so khớp đường viền gọn nhẹ,
+
+00:02:22.884 --> 00:02:26.633 line:98%,end
+ví dụ nhận dạng ký tự hay đối chiếu biên dạng chi tiết máy.
+
+00:02:28.092 --> 00:02:31.839 line:98%,end
+Shape number chỉ bất biến với phép xoay bội chín mươi độ,
+
+00:02:31.839 --> 00:02:33.680 line:98%,end
+và nhạy với nhiễu trên biên.
+
+00:02:33.630 --> 00:02:36.651 line:98%,end
+Chiếc cờ lê xoay ba mươi độ thì sao?
+
+00:02:37.254 --> 00:02:42.269 line:98%,end
+Video sau biến đường biên thành tín hiệu và nhìn nó qua biến đổi Fourier.
+
+00:02:43.740 --> 00:02:48.013 line:98%,end
+Bẫy một: shape number dùng mã chuỗi Freeman bốn hướng.
+
+00:02:48.582 --> 00:02:52.667 line:98%,end
+Bẫy hai: định nghĩa là hiệu sai bậc một có độ lớn nhỏ nhất,
+
+00:02:52.667 --> 00:02:55.368 line:98%,end
+gói cả bước hiệu sai và bước xoay vòng.
+
+00:02:55.920 --> 00:03:00.271 line:98%,end
+Bẫy ba: bậc của hình là số chữ số của shape number.

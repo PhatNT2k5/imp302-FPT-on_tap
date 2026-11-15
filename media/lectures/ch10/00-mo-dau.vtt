@@ -1,0 +1,52 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:04.401 line:98%,end
+Chương mười là trích xuất đặc trưng.
+
+00:00:04.401 --> 00:00:08.568 line:98%,end
+Ví dụ của cả chương: một băng chuyền trong xưởng cơ khí.
+
+00:00:08.568 --> 00:00:15.323 line:98%,end
+Camera phải nhận ra cờ lê, ốc vít, vòng đệm, dù chúng nằm ở đâu, xoay góc nào,
+
+00:00:15.323 --> 00:00:16.276 line:98%,end
+gần hay xa.
+
+00:00:16.894 --> 00:00:19.513 line:98%,end
+Chương chín đã tách được từng vùng.
+
+00:00:19.463 --> 00:00:25.075 line:98%,end
+Giờ phải mô tả mỗi vùng bằng vài con số cô đọng để bộ phân loại ở chương mười hai dùng.
+
+00:00:25.696 --> 00:00:29.847 line:98%,end
+Khi tả một người bạn, các bạn nói cao, tóc xoăn, đeo kính,
+
+00:00:29.847 --> 00:00:32.925 line:98%,end
+chứ không nói bạn ấy đang đứng ở góc phòng.
+
+00:00:32.875 --> 00:00:38.409 line:98%,end
+Đặc trưng tốt cũng vậy: không đổi khi vật dời chỗ, xoay, hay co giãn.
+
+00:00:38.409 --> 00:00:40.609 line:98%,end
+Đó là tính bất biến.
+
+00:00:42.118 --> 00:00:47.094 line:98%,end
+Ta đi từ đường biên: shape number, rồi Fourier descriptors.
+
+00:00:47.656 --> 00:00:52.814 line:98%,end
+Rồi cả vùng: độ compact, moment bất biến, kết cấu bề mặt.
+
+00:00:52.764 --> 00:00:56.237 line:98%,end
+Sau đó là đặc trưng toàn ảnh như góc và vùng ổn định,
+
+00:00:56.237 --> 00:00:58.923 line:98%,end
+và cuối cùng là đặc trưng do mạng tự học.
+
+00:00:59.530 --> 00:01:04.779 line:98%,end
+Với mỗi đặc trưng, hãy tự hỏi: nó bất biến với phép biến đổi nào?
+
+00:01:04.729 --> 00:01:07.190 line:98%,end
+Đề thi hỏi đúng câu đó.
