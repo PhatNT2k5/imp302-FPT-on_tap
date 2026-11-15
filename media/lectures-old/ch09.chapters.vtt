@@ -1,0 +1,58 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:30.700
+Giới thiệu chương
+
+00:00:30.700 --> 00:01:08.440
+Những gì ta mang theo vào chương này
+
+00:01:08.440 --> 00:01:46.860
+Hai cách nhìn bài toán phân đoạn
+
+00:01:46.860 --> 00:02:27.210
+K-means cho phân đoạn vùng
+
+00:02:27.210 --> 00:03:32.600
+K-means với 6 pixel, k = 2
+
+00:03:32.600 --> 00:04:05.030
+Siêu điểm ảnh (superpixels)
+
+00:04:05.030 --> 00:04:46.230
+SLIC: khoảng cách kết hợp màu và vị trí
+
+00:04:46.230 --> 00:05:40.390
+Trọng số c đổi quyết định của SLIC
+
+00:05:40.390 --> 00:06:19.400
+Thuật toán SLIC
+
+00:06:19.400 --> 00:07:12.500
+Phân đoạn bằng cắt đồ thị
+
+00:07:12.500 --> 00:07:53.350
+Normalized Cut: chống nhát cắt quá nhỏ
+
+00:07:53.350 --> 00:08:58.620
+Min cut và Ncut trên đồ thị 5 nút
+
+00:08:58.620 --> 00:09:44.420
+Thuật toán phân đoạn bằng cắt đồ thị
+
+00:09:44.420 --> 00:10:47.870
+Dùng chuyển động: ảnh sai khác
+
+00:10:47.870 --> 00:11:52.920
+Phương pháp thống kê và phân đoạn video
+
+00:11:52.920 --> 00:12:59.100
+Theo dõi chuyển động và học sâu
+
+00:12:59.100 --> 00:13:42.880
+So sánh các phương pháp phân đoạn
+
+00:13:42.880 --> 00:14:26.110
+Những chỗ đề thi hay gài
+
+00:14:26.110 --> 00:15:05.820
+Tổng kết chương 9

@@ -1,0 +1,460 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.516 line:98%,end
+Xin chào các bạn,
+
+00:00:01.516 --> 00:00:07.511 line:98%,end
+chào mừng các bạn đến với chương một của môn xử lý ảnh và video, IMP302.
+
+00:00:07.461 --> 00:00:10.755 line:98%,end
+Chương này có tên là xử lý ảnh cơ bản.
+
+00:00:10.755 --> 00:00:13.437 line:98%,end
+Đây là chương đặt nền móng cho toàn bộ môn học,
+
+00:00:13.437 --> 00:00:17.431 line:98%,end
+vì gần như mọi kỹ thuật phức tạp mà chúng ta học sau này, như lọc ảnh,
+
+00:00:17.431 --> 00:00:19.713 line:98%,end
+phục hồi ảnh, nén ảnh hay phân đoạn ảnh,
+
+00:00:19.713 --> 00:00:24.049 line:98%,end
+đều được xây dựng từ những phép toán rất đơn giản áp dụng lên từng điểm ảnh.
+
+00:00:24.670 --> 00:00:27.380 line:98%,end
+Chương được chia thành hai phần lớn.
+
+00:00:27.330 --> 00:00:32.088 line:98%,end
+Phần thứ nhất là xử lý ảnh mức xám, gồm histogram, các phép toán điểm,
+
+00:00:32.088 --> 00:00:34.739 line:98%,end
+phép toán số học và phép toán hình học.
+
+00:00:34.739 --> 00:00:39.690 line:98%,end
+Phần thứ hai là xử lý ảnh nhị phân, gồm ngưỡng hóa, phương pháp Otsu,
+
+00:00:39.690 --> 00:00:41.914 line:98%,end
+gán nhãn vùng và hình thái học.
+
+00:00:41.914 --> 00:00:44.961 line:98%,end
+Nào, chúng ta cùng bắt đầu nhé.
+
+00:00:46.468 --> 00:00:50.572 line:98%,end
+Đầu tiên, các bạn cần phân biệt rõ ba nhóm phép toán.
+
+00:00:50.522 --> 00:00:53.217 line:98%,end
+Nhóm thứ nhất là phép toán điểm.
+
+00:00:53.217 --> 00:00:58.669 line:98%,end
+Phép toán điểm chỉ nhìn vào giá trị cường độ của một pixel duy nhất để tính ra giá trị mới,
+
+00:00:58.669 --> 00:01:01.485 line:98%,end
+hoàn toàn không quan tâm đến các pixel lân cận.
+
+00:01:01.485 --> 00:01:05.235 line:98%,end
+Công cụ quan trọng nhất của nhóm này là histogram.
+
+00:01:05.854 --> 00:01:08.721 line:98%,end
+Nhóm thứ hai là phép toán số học.
+
+00:01:08.671 --> 00:01:10.922 line:98%,end
+Ở đây chúng ta thực hiện cộng, trừ,
+
+00:01:10.922 --> 00:01:14.074 line:98%,end
+nhân hoặc chia giữa nhiều ảnh có cùng kích thước,
+
+00:01:14.074 --> 00:01:16.197 line:98%,end
+theo từng vị trí pixel tương ứng.
+
+00:01:16.197 --> 00:01:19.903 line:98%,end
+Ví dụ, trừ hai khung hình liên tiếp để phát hiện chuyển động,
+
+00:01:19.903 --> 00:01:22.577 line:98%,end
+hoặc lấy trung bình nhiều ảnh để giảm nhiễu.
+
+00:01:23.200 --> 00:01:27.681 line:98%,end
+Nhóm thứ ba là phép toán hình học, như tịnh tiến hay xoay ảnh.
+
+00:01:27.631 --> 00:01:32.535 line:98%,end
+Điểm mấu chốt cần nhớ là phép toán hình học thay đổi vị trí không gian của pixel,
+
+00:01:32.535 --> 00:01:34.715 line:98%,end
+chứ không thay đổi giá trị cường độ.
+
+00:01:34.715 --> 00:01:38.478 line:98%,end
+Đây là một ý rất hay xuất hiện trong câu hỏi trắc nghiệm.
+
+00:01:39.982 --> 00:01:43.044 line:98%,end
+Bây giờ chúng ta nói về histogram.
+
+00:01:42.994 --> 00:01:46.353 line:98%,end
+Histogram của một ảnh là một hàm một chiều.
+
+00:01:46.353 --> 00:01:49.125 line:98%,end
+Với mỗi mức xám k, từ 0 cho đến K trừ 1,
+
+00:01:49.125 --> 00:01:53.905 line:98%,end
+histogram cho biết có bao nhiêu pixel trong ảnh mang đúng mức xám đó.
+
+00:01:53.905 --> 00:01:57.825 line:98%,end
+Nói đơn giản, histogram là một bảng đếm tần suất.
+
+00:01:58.432 --> 00:02:00.999 line:98%,end
+Các bạn hãy chú ý điểm này.
+
+00:02:00.949 --> 00:02:05.311 line:98%,end
+Histogram chỉ đếm, nó không lưu lại pixel nằm ở đâu.
+
+00:02:05.311 --> 00:02:08.054 line:98%,end
+Vì vậy, hai ảnh trông hoàn toàn khác nhau,
+
+00:02:08.054 --> 00:02:11.385 line:98%,end
+ví dụ một ảnh bàn cờ và một ảnh chia đôi trắng đen,
+
+00:02:11.385 --> 00:02:13.540 line:98%,end
+vẫn có thể có cùng một histogram.
+
+00:02:13.540 --> 00:02:17.147 line:98%,end
+Đây là sự mất thông tin cố hữu của histogram.
+
+00:02:17.770 --> 00:02:21.064 line:98%,end
+Một ứng dụng thực tế của histogram là tính AOD,
+
+00:02:21.064 --> 00:02:25.689 line:98%,end
+viết tắt của Average Optical Density, tức mật độ quang trung bình.
+
+00:02:25.639 --> 00:02:29.782 line:98%,end
+Đây là một chỉ số đơn giản giúp ước lượng tâm của phân bố mức xám,
+
+00:02:29.782 --> 00:02:32.292 line:98%,end
+tức là ảnh nhìn chung đang sáng hay tối.
+
+00:02:33.808 --> 00:02:38.784 line:98%,end
+Phép toán điểm tuyến tính biến mỗi pixel thành một hàm tuyến tính của pixel gốc.
+
+00:02:38.734 --> 00:02:43.248 line:98%,end
+Công thức rất quen thuộc: pixel mới bằng P nhân pixel cũ,
+
+00:02:43.248 --> 00:02:48.474 line:98%,end
+cộng L. Trong đó L là offset, hay hệ số cộng, còn P là hệ số nhân.
+
+00:02:49.090 --> 00:02:52.672 line:98%,end
+Offset L dùng để dịch toàn bộ ảnh sáng lên hoặc tối đi,
+
+00:02:52.672 --> 00:02:55.603 line:98%,end
+đưa ảnh về một mức sáng trung bình mong muốn.
+
+00:02:55.553 --> 00:02:59.211 line:98%,end
+Còn hệ số P thì ảnh hưởng đến độ tương phản.
+
+00:02:59.211 --> 00:03:04.133 line:98%,end
+Nếu P lớn hơn 1, histogram bị giãn ra, ảnh tương phản hơn.
+
+00:03:04.133 --> 00:03:09.303 line:98%,end
+Nếu P nhỏ hơn 1, histogram bị nén lại, ảnh trở nên nhạt hơn.
+
+00:03:09.916 --> 00:03:15.244 line:98%,end
+Một trường hợp đặc biệt rất quan trọng là FSHS, Full Scale Histogram Stretch.
+
+00:03:15.194 --> 00:03:20.486 line:98%,end
+Ý tưởng là lấy dải mức xám mà ảnh đang có, ví dụ từ 80 đến 150,
+
+00:03:20.486 --> 00:03:24.855 line:98%,end
+rồi kéo giãn nó ra phủ kín toàn bộ dải từ 0 đến 255.
+
+00:03:24.855 --> 00:03:28.852 line:98%,end
+Nhờ vậy, độ tương phản được tăng lên một cách tự động.
+
+00:03:30.370 --> 00:03:33.419 line:98%,end
+Tiếp theo là các phép toán điểm phi tuyến.
+
+00:03:33.369 --> 00:03:37.327 line:98%,end
+Phép logarit nén vùng sáng cao và giãn vùng tối.
+
+00:03:37.327 --> 00:03:40.313 line:98%,end
+Nó đặc biệt hữu ích khi ảnh có dải động rất lớn,
+
+00:03:40.313 --> 00:03:43.174 line:98%,end
+điển hình là khi các bạn hiển thị phổ Fourier,
+
+00:03:43.174 --> 00:03:46.533 line:98%,end
+nơi có vài giá trị cực lớn lấn át tất cả phần còn lại.
+
+00:03:47.140 --> 00:03:50.879 line:98%,end
+Kỹ thuật quan trọng nhất ở đây là cân bằng histogram.
+
+00:03:50.829 --> 00:03:53.004 line:98%,end
+Quy trình gồm ba bước.
+
+00:03:53.004 --> 00:03:57.613 line:98%,end
+Bước một, chuẩn hóa histogram bằng cách chia cho tổng số pixel.
+
+00:03:57.613 --> 00:04:01.155 line:98%,end
+Bước hai, tính histogram tích lũy chuẩn hóa.
+
+00:04:01.155 --> 00:04:06.363 line:98%,end
+Bước ba, dùng chính hàm tích lũy đó làm hàm ánh xạ để tính mức xám mới.
+
+00:04:06.982 --> 00:04:10.080 line:98%,end
+Kết quả là một ảnh có histogram trải đều hơn,
+
+00:04:10.080 --> 00:04:12.765 line:98%,end
+nhờ đó độ tương phản tổng thể tăng lên.
+
+00:04:12.715 --> 00:04:14.763 line:98%,end
+Ưu điểm lớn là hoàn toàn tự động,
+
+00:04:14.763 --> 00:04:18.796 line:98%,end
+các bạn không cần phải chọn tham số thủ công như phép tuyến tính.
+
+00:04:20.308 --> 00:04:24.334 line:98%,end
+Bây giờ chúng ta chuyển sang phép toán số học giữa các ảnh.
+
+00:04:24.284 --> 00:04:25.193 line:98%,end
+Trong thực tế,
+
+00:04:25.193 --> 00:04:29.544 line:98%,end
+nhiễu đến từ rất nhiều nguồn: tán xạ bức xạ trước khi tới cảm biến,
+
+00:04:29.544 --> 00:04:34.479 line:98%,end
+nhiễu điện tử trong camera, nhiễu kênh truyền, và cả lỗi bit sau khi số hóa.
+
+00:04:35.086 --> 00:04:38.994 line:98%,end
+Một kỹ thuật cổ điển để giảm nhiễu là trung bình hóa ảnh.
+
+00:04:38.944 --> 00:04:42.265 line:98%,end
+Giả sử chúng ta chụp cùng một cảnh nhiều lần.
+
+00:04:42.265 --> 00:04:45.122 line:98%,end
+Tín hiệu ảnh thì không đổi qua các lần chụp,
+
+00:04:45.122 --> 00:04:47.460 line:98%,end
+còn nhiễu thì ngẫu nhiên và độc lập.
+
+00:04:47.460 --> 00:04:51.772 line:98%,end
+Khi lấy trung bình theo từng pixel, phần nhiễu sẽ triệt tiêu dần,
+
+00:04:51.772 --> 00:04:53.762 line:98%,end
+còn tín hiệu thì được giữ lại.
+
+00:04:54.376 --> 00:05:00.954 line:98%,end
+Các bạn nhớ điều kiện để kỹ thuật này hoạt động: nhiễu phải có trung bình bằng không và độc lập giữa các lần chụp.
+
+00:05:00.904 --> 00:05:04.510 line:98%,end
+Càng nhiều ảnh được lấy trung bình thì nhiễu càng giảm.
+
+00:05:06.022 --> 00:05:10.877 line:98%,end
+Phép toán hình học thay đổi quan hệ không gian giữa các pixel, ví dụ xoay,
+
+00:05:10.877 --> 00:05:13.042 line:98%,end
+tịnh tiến hay biến đổi phối cảnh.
+
+00:05:12.992 --> 00:05:14.985 line:98%,end
+Nó gồm hai bước.
+
+00:05:14.985 --> 00:05:17.063 line:98%,end
+Bước thứ nhất là ánh xạ tọa độ,
+
+00:05:17.063 --> 00:05:22.224 line:98%,end
+tức là tính xem mỗi pixel của ảnh gốc f sẽ đi đến vị trí nào trong ảnh mới g.
+
+00:05:22.840 --> 00:05:27.842 line:98%,end
+Vấn đề là sau khi xoay chẳng hạn, tọa độ mới thường không phải số nguyên.
+
+00:05:27.792 --> 00:05:30.233 line:98%,end
+Vì vậy cần bước thứ hai là nội suy,
+
+00:05:30.233 --> 00:05:33.860 line:98%,end
+đưa các tọa độ lẻ đó về lưới hàng cột chuẩn của ảnh.
+
+00:05:34.474 --> 00:05:39.528 line:98%,end
+Cách nội suy đơn giản nhất là nội suy lân cận gần nhất, nearest neighbor.
+
+00:05:39.478 --> 00:05:43.684 line:98%,end
+Tọa độ sau biến đổi được làm tròn về tọa độ nguyên gần nhất.
+
+00:05:43.684 --> 00:05:48.111 line:98%,end
+Cách này rất nhanh, nhưng ảnh có thể bị răng cưa ở các cạnh.
+
+00:05:49.624 --> 00:05:53.337 line:98%,end
+Chúng ta chuyển sang phần thứ hai: ảnh nhị phân.
+
+00:05:53.287 --> 00:05:58.430 line:98%,end
+Ảnh nhị phân chỉ có hai mức là 0 và 1, mỗi pixel chỉ cần một bit.
+
+00:05:58.430 --> 00:06:02.584 line:98%,end
+Nhờ vậy có thể xử lý cực nhanh bằng các toán tử logic.
+
+00:06:02.584 --> 00:06:05.840 line:98%,end
+Ảnh nhị phân thường biểu diễn thông tin cốt lõi,
+
+00:06:05.840 --> 00:06:08.079 line:98%,end
+như vị trí và biên của đối tượng.
+
+00:06:08.698 --> 00:06:12.489 line:98%,end
+Cách đơn giản nhất để tạo ảnh nhị phân là ngưỡng hóa.
+
+00:06:12.439 --> 00:06:18.520 line:98%,end
+Ta so sánh mỗi pixel với một ngưỡng T. Nếu lớn hơn T thì gán 1, còn lại gán 0.
+
+00:06:18.520 --> 00:06:21.203 line:98%,end
+Việc chọn T là quyết định quan trọng nhất,
+
+00:06:21.203 --> 00:06:23.950 line:98%,end
+vì nó kiểm soát thông tin nào được giữ lại.
+
+00:06:24.556 --> 00:06:27.387 line:98%,end
+Ưu điểm của ngưỡng hóa là giảm mạnh dung lượng,
+
+00:06:27.387 --> 00:06:31.664 line:98%,end
+đơn giản hóa dữ liệu cho các bước sau như phát hiện biên hay nhận dạng,
+
+00:06:31.664 --> 00:06:33.712 line:98%,end
+và làm nổi bật vật thể so với nền.
+
+00:06:33.662 --> 00:06:37.016 line:98%,end
+Nhược điểm là mất nhiều chi tiết gradient của ảnh xám,
+
+00:06:37.016 --> 00:06:41.800 line:98%,end
+rất nhạy với việc chọn ngưỡng, và không hiệu quả khi cường độ thay đổi từ từ.
+
+00:06:43.306 --> 00:06:46.641 line:98%,end
+Vậy làm sao chọn ngưỡng T một cách tự động?
+
+00:06:46.591 --> 00:06:49.534 line:98%,end
+Câu trả lời là phương pháp Otsu.
+
+00:06:49.534 --> 00:06:54.313 line:98%,end
+Otsu bắt đầu bằng việc tính histogram và xác suất của từng mức cường độ.
+
+00:06:54.916 --> 00:06:57.146 line:98%,end
+Sau đó, với mỗi ngưỡng khả dĩ t,
+
+00:06:57.146 --> 00:07:01.606 line:98%,end
+thuật toán chia các pixel thành hai lớp: lớp nền và lớp vật thể,
+
+00:07:01.606 --> 00:07:04.046 line:98%,end
+rồi tính phương sai của hai lớp đó.
+
+00:07:04.606 --> 00:07:09.960 line:98%,end
+Ngưỡng tối ưu là ngưỡng làm cho phương sai giữa hai lớp, between class variance,
+
+00:07:09.960 --> 00:07:11.366 line:98%,end
+đạt giá trị lớn nhất.
+
+00:07:11.316 --> 00:07:15.444 line:98%,end
+Nói cách khác, đó là ngưỡng tách hai lớp ra xa nhau nhất.
+
+00:07:15.444 --> 00:07:21.251 line:98%,end
+Các bạn nhớ kỹ chữ lớn nhất, giữa hai lớp nhé, vì đề thi rất hay hỏi chỗ này.
+
+00:07:22.756 --> 00:07:27.576 line:98%,end
+Sau khi có ảnh nhị phân, chúng ta thường muốn biết có bao nhiêu đối tượng.
+
+00:07:27.526 --> 00:07:32.005 line:98%,end
+Đó là nhiệm vụ của gán nhãn vùng, region labeling.
+
+00:07:32.005 --> 00:07:37.591 line:98%,end
+Thuật toán tìm các nhóm pixel liên thông có cùng giá trị và gán cho mỗi nhóm một nhãn riêng.
+
+00:07:38.206 --> 00:07:42.401 line:98%,end
+Thuật toán quét ảnh từ trái sang phải, từ trên xuống dưới.
+
+00:07:42.351 --> 00:07:47.898 line:98%,end
+Với mỗi pixel có giá trị 1, ta nhìn pixel bên trái và pixel bên trên.
+
+00:07:47.898 --> 00:07:51.908 line:98%,end
+Nếu cả hai đều là nền, ta gán một nhãn mới.
+
+00:07:51.908 --> 00:07:56.557 line:98%,end
+Nếu chỉ một bên có nhãn, pixel hiện tại kế thừa nhãn đó.
+
+00:07:57.160 --> 00:08:01.680 line:98%,end
+Trường hợp đặc biệt là khi cả hai bên đều có nhãn nhưng lại khác nhau.
+
+00:08:01.630 --> 00:08:04.323 line:98%,end
+Lúc đó ta ghi nhận hai nhãn này là tương đương,
+
+00:08:04.323 --> 00:08:07.359 line:98%,end
+vì thực chất chúng thuộc cùng một đối tượng nối liền,
+
+00:08:07.359 --> 00:08:09.938 line:98%,end
+chỉ là được phát hiện từ hai nhánh khác nhau.
+
+00:08:11.446 --> 00:08:15.055 line:98%,end
+Phần cuối của chương là hình thái học ảnh nhị phân.
+
+00:08:15.005 --> 00:08:18.559 line:98%,end
+Đây là nhóm phép toán thay đổi hình dạng đối tượng,
+
+00:08:18.559 --> 00:08:23.437 line:98%,end
+dựa trên các toán tử logic như NOT, AND, OR và MAJ, tức là phép đa số,
+
+00:08:23.437 --> 00:08:26.086 line:98%,end
+áp dụng qua một cửa sổ trượt trên ảnh.
+
+00:08:26.704 --> 00:08:29.245 line:98%,end
+Có bốn phép toán nền tảng.
+
+00:08:29.195 --> 00:08:34.872 line:98%,end
+Erosion, tức là co, loại bỏ các pixel biên làm đối tượng nhỏ đi.
+
+00:08:34.872 --> 00:08:40.250 line:98%,end
+Dilation, tức là giãn, thêm pixel vào biên làm đối tượng to ra.
+
+00:08:40.858 --> 00:08:45.209 line:98%,end
+Opening là erosion trước rồi dilation sau.
+
+00:08:45.159 --> 00:08:47.628 line:98%,end
+Erosion xóa sạch các đốm nhiễu nhỏ,
+
+00:08:47.628 --> 00:08:52.073 line:98%,end
+sau đó dilation khôi phục lại kích thước cho các đối tượng lớn.
+
+00:08:52.073 --> 00:08:56.800 line:98%,end
+Kết quả là nhiễu nhỏ biến mất, còn đối tượng chính vẫn giữ hình dạng.
+
+00:08:57.412 --> 00:09:02.557 line:98%,end
+Ngược lại, closing là dilation trước rồi erosion sau.
+
+00:09:02.507 --> 00:09:05.585 line:98%,end
+Dilation lấp đầy các lỗ hổng và khe nhỏ,
+
+00:09:05.585 --> 00:09:09.278 line:98%,end
+rồi erosion đưa đối tượng về kích thước ban đầu.
+
+00:09:09.278 --> 00:09:15.007 line:98%,end
+Mẹo nhớ: Opening mở ra để xóa đốm, Closing đóng lại để lấp lỗ.
+
+00:09:16.522 --> 00:09:19.337 line:98%,end
+Chúng ta cùng tổng kết lại chương một.
+
+00:09:19.287 --> 00:09:23.794 line:98%,end
+Có ba nhóm phép toán trên ảnh xám: phép toán điểm chỉ nhìn từng pixel,
+
+00:09:23.794 --> 00:09:28.623 line:98%,end
+phép toán số học kết hợp nhiều ảnh, và phép toán hình học dời vị trí pixel.
+
+00:09:29.236 --> 00:09:31.343 line:98%,end
+Histogram là công cụ trung tâm,
+
+00:09:31.343 --> 00:09:37.051 line:98%,end
+và từ đó chúng ta có FSHS và cân bằng histogram để tăng tương phản một cách tự động.
+
+00:09:37.606 --> 00:09:40.505 line:98%,end
+Với ảnh nhị phân, ngưỡng hóa là bước đầu tiên,
+
+00:09:40.505 --> 00:09:43.907 line:98%,end
+Otsu chọn ngưỡng làm phương sai giữa hai lớp lớn nhất,
+
+00:09:43.907 --> 00:09:46.176 line:98%,end
+và gán nhãn vùng giúp đếm đối tượng.
+
+00:09:46.744 --> 00:09:53.465 line:98%,end
+Cuối cùng là bốn phép hình thái học: erosion, dilation, opening và closing.
+
+00:09:53.415 --> 00:09:56.136 line:98%,end
+Cảm ơn các bạn đã theo dõi.
+
+00:09:56.136 --> 00:10:00.772 line:98%,end
+Hãy làm thử các câu hỏi ôn tập của chương một để củng cố kiến thức nhé.

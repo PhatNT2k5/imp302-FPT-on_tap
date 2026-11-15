@@ -1,0 +1,52 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:32.830
+Giới thiệu chương
+
+00:00:32.830 --> 00:01:12.950
+Những gì ta đã có từ các chương trước
+
+00:01:12.950 --> 00:02:07.090
+Lấy mẫu và lượng tử hóa trong đời thường
+
+00:02:07.090 --> 00:02:57.580
+Điều kiện Nyquist
+
+00:02:57.580 --> 00:03:46.770
+Giảm mẫu (downsampling)
+
+00:03:46.770 --> 00:04:56.690
+Giảm mẫu 2 lần một ảnh sọc
+
+00:04:56.690 --> 00:05:33.090
+Tăng mẫu và nội suy
+
+00:05:33.090 --> 00:06:15.160
+Tăng mẫu 2 lần một hàng pixel
+
+00:06:15.160 --> 00:06:40.040
+Decimator và interpolator
+
+00:06:40.040 --> 00:07:17.840
+Hai phương pháp nội suy ảnh
+
+00:07:17.840 --> 00:08:16.070
+Nội suy song tuyến tại một điểm
+
+00:08:16.070 --> 00:08:51.240
+Nearest neighbor và bilinear
+
+00:08:51.240 --> 00:09:49.740
+Lấy mẫu video và cấu trúc lưới
+
+00:09:49.740 --> 00:10:49.370
+Chuyển đổi tốc độ khung hình
+
+00:10:49.370 --> 00:11:24.440
+Giảm mẫu và tăng mẫu
+
+00:11:24.440 --> 00:12:12.850
+Những chỗ đề thi hay gài
+
+00:12:12.850 --> 00:12:53.664
+Tổng kết chương 7

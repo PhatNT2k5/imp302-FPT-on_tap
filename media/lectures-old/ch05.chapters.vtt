@@ -1,0 +1,58 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:34.660
+Giới thiệu chương
+
+00:00:34.660 --> 00:01:18.090
+Chương trước đã cho ta những gì
+
+00:01:18.090 --> 00:02:18.630
+Vì sao ảnh nén được
+
+00:02:18.630 --> 00:03:06.450
+Hệ thống mã hóa không mất dữ liệu
+
+00:03:06.450 --> 00:03:54.780
+Entropy: giới hạn của nén không mất dữ liệu
+
+00:03:54.780 --> 00:05:01.310
+Huffman bước 1: rút gọn nguồn
+
+00:05:01.310 --> 00:06:12.140
+Huffman bước 2: gán mã ngược trở lại
+
+00:06:12.140 --> 00:06:56.560
+Mã giả Huffman
+
+00:06:56.560 --> 00:08:34.150
+Mã số học: cả thông điệp là một khoảng số
+
+00:08:34.150 --> 00:09:23.600
+BTC: giữ lại trung bình và độ lệch chuẩn của khối
+
+00:09:23.600 --> 00:10:38.110
+BTC trên một khối 4×4
+
+00:10:38.110 --> 00:11:49.420
+Lượng tử hóa vector và thuật toán LBG
+
+00:11:49.420 --> 00:12:40.750
+Nén ảnh bằng wavelet
+
+00:12:40.750 --> 00:13:55.880
+Chuẩn JPEG: bốn bước mã hóa
+
+00:13:55.880 --> 00:14:50.230
+Lượng tử hóa trong JPEG làm mất gì
+
+00:14:50.230 --> 00:15:46.390
+Ảnh đa phổ, hậu xử lý và học sâu
+
+00:15:46.390 --> 00:16:39.240
+So sánh các kỹ thuật dễ nhầm
+
+00:16:39.240 --> 00:17:31.330
+Những chỗ đề thi hay gài
+
+00:17:31.330 --> 00:18:15.978
+Tổng kết chương 5

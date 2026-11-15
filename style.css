@@ -73,6 +73,7 @@ dialog{max-width:460px;width:calc(100% - 32px);border:1px solid var(--line);bord
 .story-list button.active .story-num{background:var(--green);color:var(--on-accent);border-color:var(--green)}
 .story-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.story-text strong{font-size:16px;font-weight:650;line-height:1.35}.story-text small{font-size:13px;color:var(--muted)}
 .story-tick{flex-shrink:0;color:var(--green);font-weight:700;visibility:hidden}.story-list button.watched .story-tick{visibility:visible}
+.lecture-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 -12px}.lecture-tabs button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;font-size:16px;font-weight:650;cursor:pointer;text-align:left}.lecture-tabs button small{font-size:13px;font-weight:500;color:var(--muted)}.lecture-tabs button[aria-selected="true"]{background:var(--light);border-color:var(--green);color:var(--green)}.lecture-tabs button:focus-visible{outline:3px solid var(--green);outline-offset:2px}[data-lecture-panel][hidden]{display:none}
 .story-beats summary{cursor:pointer;padding:12px 18px 4px;font-size:15px;font-weight:600;color:var(--muted)}
 @media (max-width:640px){.story-list ol{grid-template-columns:1fr}.lecture-next{padding:10px 12px}}
 .lesson-text{margin:18px 0 6px;border-top:1px solid var(--line);padding-top:14px}

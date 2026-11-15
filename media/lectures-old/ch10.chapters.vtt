@@ -1,0 +1,61 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:33.790
+Giới thiệu chương
+
+00:00:33.790 --> 00:01:08.490
+Những gì ta đã có
+
+00:01:08.490 --> 00:01:51.160
+Đặc trưng tốt là đặc trưng bất biến
+
+00:01:51.160 --> 00:02:29.570
+Đặc trưng đường biên cơ bản
+
+00:02:29.570 --> 00:03:43.070
+Shape number của một hình chữ nhật
+
+00:03:43.070 --> 00:04:14.650
+Cách tính shape number
+
+00:04:14.650 --> 00:05:00.010
+Fourier descriptors
+
+00:05:00.010 --> 00:05:57.190
+Fourier descriptors của một hình vuông 4 điểm
+
+00:05:57.190 --> 00:06:41.850
+Đặc trưng vùng: hình dạng
+
+00:06:41.850 --> 00:07:19.450
+Compactness của ba hình cùng diện tích
+
+00:07:19.450 --> 00:08:15.050
+Đặc trưng kết cấu từ histogram
+
+00:08:15.050 --> 00:09:29.240
+Ma trận đồng hiện (co-occurrence matrix)
+
+00:09:29.240 --> 00:10:09.390
+Phương pháp phổ cho kết cấu
+
+00:10:09.390 --> 00:11:08.900
+Moment và moment bất biến
+
+00:11:08.900 --> 00:12:14.430
+Tính moment của một vùng 4 pixel
+
+00:12:14.430 --> 00:13:25.120
+PCA và đặc trưng toàn ảnh
+
+00:13:25.120 --> 00:13:53.470
+Đặc trưng học được
+
+00:13:53.470 --> 00:14:35.830
+Đặc trưng nào bất biến với cái gì
+
+00:14:35.830 --> 00:15:11.860
+Những chỗ đề thi hay gài
+
+00:15:11.860 --> 00:15:54.210
+Tổng kết chương 10

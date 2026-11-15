@@ -1,0 +1,391 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.451 line:98%,end
+Chào các bạn, chúng ta đến với chương hai: lọc ảnh.
+
+00:00:04.401 --> 00:00:07.879 line:98%,end
+Lọc ảnh là nền tảng của tăng cường ảnh, khử nhiễu,
+
+00:00:07.879 --> 00:00:10.104 line:98%,end
+làm nét và trích xuất đặc trưng.
+
+00:00:10.104 --> 00:00:14.844 line:98%,end
+Hầu như bài toán xử lý ảnh nào cũng có ít nhất một bước lọc ở đâu đó.
+
+00:00:15.454 --> 00:00:20.065 line:98%,end
+Chương này đi qua hai miền chính: miền không gian và miền tần số.
+
+00:00:20.015 --> 00:00:24.011 line:98%,end
+Chúng ta sẽ học lọc tuyến tính, lọc phi tuyến như bộ lọc trung vị,
+
+00:00:24.011 --> 00:00:26.735 line:98%,end
+lọc hình thái học, lọc không gian với kernel,
+
+00:00:26.735 --> 00:00:30.367 line:98%,end
+và cuối cùng là lọc trong miền tần số bằng biến đổi Fourier.
+
+00:00:31.876 --> 00:00:36.123 line:98%,end
+Lý thuyết hệ thống tuyến tính là nền tảng của xử lý ảnh số.
+
+00:00:36.073 --> 00:00:42.049 line:98%,end
+Một hệ hai chiều được gọi là tuyến tính nếu nó thỏa hai tính chất: tính cộng và tính đồng nhất.
+
+00:00:42.049 --> 00:00:42.952 line:98%,end
+Nói đơn giản,
+
+00:00:42.952 --> 00:00:48.091 line:98%,end
+đầu vào là tổng có trọng số thì đầu ra cũng là tổng có trọng số tương ứng.
+
+00:00:48.694 --> 00:00:55.363 line:98%,end
+Nếu hệ còn bất biến theo không gian, ta gọi là hệ LSI, linear space invariant.
+
+00:00:55.313 --> 00:01:01.341 line:98%,end
+Với hệ LSI, đầu ra chính là tích chập giữa ảnh đầu vào và đáp ứng xung của hệ.
+
+00:01:01.341 --> 00:01:05.000 line:98%,end
+Đáp ứng xung mô tả hoàn toàn hành vi của bộ lọc.
+
+00:01:05.608 --> 00:01:11.730 line:98%,end
+Một kết quả cực kỳ quan trọng: tích chập trong miền không gian tương ứng với phép nhân trong miền tần số.
+
+00:01:11.680 --> 00:01:12.116 line:98%,end
+Vì vậy,
+
+00:01:12.116 --> 00:01:18.464 line:98%,end
+chuyển sang miền tần số bằng biến đổi Fourier giúp phân tích và thiết kế bộ lọc dễ dàng hơn rất nhiều.
+
+00:01:19.966 --> 00:01:24.557 line:98%,end
+Bộ lọc thông thấp lý tưởng giữ nguyên các tần số bên trong một tần số cắt,
+
+00:01:24.557 --> 00:01:27.038 line:98%,end
+và ép toàn bộ tần số bên ngoài về không.
+
+00:01:26.988 --> 00:01:32.431 line:98%,end
+Vùng giữ lại có thể là hình tròn, đối xứng theo bán kính, hoặc hình chữ nhật.
+
+00:01:33.040 --> 00:01:38.164 line:98%,end
+Vấn đề là bước cắt quá đột ngột trong miền tần số lại gây ra hiện tượng gợn sóng,
+
+00:01:38.164 --> 00:01:40.568 line:98%,end
+gọi là ringing, trong miền không gian.
+
+00:01:40.518 --> 00:01:44.633 line:98%,end
+Các bạn sẽ thấy những đường viền lặp lại quanh các cạnh trong ảnh.
+
+00:01:45.250 --> 00:01:47.921 line:98%,end
+Giải pháp là bộ lọc Gauss.
+
+00:01:47.871 --> 00:01:52.403 line:98%,end
+Đáp ứng tần số của nó cũng có dạng Gauss, giảm dần một cách mượt mà,
+
+00:01:52.403 --> 00:01:54.668 line:98%,end
+nên tránh được hiện tượng ringing.
+
+00:01:54.668 --> 00:01:58.509 line:98%,end
+Đây là lý do bộ lọc Gauss được dùng rất phổ biến.
+
+00:01:59.116 --> 00:02:03.636 line:98%,end
+Với bộ lọc Gauss, tham số sigma quyết định mức độ làm mượt.
+
+00:02:03.586 --> 00:02:09.024 line:98%,end
+Sigma càng lớn thì vùng ảnh hưởng càng rộng, các tần số cao bị cắt nhiều hơn,
+
+00:02:09.024 --> 00:02:10.084 line:98%,end
+và ảnh càng mờ.
+
+00:02:10.084 --> 00:02:14.576 line:98%,end
+Sigma nhỏ thì chỉ khử được nhiễu hạt mịn mà vẫn giữ chi tiết.
+
+00:02:16.090 --> 00:02:18.722 line:98%,end
+Bây giờ chuyển sang lọc phi tuyến.
+
+00:02:18.672 --> 00:02:22.790 line:98%,end
+Ưu điểm lớn của lọc phi tuyến là bảo toàn cạnh và chi tiết tốt hơn,
+
+00:02:22.790 --> 00:02:25.925 line:98%,end
+và ít bị ảnh hưởng bởi nhiễu so với lọc tuyến tính.
+
+00:02:26.548 --> 00:02:29.688 line:98%,end
+Đại diện tiêu biểu là bộ lọc trung vị.
+
+00:02:29.638 --> 00:02:34.951 line:98%,end
+Ta lấy các giá trị trong cửa sổ, sắp xếp, rồi chọn giá trị ở giữa.
+
+00:02:34.951 --> 00:02:39.029 line:98%,end
+Bộ lọc trung vị cực kỳ hiệu quả với nhiễu xung, hay nhiễu muối tiêu,
+
+00:02:39.029 --> 00:02:43.706 line:98%,end
+vì các giá trị ngoại lai nằm ở hai đầu dãy sắp xếp và không bao giờ được chọn,
+
+00:02:43.706 --> 00:02:45.445 line:98%,end
+khác hẳn với trung bình cộng.
+
+00:02:46.054 --> 00:02:50.314 line:98%,end
+Bộ lọc trung vị có trọng số gán cho mỗi mẫu một trọng số.
+
+00:02:50.264 --> 00:02:54.497 line:98%,end
+Thuật toán tính ngưỡng bằng một nửa tổng trọng số, sắp xếp các mẫu,
+
+00:02:54.497 --> 00:02:57.530 line:98%,end
+rồi cộng dồn trọng số từ mẫu lớn nhất trở xuống.
+
+00:02:57.530 --> 00:03:00.928 line:98%,end
+Mẫu tại đó tổng vượt ngưỡng chính là đầu ra.
+
+00:03:01.552 --> 00:03:05.821 line:98%,end
+Trung vị có trọng số có hai ứng dụng được nhắc trong slide: phóng to ảnh,
+
+00:03:05.821 --> 00:03:10.089 line:98%,end
+cho kết quả giữ cạnh tốt và ít bị hiện tượng khối hơn nội suy tuyến tính,
+
+00:03:10.089 --> 00:03:13.130 line:98%,end
+và làm nét ảnh bằng một mặt nạ trung vị có trọng số.
+
+00:03:13.690 --> 00:03:15.997 line:98%,end
+Lấy một ví dụ nhỏ.
+
+00:03:15.947 --> 00:03:19.944 line:98%,end
+Cửa sổ có năm giá trị: mười, mười hai, mười một,
+
+00:03:19.944 --> 00:03:22.692 line:98%,end
+hai trăm năm mươi lăm và mười ba.
+
+00:03:22.692 --> 00:03:26.429 line:98%,end
+Giá trị hai trăm năm mươi lăm là một điểm nhiễu muối.
+
+00:03:26.429 --> 00:03:31.663 line:98%,end
+Nếu lấy trung bình cộng, ta được khoảng sáu mươi, ảnh bị lem một đốm sáng.
+
+00:03:31.663 --> 00:03:35.720 line:98%,end
+Nhưng sắp xếp lại rồi chọn giá trị giữa, ta được mười hai,
+
+00:03:35.720 --> 00:03:37.679 line:98%,end
+hoàn toàn bỏ qua điểm nhiễu.
+
+00:03:37.679 --> 00:03:40.478 line:98%,end
+Đó là sức mạnh của lọc trung vị.
+
+00:03:41.992 --> 00:03:46.603 line:98%,end
+Hình thái học toán học là một phương pháp phi tuyến dựa trên lý thuyết tập hợp.
+
+00:03:46.553 --> 00:03:49.405 line:98%,end
+Nó mô tả định lượng cấu trúc hình học của đối tượng,
+
+00:03:49.405 --> 00:03:54.066 line:98%,end
+khắc phục hạn chế của phương pháp tuyến tính khi gặp các bài toán mang tính hình học.
+
+00:03:54.682 --> 00:03:59.306 line:98%,end
+Các phép toán dùng một phần tử cấu trúc, structuring element.
+
+00:03:59.256 --> 00:04:03.100 line:98%,end
+Với erosion, ta đặt phần tử cấu trúc lên từng vị trí,
+
+00:04:03.100 --> 00:04:07.160 line:98%,end
+và chỉ giữ giá trị 1 nếu toàn bộ vùng bên dưới đều là 1.
+
+00:04:07.160 --> 00:04:12.017 line:98%,end
+Với dilation, chỉ cần có ít nhất một pixel bên dưới là 1.
+
+00:04:12.628 --> 00:04:15.944 line:98%,end
+Từ đó, opening bằng erosion rồi dilation,
+
+00:04:15.944 --> 00:04:19.987 line:98%,end
+giúp loại nhiễu nhỏ mà vẫn giữ hình dạng tổng thể.
+
+00:04:19.937 --> 00:04:22.675 line:98%,end
+Closing bằng dilation rồi erosion,
+
+00:04:22.675 --> 00:04:26.942 line:98%,end
+giúp lấp các lỗ nhỏ và nối lại những phần bị đứt gãy.
+
+00:04:28.450 --> 00:04:30.900 line:98%,end
+Tiếp theo là lọc không gian.
+
+00:04:30.850 --> 00:04:36.827 line:98%,end
+Lọc không gian thay giá trị mỗi pixel bằng một hàm của chính pixel đó và các pixel lân cận.
+
+00:04:36.827 --> 00:04:40.720 line:98%,end
+Nếu hàm này tuyến tính thì ta có lọc không gian tuyến tính.
+
+00:04:41.332 --> 00:04:45.527 line:98%,end
+Lọc tuyến tính thực hiện phép tổng tích giữa ảnh và một kernel.
+
+00:04:45.477 --> 00:04:50.959 line:98%,end
+Phép tương quan không gian trượt tâm kernel qua ảnh và tính tổng các tích tại mỗi vị trí.
+
+00:04:51.574 --> 00:04:53.634 line:98%,end
+Phép tích chập không gian giống hệt,
+
+00:04:53.634 --> 00:04:57.409 line:98%,end
+chỉ khác là kernel được xoay một trăm tám mươi độ trước khi trượt.
+
+00:04:57.359 --> 00:05:02.125 line:98%,end
+Khi kernel đối xứng qua tâm, hai phép toán cho kết quả giống nhau.
+
+00:05:02.125 --> 00:05:04.599 line:98%,end
+Câu này rất hay được hỏi.
+
+00:05:06.100 --> 00:05:09.071 line:98%,end
+Bộ lọc làm mượt đơn giản nhất là box filter,
+
+00:05:09.071 --> 00:05:11.974 line:98%,end
+lấy trung bình cộng các pixel trong cửa sổ.
+
+00:05:11.924 --> 00:05:15.128 line:98%,end
+Kernel được chuẩn hóa sao cho tổng hệ số bằng 1,
+
+00:05:15.128 --> 00:05:18.266 line:98%,end
+để không làm thay đổi độ sáng tổng thể của ảnh.
+
+00:05:18.886 --> 00:05:22.039 line:98%,end
+Bộ lọc làm nét thì dựa trên đạo hàm.
+
+00:05:21.989 --> 00:05:25.060 line:98%,end
+Đạo hàm bậc một bằng không ở vùng cường độ hằng số,
+
+00:05:25.060 --> 00:05:29.033 line:98%,end
+và khác không tại điểm bắt đầu bước nhảy cũng như dọc theo độ dốc.
+
+00:05:29.632 --> 00:05:32.084 line:98%,end
+Đạo hàm bậc hai bằng không ở vùng hằng số,
+
+00:05:32.084 --> 00:05:35.178 line:98%,end
+khác không tại cả điểm bắt đầu và kết thúc bước nhảy,
+
+00:05:35.178 --> 00:05:37.980 line:98%,end
+nhưng lại bằng không dọc theo độ dốc tuyến tính.
+
+00:05:37.930 --> 00:05:42.930 line:98%,end
+Chính tính chất này giúp toán tử Laplacian phát hiện cạnh và làm nét ảnh.
+
+00:05:44.446 --> 00:05:48.367 line:98%,end
+Một kỹ thuật làm nét rất kinh điển là unsharp masking.
+
+00:05:48.317 --> 00:05:53.044 line:98%,end
+Bước thứ nhất, ta làm mờ ảnh gốc, ví dụ bằng bộ lọc Gauss.
+
+00:05:53.656 --> 00:05:57.317 line:98%,end
+Bước thứ hai, lấy ảnh gốc trừ đi ảnh mờ.
+
+00:05:57.267 --> 00:06:02.114 line:98%,end
+Kết quả là một mặt nạ, mask, chỉ còn lại các thành phần tần số cao,
+
+00:06:02.114 --> 00:06:04.428 line:98%,end
+tức là các cạnh và chi tiết nhỏ.
+
+00:06:04.950 --> 00:06:09.774 line:98%,end
+Bước thứ ba, cộng mặt nạ này trở lại ảnh gốc để tăng cường cạnh.
+
+00:06:09.774 --> 00:06:13.923 line:98%,end
+Nếu ta nhân mặt nạ với một hệ số lớn hơn 1 trước khi cộng,
+
+00:06:13.923 --> 00:06:17.070 line:98%,end
+ta có highboost filtering, làm nét mạnh hơn.
+
+00:06:18.520 --> 00:06:21.504 line:98%,end
+Bây giờ chúng ta sang miền tần số.
+
+00:06:21.454 --> 00:06:26.276 line:98%,end
+Biến đổi Fourier rời rạc hai chiều, DFT, và biến đổi ngược, IDFT,
+
+00:06:26.276 --> 00:06:31.024 line:98%,end
+cho phép chuyển ảnh qua lại giữa miền không gian và miền tần số.
+
+00:06:31.642 --> 00:06:37.321 line:98%,end
+Khi biểu diễn dưới dạng cực, ta có phổ Fourier, tức biên độ, và góc pha.
+
+00:06:37.271 --> 00:06:40.787 line:98%,end
+Phổ công suất chính là bình phương của phổ biên độ.
+
+00:06:40.787 --> 00:06:43.339 line:98%,end
+Các bạn nhớ định nghĩa này nhé.
+
+00:06:43.948 --> 00:06:46.011 line:98%,end
+Khi nhìn phổ Fourier đã dời tâm,
+
+00:06:46.011 --> 00:06:49.427 line:98%,end
+các bạn hãy nhớ quy tắc: phần gần tâm là tần số thấp,
+
+00:06:49.427 --> 00:06:52.908 line:98%,end
+tương ứng các vùng biến thiên chậm, mượt mà trong ảnh.
+
+00:06:52.858 --> 00:06:58.757 line:98%,end
+Càng ra xa tâm là tần số càng cao, tương ứng với cạnh, chi tiết nhỏ và nhiễu.
+
+00:06:58.757 --> 00:07:03.028 line:98%,end
+Lọc thông thấp giữ phần giữa, lọc thông cao giữ phần rìa.
+
+00:07:04.546 --> 00:07:07.764 line:98%,end
+Quy trình lọc trong miền tần số gồm nhiều bước.
+
+00:07:07.714 --> 00:07:11.735 line:98%,end
+Đầu tiên, đệm ảnh, bằng số không, phản chiếu hoặc lặp biên,
+
+00:07:11.735 --> 00:07:15.279 line:98%,end
+để tránh hiệu ứng bao quanh khi tích chập tuần hoàn.
+
+00:07:15.892 --> 00:07:21.875 line:98%,end
+Tiếp theo, nhân ảnh với trừ một mũ x cộng y để dời tâm phổ Fourier về giữa,
+
+00:07:21.875 --> 00:07:22.912 line:98%,end
+rồi tính DFT.
+
+00:07:23.470 --> 00:07:27.798 line:98%,end
+Sau đó xây dựng hàm truyền H của bộ lọc, đối xứng quanh tâm,
+
+00:07:27.798 --> 00:07:31.982 line:98%,end
+và nhân từng phần tử: G bằng H nhân F. Cuối cùng lấy IDFT,
+
+00:07:31.982 --> 00:07:35.516 line:98%,end
+rồi trích ra phần M nhân N tương ứng với ảnh gốc.
+
+00:07:36.988 --> 00:07:42.110 line:98%,end
+Có ba bộ lọc thông thấp phổ biến trong miền tần số: lý tưởng, Gauss,
+
+00:07:42.110 --> 00:07:43.240 line:98%,end
+và Butterworth.
+
+00:07:43.190 --> 00:07:46.994 line:98%,end
+Butterworth có một tham số bậc điều khiển độ dốc chuyển tiếp,
+
+00:07:46.994 --> 00:07:50.299 line:98%,end
+nên nó là sự cân bằng giữa lọc lý tưởng và lọc Gauss.
+
+00:07:50.902 --> 00:07:54.669 line:98%,end
+Tương tự, có các bộ lọc thông cao lý tưởng, Gauss,
+
+00:07:54.669 --> 00:07:57.909 line:98%,end
+Butterworth và Laplacian trong miền tần số.
+
+00:07:57.859 --> 00:08:02.950 line:98%,end
+Chúng dùng để làm nét ảnh, hoặc loại bỏ nhiễu tuần hoàn và nền biến thiên chậm.
+
+00:08:04.468 --> 00:08:06.436 line:98%,end
+Tổng kết chương hai.
+
+00:08:06.386 --> 00:08:09.585 line:98%,end
+Hệ tuyến tính bất biến không gian cho đầu ra là tích chập,
+
+00:08:09.585 --> 00:08:13.170 line:98%,end
+và tích chập trong không gian tương đương phép nhân trong tần số.
+
+00:08:13.774 --> 00:08:17.823 line:98%,end
+Lọc lý tưởng gây ringing, lọc Gauss mượt và không ringing,
+
+00:08:17.823 --> 00:08:20.964 line:98%,end
+còn Butterworth là sự cân bằng giữa hai loại.
+
+00:08:21.520 --> 00:08:24.478 line:98%,end
+Lọc trung vị rất mạnh với nhiễu xung.
+
+00:08:24.428 --> 00:08:28.477 line:98%,end
+Tích chập giống tương quan nhưng kernel xoay một trăm tám mươi độ.
+
+00:08:29.098 --> 00:08:29.792 line:98%,end
+Cuối cùng,
+
+00:08:29.792 --> 00:08:35.897 line:98%,end
+Laplacian dựa trên đạo hàm bậc hai và unsharp masking là hai công cụ làm nét quan trọng.
+
+00:08:35.847 --> 00:08:39.714 line:98%,end
+Hẹn gặp lại các bạn ở chương ba: phục hồi ảnh.
