@@ -1,0 +1,73 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.008 line:98%,end
+Một người đứng cạnh vạch kẻ đường có khả năng sắp băng qua.
+
+00:00:03.958 --> 00:00:08.320 line:98%,end
+Hiểu được điều đó cần nhìn quan hệ giữa các vùng xa nhau trong ảnh.
+
+00:00:09.826 --> 00:00:13.468 line:98%,end
+CNN trích đặc trưng bằng các cửa sổ tích chập trượt độc lập,
+
+00:00:13.468 --> 00:00:16.443 line:98%,end
+nên khó thu thông tin toàn cục một cách hiệu quả.
+
+00:00:17.896 --> 00:00:21.341 line:98%,end
+Transformer cho mọi vị trí chú ý đến mọi vị trí khác,
+
+00:00:21.341 --> 00:00:24.461 line:98%,end
+nắm được phụ thuộc tầm xa và thông tin toàn cục.
+
+00:00:25.018 --> 00:00:31.140 line:98%,end
+Trong DETR, mỗi object query giống một người đi hỏi: ở đây có vật nào không?
+
+00:00:32.608 --> 00:00:36.490 line:98%,end
+Một backbone CNN học biểu diễn hai chiều của ảnh.
+
+00:00:37.042 --> 00:00:40.924 line:98%,end
+Biểu diễn được làm phẳng và cộng thêm mã hóa vị trí.
+
+00:00:41.476 --> 00:00:45.475 line:98%,end
+Bộ mã hóa transformer xử lý toàn bộ chuỗi đặc trưng.
+
+00:00:46.030 --> 00:00:50.344 line:98%,end
+Bộ giải mã nhận một số nhỏ cố định các embedding vị trí đã học,
+
+00:00:50.344 --> 00:00:55.069 line:98%,end
+gọi là object queries, chú ý đến đầu ra bộ mã hóa để trả về từng vật.
+
+00:00:56.524 --> 00:01:02.268 line:98%,end
+CNN nhìn cục bộ qua các cửa sổ; Transformer nhìn toàn cục qua cơ chế chú ý.
+
+00:01:02.830 --> 00:01:07.533 line:98%,end
+DETR dùng object queries thay cho anchor và đề xuất vùng.
+
+00:01:08.104 --> 00:01:14.708 line:98%,end
+Ngoài DETR còn có ViT và ViT-FRCNN áp dụng transformer cho phát hiện.
+
+00:01:16.174 --> 00:01:19.760 line:98%,end
+Transformer đang là xu hướng chính trong thị giác máy tính,
+
+00:01:19.760 --> 00:01:22.192 line:98%,end
+từ phát hiện đến phân đoạn và phân loại.
+
+00:01:23.644 --> 00:01:26.152 line:98%,end
+Dù là R-CNN, YOLO hay DETR,
+
+00:01:26.152 --> 00:01:31.446 line:98%,end
+cuối cùng đều có một khâu trả lời: vật này thuộc lớp nào?
+
+00:01:32.014 --> 00:01:35.076 line:98%,end
+Chương mười hai sẽ mổ xẻ chính khâu đó.
+
+00:01:36.532 --> 00:01:42.524 line:98%,end
+Bẫy một: Transformer được dùng vì nắm được phụ thuộc tầm xa, điều CNN làm kém.
+
+00:01:43.078 --> 00:01:48.684 line:98%,end
+Bẫy hai: object queries là một số nhỏ cố định các embedding vị trí đã học,
+
+00:01:48.684 --> 00:01:49.669 line:98%,end
+ở bộ giải mã.
+
+00:01:50.224 --> 00:01:56.072 line:98%,end
+Bẫy ba: bộ mã hóa nhận đặc trưng CNN đã làm phẳng và cộng mã hóa vị trí.

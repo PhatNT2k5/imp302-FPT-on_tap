@@ -1,0 +1,199 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.032 line:98%,end
+Bộ phát hiện đưa ra rất nhiều khung.
+
+00:00:02.982 --> 00:00:06.465 line:98%,end
+Ta cần một con số nói khung nào khớp với vật thật,
+
+00:00:06.465 --> 00:00:08.555 line:98%,end
+và một con số chấm cả mô hình.
+
+00:00:10.066 --> 00:00:15.315 line:98%,end
+Với phân loại ảnh, chấm điểm rất đơn giản: đoán đúng nhãn hay sai nhãn.
+
+00:00:15.868 --> 00:00:18.631 line:98%,end
+Nhưng phát hiện còn có vị trí.
+
+00:00:18.581 --> 00:00:23.489 line:98%,end
+Đúng nhãn mà khung lệch hẳn sang bên cạnh thì vẫn vô dụng với xe tự lái.
+
+00:00:24.994 --> 00:00:30.530 line:98%,end
+Lấy khung thật do người gán nhãn vẽ, gọi là ground truth, và khung dự đoán.
+
+00:00:30.480 --> 00:00:35.701 line:98%,end
+Phần hai khung chồng nhau càng lớn so với tổng vùng chúng phủ, dự đoán càng tốt.
+
+00:00:36.316 --> 00:00:41.487 line:98%,end
+Đó là IoU, Intersection over Union: giao chia hợp.
+
+00:00:42.946 --> 00:00:45.878 line:98%,end
+Tử số là diện tích phần chồng nhau.
+
+00:00:45.828 --> 00:00:50.828 line:98%,end
+Mẫu số là diện tích vùng hai khung cùng phủ, phần chồng chỉ tính một lần.
+
+00:00:51.436 --> 00:00:55.683 line:98%,end
+Không chạm nhau thì IoU bằng không, trùng khít thì bằng một.
+
+00:00:55.633 --> 00:00:57.846 line:98%,end
+Càng gần một càng khớp.
+
+00:00:58.462 --> 00:01:01.810 line:98%,end
+Lưu ý: slide gốc in ngược phân số.
+
+00:01:01.760 --> 00:01:05.077 line:98%,end
+Đúng theo tên gọi và theo ý nghĩa gần một là tốt,
+
+00:01:05.077 --> 00:01:07.242 line:98%,end
+công thức phải là giao chia hợp.
+
+00:01:08.764 --> 00:01:12.829 line:98%,end
+Khung thật là ô vuông bốn nhân bốn, diện tích mười sáu.
+
+00:01:12.779 --> 00:01:17.070 line:98%,end
+Dự đoán thứ nhất lệch chéo hai ô. Phần giao, ký hiệu giao,
+
+00:01:17.070 --> 00:01:19.068 line:98%,end
+là hai nhân hai bằng bốn ô.
+
+00:01:19.678 --> 00:01:23.437 line:98%,end
+Phần hợp: tổng hai khung trừ phần giao vì bị đếm hai lần,
+
+00:01:23.437 --> 00:01:25.943 line:98%,end
+ba mươi hai trừ bốn bằng hai mươi tám.
+
+00:01:25.893 --> 00:01:30.177 line:98%,end
+IoU là bốn phần hai mươi tám, khoảng không phẩy một bốn.
+
+00:01:30.784 --> 00:01:35.903 line:98%,end
+Thử đoán: dự đoán thứ hai chỉ lệch ngang một ô. IoU sẽ là bao nhiêu?
+
+00:01:38.466 --> 00:01:42.361 line:98%,end
+Phần giao rộng ba, cao bốn, bằng mười hai.
+
+00:01:42.311 --> 00:01:45.866 line:98%,end
+Hợp là ba mươi hai trừ mười hai bằng hai mươi.
+
+00:01:45.866 --> 00:01:48.405 line:98%,end
+IoU bằng không phẩy sáu.
+
+00:01:49.020 --> 00:01:52.941 line:98%,end
+Thực tế người ta đặt ngưỡng, thường là không phẩy năm.
+
+00:01:52.891 --> 00:01:56.941 line:98%,end
+Vượt ngưỡng thì tính là phát hiện đúng: dự đoán thứ hai đạt,
+
+00:01:56.941 --> 00:01:58.764 line:98%,end
+dự đoán thứ nhất thì không.
+
+00:02:00.282 --> 00:02:03.787 line:98%,end
+Để chấm cả mô hình, cần hai khái niệm.
+
+00:02:03.737 --> 00:02:08.633 line:98%,end
+Precision: trong các khung mô hình đưa ra, bao nhiêu phần là đúng.
+
+00:02:09.252 --> 00:02:13.981 line:98%,end
+Recall: trong các vật có thật, mô hình tìm ra bao nhiêu phần.
+
+00:02:13.931 --> 00:02:19.126 line:98%,end
+Đưa nhiều khung thì recall tăng nhưng precision giảm, hai đại lượng kéo nhau.
+
+00:02:19.734 --> 00:02:25.344 line:98%,end
+Average Precision, AP, tóm tắt sự đánh đổi đó thành một con số cho một lớp,
+
+00:02:25.344 --> 00:02:28.187 line:98%,end
+suy ra từ đường cong precision recall.
+
+00:02:28.137 --> 00:02:33.723 line:98%,end
+mAP là trung bình AP trên K lớp, mAR là trung bình recall trung bình trên K lớp.
+
+00:02:35.244 --> 00:02:37.629 line:98%,end
+Có bốn người đi bộ thật.
+
+00:02:37.579 --> 00:02:41.798 line:98%,end
+Mô hình đưa ra năm khung, xếp theo độ tin cậy giảm dần.
+
+00:02:41.798 --> 00:02:46.303 line:98%,end
+Khung một đúng: precision một, recall không phẩy hai lăm.
+
+00:02:46.926 --> 00:02:52.071 line:98%,end
+Khung hai sai: precision tụt còn không phẩy năm, recall giữ nguyên.
+
+00:02:52.632 --> 00:02:57.921 line:98%,end
+Khung ba đúng: precision khoảng không phẩy sáu bảy, recall không phẩy năm.
+
+00:02:58.482 --> 00:03:03.315 line:98%,end
+Khung bốn đúng: precision và recall đều là không phẩy bảy lăm.
+
+00:03:03.876 --> 00:03:09.581 line:98%,end
+Khung năm sai: precision còn không phẩy sáu, recall dừng ở không phẩy bảy lăm.
+
+00:03:09.531 --> 00:03:13.073 line:98%,end
+Người đi bộ thứ tư không bao giờ được tìm thấy.
+
+00:03:13.686 --> 00:03:18.675 line:98%,end
+AP: recall tăng qua ba bậc, mỗi bậc rộng không phẩy hai lăm.
+
+00:03:18.625 --> 00:03:23.977 line:98%,end
+Ở mỗi bậc lấy precision tốt nhất từ đó trở đi: một, không phẩy bảy lăm,
+
+00:03:23.977 --> 00:03:25.409 line:98%,end
+không phẩy bảy lăm.
+
+00:03:25.409 --> 00:03:29.094 line:98%,end
+Cộng lại, AP bằng không phẩy sáu hai lăm.
+
+00:03:30.612 --> 00:03:33.648 line:98%,end
+IoU chấm một khung so với vật thật.
+
+00:03:34.206 --> 00:03:38.518 line:98%,end
+AP chấm một lớp, gộp cả precision lẫn recall.
+
+00:03:39.072 --> 00:03:42.381 line:98%,end
+mAP và mAR chấm cả mô hình trên mọi lớp.
+
+00:03:43.854 --> 00:03:47.528 line:98%,end
+Muốn so các mô hình phải chấm trên cùng bộ dữ liệu.
+
+00:03:47.478 --> 00:03:51.319 line:98%,end
+PASCAL VOC có khoảng mười nghìn ảnh, hai mươi lớp.
+
+00:03:51.936 --> 00:03:55.636 line:98%,end
+COCO có khoảng hai trăm nghìn ảnh, tám mươi lớp.
+
+00:03:56.202 --> 00:04:00.557 line:98%,end
+ImageNet của cuộc thi ILSVRC có khoảng mười bốn triệu ảnh,
+
+00:04:00.557 --> 00:04:02.584 line:98%,end
+hai trăm lớp cho phát hiện.
+
+00:04:03.156 --> 00:04:07.168 line:98%,end
+Open Images có khoảng chín triệu ảnh, sáu trăm lớp.
+
+00:04:07.118 --> 00:04:12.574 line:98%,end
+Các số lớp hai mươi, tám mươi, hai trăm, sáu trăm rất hay được hỏi.
+
+00:04:14.082 --> 00:04:17.014 line:98%,end
+Giờ ta biết chấm một bộ phát hiện.
+
+00:04:16.964 --> 00:04:21.326 line:98%,end
+Câu hỏi tiếp: làm sao sinh ra các khung ứng viên ngay từ đầu?
+
+00:04:21.948 --> 00:04:25.843 line:98%,end
+Cách đầu tiên người ta nghĩ đến: thử mọi vị trí.
+
+00:04:25.793 --> 00:04:28.007 line:98%,end
+Đó là cửa sổ trượt.
+
+00:04:29.514 --> 00:04:34.724 line:98%,end
+Bẫy một: IoU gần một là khớp tốt, và công thức là giao chia hợp.
+
+00:04:35.292 --> 00:04:41.036 line:98%,end
+Bẫy hai: mAP là trung bình AP trên các lớp, không phải trung bình precision.
+
+00:04:41.598 --> 00:04:47.488 line:98%,end
+Bẫy ba: nhớ số lớp, VOC hai mươi, COCO tám mươi, ImageNet hai trăm,
+
+00:04:47.488 --> 00:04:49.334 line:98%,end
+Open Images sáu trăm.

@@ -1,0 +1,100 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.435 line:98%,end
+Xe đang chạy, mỗi giây ba mươi khung hình.
+
+00:00:03.385 --> 00:00:06.732 line:98%,end
+Bộ phát hiện phải trả lời gần như tức thì.
+
+00:00:08.242 --> 00:00:13.674 line:98%,end
+Họ R-CNN đi hai bước: đề xuất vùng, rồi phân loại từng vùng.
+
+00:00:13.624 --> 00:00:16.176 line:98%,end
+Bước nào cũng tốn thời gian.
+
+00:00:17.680 --> 00:00:21.823 line:98%,end
+Bộ phát hiện một giai đoạn giống người liếc một cái là thấy hết.
+
+00:00:21.773 --> 00:00:23.563 line:98%,end
+YOLO, You Only Look Once,
+
+00:00:23.563 --> 00:00:27.932 line:98%,end
+dự đoán trực tiếp khung và lớp trong một lần truyền qua mạng.
+
+00:00:28.546 --> 00:00:32.624 line:98%,end
+Bỏ giai đoạn đề xuất giúp rất nhanh, gần thời gian thực.
+
+00:00:32.574 --> 00:00:35.972 line:98%,end
+Đó là thứ YOLO đánh đổi để có.
+
+00:00:37.480 --> 00:00:42.065 line:98%,end
+SSD, Single Shot Detector, cũng một giai đoạn.
+
+00:00:42.015 --> 00:00:46.406 line:98%,end
+Nó dự đoán điểm số lớp và độ lệch khung cho một tập khung mặc định cố định,
+
+00:00:46.406 --> 00:00:49.450 line:98%,end
+bằng các bộ lọc tích chập nhỏ trên bản đồ đặc trưng.
+
+00:00:50.074 --> 00:00:55.245 line:98%,end
+Thử đoán: một chiếc xe ở xa rất nhỏ, một chiếc ở gần rất to.
+
+00:00:55.195 --> 00:00:58.685 line:98%,end
+Một bản đồ đặc trưng có đủ cho cả hai không?
+
+00:01:01.284 --> 00:01:02.458 line:98%,end
+Không.
+
+00:01:02.408 --> 00:01:07.815 line:98%,end
+SSD dự đoán trên nhiều bản đồ đặc trưng: bản đồ độ phân giải cao lo vật nhỏ,
+
+00:01:07.815 --> 00:01:10.377 line:98%,end
+bản đồ độ phân giải thấp lo vật lớn.
+
+00:01:10.377 --> 00:01:13.957 line:98%,end
+Nó cũng tách riêng dự đoán theo tỉ lệ khung hình.
+
+00:01:15.474 --> 00:01:19.719 line:98%,end
+Hai giai đoạn như họ R-CNN: đề xuất vùng rồi phân loại,
+
+00:01:19.719 --> 00:01:21.648 line:98%,end
+chính xác nhưng chậm hơn.
+
+00:01:22.212 --> 00:01:27.594 line:98%,end
+Một giai đoạn như YOLO, SSD: dự đoán thẳng trong một lượt, nhanh,
+
+00:01:27.594 --> 00:01:29.167 line:98%,end
+gần thời gian thực.
+
+00:01:29.718 --> 00:01:34.707 line:98%,end
+Cả hai nhóm, theo slide, vẫn dựa trên anchor hoặc khung mặc định.
+
+00:01:36.156 --> 00:01:40.342 line:98%,end
+Camera giám sát thời gian thực, robot, thiết bị di động,
+
+00:01:40.342 --> 00:01:45.351 line:98%,end
+xe tự lái: những nơi cần trả lời ngay thường chọn họ YOLO hoặc SSD.
+
+00:01:46.818 --> 00:01:52.176 line:98%,end
+Dù một hay hai giai đoạn, ta vẫn phải chọn kích thước và tỉ lệ anchor bằng tay,
+
+00:01:52.176 --> 00:01:54.346 line:98%,end
+và phần lớn anchor chỉ chứa nền.
+
+00:01:54.900 --> 00:01:57.754 line:98%,end
+Có cách nào bỏ hẳn anchor không?
+
+00:01:57.704 --> 00:02:00.685 line:98%,end
+Video sau: anchor-free.
+
+00:02:02.202 --> 00:02:05.359 line:98%,end
+Bẫy một: YOLO và SSD là một giai đoạn,
+
+00:02:05.359 --> 00:02:09.431 line:98%,end
+và trong slide được xếp vào nhóm dựa trên anchor.
+
+00:02:09.996 --> 00:02:16.157 line:98%,end
+Bẫy hai: SSD chính xác nhờ dự đoán trên nhiều bản đồ đặc trưng có độ phân giải khác nhau.
+
+00:02:16.710 --> 00:02:21.634 line:98%,end
+Bẫy ba: YOLO bỏ giai đoạn đề xuất vùng để đổi lấy tốc độ.

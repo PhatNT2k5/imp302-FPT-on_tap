@@ -1,0 +1,55 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.344 line:98%,end
+Nhìn lại cả chương với chiếc xe tự lái.
+
+00:00:03.294 --> 00:00:06.979 line:98%,end
+IoU chấm từng khung, mAP chấm cả mô hình.
+
+00:00:07.582 --> 00:00:11.009 line:98%,end
+Cửa sổ trượt thử mọi chỗ nên rất tốn kém.
+
+00:00:10.959 --> 00:00:17.860 line:98%,end
+Họ R-CNN đề xuất vùng rồi phân loại, Faster R-CNN gộp tất cả vào một mạng.
+
+00:00:18.472 --> 00:00:24.102 line:98%,end
+YOLO và SSD bỏ giai đoạn đề xuất để nhanh, anchor-free bỏ khuôn có sẵn,
+
+00:00:24.102 --> 00:00:27.432 line:98%,end
+và DETR dùng Transformer để nhìn toàn cục.
+
+00:00:28.894 --> 00:00:34.052 line:98%,end
+Anchor hai giai đoạn: họ R-CNN, chính xác nhưng chậm hơn.
+
+00:00:34.624 --> 00:00:40.212 line:98%,end
+Anchor một giai đoạn: YOLO, SSD, nhanh gần thời gian thực.
+
+00:00:40.762 --> 00:00:44.423 line:98%,end
+Anchor-free: CornerNet, FCOS.
+
+00:00:44.373 --> 00:00:49.764 line:98%,end
+Transformer: DETR, ViT-FRCNN.
+
+00:00:51.280 --> 00:00:55.423 line:98%,end
+Một: IoU là giao chia hợp, gần một là khớp.
+
+00:00:55.978 --> 00:00:59.626 line:98%,end
+Hai: mAP là trung bình AP trên các lớp.
+
+00:01:00.196 --> 00:01:05.393 line:98%,end
+Ba: Fast R-CNN nhanh nhờ RoI pooling và đa nhiệm.
+
+00:01:05.950 --> 00:01:10.705 line:98%,end
+Bốn: Faster R-CNN dùng RPN.
+
+00:01:11.272 --> 00:01:15.389 line:98%,end
+Năm: anchor-free là CornerNet và FCOS.
+
+00:01:16.846 --> 00:01:18.824 line:98%,end
+Chương cuối, chương mười hai,
+
+00:01:18.824 --> 00:01:24.281 line:98%,end
+mổ xẻ khâu phân loại có trong mọi bộ phát hiện: từ khoảng cách tối thiểu, Bayes,
+
+00:01:24.281 --> 00:01:26.327 line:98%,end
+đến perceptron và mạng nơ-ron.

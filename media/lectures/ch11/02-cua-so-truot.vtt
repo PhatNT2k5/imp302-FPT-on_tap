@@ -1,0 +1,91 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.598 line:98%,end
+Người đi bộ có thể ở bất kỳ đâu trong khung hình, gần thì to, xa thì nhỏ,
+
+00:00:05.598 --> 00:00:07.706 line:98%,end
+đứng thì cao, ngồi thì thấp.
+
+00:00:09.178 --> 00:00:12.878 line:98%,end
+Một bộ phân loại ảnh chỉ trả lời cả ảnh là gì.
+
+00:00:12.828 --> 00:00:15.432 line:98%,end
+Nó không biết vật nằm ở đâu.
+
+00:00:16.936 --> 00:00:19.602 line:98%,end
+Ý tưởng: trượt một cửa sổ qua khắp ảnh,
+
+00:00:19.602 --> 00:00:25.206 line:98%,end
+như cầm kính lúp soi từng ô. Ở mỗi ô hỏi bộ phân loại: có người đi bộ ở đây không?
+
+00:00:25.762 --> 00:00:31.155 line:98%,end
+Pipeline truyền thống gồm ba bước: chọn vị trí có khả năng chứa thông tin,
+
+00:00:31.155 --> 00:00:35.308 line:98%,end
+trích đặc trưng như SIFT, HOG, đường biên, rồi phân loại.
+
+00:00:36.760 --> 00:00:39.730 line:98%,end
+Ảnh sáu trăm bốn mươi nhân bốn trăm tám mươi,
+
+00:00:39.730 --> 00:00:43.689 line:98%,end
+cửa sổ sáu mươi tư nhân sáu mươi tư, mỗi lần dịch tám pixel.
+
+00:00:43.639 --> 00:00:46.686 line:98%,end
+Theo chiều ngang có bảy mươi ba vị trí.
+
+00:00:47.290 --> 00:00:50.326 line:98%,end
+Theo chiều dọc có năm mươi ba vị trí.
+
+00:00:50.884 --> 00:00:55.313 line:98%,end
+Thử đoán: riêng một kích thước cửa sổ đã có bao nhiêu cửa sổ?
+
+00:00:57.870 --> 00:01:00.323 line:98%,end
+Ba nghìn tám trăm sáu mươi chín cửa sổ,
+
+00:01:00.323 --> 00:01:03.784 line:98%,end
+cái nào cũng phải trích đặc trưng và chạy bộ phân loại.
+
+00:01:04.344 --> 00:01:09.815 line:98%,end
+Vật to nhỏ, cao dẹt khác nhau nên phải lặp với nhiều tỉ lệ và nhiều hình dạng.
+
+00:01:09.765 --> 00:01:14.726 line:98%,end
+Lên tới hàng chục nghìn cửa sổ mỗi ảnh, gần như tất cả chỉ chứa nền.
+
+00:01:16.230 --> 00:01:19.917 line:98%,end
+Năm hai nghìn linh một, bộ phân loại nhị phân.
+
+00:01:20.472 --> 00:01:26.034 line:98%,end
+Năm hai nghìn linh năm, Histogram of Oriented Gradient, HOG.
+
+00:01:26.586 --> 00:01:30.416 line:98%,end
+Năm hai nghìn linh chín, Deformable Part Model.
+
+00:01:30.366 --> 00:01:34.325 line:98%,end
+Cả ba đều dùng đặc trưng thủ công do con người thiết kế.
+
+00:01:35.832 --> 00:01:43.230 line:98%,end
+Các bộ phát hiện khuôn mặt và người đi bộ đời đầu trong máy ảnh và camera đều theo kiểu cửa sổ trượt với đặc trưng thủ công.
+
+00:01:44.694 --> 00:01:49.279 line:98%,end
+Chi phí tính toán rất cao, và sinh ra rất nhiều ứng viên vô ích.
+
+00:01:49.229 --> 00:01:52.120 line:98%,end
+Đặc trưng thủ công lại kém linh hoạt.
+
+00:01:52.728 --> 00:01:58.563 line:98%,end
+Học sâu giải cả hai: đề xuất ít vùng đáng xem hơn, và để mạng tự học đặc trưng.
+
+00:01:58.513 --> 00:02:01.521 line:98%,end
+Đó là họ R-CNN.
+
+00:02:03.030 --> 00:02:08.865 line:98%,end
+Bẫy một: pipeline truyền thống là chọn vị trí, trích đặc trưng, rồi phân loại.
+
+00:02:09.432 --> 00:02:15.450 line:98%,end
+Bẫy hai: chi phí đến từ việc quét nhiều vị trí, nhiều tỉ lệ, nhiều hình dạng.
+
+00:02:16.002 --> 00:02:20.935 line:98%,end
+Bẫy ba: dòng thời gian là hai nghìn linh một, hai nghìn linh năm với HOG,
+
+00:02:20.935 --> 00:02:24.246 line:98%,end
+và hai nghìn linh chín với Deformable Part Model.

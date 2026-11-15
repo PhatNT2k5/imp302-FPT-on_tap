@@ -1,0 +1,124 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.711 line:98%,end
+Xe tự lái không thể chờ hàng chục nghìn lần phân loại cho mỗi khung hình.
+
+00:00:04.661 --> 00:00:08.333 line:98%,end
+Cần ít ứng viên hơn, và đặc trưng tốt hơn.
+
+00:00:09.850 --> 00:00:15.099 line:98%,end
+Cửa sổ trượt thử mọi chỗ một cách mù quáng, và đặc trưng do con người thiết kế.
+
+00:00:16.552 --> 00:00:21.493 line:98%,end
+Anchor box là một tập khung mẫu định nghĩa trước, nhiều kích thước và tỉ lệ,
+
+00:00:21.493 --> 00:00:24.158 line:98%,end
+rải dày trên ảnh, như những khuôn có sẵn.
+
+00:00:24.730 --> 00:00:28.454 line:98%,end
+Anchor khớp đủ tốt với vật thật, đo bằng IoU,
+
+00:00:28.454 --> 00:00:31.516 line:98%,end
+là mẫu dương; chỉ chứa nền là mẫu âm.
+
+00:00:31.466 --> 00:00:35.750 line:98%,end
+Mô hình chỉ cần dự đoán lớp và độ lệch để khớp khuôn với vật.
+
+00:00:36.364 --> 00:00:42.299 line:98%,end
+Họ R-CNN làm theo hai giai đoạn, giống người đọc kỹ: lướt tìm chỗ đáng chú ý,
+
+00:00:42.299 --> 00:00:43.918 line:98%,end
+rồi mới xem từng chỗ.
+
+00:00:45.370 --> 00:00:48.964 line:98%,end
+R-CNN dùng selective search sinh rất nhiều khung ứng viên,
+
+00:00:48.964 --> 00:00:52.310 line:98%,end
+mỗi khung qua mạng tích chập riêng để trích đặc trưng,
+
+00:00:52.310 --> 00:00:55.593 line:98%,end
+rồi SVM phân loại và hồi quy tuyến tính chỉnh vị trí.
+
+00:00:55.543 --> 00:00:57.614 line:98%,end
+Đơn giản nhưng chậm.
+
+00:00:58.228 --> 00:01:02.238 line:98%,end
+Fast R-CNN thêm RoI pooling đưa mọi vùng về kích thước cố định,
+
+00:01:02.238 --> 00:01:06.694 line:98%,end
+nên mạng tích chập chỉ chạy một lần cho cả ảnh, cùng mô hình đa nhiệm.
+
+00:01:06.644 --> 00:01:07.353 line:98%,end
+Theo slide,
+
+00:01:07.353 --> 00:01:11.995 line:98%,end
+chính xác hơn mười một phẩy năm phần trăm và nhanh hơn hơn hai trăm lần.
+
+00:01:12.598 --> 00:01:17.418 line:98%,end
+Thử đoán: sau Fast R-CNN, khâu nào còn chậm nhất?
+
+00:01:19.968 --> 00:01:21.858 line:98%,end
+Selective search.
+
+00:01:21.808 --> 00:01:25.707 line:98%,end
+Faster R-CNN thay nó bằng mạng đề xuất vùng RPN,
+
+00:01:25.707 --> 00:01:28.957 line:98%,end
+dùng chung đặc trưng với mạng phát hiện.
+
+00:01:28.957 --> 00:01:32.980 line:98%,end
+Cả quy trình nằm trong một mạng, học từ đầu đến cuối.
+
+00:01:34.494 --> 00:01:39.288 line:98%,end
+Ảnh đi qua mạng tích chập xương sống đúng một lần, cho bản đồ đặc trưng.
+
+00:01:39.840 --> 00:01:43.735 line:98%,end
+Mạng đề xuất vùng chọn những anchor có khả năng chứa vật.
+
+00:01:44.298 --> 00:01:48.415 line:98%,end
+RoI pooling cắt phần tương ứng và đưa về kích thước cố định.
+
+00:01:48.972 --> 00:01:53.466 line:98%,end
+Hai nhánh song song: phân loại, và hồi quy tinh chỉnh khung.
+
+00:01:54.930 --> 00:02:00.440 line:98%,end
+Cửa sổ trượt thử hàng chục nghìn ô; R-CNN chỉ xem các vùng được đề xuất.
+
+00:02:00.996 --> 00:02:05.087 line:98%,end
+Đặc trưng thủ công được thay bằng đặc trưng do CNN tự học.
+
+00:02:05.646 --> 00:02:09.582 line:98%,end
+Faster R-CNN gộp mọi khâu vào một mạng, chính xác cao,
+
+00:02:09.582 --> 00:02:12.862 line:98%,end
+nhưng vẫn chậm hơn các mô hình một giai đoạn.
+
+00:02:14.316 --> 00:02:19.709 line:98%,end
+Faster R-CNN là mô hình nền của nhiều hệ thống cần độ chính xác cao.
+
+00:02:19.659 --> 00:02:26.716 line:98%,end
+Mask R-CNN ở chương chín chính là Faster R-CNN thêm một nhánh vẽ mặt nạ cho phân đoạn thực thể.
+
+00:02:28.218 --> 00:02:32.608 line:98%,end
+Hai giai đoạn nghĩa là mỗi ảnh phải đề xuất rồi mới xét từng vùng.
+
+00:02:32.558 --> 00:02:36.868 line:98%,end
+Xe tự lái chạy ba mươi khung hình mỗi giây thì cần nhanh hơn nữa.
+
+00:02:37.476 --> 00:02:40.564 line:98%,end
+Nếu bỏ hẳn giai đoạn đề xuất thì sao?
+
+00:02:40.514 --> 00:02:43.808 line:98%,end
+Đó là YOLO và SSD.
+
+00:02:45.330 --> 00:02:50.840 line:98%,end
+Bẫy một: Fast R-CNN nhanh nhờ RoI pooling và mô hình đa nhiệm.
+
+00:02:50.790 --> 00:02:54.332 line:98%,end
+Nhớ mười một phẩy năm phần trăm và hai trăm lần.
+
+00:02:54.948 --> 00:03:02.268 line:98%,end
+Bẫy hai: Faster R-CNN thay selective search bằng mạng đề xuất vùng RPN chia sẻ đặc trưng.
+
+00:03:02.838 --> 00:03:08.074 line:98%,end
+Bẫy ba: anchor được gán dương hay âm theo độ khớp IoU với vật thật.

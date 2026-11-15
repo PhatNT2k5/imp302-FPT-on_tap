@@ -1,0 +1,91 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.937 line:98%,end
+Biển báo nhỏ, xe buýt dài,
+
+00:00:01.937 --> 00:00:07.732 line:98%,end
+người đi bộ cao gầy: chọn bộ anchor không hợp với dữ liệu thì hiệu năng giảm mạnh.
+
+00:00:09.202 --> 00:00:13.738 line:98%,end
+Một: kích thước và tỉ lệ anchor là siêu tham số con người chọn,
+
+00:00:13.738 --> 00:00:15.610 line:98%,end
+mô hình khó tổng quát hóa.
+
+00:00:16.180 --> 00:00:18.629 line:98%,end
+Hai: phần lớn anchor chỉ chứa nền,
+
+00:00:18.629 --> 00:00:22.302 line:98%,end
+mất cân bằng nghiêm trọng giữa mẫu âm và mẫu dương.
+
+00:00:22.870 --> 00:00:27.989 line:98%,end
+Ba: ngay cả anchor dương vẫn mơ hồ về vị trí và lẫn nhiễu nền.
+
+00:00:29.452 --> 00:00:31.238 line:98%,end
+Thay vì so với khuôn có sẵn,
+
+00:00:31.238 --> 00:00:36.277 line:98%,end
+hãy tìm thẳng những điểm đặc biệt của vật: các góc của khung, hoặc tâm của vật.
+
+00:00:37.738 --> 00:00:41.516 line:98%,end
+Nhánh dựa trên điểm khóa biểu diễn khung bằng các góc thưa.
+
+00:00:41.466 --> 00:00:43.766 line:98%,end
+CornerNet giới thiệu corner pooling,
+
+00:00:43.766 --> 00:00:47.599 line:98%,end
+một lớp pooling mới giúp mạng định vị góc của khung tốt hơn.
+
+00:00:48.220 --> 00:00:50.951 line:98%,end
+Nhánh dựa trên điểm neo có đại diện FCOS,
+
+00:00:50.951 --> 00:00:54.081 line:98%,end
+bộ phát hiện một giai đoạn tích chập hoàn toàn.
+
+00:00:54.031 --> 00:00:58.074 line:98%,end
+Nó dự đoán trực tiếp tại từng vị trí trên bản đồ đặc trưng,
+
+00:00:58.074 --> 00:00:59.513 line:98%,end
+không cần anchor nào.
+
+00:01:01.018 --> 00:01:05.434 line:98%,end
+Nhóm dựa trên anchor cần chọn trước kích thước và tỉ lệ khuôn.
+
+00:01:06.004 --> 00:01:11.162 line:98%,end
+Nhóm anchor-free bỏ được siêu tham số đó, và bớt mất cân bằng âm dương.
+
+00:01:11.734 --> 00:01:17.062 line:98%,end
+Đại diện anchor-free là CornerNet với các góc và FCOS với các điểm.
+
+00:01:18.532 --> 00:01:23.412 line:98%,end
+Ý tưởng tìm điểm thay vì khuôn được dùng rộng rãi trong các bộ phát hiện hiện đại,
+
+00:01:23.412 --> 00:01:25.852 line:98%,end
+nhất là khi vật có hình dạng rất đa dạng.
+
+00:01:27.322 --> 00:01:32.548 line:98%,end
+Dù có anchor hay không, CNN vẫn trích đặc trưng bằng các cửa sổ tích chập nhỏ,
+
+00:01:32.548 --> 00:01:34.759 line:98%,end
+mỗi cửa sổ chỉ thấy một vùng hẹp.
+
+00:01:34.709 --> 00:01:37.079 line:98%,end
+Khó nắm thông tin toàn cục.
+
+00:01:37.684 --> 00:01:42.595 line:98%,end
+Video sau dùng Transformer để mọi vị trí nhìn thấy mọi vị trí khác.
+
+00:01:44.050 --> 00:01:48.349 line:98%,end
+Bẫy một: anchor-free là CornerNet và FCOS.
+
+00:01:48.299 --> 00:01:51.841 line:98%,end
+YOLO và SSD không thuộc nhóm này.
+
+00:01:52.444 --> 00:01:56.912 line:98%,end
+Bẫy hai: điểm mới của CornerNet là corner pooling.
+
+00:01:57.478 --> 00:02:03.414 line:98%,end
+Bẫy ba: ba vấn đề của anchor là siêu tham số tay, mất cân bằng âm dương,
+
+00:02:03.414 --> 00:02:04.733 line:98%,end
+và mơ hồ vị trí.

@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:04.727 line:98%,end
+Chương mười một là phát hiện đối tượng.
+
+00:00:04.727 --> 00:00:09.180 line:98%,end
+Ví dụ của cả chương: camera trên một chiếc xe tự lái.
+
+00:00:09.180 --> 00:00:13.490 line:98%,end
+Trong mỗi khung hình có người đi bộ, xe khác, biển báo.
+
+00:00:14.110 --> 00:00:17.198 line:98%,end
+Phân loại ảnh chỉ nói cả ảnh là gì.
+
+00:00:17.148 --> 00:00:20.742 line:98%,end
+Định vị nói thêm vật ở đâu bằng một khung chữ nhật.
+
+00:00:20.742 --> 00:00:25.713 line:98%,end
+Phát hiện đối tượng làm cả hai cho mọi vật: mỗi vật một nhãn và một khung,
+
+00:00:25.713 --> 00:00:27.057 line:98%,end
+gọi là bounding box.
+
+00:00:27.664 --> 00:00:32.603 line:98%,end
+Thử nghĩ trước: nếu xe tự lái khoanh trúng người đi bộ nhưng khung lệch một chút,
+
+00:00:32.603 --> 00:00:34.372 line:98%,end
+như vậy đã tính là đúng chưa?
+
+00:00:37.830 --> 00:00:43.314 line:98%,end
+Ta bắt đầu bằng cách chấm điểm: IoU cho từng khung, mAP cho cả mô hình.
+
+00:00:43.872 --> 00:00:49.149 line:98%,end
+Rồi đi theo lịch sử: cửa sổ trượt truyền thống, họ R-CNN hai giai đoạn,
+
+00:00:49.149 --> 00:00:55.020 line:98%,end
+YOLO và SSD một giai đoạn, nhóm không dùng anchor, và cuối cùng là Transformer.
+
+00:00:55.578 --> 00:01:00.867 line:98%,end
+Mỗi đời sinh ra để vá điểm yếu của đời trước, các bạn xem theo thứ tự nhé.
