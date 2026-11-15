@@ -1,0 +1,79 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.514 line:98%,end
+Ta muốn bỏ các thành phần tần số cao, tức nhiễu hạt,
+
+00:00:03.514 --> 00:00:06.534 line:98%,end
+mà không sinh ra những viền lặp lại quanh chữ.
+
+00:00:08.002 --> 00:00:11.997 line:98%,end
+Bộ lọc thông thấp lý tưởng giữ nguyên mọi tần số trong một ngưỡng cắt,
+
+00:00:11.997 --> 00:00:16.220 line:98%,end
+ép toàn bộ tần số ngoài ngưỡng về không, vùng giữ hình tròn hoặc chữ nhật.
+
+00:00:16.780 --> 00:00:20.822 line:98%,end
+Nhưng bước cắt đột ngột trong miền tần số gây gợn sóng, ringing,
+
+00:00:20.822 --> 00:00:24.295 line:98%,end
+trong miền không gian: các viền lặp lại quanh cạnh chữ.
+
+00:00:25.762 --> 00:00:30.742 line:98%,end
+Bộ lọc Gauss có đáp ứng tần số cũng là hình Gauss, giảm dần mượt mà,
+
+00:00:30.742 --> 00:00:32.353 line:98%,end
+nên không gây ringing.
+
+00:00:32.908 --> 00:00:36.934 line:98%,end
+Trong không gian, hàng xóm càng gần trọng số càng lớn.
+
+00:00:36.884 --> 00:00:42.756 line:98%,end
+Tham số sigma lớn thì lọc mạnh, ảnh mờ hơn; sigma nhỏ chỉ khử nhiễu mịn.
+
+00:00:44.266 --> 00:00:50.284 line:98%,end
+Bên trái là bộ lọc lý tưởng với ngưỡng cắt ở tần số ba: giữ nguyên rồi rơi thẳng xuống không.
+
+00:00:50.836 --> 00:00:55.343 line:98%,end
+Thử đoán: bộ lọc Gauss với sigma bằng hai trông thế nào?
+
+00:00:57.894 --> 00:01:03.182 line:98%,end
+Giảm dần: một, không phẩy tám tám, không phẩy sáu một, không phẩy ba hai,
+
+00:01:03.182 --> 00:01:06.151 line:98%,end
+không phẩy một bốn, không phẩy không bốn.
+
+00:01:06.101 --> 00:01:09.838 line:98%,end
+Không có vách đứng nào, nên không có gợn sóng.
+
+00:01:11.340 --> 00:01:14.506 line:98%,end
+Lý tưởng cắt đột ngột, gây ringing.
+
+00:01:15.078 --> 00:01:19.898 line:98%,end
+Gauss giảm dần, không ringing; độ mạnh chỉnh bằng sigma.
+
+00:01:21.348 --> 00:01:26.215 line:98%,end
+Lọc Gauss là bước làm mượt mặc định trước khi phát hiện cạnh, giảm mẫu,
+
+00:01:26.215 --> 00:01:27.861 line:98%,end
+hay xây kim tự tháp ảnh.
+
+00:01:29.322 --> 00:01:33.126 line:98%,end
+Gauss và lọc hộp đều là trung bình có trọng số.
+
+00:01:33.076 --> 00:01:37.278 line:98%,end
+Một điểm trắng lấm tấm không biến mất mà lem ra thành đốm mờ,
+
+00:01:37.278 --> 00:01:39.001 line:98%,end
+và cạnh chữ cũng mờ theo.
+
+00:01:39.612 --> 00:01:43.130 line:98%,end
+Video sau dùng lọc phi tuyến: trung vị.
+
+00:01:44.586 --> 00:01:49.627 line:98%,end
+Bẫy một: lọc lý tưởng gây ringing vì cắt đột ngột trong miền tần số.
+
+00:01:50.196 --> 00:01:54.886 line:98%,end
+Bẫy hai: đáp ứng tần số của lọc Gauss cũng là hàm Gauss.
+
+00:01:55.446 --> 00:01:59.393 line:98%,end
+Bẫy ba: sigma càng lớn, ảnh càng mờ.

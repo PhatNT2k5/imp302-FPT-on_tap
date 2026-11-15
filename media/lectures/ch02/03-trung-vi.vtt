@@ -1,0 +1,106 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.995 line:98%,end
+Trang sách có vài điểm trắng lấm tấm, là nhiễu xung.
+
+00:00:03.945 --> 00:00:07.591 line:98%,end
+Ta muốn xóa sạch chúng mà không làm mờ nét chữ.
+
+00:00:09.006 --> 00:00:12.774 line:98%,end
+Bộ lọc trung bình bị giá trị ngoại lai kéo lệch:
+
+00:00:12.774 --> 00:00:17.334 line:98%,end
+một điểm hai trăm năm mươi lăm giữa vùng mười làm cả vùng sáng lên.
+
+00:00:18.784 --> 00:00:23.630 line:98%,end
+Lọc trung vị sắp xếp các giá trị trong cửa sổ rồi chọn giá trị ở giữa.
+
+00:00:23.580 --> 00:00:27.213 line:98%,end
+Ngoại lai nằm ở hai đầu dãy nên không ảnh hưởng.
+
+00:00:27.826 --> 00:00:30.910 line:98%,end
+Lọc phi tuyến bảo toàn cạnh và chi tiết tốt hơn,
+
+00:00:30.910 --> 00:00:33.544 line:98%,end
+ít bị nhiễu ảnh hưởng hơn lọc tuyến tính.
+
+00:00:34.908 --> 00:00:37.356 line:98%,end
+Cửa sổ năm giá trị:
+
+00:00:37.356 --> 00:00:42.804 line:98%,end
+mười, mười hai, mười một, hai trăm năm mươi lăm, mười ba.
+
+00:00:43.354 --> 00:00:47.497 line:98%,end
+Trung bình cộng khoảng sáu mươi: ảnh bị lem một đốm sáng.
+
+00:00:47.952 --> 00:00:49.656 line:98%,end
+Thử đoán:
+
+00:00:49.656 --> 00:00:52.104 line:98%,end
+trung vị là bao nhiêu?
+
+00:00:54.654 --> 00:01:00.659 line:98%,end
+Sắp xếp: mười, mười một, mười hai, mười ba, hai trăm năm mươi lăm.
+
+00:01:00.609 --> 00:01:05.023 line:98%,end
+Giá trị giữa là mười hai, điểm nhiễu bị bỏ qua hoàn toàn.
+
+00:01:06.540 --> 00:01:12.271 line:98%,end
+Gán trọng số cho mỗi mẫu, ví dụ một, hai, ba, hai, một.
+
+00:01:12.221 --> 00:01:15.945 line:98%,end
+Ngưỡng bằng nửa tổng trọng số, tức bốn phẩy năm.
+
+00:01:16.566 --> 00:01:22.331 line:98%,end
+Sắp xếp giảm dần rồi cộng dồn trọng số từ mẫu lớn nhất: hai trăm năm mươi lăm được hai,
+
+00:01:22.331 --> 00:01:23.391 line:98%,end
+mười ba được ba.
+
+00:01:23.952 --> 00:01:27.652 line:98%,end
+Đến mười hai tổng thành năm, vượt bốn phẩy năm.
+
+00:01:27.602 --> 00:01:29.972 line:98%,end
+Đầu ra là mười hai.
+
+00:01:31.494 --> 00:01:36.105 line:98%,end
+Trung bình là tuyến tính, bị ngoại lai kéo lệch, làm mờ cạnh.
+
+00:01:36.672 --> 00:01:40.997 line:98%,end
+Trung vị là phi tuyến, bỏ qua ngoại lai, giữ cạnh.
+
+00:01:42.462 --> 00:01:45.511 line:98%,end
+Khử nhiễu muối tiêu, nhiễu hạt phim.
+
+00:01:45.461 --> 00:01:51.049 line:98%,end
+Slide nêu thêm trung vị có trọng số để phóng to ảnh ít bị khối hơn nội suy tuyến tính,
+
+00:01:51.049 --> 00:01:52.219 line:98%,end
+và để làm nét ảnh.
+
+00:01:53.724 --> 00:01:59.395 line:98%,end
+Trên ảnh nhị phân của chữ, ta còn muốn xóa đốm nhỏ, lấp lỗ trong nét chữ,
+
+00:01:59.395 --> 00:02:00.328 line:98%,end
+nối chỗ đứt.
+
+00:02:00.278 --> 00:02:03.038 line:98%,end
+Đó là bài toán về hình dạng.
+
+00:02:03.654 --> 00:02:06.508 line:98%,end
+Video sau: hình thái học.
+
+00:02:07.980 --> 00:02:12.019 line:98%,end
+Bẫy một: lọc trung vị rất hiệu quả với nhiễu xung.
+
+00:02:12.482 --> 00:02:14.234 line:98%,end
+Bẫy hai:
+
+00:02:14.234 --> 00:02:18.117 line:98%,end
+trung vị có trọng số dùng ngưỡng bằng nửa tổng trọng số,
+
+00:02:18.117 --> 00:02:19.850 line:98%,end
+cộng dồn từ mẫu lớn nhất.
+
+00:02:20.400 --> 00:02:25.207 line:98%,end
+Bẫy ba: lọc phi tuyến giữ cạnh tốt hơn và ít bị nhiễu ảnh hưởng.

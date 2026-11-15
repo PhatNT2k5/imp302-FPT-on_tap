@@ -1,228 +1,1705 @@
 {
-  "title": "Lọc ảnh",
-  "scenes": [
+ "title": "Lọc ảnh",
+ "example": "Ảnh chụp một trang sách bằng điện thoại: nhiễu hạt, vài điểm lấm tấm, chữ hơi nhòe — làm sạch mà vẫn giữ nét chữ",
+ "stories": [
+  {
+   "id": "mo-dau",
+   "title": "Mở đầu: làm sạch mà vẫn giữ nét",
+   "kind": "intro",
+   "scenes": [
     {
-      "kind": "intro",
-      "title": "Giới thiệu chương",
-      "points": [
-        {
-          "text": "Mở đầu",
-          "say": "Chào các bạn, chúng ta đến với chương hai: lọc ảnh. Lọc ảnh là nền tảng của tăng cường ảnh, khử nhiễu, làm nét và trích xuất đặc trưng. Hầu như bài toán xử lý ảnh nào cũng có ít nhất một bước lọc ở đâu đó."
-        },
-        {
-          "text": "Lộ trình",
-          "say": "Chương này đi qua hai miền chính: miền không gian và miền tần số. Chúng ta sẽ học lọc tuyến tính, lọc phi tuyến như bộ lọc trung vị, lọc hình thái học, lọc không gian với kernel, và cuối cùng là lọc trong miền tần số bằng biến đổi Fourier."
-        }
-      ]
+     "kicker": "Mở đầu",
+     "title": "Trang sách chụp bằng điện thoại",
+     "points": [
+      {
+       "say": "Chào các bạn. Chương hai là lọc ảnh, nền tảng của tăng cường, khử nhiễu, làm nét và trích đặc trưng. Ví dụ của cả chương: một trang sách chụp bằng điện thoại.",
+       "text": "Ví dụ: trang sách chụp bằng điện thoại"
+      },
+      {
+       "say": "Ảnh có nhiễu hạt li ti, vài điểm lấm tấm trắng đen, và chữ hơi nhòe. Ta muốn làm sạch mà vẫn giữ nét chữ.",
+       "text": "Nhiễu hạt, điểm lấm tấm, chữ nhòe"
+      },
+      {
+       "say": "Thử nghĩ: làm mờ ảnh thì nhiễu giảm, nhưng chữ cũng mờ theo. Có cách nào chỉ xóa nhiễu mà giữ cạnh?",
+       "text": "Xóa nhiễu mà giữ cạnh?",
+       "ask": true
+      }
+     ]
     },
     {
-      "title": "Hệ tuyến tính bất biến không gian (LSI)",
-      "slide": 5,
-      "points": [
-        {
-          "text": "Hệ tuyến tính: thỏa tính cộng và tính đồng nhất",
-          "say": "Lý thuyết hệ thống tuyến tính là nền tảng của xử lý ảnh số. Một hệ hai chiều được gọi là tuyến tính nếu nó thỏa hai tính chất: tính cộng và tính đồng nhất. Nói đơn giản, đầu vào là tổng có trọng số thì đầu ra cũng là tổng có trọng số tương ứng."
-        },
-        {
-          "text": "LSI: đầu ra = tích chập giữa ảnh vào và đáp ứng xung",
-          "say": "Nếu hệ còn bất biến theo không gian, ta gọi là hệ LSI, linear space invariant. Với hệ LSI, đầu ra chính là tích chập giữa ảnh đầu vào và đáp ứng xung của hệ. Đáp ứng xung mô tả hoàn toàn hành vi của bộ lọc."
-        },
-        {
-          "text": "Tích chập trong không gian = phép nhân trong miền tần số",
-          "say": "Một kết quả cực kỳ quan trọng: tích chập trong miền không gian tương ứng với phép nhân trong miền tần số. Vì vậy, chuyển sang miền tần số bằng biến đổi Fourier giúp phân tích và thiết kế bộ lọc dễ dàng hơn rất nhiều."
-        }
-      ]
-    },
-    {
-      "title": "Lọc thông thấp lý tưởng và lọc Gauss",
-      "slide": 8,
-      "points": [
-        {
-          "text": "Ideal low-pass: ép tần số ngoài ngưỡng cắt về 0",
-          "say": "Bộ lọc thông thấp lý tưởng giữ nguyên các tần số bên trong một tần số cắt, và ép toàn bộ tần số bên ngoài về không. Vùng giữ lại có thể là hình tròn, đối xứng theo bán kính, hoặc hình chữ nhật."
-        },
-        {
-          "text": "Bước cắt đột ngột gây hiện tượng gợn sóng (ringing)",
-          "say": "Vấn đề là bước cắt quá đột ngột trong miền tần số lại gây ra hiện tượng gợn sóng, gọi là ringing, trong miền không gian. Các bạn sẽ thấy những đường viền lặp lại quanh các cạnh trong ảnh."
-        },
-        {
-          "text": "Gaussian filter: đáp ứng tần số cũng là Gauss, mượt, không ringing",
-          "say": "Giải pháp là bộ lọc Gauss. Đáp ứng tần số của nó cũng có dạng Gauss, giảm dần một cách mượt mà, nên tránh được hiện tượng ringing. Đây là lý do bộ lọc Gauss được dùng rất phổ biến."
-        },
-        {
-          "text": "Tham số σ: σ lớn → lọc mạnh, ảnh mờ hơn",
-          "say": "Với bộ lọc Gauss, tham số sigma quyết định mức độ làm mượt. Sigma càng lớn thì vùng ảnh hưởng càng rộng, các tần số cao bị cắt nhiều hơn, và ảnh càng mờ. Sigma nhỏ thì chỉ khử được nhiễu hạt mịn mà vẫn giữ chi tiết."
-        }
-      ]
-    },
-    {
-      "title": "Lọc trung vị và trung vị có trọng số",
-      "slide": 12,
-      "points": [
-        {
-          "text": "Lọc phi tuyến giữ cạnh tốt hơn, ít bị nhiễu ảnh hưởng",
-          "say": "Bây giờ chuyển sang lọc phi tuyến. Ưu điểm lớn của lọc phi tuyến là bảo toàn cạnh và chi tiết tốt hơn, và ít bị ảnh hưởng bởi nhiễu so với lọc tuyến tính."
-        },
-        {
-          "text": "Median: thay pixel bằng trung vị trong cửa sổ, rất mạnh với nhiễu xung",
-          "say": "Đại diện tiêu biểu là bộ lọc trung vị. Ta lấy các giá trị trong cửa sổ, sắp xếp, rồi chọn giá trị ở giữa. Bộ lọc trung vị cực kỳ hiệu quả với nhiễu xung, hay nhiễu muối tiêu, vì các giá trị ngoại lai nằm ở hai đầu dãy sắp xếp và không bao giờ được chọn, khác hẳn với trung bình cộng."
-        },
-        {
-          "text": "Weighted median: ngưỡng = nửa tổng trọng số, cộng dồn từ mẫu lớn nhất",
-          "say": "Bộ lọc trung vị có trọng số gán cho mỗi mẫu một trọng số. Thuật toán tính ngưỡng bằng một nửa tổng trọng số, sắp xếp các mẫu, rồi cộng dồn trọng số từ mẫu lớn nhất trở xuống. Mẫu tại đó tổng vượt ngưỡng chính là đầu ra."
-        },
-        {
-          "text": "Ứng dụng: phóng to ảnh ít bị khối, làm nét ảnh",
-          "say": "Trung vị có trọng số có hai ứng dụng được nhắc trong slide: phóng to ảnh, cho kết quả giữ cạnh tốt và ít bị hiện tượng khối hơn nội suy tuyến tính, và làm nét ảnh bằng một mặt nạ trung vị có trọng số."
-        },
-        {
-          "text": "Ví dụ: cửa sổ {10, 12, 11, 255, 13} → trung vị 12, trung bình 60",
-          "say": "Lấy một ví dụ nhỏ. Cửa sổ có năm giá trị: mười, mười hai, mười một, hai trăm năm mươi lăm và mười ba. Giá trị hai trăm năm mươi lăm là một điểm nhiễu muối. Nếu lấy trung bình cộng, ta được khoảng sáu mươi, ảnh bị lem một đốm sáng. Nhưng sắp xếp lại rồi chọn giá trị giữa, ta được mười hai, hoàn toàn bỏ qua điểm nhiễu. Đó là sức mạnh của lọc trung vị."
-        }
-      ]
-    },
-    {
-      "title": "Lọc hình thái học",
-      "slide": 22,
-      "points": [
-        {
-          "text": "Dựa trên lý thuyết tập hợp, mô tả cấu trúc hình học của vật thể",
-          "say": "Hình thái học toán học là một phương pháp phi tuyến dựa trên lý thuyết tập hợp. Nó mô tả định lượng cấu trúc hình học của đối tượng, khắc phục hạn chế của phương pháp tuyến tính khi gặp các bài toán mang tính hình học."
-        },
-        {
-          "text": "Structuring Element: Erosion cần toàn bộ là 1, Dilation chỉ cần một pixel là 1",
-          "say": "Các phép toán dùng một phần tử cấu trúc, structuring element. Với erosion, ta đặt phần tử cấu trúc lên từng vị trí, và chỉ giữ giá trị 1 nếu toàn bộ vùng bên dưới đều là 1. Với dilation, chỉ cần có ít nhất một pixel bên dưới là 1."
-        },
-        {
-          "text": "Opening loại nhiễu nhỏ; Closing lấp lỗ, nối chỗ đứt gãy",
-          "say": "Từ đó, opening bằng erosion rồi dilation, giúp loại nhiễu nhỏ mà vẫn giữ hình dạng tổng thể. Closing bằng dilation rồi erosion, giúp lấp các lỗ nhỏ và nối lại những phần bị đứt gãy."
-        }
-      ]
-    },
-    {
-      "title": "Lọc không gian: tương quan và tích chập",
-      "slide": 28,
-      "points": [
-        {
-          "text": "Thay mỗi pixel bằng hàm của chính nó và các pixel lân cận",
-          "say": "Tiếp theo là lọc không gian. Lọc không gian thay giá trị mỗi pixel bằng một hàm của chính pixel đó và các pixel lân cận. Nếu hàm này tuyến tính thì ta có lọc không gian tuyến tính."
-        },
-        {
-          "text": "Tương quan: trượt kernel, tính tổng tích tại mỗi vị trí",
-          "say": "Lọc tuyến tính thực hiện phép tổng tích giữa ảnh và một kernel. Phép tương quan không gian trượt tâm kernel qua ảnh và tính tổng các tích tại mỗi vị trí."
-        },
-        {
-          "text": "Tích chập: giống tương quan nhưng kernel xoay 180 độ",
-          "say": "Phép tích chập không gian giống hệt, chỉ khác là kernel được xoay một trăm tám mươi độ trước khi trượt. Khi kernel đối xứng qua tâm, hai phép toán cho kết quả giống nhau. Câu này rất hay được hỏi."
-        }
-      ]
-    },
-    {
-      "title": "Lọc làm mượt và lọc làm nét",
-      "slide": 34,
-      "points": [
-        {
-          "text": "Box filter: trung bình cộng, kernel chuẩn hóa tổng bằng 1",
-          "say": "Bộ lọc làm mượt đơn giản nhất là box filter, lấy trung bình cộng các pixel trong cửa sổ. Kernel được chuẩn hóa sao cho tổng hệ số bằng 1, để không làm thay đổi độ sáng tổng thể của ảnh."
-        },
-        {
-          "text": "Đạo hàm bậc 1: khác 0 tại đầu bước nhảy và dọc độ dốc",
-          "say": "Bộ lọc làm nét thì dựa trên đạo hàm. Đạo hàm bậc một bằng không ở vùng cường độ hằng số, và khác không tại điểm bắt đầu bước nhảy cũng như dọc theo độ dốc."
-        },
-        {
-          "text": "Đạo hàm bậc 2: khác 0 tại đầu và cuối bước nhảy, bằng 0 dọc ramp → Laplacian",
-          "say": "Đạo hàm bậc hai bằng không ở vùng hằng số, khác không tại cả điểm bắt đầu và kết thúc bước nhảy, nhưng lại bằng không dọc theo độ dốc tuyến tính. Chính tính chất này giúp toán tử Laplacian phát hiện cạnh và làm nét ảnh."
-        }
-      ]
-    },
-    {
-      "title": "Unsharp masking và highboost",
-      "slide": 37,
-      "points": [
-        {
-          "text": "Bước 1: làm mờ ảnh gốc",
-          "say": "Một kỹ thuật làm nét rất kinh điển là unsharp masking. Bước thứ nhất, ta làm mờ ảnh gốc, ví dụ bằng bộ lọc Gauss."
-        },
-        {
-          "text": "Bước 2: mask = ảnh gốc − ảnh mờ (giữ thành phần tần số cao)",
-          "say": "Bước thứ hai, lấy ảnh gốc trừ đi ảnh mờ. Kết quả là một mặt nạ, mask, chỉ còn lại các thành phần tần số cao, tức là các cạnh và chi tiết nhỏ."
-        },
-        {
-          "text": "Bước 3: cộng mask trở lại ảnh gốc; hệ số > 1 là highboost",
-          "say": "Bước thứ ba, cộng mặt nạ này trở lại ảnh gốc để tăng cường cạnh. Nếu ta nhân mặt nạ với một hệ số lớn hơn 1 trước khi cộng, ta có highboost filtering, làm nét mạnh hơn."
-        }
-      ]
-    },
-    {
-      "title": "Biến đổi Fourier rời rạc 2 chiều",
-      "slide": 41,
-      "points": [
-        {
-          "text": "DFT và IDFT chuyển ảnh qua lại giữa không gian và tần số",
-          "say": "Bây giờ chúng ta sang miền tần số. Biến đổi Fourier rời rạc hai chiều, DFT, và biến đổi ngược, IDFT, cho phép chuyển ảnh qua lại giữa miền không gian và miền tần số."
-        },
-        {
-          "text": "Dạng cực: phổ biên độ và góc pha; phổ công suất = biên độ bình phương",
-          "say": "Khi biểu diễn dưới dạng cực, ta có phổ Fourier, tức biên độ, và góc pha. Phổ công suất chính là bình phương của phổ biên độ. Các bạn nhớ định nghĩa này nhé."
-        },
-        {
-          "text": "Tâm phổ = tần số thấp (vùng mượt); ra xa tâm = tần số cao (cạnh, nhiễu)",
-          "say": "Khi nhìn phổ Fourier đã dời tâm, các bạn hãy nhớ quy tắc: phần gần tâm là tần số thấp, tương ứng các vùng biến thiên chậm, mượt mà trong ảnh. Càng ra xa tâm là tần số càng cao, tương ứng với cạnh, chi tiết nhỏ và nhiễu. Lọc thông thấp giữ phần giữa, lọc thông cao giữ phần rìa."
-        }
-      ]
-    },
-    {
-      "title": "Các bước lọc trong miền tần số",
-      "slide": 42,
-      "points": [
-        {
-          "text": "Đệm ảnh (padding) để tránh hiệu ứng wrap-around",
-          "say": "Quy trình lọc trong miền tần số gồm nhiều bước. Đầu tiên, đệm ảnh, bằng số không, phản chiếu hoặc lặp biên, để tránh hiệu ứng bao quanh khi tích chập tuần hoàn."
-        },
-        {
-          "text": "Nhân với (−1)^(x+y) để dời tâm phổ, rồi tính DFT",
-          "say": "Tiếp theo, nhân ảnh với trừ một mũ x cộng y để dời tâm phổ Fourier về giữa, rồi tính DFT."
-        },
-        {
-          "text": "G(u,v) = H(u,v)·F(u,v), lấy IDFT rồi cắt lại kích thước M×N",
-          "say": "Sau đó xây dựng hàm truyền H của bộ lọc, đối xứng quanh tâm, và nhân từng phần tử: G bằng H nhân F. Cuối cùng lấy IDFT, rồi trích ra phần M nhân N tương ứng với ảnh gốc."
-        }
-      ]
-    },
-    {
-      "title": "Bộ lọc thông thấp và thông cao trong miền tần số",
-      "slide": 44,
-      "points": [
-        {
-          "text": "Thông thấp: Ideal, Gaussian, Butterworth",
-          "say": "Có ba bộ lọc thông thấp phổ biến trong miền tần số: lý tưởng, Gauss, và Butterworth. Butterworth có một tham số bậc điều khiển độ dốc chuyển tiếp, nên nó là sự cân bằng giữa lọc lý tưởng và lọc Gauss."
-        },
-        {
-          "text": "Thông cao: Ideal, Gaussian, Butterworth, Laplacian để làm nét",
-          "say": "Tương tự, có các bộ lọc thông cao lý tưởng, Gauss, Butterworth và Laplacian trong miền tần số. Chúng dùng để làm nét ảnh, hoặc loại bỏ nhiễu tuần hoàn và nền biến thiên chậm."
-        }
-      ]
-    },
-    {
-      "title": "Tổng kết chương 2",
-      "points": [
-        {
-          "text": "Hệ LSI: tích chập trong không gian ⇔ nhân trong tần số",
-          "say": "Tổng kết chương hai. Hệ tuyến tính bất biến không gian cho đầu ra là tích chập, và tích chập trong không gian tương đương phép nhân trong tần số."
-        },
-        {
-          "text": "Ideal gây ringing; Gauss mượt; Butterworth cân bằng",
-          "say": "Lọc lý tưởng gây ringing, lọc Gauss mượt và không ringing, còn Butterworth là sự cân bằng giữa hai loại."
-        },
-        {
-          "text": "Median diệt nhiễu xung; tích chập = tương quan với kernel xoay 180°",
-          "say": "Lọc trung vị rất mạnh với nhiễu xung. Tích chập giống tương quan nhưng kernel xoay một trăm tám mươi độ."
-        },
-        {
-          "text": "Laplacian và unsharp masking để làm nét",
-          "say": "Cuối cùng, Laplacian dựa trên đạo hàm bậc hai và unsharp masking là hai công cụ làm nét quan trọng. Hẹn gặp lại các bạn ở chương ba: phục hồi ảnh."
-        }
-      ]
+     "kicker": "Mở đầu",
+     "title": "Lộ trình của chương",
+     "points": [
+      {
+       "say": "Ta bắt đầu với lọc tuyến tính: tích chập và lọc hộp, rồi lọc Gauss. Sau đó là lọc phi tuyến: trung vị và hình thái học.",
+       "text": "Tuyến tính → phi tuyến"
+      },
+      {
+       "say": "Tiếp theo là làm nét bằng đạo hàm và unsharp masking, và cuối cùng là lọc trong miền tần số.",
+       "text": "Làm nét → miền tần số"
+      },
+      {
+       "say": "Mỗi bộ lọc vá chỗ hụt của bộ lọc trước, các bạn xem theo thứ tự.",
+       "text": "Xem theo thứ tự"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Tích chập & lọc hộp",
+       "Lọc Gauss",
+       "Lọc trung vị",
+       "Hình thái học",
+       "Làm nét",
+       "Lọc miền tần số"
+      ],
+      "current": 0
+     }
     }
-  ]
+   ]
+  },
+  {
+   "id": "tich-chap",
+   "title": "Lọc không gian: tích chập và lọc hộp",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Nhiễu hạt khắp trang",
+     "points": [
+      {
+       "say": "Mỗi pixel nền giấy lệch đi một chút ngẫu nhiên. Ta muốn kéo mỗi pixel về gần giá trị của hàng xóm.",
+       "text": "Kéo pixel về gần hàng xóm"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Xử lý từng pixel riêng lẻ",
+     "points": [
+      {
+       "say": "Ở chương một, phép toán điểm chỉ nhìn chính pixel đó. Nó không biết hàng xóm, nên không phân biệt được nhiễu với chi tiết thật.",
+       "text": "Phép toán điểm: không biết hàng xóm"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Thay pixel bằng một hàm của vùng lân cận",
+     "points": [
+      {
+       "say": "Lọc không gian thay mỗi pixel bằng một hàm của chính nó và các pixel lân cận. Hàm tuyến tính thì gọi là lọc không gian tuyến tính.",
+       "text": "Hàm của vùng lân cận"
+      },
+      {
+       "say": "Một hệ tuyến tính thỏa tính cộng và tính đồng nhất. Nếu còn bất biến theo không gian, gọi là hệ LSI, đầu ra là tích chập ảnh vào với đáp ứng xung.",
+       "text": "LSI: đầu ra = tích chập với đáp ứng xung"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Tương quan và tích chập",
+     "points": [
+      {
+       "say": "Tương quan trượt tâm kernel qua ảnh, tính tổng các tích. Tích chập giống hệt, nhưng kernel xoay một trăm tám mươi độ.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử với một xung đơn vị: không, không, một, không, không, và kernel một, hai, ba.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: tương quan cho ra dãy nào?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Tương quan cho không, ba, hai, một, không: kernel hiện ra bị lật ngược.",
+       "reveal": 2
+      },
+      {
+       "say": "Tích chập cho không, một, hai, ba, không: đúng kernel. Vì vậy đáp ứng xung của hệ LSI chính là kernel tích chập. Kernel đối xứng thì hai phép cho cùng kết quả.",
+       "reveal": 3
+      }
+     ],
+     "grid": [
+      {
+       "label": "Xung đơn vị",
+       "cells": [
+        [
+         0,
+         0,
+         1,
+         0,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         2
+        ]
+       ]
+      },
+      {
+       "label": "Tương quan với 1, 2, 3",
+       "cells": [
+        [
+         0,
+         3,
+         2,
+         1,
+         0
+        ]
+       ],
+       "warn": [
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         2
+        ],
+        [
+         0,
+         3
+        ]
+       ]
+      },
+      {
+       "label": "Tích chập với 1, 2, 3",
+       "cells": [
+        [
+         0,
+         1,
+         2,
+         3,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         2
+        ],
+        [
+         0,
+         3
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Lọc hộp",
+     "points": [
+      {
+       "say": "Bộ lọc làm mượt đơn giản nhất là lọc hộp: lấy trung bình cộng cửa sổ. Kernel chuẩn hóa tổng hệ số bằng một, để không đổi độ sáng tổng thể.",
+       "text": "Box filter: trung bình, tổng hệ số = 1"
+      },
+      {
+       "say": "Nhiễu hạt bị trung bình hóa và giảm hẳn.",
+       "text": "Nhiễu hạt giảm"
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Tương quan so với tích chập",
+     "points": [
+      {
+       "say": "Tương quan không lật kernel; tích chập lật kernel một trăm tám mươi độ.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Với xung đơn vị, tích chập trả lại đúng kernel. Kernel đối xứng qua tâm thì hai phép như nhau.",
+       "reveal": [
+        2,
+        3
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Tương quan",
+       "Tích chập"
+      ],
+      "rows": [
+       [
+        "Kernel",
+        "Giữ nguyên",
+        "Xoay 180°"
+       ],
+       [
+        "Với xung đơn vị",
+        "Kernel bị lật",
+        "Đúng kernel"
+       ],
+       [
+        "Kernel đối xứng",
+        "Như nhau",
+        "Như nhau"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Tích chập ở đâu",
+     "points": [
+      {
+       "say": "Mọi bộ lọc tuyến tính, từ làm mờ, làm nét đến phát hiện cạnh, và cả lớp tích chập trong mạng CNN, đều là phép tổng tích này.",
+       "text": "Mọi bộ lọc tuyến tính, CNN"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Lọc hộp làm mờ có góc cạnh",
+     "points": [
+      {
+       "say": "Lọc hộp đối xử mọi hàng xóm như nhau, dù gần hay xa, và cắt đột ngột ở mép cửa sổ. Chữ bị mờ khá thô.",
+       "text": "Mọi hàng xóm như nhau, cắt đột ngột"
+      },
+      {
+       "say": "Video sau: lọc Gauss, hàng xóm gần quan trọng hơn hàng xóm xa.",
+       "text": "→ Gauss"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Tích chập & lọc hộp",
+       "Lọc Gauss",
+       "Lọc trung vị",
+       "Hình thái học",
+       "Làm nét",
+       "Lọc miền tần số"
+      ],
+      "current": 2
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: tích chập giống tương quan nhưng kernel xoay một trăm tám mươi độ."
+      },
+      {
+       "say": "Bẫy hai: kernel đối xứng qua tâm thì hai phép cho cùng kết quả."
+      },
+      {
+       "say": "Bẫy ba: kernel làm mượt được chuẩn hóa tổng bằng một để giữ độ sáng."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Tích chập khác tương quan?",
+        "Kernel xoay 180°"
+       ],
+       [
+        "Khi nào hai phép như nhau?",
+        "Kernel đối xứng qua tâm"
+       ],
+       [
+        "Vì sao chuẩn hóa kernel?",
+        "Tổng hệ số = 1, giữ độ sáng"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "gauss",
+   "title": "Lọc thông thấp lý tưởng và lọc Gauss",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Làm mượt mà không sinh viền lạ",
+     "points": [
+      {
+       "say": "Ta muốn bỏ các thành phần tần số cao, tức nhiễu hạt, mà không sinh ra những viền lặp lại quanh chữ.",
+       "text": "Bỏ tần số cao, không sinh viền"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Lọc lý tưởng: cắt phắt",
+     "points": [
+      {
+       "say": "Bộ lọc thông thấp lý tưởng giữ nguyên mọi tần số trong một ngưỡng cắt, ép toàn bộ tần số ngoài ngưỡng về không, vùng giữ hình tròn hoặc chữ nhật.",
+       "text": "Giữ trong ngưỡng, ép về 0 ngoài ngưỡng"
+      },
+      {
+       "say": "Nhưng bước cắt đột ngột trong miền tần số gây gợn sóng, ringing, trong miền không gian: các viền lặp lại quanh cạnh chữ.",
+       "text": "Cắt đột ngột → ringing"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Giảm dần thay vì cắt phắt",
+     "points": [
+      {
+       "say": "Bộ lọc Gauss có đáp ứng tần số cũng là hình Gauss, giảm dần mượt mà, nên không gây ringing.",
+       "text": "Gauss: giảm dần, không ringing"
+      },
+      {
+       "say": "Trong không gian, hàng xóm càng gần trọng số càng lớn. Tham số sigma lớn thì lọc mạnh, ảnh mờ hơn; sigma nhỏ chỉ khử nhiễu mịn.",
+       "text": "σ lớn → mờ hơn"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Đáp ứng tần số của hai bộ lọc",
+     "points": [
+      {
+       "say": "Bên trái là bộ lọc lý tưởng với ngưỡng cắt ở tần số ba: giữ nguyên rồi rơi thẳng xuống không.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: bộ lọc Gauss với sigma bằng hai trông thế nào?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Giảm dần: một, không phẩy tám tám, không phẩy sáu một, không phẩy ba hai, không phẩy một bốn, không phẩy không bốn. Không có vách đứng nào, nên không có gợn sóng.",
+       "reveal": 2
+      }
+     ],
+     "compare": {
+      "left": {
+       "label": "Lý tưởng: cắt phắt ở tần số 3",
+       "histogram": {
+        "bars": [
+         {
+          "label": "0",
+          "value": 1
+         },
+         {
+          "label": "1",
+          "value": 1
+         },
+         {
+          "label": "2",
+          "value": 1
+         },
+         {
+          "label": "3",
+          "value": 0
+         },
+         {
+          "label": "4",
+          "value": 0
+         },
+         {
+          "label": "5",
+          "value": 0
+         }
+        ],
+        "top": 1
+       }
+      },
+      "right": {
+       "label": "Gauss σ = 2: giảm dần",
+       "histogram": {
+        "bars": [
+         {
+          "label": "0",
+          "value": 1
+         },
+         {
+          "label": "1",
+          "value": 0.88
+         },
+         {
+          "label": "2",
+          "value": 0.61
+         },
+         {
+          "label": "3",
+          "value": 0.32
+         },
+         {
+          "label": "4",
+          "value": 0.14
+         },
+         {
+          "label": "5",
+          "value": 0.04
+         }
+        ],
+        "top": 1
+       }
+      },
+      "arrow": "cùng mục tiêu"
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Lý tưởng so với Gauss",
+     "points": [
+      {
+       "say": "Lý tưởng cắt đột ngột, gây ringing.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Gauss giảm dần, không ringing; độ mạnh chỉnh bằng sigma.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Lý tưởng",
+       "Gauss"
+      ],
+      "rows": [
+       [
+        "Đáp ứng tần số",
+        "Vách đứng tại ngưỡng cắt",
+        "Giảm dần hình chuông"
+       ],
+       [
+        "Ringing",
+        "Có",
+        "Không"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Gauss ở đâu",
+     "points": [
+      {
+       "say": "Lọc Gauss là bước làm mượt mặc định trước khi phát hiện cạnh, giảm mẫu, hay xây kim tự tháp ảnh.",
+       "text": "Làm mượt trước khi xử lý tiếp"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Điểm lấm tấm bị lem chứ không mất",
+     "points": [
+      {
+       "say": "Gauss và lọc hộp đều là trung bình có trọng số. Một điểm trắng lấm tấm không biến mất mà lem ra thành đốm mờ, và cạnh chữ cũng mờ theo.",
+       "text": "Nhiễu xung bị lem, cạnh mờ"
+      },
+      {
+       "say": "Video sau dùng lọc phi tuyến: trung vị.",
+       "text": "→ Trung vị"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Tích chập & lọc hộp",
+       "Lọc Gauss",
+       "Lọc trung vị",
+       "Hình thái học",
+       "Làm nét",
+       "Lọc miền tần số"
+      ],
+      "current": 3
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: lọc lý tưởng gây ringing vì cắt đột ngột trong miền tần số."
+      },
+      {
+       "say": "Bẫy hai: đáp ứng tần số của lọc Gauss cũng là hàm Gauss."
+      },
+      {
+       "say": "Bẫy ba: sigma càng lớn, ảnh càng mờ."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Lọc lý tưởng gây hiện tượng gì?",
+        "Ringing (gợn sóng)"
+       ],
+       [
+        "Đáp ứng tần số của Gauss?",
+        "Cũng là Gauss, giảm mượt"
+       ],
+       [
+        "σ lớn thì sao?",
+        "Lọc mạnh, ảnh mờ hơn"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "trung-vi",
+   "title": "Lọc trung vị và trung vị có trọng số",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Điểm lấm tấm trên nền giấy",
+     "points": [
+      {
+       "say": "Trang sách có vài điểm trắng lấm tấm, là nhiễu xung. Ta muốn xóa sạch chúng mà không làm mờ nét chữ.",
+       "text": "Xóa nhiễu xung, giữ nét"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Trung bình bị ngoại lai kéo lệch",
+     "points": [
+      {
+       "say": "Bộ lọc trung bình bị giá trị ngoại lai kéo lệch: một điểm hai trăm năm mươi lăm giữa vùng mười làm cả vùng sáng lên.",
+       "text": "Ngoại lai kéo lệch trung bình"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Sắp xếp rồi chọn giữa",
+     "points": [
+      {
+       "say": "Lọc trung vị sắp xếp các giá trị trong cửa sổ rồi chọn giá trị ở giữa. Ngoại lai nằm ở hai đầu dãy nên không ảnh hưởng.",
+       "text": "Sắp xếp, chọn giữa"
+      },
+      {
+       "say": "Lọc phi tuyến bảo toàn cạnh và chi tiết tốt hơn, ít bị nhiễu ảnh hưởng hơn lọc tuyến tính.",
+       "text": "Phi tuyến: giữ cạnh tốt hơn"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Cửa sổ có một điểm muối",
+     "points": [
+      {
+       "say": "Cửa sổ năm giá trị: mười, mười hai, mười một, hai trăm năm mươi lăm, mười ba.",
+       "text": "Cửa sổ: 10, 12, 11, 255, 13",
+       "reveal": 1
+      },
+      {
+       "say": "Trung bình cộng khoảng sáu mươi: ảnh bị lem một đốm sáng.",
+       "text": "Trung bình ≈ 60,2",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: trung vị là bao nhiêu?",
+       "text": "Thử đoán: trung vị?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Sắp xếp: mười, mười một, mười hai, mười ba, hai trăm năm mươi lăm. Giá trị giữa là mười hai, điểm nhiễu bị bỏ qua hoàn toàn.",
+       "text": "Trung vị = 12",
+       "reveal": 2
+      }
+     ],
+     "grid": [
+      {
+       "label": "Cửa sổ",
+       "cells": [
+        [
+         10,
+         12,
+         11,
+         255,
+         13
+        ]
+       ],
+       "warn": [
+        [
+         0,
+         3
+        ]
+       ]
+      },
+      {
+       "label": "Sau sắp xếp",
+       "cells": [
+        [
+         10,
+         11,
+         12,
+         13,
+         255
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         2
+        ]
+       ],
+       "warn": [
+        [
+         0,
+         4
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Trung vị có trọng số",
+     "points": [
+      {
+       "say": "Gán trọng số cho mỗi mẫu, ví dụ một, hai, ba, hai, một. Ngưỡng bằng nửa tổng trọng số, tức bốn phẩy năm.",
+       "reveal": 1
+      },
+      {
+       "say": "Sắp xếp giảm dần rồi cộng dồn trọng số từ mẫu lớn nhất: hai trăm năm mươi lăm được hai, mười ba được ba.",
+       "reveal": 2
+      },
+      {
+       "say": "Đến mười hai tổng thành năm, vượt bốn phẩy năm. Đầu ra là mười hai.",
+       "reveal": 3
+      }
+     ],
+     "table": {
+      "headers": [
+       "Mẫu (giảm dần)",
+       "Trọng số",
+       "Cộng dồn",
+       "≥ 4,5?"
+      ],
+      "rows": [
+       [
+        "255",
+        "2",
+        "2",
+        "Chưa"
+       ],
+       [
+        "13",
+        "1",
+        "3",
+        "Chưa"
+       ],
+       [
+        "12",
+        "2",
+        "5",
+        "Đạt → đầu ra 12"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Trung bình so với trung vị",
+     "points": [
+      {
+       "say": "Trung bình là tuyến tính, bị ngoại lai kéo lệch, làm mờ cạnh.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Trung vị là phi tuyến, bỏ qua ngoại lai, giữ cạnh.",
+       "reveal": [
+        2
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Trung bình",
+       "Trung vị"
+      ],
+      "rows": [
+       [
+        "Ví dụ 10, 12, 11, 255, 13",
+        "≈ 60,2",
+        "12"
+       ],
+       [
+        "Nhiễu xung",
+        "Lem ra",
+        "Xóa sạch"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Trung vị ở đâu",
+     "points": [
+      {
+       "say": "Khử nhiễu muối tiêu, nhiễu hạt phim. Slide nêu thêm trung vị có trọng số để phóng to ảnh ít bị khối hơn nội suy tuyến tính, và để làm nét ảnh.",
+       "text": "Muối tiêu; phóng to ít khối; làm nét"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Cần hình dạng, không chỉ giá trị",
+     "points": [
+      {
+       "say": "Trên ảnh nhị phân của chữ, ta còn muốn xóa đốm nhỏ, lấp lỗ trong nét chữ, nối chỗ đứt. Đó là bài toán về hình dạng.",
+       "text": "Bài toán hình dạng"
+      },
+      {
+       "say": "Video sau: hình thái học.",
+       "text": "→ Hình thái học"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Tích chập & lọc hộp",
+       "Lọc Gauss",
+       "Lọc trung vị",
+       "Hình thái học",
+       "Làm nét",
+       "Lọc miền tần số"
+      ],
+      "current": 4
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: lọc trung vị rất hiệu quả với nhiễu xung."
+      },
+      {
+       "say": "Bẫy hai: trung vị có trọng số dùng ngưỡng bằng nửa tổng trọng số, cộng dồn từ mẫu lớn nhất."
+      },
+      {
+       "say": "Bẫy ba: lọc phi tuyến giữ cạnh tốt hơn và ít bị nhiễu ảnh hưởng."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Trung vị hiệu quả với nhiễu gì?",
+        "Nhiễu xung (muối tiêu)"
+       ],
+       [
+        "Ngưỡng trung vị có trọng số?",
+        "Nửa tổng trọng số"
+       ],
+       [
+        "Lọc phi tuyến hơn tuyến tính ở đâu?",
+        "Giữ cạnh, ít bị nhiễu ảnh hưởng"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "hinh-thai",
+   "title": "Lọc hình thái học",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Đốm nhỏ, lỗ thủng, nét đứt",
+     "points": [
+      {
+       "say": "Sau khi nhị phân hóa trang sách, có đốm đen nhỏ trên nền, lỗ thủng trong nét chữ, và nét bị đứt.",
+       "text": "Đốm, lỗ, nét đứt"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Lọc theo giá trị",
+     "points": [
+      {
+       "say": "Lọc tuyến tính hay trung vị xử lý giá trị pixel, không mô tả trực tiếp cấu trúc hình học như kích thước hay độ liền mạch của vật.",
+       "text": "Không mô tả hình dạng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Thăm dò bằng một phần tử cấu trúc",
+     "points": [
+      {
+       "say": "Hình thái học toán học là phương pháp phi tuyến dựa trên lý thuyết tập hợp và lý thuyết dàn, mô tả định lượng cấu trúc hình học của vật.",
+       "text": "Lý thuyết tập hợp, dàn"
+      },
+      {
+       "say": "Đặt một phần tử cấu trúc lên từng vị trí. Erosion chỉ giữ một nếu toàn bộ vùng bên dưới đều là một; dilation chỉ cần ít nhất một pixel bên dưới là một.",
+       "text": "Erosion: tất cả là 1 · Dilation: ít nhất một 1"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Opening trên một hàng nhị phân",
+     "points": [
+      {
+       "say": "Hàng nhị phân: một khối ba pixel liền nhau, và một đốm nhiễu đơn lẻ ở bên phải. Phần tử cấu trúc rộng ba.",
+       "reveal": 1
+      },
+      {
+       "say": "Erosion: chỉ pixel giữa khối còn đủ ba hàng xóm là một. Đốm nhiễu biến mất.",
+       "reveal": 2
+      },
+      {
+       "say": "Thử đoán: dilation tiếp theo trả lại gì?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Khối ba pixel trở về nguyên kích thước, đốm nhiễu thì không quay lại. Erosion rồi dilation là opening: xóa nhiễu nhỏ, giữ hình dạng.",
+       "reveal": 3
+      }
+     ],
+     "grid": [
+      {
+       "label": "Gốc: khối + đốm nhiễu",
+       "cells": [
+        [
+         0,
+         1,
+         1,
+         1,
+         0,
+         0,
+         1,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         2
+        ],
+        [
+         0,
+         3
+        ]
+       ],
+       "warn": [
+        [
+         0,
+         6
+        ]
+       ]
+      },
+      {
+       "label": "Erosion",
+       "cells": [
+        [
+         0,
+         0,
+         1,
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         2
+        ]
+       ]
+      },
+      {
+       "label": "Dilation → opening",
+       "cells": [
+        [
+         0,
+         1,
+         1,
+         1,
+         0,
+         0,
+         0,
+         0
+        ]
+       ],
+       "accent": [
+        [
+         0,
+         1
+        ],
+        [
+         0,
+         2
+        ],
+        [
+         0,
+         3
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Bốn phép cơ bản",
+     "points": [
+      {
+       "say": "Erosion co vật, xóa pixel biên. Dilation giãn vật, thêm pixel biên.",
+       "reveal": [
+        1,
+        2
+       ]
+      },
+      {
+       "say": "Opening, erosion rồi dilation, xóa nhiễu nhỏ. Closing, dilation rồi erosion, lấp lỗ nhỏ và nối chỗ đứt.",
+       "reveal": [
+        3,
+        4
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Phép",
+       "Định nghĩa",
+       "Tác dụng"
+      ],
+      "rows": [
+       [
+        "Erosion",
+        "Giữ 1 nếu tất cả bên dưới là 1",
+        "Co vật"
+       ],
+       [
+        "Dilation",
+        "Giữ 1 nếu có ít nhất một 1",
+        "Giãn vật"
+       ],
+       [
+        "Opening",
+        "Erosion → dilation",
+        "Xóa nhiễu nhỏ"
+       ],
+       [
+        "Closing",
+        "Dilation → erosion",
+        "Lấp lỗ, nối chỗ đứt"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Hình thái học ở đâu",
+     "points": [
+      {
+       "say": "Làm sạch ảnh văn bản trước khi nhận dạng chữ, tách vật trong ảnh công nghiệp, phát hiện đặc trưng hình dạng.",
+       "text": "Làm sạch văn bản, ảnh công nghiệp"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Ảnh sạch nhưng chữ vẫn nhòe",
+     "points": [
+      {
+       "say": "Khử nhiễu xong, nét chữ vẫn hơi nhòe. Giờ phải làm ngược lại: làm nét.",
+       "text": "→ Làm nét"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Tích chập & lọc hộp",
+       "Lọc Gauss",
+       "Lọc trung vị",
+       "Hình thái học",
+       "Làm nét",
+       "Lọc miền tần số"
+      ],
+      "current": 5
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: opening là erosion rồi dilation; closing là dilation rồi erosion."
+      },
+      {
+       "say": "Bẫy hai: closing lấp lỗ nhỏ và nối chỗ đứt; opening xóa nhiễu nhỏ."
+      },
+      {
+       "say": "Bẫy ba: erosion chỉ giữ một khi toàn bộ vùng dưới phần tử cấu trúc là một."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Opening là gì?",
+        "Erosion rồi dilation"
+       ],
+       [
+        "Closing dùng để làm gì?",
+        "Lấp lỗ, nối chỗ đứt"
+       ],
+       [
+        "Erosion giữ 1 khi nào?",
+        "Toàn bộ vùng dưới SE là 1"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "lam-net",
+   "title": "Làm nét: đạo hàm, Laplacian và unsharp masking",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Chữ nhòe, cạnh không sắc",
+     "points": [
+      {
+       "say": "Cạnh chữ là chỗ cường độ thay đổi. Muốn làm nét, phải làm nổi những chỗ thay đổi đó.",
+       "text": "Làm nổi chỗ thay đổi"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Lọc làm mượt",
+     "points": [
+      {
+       "say": "Mọi bộ lọc đến giờ đều làm mượt, tức là xóa bớt thay đổi. Làm nét cần đúng chiều ngược lại.",
+       "text": "Làm mượt: xóa thay đổi"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Dùng đạo hàm để tìm chỗ thay đổi",
+     "points": [
+      {
+       "say": "Đạo hàm bậc một bằng không ở vùng hằng số, khác không tại đầu bước nhảy và dọc theo độ dốc.",
+       "text": "Bậc một: khác 0 dọc độ dốc"
+      },
+      {
+       "say": "Đạo hàm bậc hai bằng không ở vùng hằng số và dọc độ dốc tuyến tính, chỉ khác không tại đầu và cuối thay đổi. Toán tử Laplacian dựa trên nó.",
+       "text": "Bậc hai: khác 0 tại đầu và cuối"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Đạo hàm trên một mép chữ",
+     "points": [
+      {
+       "say": "Một mép chữ: mười, mười, mười, hai mươi, ba mươi, ba mươi, ba mươi. Một vùng phẳng, một dốc, rồi phẳng.",
+       "reveal": 1
+      },
+      {
+       "say": "Đạo hàm bậc một: không, không, mười, mười, không, không. Khác không suốt dọc độ dốc.",
+       "reveal": 2
+      },
+      {
+       "say": "Thử đoán: đạo hàm bậc hai khác không ở đâu?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Chỉ ở đầu dốc, cộng mười, và cuối dốc, trừ mười; dọc dốc bằng không. Laplacian đánh dấu đúng hai mép của cạnh.",
+       "reveal": 3
+      }
+     ],
+     "table": {
+      "headers": [
+       "Vị trí",
+       "f",
+       "Bậc một",
+       "Bậc hai"
+      ],
+      "rows": [
+       [
+        "Phẳng",
+        "10, 10, 10",
+        "0, 0",
+        "0"
+       ],
+       [
+        "Dốc",
+        "10 → 20 → 30",
+        "10, 10",
+        "+10 (đầu), 0, −10 (cuối)"
+       ],
+       [
+        "Phẳng",
+        "30, 30, 30",
+        "0, 0",
+        "0"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Unsharp masking và highboost",
+     "points": [
+      {
+       "say": "Bước một: làm mờ ảnh gốc bằng lọc hộp ba điểm: mười, mười ba phẩy ba ba, hai mươi, hai mươi sáu phẩy sáu bảy, ba mươi.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Bước hai: lấy gốc trừ ảnh mờ được mặt nạ, chỉ còn thành phần tần số cao: âm ba phẩy ba ba ở đầu dốc, cộng ba phẩy ba ba ở cuối dốc.",
+       "reveal": [
+        2
+       ]
+      },
+      {
+       "say": "Bước ba: cộng mặt nạ trở lại ảnh gốc: đầu dốc tối hơn, sáu phẩy sáu bảy; cuối dốc sáng hơn, ba mươi ba phẩy ba ba. Cạnh trông sắc hơn.",
+       "reveal": [
+        3
+       ]
+      },
+      {
+       "say": "Nhân mặt nạ với hệ số lớn hơn một trước khi cộng là highboost, làm nét mạnh hơn.",
+       "reveal": [
+        4
+       ]
+      }
+     ],
+     "code": {
+      "lines": [
+       "mờ ← lọc_hộp(f)                 # 10; 13,33; 20; 26,67; 30",
+       "mặt_nạ ← f − mờ                 # 0; −3,33; 0; +3,33; 0",
+       "nét ← f + mặt_nạ                # 10; 6,67; 20; 33,33; 30",
+       "highboost: nét ← f + k·mặt_nạ, k > 1"
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Bậc một, bậc hai và unsharp",
+     "points": [
+      {
+       "say": "Đạo hàm bậc một phản ứng suốt dọc độ dốc.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Đạo hàm bậc hai, Laplacian, chỉ phản ứng ở đầu và cuối, cho cạnh mảnh hơn.",
+       "reveal": [
+        2
+       ]
+      },
+      {
+       "say": "Unsharp masking dùng ảnh mờ để lấy phần chi tiết rồi cộng lại.",
+       "reveal": [
+        3
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Kỹ thuật",
+       "Phản ứng ở",
+       "Ghi chú"
+      ],
+      "rows": [
+       [
+        "Đạo hàm bậc một",
+        "Dọc độ dốc",
+        "Gradient"
+       ],
+       [
+        "Đạo hàm bậc hai",
+        "Đầu và cuối thay đổi",
+        "Laplacian"
+       ],
+       [
+        "Unsharp / highboost",
+        "Chỗ gốc khác ảnh mờ",
+        "k > 1 là highboost"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Làm nét ở đâu",
+     "points": [
+      {
+       "say": "Chế độ làm nét trong phần mềm chỉnh ảnh, máy in và máy quét tài liệu thường là unsharp masking.",
+       "text": "Phần mềm ảnh, máy quét"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Kernel lớn thì tính chậm",
+     "points": [
+      {
+       "say": "Lọc với kernel lớn trong không gian rất tốn phép tính, và thiết kế đúng đáp ứng tần số mong muốn bằng kernel là khó.",
+       "text": "Kernel lớn: chậm, khó thiết kế"
+      },
+      {
+       "say": "Video sau: lọc thẳng trong miền tần số.",
+       "text": "→ Miền tần số"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Tích chập & lọc hộp",
+       "Lọc Gauss",
+       "Lọc trung vị",
+       "Hình thái học",
+       "Làm nét",
+       "Lọc miền tần số"
+      ],
+      "current": 6
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: đạo hàm bậc hai bằng không dọc độ dốc tuyến tính, khác không ở đầu và cuối thay đổi."
+      },
+      {
+       "say": "Bẫy hai: mặt nạ unsharp bằng ảnh gốc trừ ảnh mờ."
+      },
+      {
+       "say": "Bẫy ba: highboost là nhân mặt nạ với hệ số lớn hơn một."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Đạo hàm bậc hai dọc độ dốc tuyến tính?",
+        "Bằng 0"
+       ],
+       [
+        "Mặt nạ unsharp là gì?",
+        "Ảnh gốc − ảnh mờ"
+       ],
+       [
+        "Highboost?",
+        "Nhân mặt nạ với k > 1"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "mien-tan-so",
+   "title": "Lọc trong miền tần số",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Thiết kế bộ lọc theo tần số",
+     "points": [
+      {
+       "say": "Ta muốn nói thẳng: giữ tần số thấp đến mức này, bỏ tần số cao từ mức kia. Làm vậy bằng kernel không gian vừa khó vừa chậm.",
+       "text": "Muốn thiết kế theo tần số"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Tích chập trong không gian",
+     "points": [
+      {
+       "say": "Kernel lớn tốn rất nhiều phép nhân cho mỗi pixel.",
+       "text": "Kernel lớn: tốn kém"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Tích chập thành phép nhân",
+     "points": [
+      {
+       "say": "Tích chập trong không gian tương ứng với phép nhân trong miền tần số. Chuyển sang tần số, lọc chỉ còn là nhân từng phần tử.",
+       "text": "Tích chập ⇔ nhân"
+      },
+      {
+       "say": "DFT hai chiều và IDFT chuyển ảnh qua lại. Dạng cực cho phổ biên độ và góc pha; phổ công suất là biên độ bình phương. Gần tâm phổ là tần số thấp, xa tâm là tần số cao.",
+       "text": "Phổ biên độ, pha; công suất = biên độ²"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Các bước lọc trong miền tần số",
+     "points": [
+      {
+       "say": "Đệm ảnh, bằng số không, phản chiếu hoặc lặp biên, để tránh hiệu ứng bao quanh khi tích chập tuần hoàn.",
+       "text": "1. Đệm ảnh",
+       "reveal": 1
+      },
+      {
+       "say": "Nhân ảnh với trừ một mũ x cộng y để dời tâm phổ, rồi tính DFT.",
+       "text": "2. Dời tâm, DFT",
+       "reveal": 2
+      },
+      {
+       "say": "Thử đoán: bộ lọc được áp dụng bằng phép toán gì?",
+       "text": "Thử đoán: áp bộ lọc bằng gì?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Nhân từng phần tử với hàm truyền H đối xứng quanh tâm: G bằng H nhân F.",
+       "text": "3. G = H · F",
+       "reveal": 3
+      },
+      {
+       "say": "Lấy IDFT, rồi cắt lại phần M nhân N tương ứng ảnh gốc.",
+       "text": "4. IDFT, cắt M × N",
+       "reveal": 4
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "n0",
+        "label": "Ảnh f",
+        "x": 0,
+        "y": 0,
+        "shape": "box",
+        "step": 0
+       },
+       {
+        "id": "n1",
+        "label": "Đệm + dời tâm (−1)^(x+y)",
+        "x": 0,
+        "y": 1,
+        "shape": "box",
+        "step": 1
+       },
+       {
+        "id": "n2",
+        "label": "DFT → F",
+        "x": 0,
+        "y": 2,
+        "shape": "box",
+        "step": 2
+       },
+       {
+        "id": "n3",
+        "label": "G = H · F",
+        "x": 0,
+        "y": 3,
+        "shape": "box",
+        "step": 3
+       },
+       {
+        "id": "n4",
+        "label": "IDFT, cắt M × N",
+        "x": 0,
+        "y": 4,
+        "shape": "box",
+        "step": 4
+       }
+      ],
+      "edges": [
+       {
+        "a": "n0",
+        "b": "n1",
+        "step": 1
+       },
+       {
+        "a": "n1",
+        "b": "n2",
+        "step": 2
+       },
+       {
+        "a": "n2",
+        "b": "n3",
+        "step": 3
+       },
+       {
+        "a": "n3",
+        "b": "n4",
+        "step": 4
+       }
+      ],
+      "arrows": true
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Các bộ lọc trong miền tần số",
+     "points": [
+      {
+       "say": "Thông thấp có ba loại: lý tưởng, Gauss, và Butterworth. Butterworth có tham số bậc điều khiển độ dốc, cân bằng giữa lý tưởng và Gauss.",
+       "text": "Thông thấp: lý tưởng, Gauss, Butterworth"
+      },
+      {
+       "say": "Thông cao có lý tưởng, Gauss, Butterworth và Laplacian trong miền tần số, dùng để làm nét, khử nhiễu tuần hoàn hay nền biến thiên chậm.",
+       "text": "Thông cao: + Laplacian; làm nét"
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Ba bộ lọc thông thấp",
+     "points": [
+      {
+       "say": "Lý tưởng cắt đột ngột, ringing mạnh.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Gauss mượt, không ringing.",
+       "reveal": [
+        2
+       ]
+      },
+      {
+       "say": "Butterworth nằm giữa, chỉnh độ dốc bằng bậc của nó.",
+       "reveal": [
+        3
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Bộ lọc",
+       "Chuyển tiếp",
+       "Ringing"
+      ],
+      "rows": [
+       [
+        "Lý tưởng",
+        "Vách đứng",
+        "Mạnh"
+       ],
+       [
+        "Gauss",
+        "Mượt nhất",
+        "Không"
+       ],
+       [
+        "Butterworth",
+        "Chỉnh bằng bậc n",
+        "Ít, tùy bậc"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Lọc tần số ở đâu",
+     "points": [
+      {
+       "say": "Khử nhiễu tuần hoàn bằng notch ở chương ba, làm nét, và mọi bộ lọc kernel lớn đều nhanh hơn khi làm qua FFT.",
+       "text": "Notch, làm nét, kernel lớn qua FFT"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Ảnh sạch nhưng vẫn có thể bị suy giảm",
+     "points": [
+      {
+       "say": "Lọc giúp tăng cường ảnh. Nhưng khi ảnh bị suy giảm theo một mô hình biết trước, như mờ do chuyển động, ta cần phục hồi có cơ sở. Đó là chương ba.",
+       "text": "→ Chương 3: phục hồi ảnh"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Tích chập & lọc hộp",
+       "Lọc Gauss",
+       "Lọc trung vị",
+       "Hình thái học",
+       "Làm nét",
+       "Lọc miền tần số"
+      ],
+      "current": 6
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: tích chập trong không gian tương ứng phép nhân trong miền tần số."
+      },
+      {
+       "say": "Bẫy hai: phải đệm ảnh để tránh hiệu ứng bao quanh."
+      },
+      {
+       "say": "Bẫy ba: Butterworth cân bằng giữa lý tưởng và Gauss, chỉnh bằng bậc."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Tích chập trong không gian tương ứng gì?",
+        "Phép nhân trong miền tần số"
+       ],
+       [
+        "Vì sao phải đệm ảnh?",
+        "Tránh wrap-around khi tích chập tuần hoàn"
+       ],
+       [
+        "Butterworth là gì?",
+        "Cân bằng giữa lý tưởng và Gauss, chỉnh bằng bậc"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "tong-ket",
+   "title": "Tổng kết chương 2",
+   "kind": "summary",
+   "scenes": [
+    {
+     "kicker": "Tổng kết",
+     "title": "Lọc ảnh trong một mạch",
+     "points": [
+      {
+       "say": "Nhìn lại trang sách. Tích chập và lọc hộp làm mượt; Gauss giảm dần nên không ringing."
+      },
+      {
+       "say": "Trung vị xóa nhiễu xung mà giữ cạnh; hình thái học xử lý hình dạng với erosion, dilation, opening, closing."
+      },
+      {
+       "say": "Đạo hàm, Laplacian và unsharp masking làm nét; lọc miền tần số biến tích chập thành phép nhân."
+      }
+     ],
+     "chain": {
+      "items": [
+       "Tích chập & lọc hộp",
+       "Lọc Gauss",
+       "Lọc trung vị",
+       "Hình thái học",
+       "Làm nét",
+       "Lọc miền tần số"
+      ],
+      "current": 6
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Năm bẫy chung",
+     "points": [
+      {
+       "say": "Một: tích chập là tương quan với kernel xoay một trăm tám mươi độ."
+      },
+      {
+       "say": "Hai: lọc lý tưởng gây ringing."
+      },
+      {
+       "say": "Ba: trung vị diệt nhiễu xung."
+      },
+      {
+       "say": "Bốn: opening là erosion rồi dilation."
+      },
+      {
+       "say": "Năm: đạo hàm bậc hai bằng không dọc độ dốc."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Tích chập?",
+        "Tương quan với kernel xoay 180°"
+       ],
+       [
+        "Lọc lý tưởng?",
+        "Gây ringing"
+       ],
+       [
+        "Trung vị?",
+        "Diệt nhiễu xung"
+       ],
+       [
+        "Opening?",
+        "Erosion → dilation"
+       ],
+       [
+        "Bậc hai dọc độ dốc?",
+        "Bằng 0"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Tổng kết",
+     "title": "Sang chương 3",
+     "points": [
+      {
+       "say": "Chương ba đi tiếp: phục hồi ảnh bị suy giảm theo một mô hình biết trước.",
+       "text": "Chương 3: phục hồi ảnh"
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }

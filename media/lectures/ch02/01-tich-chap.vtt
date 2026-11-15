@@ -1,0 +1,106 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.579 line:98%,end
+Mỗi pixel nền giấy lệch đi một chút ngẫu nhiên.
+
+00:00:03.529 --> 00:00:07.604 line:98%,end
+Ta muốn kéo mỗi pixel về gần giá trị của hàng xóm.
+
+00:00:09.106 --> 00:00:13.092 line:98%,end
+Ở chương một, phép toán điểm chỉ nhìn chính pixel đó.
+
+00:00:13.042 --> 00:00:17.782 line:98%,end
+Nó không biết hàng xóm, nên không phân biệt được nhiễu với chi tiết thật.
+
+00:00:19.188 --> 00:00:24.660 line:98%,end
+Lọc không gian thay mỗi pixel bằng một hàm của chính nó và các pixel lân cận.
+
+00:00:24.660 --> 00:00:28.332 line:98%,end
+Hàm tuyến tính thì gọi là lọc không gian tuyến tính.
+
+00:00:28.882 --> 00:00:32.465 line:98%,end
+Một hệ tuyến tính thỏa tính cộng và tính đồng nhất.
+
+00:00:32.415 --> 00:00:36.104 line:98%,end
+Nếu còn bất biến theo không gian, gọi là hệ LSI,
+
+00:00:36.104 --> 00:00:39.563 line:98%,end
+đầu ra là tích chập ảnh vào với đáp ứng xung.
+
+00:00:40.980 --> 00:00:45.228 line:98%,end
+Tương quan trượt tâm kernel qua ảnh, tính tổng các tích.
+
+00:00:45.228 --> 00:00:49.644 line:98%,end
+Tích chập giống hệt, nhưng kernel xoay một trăm tám mươi độ.
+
+00:00:50.194 --> 00:00:57.590 line:98%,end
+Thử với một xung đơn vị: không, không, một, không, không, và kernel một, hai,
+
+00:00:57.590 --> 00:00:57.878 line:98%,end
+ba.
+
+00:00:58.344 --> 00:01:00.048 line:98%,end
+Thử đoán:
+
+00:01:00.048 --> 00:01:02.712 line:98%,end
+tương quan cho ra dãy nào?
+
+00:01:05.162 --> 00:01:09.650 line:98%,end
+Tương quan cho không, ba, hai, một, không:
+
+00:01:09.650 --> 00:01:12.554 line:98%,end
+kernel hiện ra bị lật ngược.
+
+00:01:13.104 --> 00:01:18.484 line:98%,end
+Tích chập cho không, một, hai, ba, không: đúng kernel.
+
+00:01:18.434 --> 00:01:22.965 line:98%,end
+Vì vậy đáp ứng xung của hệ LSI chính là kernel tích chập.
+
+00:01:22.965 --> 00:01:26.676 line:98%,end
+Kernel đối xứng thì hai phép cho cùng kết quả.
+
+00:01:28.182 --> 00:01:33.067 line:98%,end
+Bộ lọc làm mượt đơn giản nhất là lọc hộp: lấy trung bình cộng cửa sổ.
+
+00:01:33.017 --> 00:01:38.043 line:98%,end
+Kernel chuẩn hóa tổng hệ số bằng một, để không đổi độ sáng tổng thể.
+
+00:01:38.664 --> 00:01:41.921 line:98%,end
+Nhiễu hạt bị trung bình hóa và giảm hẳn.
+
+00:01:43.374 --> 00:01:48.129 line:98%,end
+Tương quan không lật kernel; tích chập lật kernel một trăm tám mươi độ.
+
+00:01:48.696 --> 00:01:52.578 line:98%,end
+Với xung đơn vị, tích chập trả lại đúng kernel.
+
+00:01:52.528 --> 00:01:56.148 line:98%,end
+Kernel đối xứng qua tâm thì hai phép như nhau.
+
+00:01:57.654 --> 00:02:01.936 line:98%,end
+Mọi bộ lọc tuyến tính, từ làm mờ, làm nét đến phát hiện cạnh,
+
+00:02:01.936 --> 00:02:06.289 line:98%,end
+và cả lớp tích chập trong mạng CNN, đều là phép tổng tích này.
+
+00:02:07.740 --> 00:02:11.829 line:98%,end
+Lọc hộp đối xử mọi hàng xóm như nhau, dù gần hay xa,
+
+00:02:11.829 --> 00:02:14.109 line:98%,end
+và cắt đột ngột ở mép cửa sổ.
+
+00:02:14.059 --> 00:02:16.299 line:98%,end
+Chữ bị mờ khá thô.
+
+00:02:16.902 --> 00:02:22.191 line:98%,end
+Video sau: lọc Gauss, hàng xóm gần quan trọng hơn hàng xóm xa.
+
+00:02:23.652 --> 00:02:28.459 line:98%,end
+Bẫy một: tích chập giống tương quan nhưng kernel xoay một trăm tám mươi độ.
+
+00:02:29.022 --> 00:02:33.959 line:98%,end
+Bẫy hai: kernel đối xứng qua tâm thì hai phép cho cùng kết quả.
+
+00:02:34.512 --> 00:02:39.475 line:98%,end
+Bẫy ba: kernel làm mượt được chuẩn hóa tổng bằng một để giữ độ sáng.

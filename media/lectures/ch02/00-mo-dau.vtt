@@ -1,0 +1,40 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:06.070 line:98%,end
+Chương hai là lọc ảnh, nền tảng của tăng cường, khử nhiễu,
+
+00:00:06.070 --> 00:00:08.047 line:98%,end
+làm nét và trích đặc trưng.
+
+00:00:08.047 --> 00:00:12.174 line:98%,end
+Ví dụ của cả chương: một trang sách chụp bằng điện thoại.
+
+00:00:12.690 --> 00:00:18.258 line:98%,end
+Ảnh có nhiễu hạt li ti, vài điểm lấm tấm trắng đen, và chữ hơi nhòe.
+
+00:00:18.258 --> 00:00:21.690 line:98%,end
+Ta muốn làm sạch mà vẫn giữ nét chữ.
+
+00:00:22.240 --> 00:00:27.086 line:98%,end
+Thử nghĩ: làm mờ ảnh thì nhiễu giảm, nhưng chữ cũng mờ theo.
+
+00:00:27.036 --> 00:00:30.200 line:98%,end
+Có cách nào chỉ xóa nhiễu mà giữ cạnh?
+
+00:00:33.702 --> 00:00:38.678 line:98%,end
+Ta bắt đầu với lọc tuyến tính: tích chập và lọc hộp, rồi lọc Gauss.
+
+00:00:38.628 --> 00:00:42.691 line:98%,end
+Sau đó là lọc phi tuyến: trung vị và hình thái học.
+
+00:00:43.296 --> 00:00:46.846 line:98%,end
+Tiếp theo là làm nét bằng đạo hàm và unsharp masking,
+
+00:00:46.846 --> 00:00:49.392 line:98%,end
+và cuối cùng là lọc trong miền tần số.
+
+00:00:49.962 --> 00:00:54.717 line:98%,end
+Mỗi bộ lọc vá chỗ hụt của bộ lọc trước, các bạn xem theo thứ tự.

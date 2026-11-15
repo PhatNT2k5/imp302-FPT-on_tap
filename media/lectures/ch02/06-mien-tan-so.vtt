@@ -1,0 +1,94 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.740 line:98%,end
+Ta muốn nói thẳng: giữ tần số thấp đến mức này, bỏ tần số cao từ mức kia.
+
+00:00:05.690 --> 00:00:09.453 line:98%,end
+Làm vậy bằng kernel không gian vừa khó vừa chậm.
+
+00:00:10.954 --> 00:00:14.862 line:98%,end
+Kernel lớn tốn rất nhiều phép nhân cho mỗi pixel.
+
+00:00:16.312 --> 00:00:20.507 line:98%,end
+Tích chập trong không gian tương ứng với phép nhân trong miền tần số.
+
+00:00:20.457 --> 00:00:24.650 line:98%,end
+Chuyển sang tần số, lọc chỉ còn là nhân từng phần tử.
+
+00:00:25.258 --> 00:00:29.609 line:98%,end
+DFT hai chiều và IDFT chuyển ảnh qua lại.
+
+00:00:29.559 --> 00:00:34.767 line:98%,end
+Dạng cực cho phổ biên độ và góc pha; phổ công suất là biên độ bình phương.
+
+00:00:34.767 --> 00:00:39.155 line:98%,end
+Gần tâm phổ là tần số thấp, xa tâm là tần số cao.
+
+00:00:40.672 --> 00:00:43.952 line:98%,end
+Đệm ảnh, bằng số không, phản chiếu hoặc lặp biên,
+
+00:00:43.952 --> 00:00:47.432 line:98%,end
+để tránh hiệu ứng bao quanh khi tích chập tuần hoàn.
+
+00:00:47.986 --> 00:00:53.496 line:98%,end
+Nhân ảnh với trừ một mũ x cộng y để dời tâm phổ, rồi tính DFT.
+
+00:00:54.052 --> 00:00:57.791 line:98%,end
+Thử đoán: bộ lọc được áp dụng bằng phép toán gì?
+
+00:01:00.342 --> 00:01:05.578 line:98%,end
+Nhân từng phần tử với hàm truyền H đối xứng quanh tâm: G bằng H nhân F.
+
+00:01:06.044 --> 00:01:11.708 line:98%,end
+Lấy IDFT, rồi cắt lại phần M nhân N tương ứng ảnh gốc.
+
+00:01:13.158 --> 00:01:17.965 line:98%,end
+Thông thấp có ba loại: lý tưởng, Gauss, và Butterworth.
+
+00:01:17.915 --> 00:01:23.266 line:98%,end
+Butterworth có tham số bậc điều khiển độ dốc, cân bằng giữa lý tưởng và Gauss.
+
+00:01:23.880 --> 00:01:28.776 line:98%,end
+Thông cao có lý tưởng, Gauss, Butterworth và Laplacian trong miền tần số,
+
+00:01:28.776 --> 00:01:32.866 line:98%,end
+dùng để làm nét, khử nhiễu tuần hoàn hay nền biến thiên chậm.
+
+00:01:34.326 --> 00:01:37.388 line:98%,end
+Lý tưởng cắt đột ngột, ringing mạnh.
+
+00:01:37.944 --> 00:01:40.693 line:98%,end
+Gauss mượt, không ringing.
+
+00:01:41.250 --> 00:01:45.236 line:98%,end
+Butterworth nằm giữa, chỉnh độ dốc bằng bậc của nó.
+
+00:01:46.704 --> 00:01:50.382 line:98%,end
+Khử nhiễu tuần hoàn bằng notch ở chương ba, làm nét,
+
+00:01:50.382 --> 00:01:54.271 line:98%,end
+và mọi bộ lọc kernel lớn đều nhanh hơn khi làm qua FFT.
+
+00:01:55.734 --> 00:01:57.937 line:98%,end
+Lọc giúp tăng cường ảnh.
+
+00:01:57.887 --> 00:02:03.037 line:98%,end
+Nhưng khi ảnh bị suy giảm theo một mô hình biết trước, như mờ do chuyển động,
+
+00:02:03.037 --> 00:02:04.710 line:98%,end
+ta cần phục hồi có cơ sở.
+
+00:02:04.710 --> 00:02:06.728 line:98%,end
+Đó là chương ba.
+
+00:02:08.244 --> 00:02:12.947 line:98%,end
+Bẫy một: tích chập trong không gian tương ứng phép nhân trong miền tần số.
+
+00:02:13.518 --> 00:02:17.452 line:98%,end
+Bẫy hai: phải đệm ảnh để tránh hiệu ứng bao quanh.
+
+00:02:17.924 --> 00:02:19.652 line:98%,end
+Bẫy ba:
+
+00:02:19.652 --> 00:02:24.092 line:98%,end
+Butterworth cân bằng giữa lý tưởng và Gauss, chỉnh bằng bậc.

@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.042 line:98%,end
+Nhìn lại trang sách.
+
+00:00:01.992 --> 00:00:06.589 line:98%,end
+Tích chập và lọc hộp làm mượt; Gauss giảm dần nên không ringing.
+
+00:00:07.198 --> 00:00:13.663 line:98%,end
+Trung vị xóa nhiễu xung mà giữ cạnh; hình thái học xử lý hình dạng với erosion,
+
+00:00:13.663 --> 00:00:15.872 line:98%,end
+dilation, opening, closing.
+
+00:00:16.332 --> 00:00:16.935 line:98%,end
+Đạo hàm,
+
+00:00:16.935 --> 00:00:23.340 line:98%,end
+Laplacian và unsharp masking làm nét; lọc miền tần số biến tích chập thành phép nhân.
+
+00:00:24.790 --> 00:00:29.414 line:98%,end
+Một: tích chập là tương quan với kernel xoay một trăm tám mươi độ.
+
+00:00:29.868 --> 00:00:31.332 line:98%,end
+Hai:
+
+00:00:31.332 --> 00:00:34.068 line:98%,end
+lọc lý tưởng gây ringing.
+
+00:00:34.618 --> 00:00:37.485 line:98%,end
+Ba: trung vị diệt nhiễu xung.
+
+00:00:37.944 --> 00:00:39.408 line:98%,end
+Bốn:
+
+00:00:39.408 --> 00:00:43.512 line:98%,end
+opening là erosion rồi dilation.
+
+00:00:44.062 --> 00:00:47.671 line:98%,end
+Năm: đạo hàm bậc hai bằng không dọc độ dốc.
+
+00:00:49.132 --> 00:00:53.835 line:98%,end
+Chương ba đi tiếp: phục hồi ảnh bị suy giảm theo một mô hình biết trước.

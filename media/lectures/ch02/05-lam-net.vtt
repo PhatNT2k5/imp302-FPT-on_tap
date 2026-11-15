@@ -1,0 +1,118 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.110 line:98%,end
+Cạnh chữ là chỗ cường độ thay đổi.
+
+00:00:03.060 --> 00:00:06.914 line:98%,end
+Muốn làm nét, phải làm nổi những chỗ thay đổi đó.
+
+00:00:08.434 --> 00:00:12.876 line:98%,end
+Mọi bộ lọc đến giờ đều làm mượt, tức là xóa bớt thay đổi.
+
+00:00:12.826 --> 00:00:15.548 line:98%,end
+Làm nét cần đúng chiều ngược lại.
+
+00:00:17.056 --> 00:00:19.810 line:98%,end
+Đạo hàm bậc một bằng không ở vùng hằng số,
+
+00:00:19.810 --> 00:00:22.957 line:98%,end
+khác không tại đầu bước nhảy và dọc theo độ dốc.
+
+00:00:23.530 --> 00:00:27.771 line:98%,end
+Đạo hàm bậc hai bằng không ở vùng hằng số và dọc độ dốc tuyến tính,
+
+00:00:27.771 --> 00:00:30.303 line:98%,end
+chỉ khác không tại đầu và cuối thay đổi.
+
+00:00:30.253 --> 00:00:33.352 line:98%,end
+Toán tử Laplacian dựa trên nó.
+
+00:00:34.864 --> 00:00:42.067 line:98%,end
+Một mép chữ: mười, mười, mười, hai mươi, ba mươi, ba mươi, ba mươi.
+
+00:00:42.017 --> 00:00:45.337 line:98%,end
+Một vùng phẳng, một dốc, rồi phẳng.
+
+00:00:45.846 --> 00:00:48.030 line:98%,end
+Đạo hàm bậc một:
+
+00:00:48.030 --> 00:00:52.566 line:98%,end
+không, không, mười, mười, không, không.
+
+00:00:52.566 --> 00:00:55.182 line:98%,end
+Khác không suốt dọc độ dốc.
+
+00:00:55.732 --> 00:00:59.250 line:98%,end
+Thử đoán: đạo hàm bậc hai khác không ở đâu?
+
+00:01:01.806 --> 00:01:07.446 line:98%,end
+Chỉ ở đầu dốc, cộng mười, và cuối dốc, trừ mười; dọc dốc bằng không.
+
+00:01:07.396 --> 00:01:10.834 line:98%,end
+Laplacian đánh dấu đúng hai mép của cạnh.
+
+00:01:12.348 --> 00:01:17.918 line:98%,end
+Bước một: làm mờ ảnh gốc bằng lọc hộp ba điểm: mười, mười ba phẩy ba ba,
+
+00:01:17.918 --> 00:01:21.400 line:98%,end
+hai mươi, hai mươi sáu phẩy sáu bảy, ba mươi.
+
+00:01:21.966 --> 00:01:24.872 line:98%,end
+Bước hai: lấy gốc trừ ảnh mờ được mặt nạ,
+
+00:01:24.872 --> 00:01:28.982 line:98%,end
+chỉ còn thành phần tần số cao: âm ba phẩy ba ba ở đầu dốc,
+
+00:01:28.982 --> 00:01:31.109 line:98%,end
+cộng ba phẩy ba ba ở cuối dốc.
+
+00:01:31.680 --> 00:01:35.750 line:98%,end
+Bước ba: cộng mặt nạ trở lại ảnh gốc: đầu dốc tối hơn,
+
+00:01:35.750 --> 00:01:40.198 line:98%,end
+sáu phẩy sáu bảy; cuối dốc sáng hơn, ba mươi ba phẩy ba ba.
+
+00:01:40.148 --> 00:01:42.127 line:98%,end
+Cạnh trông sắc hơn.
+
+00:01:42.738 --> 00:01:48.170 line:98%,end
+Nhân mặt nạ với hệ số lớn hơn một trước khi cộng là highboost, làm nét mạnh hơn.
+
+00:01:49.632 --> 00:01:52.850 line:98%,end
+Đạo hàm bậc một phản ứng suốt dọc độ dốc.
+
+00:01:53.418 --> 00:01:59.579 line:98%,end
+Đạo hàm bậc hai, Laplacian, chỉ phản ứng ở đầu và cuối, cho cạnh mảnh hơn.
+
+00:02:00.132 --> 00:02:04.613 line:98%,end
+Unsharp masking dùng ảnh mờ để lấy phần chi tiết rồi cộng lại.
+
+00:02:06.066 --> 00:02:08.654 line:98%,end
+Chế độ làm nét trong phần mềm chỉnh ảnh,
+
+00:02:08.654 --> 00:02:12.149 line:98%,end
+máy in và máy quét tài liệu thường là unsharp masking.
+
+00:02:13.608 --> 00:02:17.002 line:98%,end
+Lọc với kernel lớn trong không gian rất tốn phép tính,
+
+00:02:17.002 --> 00:02:20.837 line:98%,end
+và thiết kế đúng đáp ứng tần số mong muốn bằng kernel là khó.
+
+00:02:21.402 --> 00:02:25.089 line:98%,end
+Video sau: lọc thẳng trong miền tần số.
+
+00:02:26.544 --> 00:02:30.461 line:98%,end
+Bẫy một: đạo hàm bậc hai bằng không dọc độ dốc tuyến tính,
+
+00:02:30.461 --> 00:02:32.757 line:98%,end
+khác không ở đầu và cuối thay đổi.
+
+00:02:33.230 --> 00:02:34.982 line:98%,end
+Bẫy hai:
+
+00:02:34.982 --> 00:02:38.582 line:98%,end
+mặt nạ unsharp bằng ảnh gốc trừ ảnh mờ.
+
+00:02:39.132 --> 00:02:43.704 line:98%,end
+Bẫy ba: highboost là nhân mặt nạ với hệ số lớn hơn một.
