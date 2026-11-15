@@ -1,0 +1,121 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.139 line:98%,end
+Giữa chiếc xe và mặt đường, đâu là ranh giới tốt nhất?
+
+00:00:04.089 --> 00:00:08.867 line:98%,end
+Câu trả lời phụ thuộc vào từng cặp pixel kề nhau giống nhau đến mức nào.
+
+00:00:10.378 --> 00:00:15.172 line:98%,end
+K-means và SLIC chỉ so mỗi pixel với tâm cụm.
+
+00:00:15.122 --> 00:00:19.249 line:98%,end
+Quan hệ trực tiếp giữa hai pixel cạnh nhau không được dùng đến.
+
+00:00:20.752 --> 00:00:23.410 line:98%,end
+Coi mỗi pixel là một nút.
+
+00:00:23.360 --> 00:00:28.699 line:98%,end
+Hai nút nối bằng một cạnh có trọng số w, càng giống nhau trọng số càng lớn.
+
+00:00:29.314 --> 00:00:33.669 line:98%,end
+Hình dung những sợi dây chun: pixel giống nhau nối bằng dây dày,
+
+00:00:33.669 --> 00:00:35.983 line:98%,end
+pixel khác nhau nối bằng dây mảnh.
+
+00:00:35.933 --> 00:00:39.500 line:98%,end
+Phân đoạn là cầm kéo cắt mạng lưới thành hai phần.
+
+00:00:40.108 --> 00:00:43.743 line:98%,end
+Chi phí nhát cắt là tổng trọng số các dây bị cắt.
+
+00:00:43.693 --> 00:00:46.219 line:98%,end
+Ta muốn cắt những dây mảnh nhất.
+
+00:00:47.722 --> 00:00:51.280 line:98%,end
+Đồ thị vô hướng G gồm tập nút V và tập cạnh E,
+
+00:00:51.280 --> 00:00:53.909 line:98%,end
+trọng số cạnh nằm trong ma trận W.
+
+00:00:54.460 --> 00:00:59.579 line:98%,end
+Thêm hai nút đặc biệt là nguồn và đích, đại diện cho tiền cảnh và hậu cảnh.
+
+00:00:59.529 --> 00:01:03.943 line:98%,end
+Mỗi pixel nối với chúng theo khả năng nó là xe hay là nền.
+
+00:01:04.558 --> 00:01:09.430 line:98%,end
+Cắt cực tiểu là nhát cắt có tổng trọng số nhỏ nhất mà tách được nguồn khỏi đích.
+
+00:01:10.900 --> 00:01:13.077 line:98%,end
+Xét đồ thị năm nút.
+
+00:01:13.027 --> 00:01:16.685 line:98%,end
+Nút một và hai nối rất chặt, trọng số chín.
+
+00:01:16.685 --> 00:01:19.902 line:98%,end
+Ba và bốn cũng chặt, trọng số tám.
+
+00:01:19.902 --> 00:01:23.912 line:98%,end
+Giữa hai nhóm chỉ có hai dây mảnh, một và hai.
+
+00:01:23.912 --> 00:01:27.623 line:98%,end
+Nút năm treo vào nút bốn bằng một dây trọng số một.
+
+00:01:28.246 --> 00:01:31.660 line:98%,end
+Thử đoán: nhát cắt rẻ nhất là nhát nào?
+
+00:01:34.224 --> 00:01:38.549 line:98%,end
+Nhát cắt tách riêng nút năm chỉ cắt một dây, chi phí bằng một.
+
+00:01:38.499 --> 00:01:42.392 line:98%,end
+Đó là nhát rẻ nhất, nên cắt cực tiểu chọn nó.
+
+00:01:43.902 --> 00:01:47.954 line:98%,end
+K-means và SLIC so pixel với tâm.
+
+00:01:47.904 --> 00:01:51.771 line:98%,end
+Cắt đồ thị nhìn độ giống nhau giữa từng cặp pixel.
+
+00:01:52.392 --> 00:01:56.782 line:98%,end
+Nhờ vậy cắt đồ thị thường cho kết quả tốt hơn các phương pháp khác.
+
+00:01:57.354 --> 00:02:01.080 line:98%,end
+Cái giá là cài đặt phức tạp hơn và chạy chậm hơn.
+
+00:02:02.544 --> 00:02:11.680 line:98%,end
+Kiểu tách tiền cảnh khỏi nền như công cụ chọn vùng thông minh trong phần mềm chỉnh ảnh dựa trên ý tưởng nguồn và đích này: người dùng đánh dấu vài pixel là vật,
+
+00:02:11.680 --> 00:02:12.650 line:98%,end
+vài pixel là nền.
+
+00:02:14.118 --> 00:02:19.400 line:98%,end
+Ví dụ vừa rồi lộ ra tật xấu: cắt cực tiểu thích tách riêng một nút lẻ loi,
+
+00:02:19.400 --> 00:02:21.399 line:98%,end
+vì nút đó ít dây nên cắt rẻ.
+
+00:02:21.349 --> 00:02:25.151 line:98%,end
+Kết quả là những vùng một hai pixel, vô nghĩa.
+
+00:02:25.752 --> 00:02:29.400 line:98%,end
+Mắt ta thấy hai nhóm một hai và ba bốn năm.
+
+00:02:29.350 --> 00:02:33.504 line:98%,end
+Muốn thuật toán thấy giống vậy, cần chuẩn hóa chi phí cắt.
+
+00:02:33.504 --> 00:02:35.912 line:98%,end
+Đó là Normalized Cut.
+
+00:02:37.422 --> 00:02:42.632 line:98%,end
+Bẫy một: trọng số cạnh tỉ lệ thuận với độ giống nhau, không phải khoảng cách.
+
+00:02:43.200 --> 00:02:47.200 line:98%,end
+Bẫy hai: một nhát cắt chia tập nút thành hai tập A và B,
+
+00:02:47.200 --> 00:02:50.129 line:98%,end
+chi phí là tổng trọng số các cạnh bị cắt.
+
+00:02:50.682 --> 00:02:56.452 line:98%,end
+Bẫy ba: hai nút thêm vào là nguồn và đích, đại diện cho tiền cảnh và hậu cảnh.

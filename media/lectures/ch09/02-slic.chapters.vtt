@@ -1,0 +1,31 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:16.220
+Hàng triệu pixel, hàng triệu phép so sánh
+
+00:00:16.220 --> 00:00:26.660
+K-means bỏ qua vị trí và quét cả ảnh
+
+00:00:26.660 --> 00:00:52.530
+Mảnh ghép nhỏ: gần nhau và giống nhau
+
+00:00:52.530 --> 00:01:19.360
+Khoảng cách kết hợp màu và vị trí
+
+00:01:19.360 --> 00:02:08.220
+Trọng số c đổi quyết định
+
+00:02:08.220 --> 00:02:39.520
+Thuật toán SLIC
+
+00:02:39.520 --> 00:03:00.490
+SLIC so với K-means
+
+00:03:00.490 --> 00:03:16.960
+Siêu điểm ảnh dùng làm gì
+
+00:03:16.960 --> 00:03:36.230
+Mảnh nhỏ, chưa phải đối tượng
+
+00:03:36.230 --> 00:04:00.176
+Bẫy thi

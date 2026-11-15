@@ -1,0 +1,139 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.102 line:98%,end
+Nhìn khung hình ngã tư: trời sáng, đường xám, xe nhiều màu.
+
+00:00:05.052 --> 00:00:09.102 line:98%,end
+Ta muốn chia ảnh thành vài vùng, mỗi vùng một kiểu màu.
+
+00:00:09.718 --> 00:00:13.457 line:98%,end
+Và ta không muốn tự đặt ngưỡng bằng tay cho từng ảnh.
+
+00:00:14.908 --> 00:00:15.759 line:98%,end
+Ở chương một,
+
+00:00:15.759 --> 00:00:20.535 line:98%,end
+ngưỡng hóa và Otsu chia ảnh thành nền và vật thể bằng một ngưỡng mức xám.
+
+00:00:21.094 --> 00:00:25.080 line:98%,end
+Chỗ hụt: chỉ được hai lớp, và chỉ nhìn mức xám.
+
+00:00:25.030 --> 00:00:28.937 line:98%,end
+Ảnh màu với trời, đường và xe thì không đủ.
+
+00:00:30.436 --> 00:00:34.279 line:98%,end
+Ý tưởng của K-means: chọn trước k tâm cụm.
+
+00:00:34.229 --> 00:00:37.289 line:98%,end
+Mỗi pixel đi về tâm giống nó nhất.
+
+00:00:37.289 --> 00:00:41.443 line:98%,end
+Rồi dời mỗi tâm về giữa nhóm của nó, và lặp lại.
+
+00:00:42.046 --> 00:00:47.565 line:98%,end
+Giống như chia học sinh thành k nhóm theo chiều cao: ai gần trưởng nhóm nào thì về nhóm đó,
+
+00:00:47.565 --> 00:00:50.355 line:98%,end
+rồi chọn lại trưởng nhóm là người ở giữa nhóm.
+
+00:00:50.920 --> 00:00:54.498 line:98%,end
+Các bạn đã gặp đúng thuật toán này ở chương năm,
+
+00:00:54.498 --> 00:00:57.107 line:98%,end
+dưới tên LBG khi thiết kế codebook.
+
+00:00:58.558 --> 00:01:04.914 line:98%,end
+Lấy sáu pixel có mức xám một, hai, ba, mười, mười một, mười hai.
+
+00:01:04.864 --> 00:01:08.106 line:98%,end
+Mắt ta thấy ngay hai nhóm tối và sáng.
+
+00:01:08.728 --> 00:01:14.694 line:98%,end
+Để thấy thuật toán tự sửa sai, ta cố tình khởi tạo hai tâm rất tệ: một và hai.
+
+00:01:15.250 --> 00:01:20.955 line:98%,end
+Vòng một: pixel một gần tâm A nhất, mọi pixel còn lại đều gần B hơn.
+
+00:01:21.508 --> 00:01:26.276 line:98%,end
+Thử đoán: khi dời tâm về trung bình nhóm, tâm B sẽ đi về đâu?
+
+00:01:28.830 --> 00:01:31.007 line:98%,end
+Tâm A vẫn là một.
+
+00:01:30.957 --> 00:01:37.714 line:98%,end
+Tâm B là trung bình của hai, ba, mười, mười một, mười hai, tức bảy phẩy sáu.
+
+00:01:38.328 --> 00:01:43.877 line:98%,end
+Vòng hai: pixel hai và ba giờ gần A hơn, nên chuyển sang cụm A.
+
+00:01:44.442 --> 00:01:47.126 line:98%,end
+Tâm mới là hai và mười một.
+
+00:01:47.076 --> 00:01:52.584 line:98%,end
+Vòng ba không pixel nào đổi cụm, thuật toán dừng với đúng hai vùng tối và sáng.
+
+00:01:54.096 --> 00:01:57.887 line:98%,end
+Với ảnh xám, mỗi pixel là một con số.
+
+00:01:57.837 --> 00:02:01.665 line:98%,end
+Với ảnh màu, đó là một vector ba chiều.
+
+00:02:02.274 --> 00:02:05.753 line:98%,end
+Chọn trước số cụm k, khởi tạo k tâm.
+
+00:02:06.324 --> 00:02:09.880 line:98%,end
+Lặp hai bước: gán mỗi pixel về cụm có tâm gần nhất,
+
+00:02:09.880 --> 00:02:13.435 line:98%,end
+rồi cập nhật tâm bằng trung bình các pixel vừa gán.
+
+00:02:13.998 --> 00:02:18.068 line:98%,end
+Dừng khi sai số dư, tức khoảng cách giữa tâm mới và tâm cũ,
+
+00:02:18.068 --> 00:02:20.068 line:98%,end
+nhỏ hơn một ngưỡng cho trước.
+
+00:02:21.540 --> 00:02:25.735 line:98%,end
+Ngưỡng hóa cho hai lớp, K-means cho k lớp tùy chọn.
+
+00:02:26.286 --> 00:02:30.702 line:98%,end
+Ngưỡng hóa chỉ nhìn mức xám, K-means nhận cả vector màu.
+
+00:02:31.272 --> 00:02:33.694 line:98%,end
+Đổi lại, K-means phải chọn trước k,
+
+00:02:33.694 --> 00:02:39.230 line:98%,end
+và kết quả phụ thuộc cách khởi tạo: khởi tạo khác có thể dừng ở kết quả kém hơn.
+
+00:02:40.686 --> 00:02:45.016 line:98%,end
+K-means được dùng để giảm số màu của ảnh, gom vùng màu trong ảnh vệ tinh,
+
+00:02:45.016 --> 00:02:48.396 line:98%,end
+và làm bước khởi đầu cho nhiều thuật toán phân đoạn khác.
+
+00:02:48.960 --> 00:02:54.379 line:98%,end
+Và ngay video sau, SLIC chính là một biến thể của K-means.
+
+00:02:55.830 --> 00:02:59.400 line:98%,end
+K-means chỉ nhìn màu, bỏ qua vị trí.
+
+00:02:59.350 --> 00:03:04.701 line:98%,end
+Một chiếc xe xám ở góc trái và mặt đường xám ở góc phải bị gom vào cùng một cụm.
+
+00:03:05.304 --> 00:03:10.814 line:98%,end
+Nó còn phải so mọi pixel với mọi tâm trên toàn ảnh, rất chậm với ảnh lớn.
+
+00:03:10.764 --> 00:03:14.683 line:98%,end
+Video sau: siêu điểm ảnh SLIC.
+
+00:03:16.206 --> 00:03:18.306 line:98%,end
+Bẫy một: K-means lặp hai bước,
+
+00:03:18.306 --> 00:03:22.015 line:98%,end
+gán về tâm gần nhất rồi cập nhật tâm bằng trung bình.
+
+00:03:22.584 --> 00:03:28.341 line:98%,end
+Bẫy hai: điều kiện dừng là sai số dư giữa tâm mới và tâm cũ nhỏ hơn ngưỡng.
+
+00:03:28.914 --> 00:03:33.864 line:98%,end
+Bẫy ba: kết quả phụ thuộc khởi tạo, không phải lúc nào cũng tốt nhất.

@@ -1,0 +1,142 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.592 line:98%,end
+Cắt cực tiểu tách riêng nút năm vì chỉ tốn một.
+
+00:00:03.542 --> 00:00:07.344 line:98%,end
+Nhưng một vùng một pixel không phải chiếc xe nào cả.
+
+00:00:08.866 --> 00:00:12.019 line:98%,end
+Cắt cực tiểu dùng tổng trọng số tuyệt đối.
+
+00:00:11.969 --> 00:00:17.060 line:98%,end
+Phần càng nhỏ thì càng ít dây, càng rẻ, nên luôn bị ưu tiên.
+
+00:00:18.568 --> 00:00:24.052 line:98%,end
+Normalized Cut chia chi phí cắt cho tổng mức độ kết nối của mỗi phần với toàn đồ thị.
+
+00:00:24.610 --> 00:00:31.862 line:98%,end
+Giống như phạt theo phần trăm chứ không theo số tuyệt đối: một phần nhỏ xíu mất một dây là mất gần hết kết nối của nó,
+
+00:00:31.862 --> 00:00:32.906 line:98%,end
+nên bị phạt nặng.
+
+00:00:34.360 --> 00:00:38.594 line:98%,end
+Mỗi phân số là chi phí cắt chia cho tổng nối của một phần.
+
+00:00:38.544 --> 00:00:42.606 line:98%,end
+Phần nào nhỏ xíu thì mẫu số nhỏ, phân số lớn.
+
+00:00:43.210 --> 00:00:46.473 line:98%,end
+Slide còn cho đẳng thức: Ncut bằng hai trừ Nassoc,
+
+00:00:46.473 --> 00:00:49.540 line:98%,end
+trong đó Nassoc đo liên kết bên trong mỗi phần.
+
+00:00:49.490 --> 00:00:52.993 line:98%,end
+Làm nhỏ Ncut cũng là làm lớn liên kết bên trong.
+
+00:00:54.496 --> 00:00:56.894 line:98%,end
+Quay lại đồ thị năm nút.
+
+00:00:56.844 --> 00:01:01.427 line:98%,end
+Tổng nối của nút năm chỉ là một, phần còn lại là bốn mươi mốt.
+
+00:01:02.050 --> 00:01:05.549 line:98%,end
+Nhát cắt tách nút năm: phân số đầu bằng một chia một,
+
+00:01:05.549 --> 00:01:07.794 line:98%,end
+phân số sau một chia bốn mươi mốt.
+
+00:01:07.744 --> 00:01:11.143 line:98%,end
+Ncut xấp xỉ một phẩy không hai, rất lớn.
+
+00:01:11.764 --> 00:01:17.095 line:98%,end
+Thử đoán: nhát cắt chia một hai khỏi ba bốn năm, đắt hơn với chi phí ba,
+
+00:01:17.095 --> 00:01:18.797 line:98%,end
+sẽ có Ncut lớn hay nhỏ?
+
+00:01:21.366 --> 00:01:26.251 line:98%,end
+Mỗi bên có tổng nối hai mươi mốt, nên Ncut chỉ khoảng không phẩy hai chín.
+
+00:01:26.201 --> 00:01:30.107 line:98%,end
+Ncut chọn nhát này, đúng với hai nhóm mắt ta thấy.
+
+00:01:30.720 --> 00:01:33.779 line:98%,end
+Kiểm tra đẳng thức: Nassoc khoảng một phẩy bảy một,
+
+00:01:33.779 --> 00:01:37.259 line:98%,end
+và hai trừ một phẩy bảy một đúng bằng không phẩy hai chín.
+
+00:01:38.718 --> 00:01:43.460 line:98%,end
+Thử mọi cách cắt là không khả thi, nên ta dùng đại số tuyến tính.
+
+00:01:43.410 --> 00:01:44.290 line:98%,end
+Dựng đồ thị,
+
+00:01:44.290 --> 00:01:49.425 line:98%,end
+tính ma trận trọng số W và ma trận đường chéo D chứa tổng nối mỗi nút.
+
+00:01:50.040 --> 00:01:52.487 line:98%,end
+Giải bài toán trị riêng trong slide,
+
+00:01:52.487 --> 00:01:55.954 line:98%,end
+rồi lấy vector riêng ứng với trị riêng nhỏ thứ hai.
+
+00:01:55.904 --> 00:01:57.209 line:98%,end
+Không phải nhỏ nhất,
+
+00:01:57.209 --> 00:02:01.450 line:98%,end
+vì trị riêng nhỏ nhất ứng với nghiệm tầm thường không chia gì cả.
+
+00:02:02.058 --> 00:02:06.318 line:98%,end
+Dùng vector riêng đó chia đôi đồ thị sao cho Ncut nhỏ nhất.
+
+00:02:06.268 --> 00:02:10.382 line:98%,end
+Nếu chưa đủ K phần, chia đệ quy các phần nếu cần.
+
+00:02:11.904 --> 00:02:15.786 line:98%,end
+Min cut tính chi phí tuyệt đối nên thiên vị phần nhỏ.
+
+00:02:15.736 --> 00:02:19.981 line:98%,end
+Ncut tính theo tỉ lệ tổng kết nối nên tránh được thiên vị đó.
+
+00:02:20.586 --> 00:02:23.619 line:98%,end
+Trong ví dụ, min cut chọn nhát chi phí một,
+
+00:02:23.619 --> 00:02:26.369 line:98%,end
+Ncut chọn nhát chi phí ba nhưng hợp lý.
+
+00:02:26.940 --> 00:02:31.499 line:98%,end
+Ncut giải bằng trị riêng, nặng hơn nhưng không cần thử mọi cách cắt.
+
+00:02:32.970 --> 00:02:36.774 line:98%,end
+Normalized Cut là nền tảng của nhóm phương pháp phân cụm phổ,
+
+00:02:36.774 --> 00:02:40.016 line:98%,end
+dùng để phân đoạn ảnh và gom nhóm dữ liệu nói chung.
+
+00:02:41.472 --> 00:02:44.716 line:98%,end
+Mọi phương pháp đến giờ chỉ nhìn một ảnh.
+
+00:02:44.666 --> 00:02:49.054 line:98%,end
+Chiếc xe xám trên mặt đường xám rất khó tách nếu chỉ dựa vào màu.
+
+00:02:49.674 --> 00:02:53.895 line:98%,end
+Nhưng camera quay liên tục, và chiếc xe thì di chuyển.
+
+00:02:53.845 --> 00:02:57.842 line:98%,end
+Video sau dùng chính chuyển động đó: ảnh sai khác.
+
+00:02:59.352 --> 00:03:04.797 line:98%,end
+Bẫy một: Ncut chuẩn hóa chi phí theo tổng kết nối để tránh các phân hoạch quá nhỏ.
+
+00:03:05.346 --> 00:03:07.856 line:98%,end
+Bẫy hai: Ncut bằng hai trừ Nassoc,
+
+00:03:07.856 --> 00:03:11.325 line:98%,end
+nên làm nhỏ Ncut là làm lớn liên kết bên trong.
+
+00:03:11.892 --> 00:03:17.324 line:98%,end
+Bẫy ba: dùng vector riêng của trị riêng nhỏ thứ hai, không phải nhỏ nhất.

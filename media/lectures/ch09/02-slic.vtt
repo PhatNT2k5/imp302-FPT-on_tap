@@ -1,0 +1,166 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.188 line:98%,end
+Ảnh camera có hàng triệu pixel.
+
+00:00:03.138 --> 00:00:06.357 line:98%,end
+Thuật toán nào xử lý từng pixel một cũng nặng nề,
+
+00:00:06.357 --> 00:00:08.919 line:98%,end
+và phải gánh cả những chi tiết vụn vặt.
+
+00:00:09.526 --> 00:00:12.530 line:98%,end
+Ta muốn gom pixel thành những mảnh nhỏ trước,
+
+00:00:12.530 --> 00:00:14.867 line:98%,end
+rồi mới phân đoạn trên các mảnh đó.
+
+00:00:16.324 --> 00:00:20.883 line:98%,end
+K-means gom theo màu, nên một mảnh có thể rải rác khắp ảnh.
+
+00:00:21.454 --> 00:00:25.310 line:98%,end
+Và mỗi tâm phải so với mọi pixel trên toàn ảnh.
+
+00:00:26.764 --> 00:00:31.998 line:98%,end
+Siêu điểm ảnh thay lưới pixel bằng những vùng nhỏ có ý nghĩa cảm nhận hơn từng pixel,
+
+00:00:31.998 --> 00:00:33.784 line:98%,end
+giống các mảnh ghép xếp hình.
+
+00:00:34.342 --> 00:00:37.319 line:98%,end
+Mục tiêu là giảm tính toán và bỏ chi tiết thừa,
+
+00:00:37.319 --> 00:00:40.360 line:98%,end
+nhưng bắt buộc giữ ranh giới thật giữa các vùng.
+
+00:00:40.912 --> 00:00:47.542 line:98%,end
+SLIC làm điều đó bằng K-means với vector năm chiều: ba thành phần màu và hai tọa độ.
+
+00:00:47.492 --> 00:00:51.125 line:98%,end
+Pixel phải vừa giống màu, vừa ở gần.
+
+00:00:52.630 --> 00:00:58.739 line:98%,end
+Khoảng cách từ pixel đến tâm có hai phần: phần khác màu, và phần xa về vị trí.
+
+00:00:59.296 --> 00:01:03.861 line:98%,end
+Phần vị trí được chia cho s, khoảng cách giữa các tâm trên lưới ban đầu,
+
+00:01:03.861 --> 00:01:05.509 line:98%,end
+để hai phần cùng thang đo.
+
+00:01:06.082 --> 00:01:09.209 line:98%,end
+Hằng số c quyết định bên nào nặng hơn.
+
+00:01:09.159 --> 00:01:13.313 line:98%,end
+c lớn: vị trí quan trọng, mảnh gọn và đều.
+
+00:01:13.313 --> 00:01:17.948 line:98%,end
+c nhỏ: màu quan trọng, mảnh bám ranh giới nhưng méo hơn.
+
+00:01:19.456 --> 00:01:22.427 line:98%,end
+Một pixel phân vân giữa hai tâm.
+
+00:01:22.377 --> 00:01:27.624 line:98%,end
+Tâm A cùng màu nhưng ở xa: khoảng cách màu bốn, khoảng cách không gian tám.
+
+00:01:27.624 --> 00:01:32.142 line:98%,end
+Tâm B khác màu nhưng ở gần: màu tám, không gian hai.
+
+00:01:32.142 --> 00:01:34.187 line:98%,end
+Lưới s bằng mười.
+
+00:01:34.810 --> 00:01:38.992 line:98%,end
+Thử đoán: với c bằng một, pixel chọn tâm nào?
+
+00:01:41.556 --> 00:01:45.738 line:98%,end
+Với c bằng một, phần vị trí gần như không đáng kể.
+
+00:01:45.688 --> 00:01:50.011 line:98%,end
+Khoảng cách tới A là bốn phẩy không tám, tới B là tám.
+
+00:01:50.011 --> 00:01:53.539 line:98%,end
+Pixel chọn A, tức là chọn theo màu.
+
+00:01:54.150 --> 00:01:58.527 line:98%,end
+Với c bằng hai mươi, phần vị trí bị nhân lên rất mạnh.
+
+00:01:58.477 --> 00:02:03.099 line:98%,end
+Tới A là mười sáu phẩy bốn chín, tới B chỉ tám phẩy chín bốn.
+
+00:02:03.099 --> 00:02:06.810 line:98%,end
+Pixel chọn B, tức là chọn theo vị trí.
+
+00:02:08.316 --> 00:02:11.043 line:98%,end
+Đặt các tâm trên lưới đều cách nhau s pixel,
+
+00:02:11.043 --> 00:02:14.947 line:98%,end
+rồi dời mỗi tâm tới điểm gradient thấp nhất trong ô ba nhân ba,
+
+00:02:14.947 --> 00:02:17.302 line:98%,end
+để tâm không rơi trúng cạnh hay nhiễu.
+
+00:02:17.862 --> 00:02:24.517 line:98%,end
+Khác biệt quan trọng nhất so với K-means: mỗi tâm chỉ xét pixel trong vùng hai s nhân hai s quanh nó,
+
+00:02:24.517 --> 00:02:25.703 line:98%,end
+không quét cả ảnh.
+
+00:02:26.256 --> 00:02:31.974 line:98%,end
+Gán pixel về tâm có khoảng cách D nhỏ nhất, cập nhật tâm, lặp đến hội tụ.
+
+00:02:32.538 --> 00:02:38.165 line:98%,end
+Cuối cùng hậu xử lý: mỗi pixel trong một vùng được thay bằng giá trị trung bình của vùng.
+
+00:02:39.624 --> 00:02:44.965 line:98%,end
+K-means dùng vector màu, SLIC thêm hai tọa độ thành năm chiều.
+
+00:02:45.522 --> 00:02:50.264 line:98%,end
+K-means quét cả ảnh, SLIC chỉ tìm trong vùng hai s nhân hai s,
+
+00:02:50.264 --> 00:02:52.100 line:98%,end
+nên nhanh hơn rất nhiều.
+
+00:02:52.668 --> 00:02:56.412 line:98%,end
+Kết quả của SLIC là các mảnh nhỏ gọn bám ranh giới,
+
+00:02:56.412 --> 00:02:59.128 line:98%,end
+nhưng chưa phải đối tượng hoàn chỉnh.
+
+00:03:00.594 --> 00:03:05.614 line:98%,end
+Siêu điểm ảnh là bước tiền xử lý phổ biến: thay vì phân đoạn trên hàng triệu pixel,
+
+00:03:05.614 --> 00:03:08.396 line:98%,end
+các thuật toán sau chỉ làm trên vài trăm mảnh.
+
+00:03:08.964 --> 00:03:13.929 line:98%,end
+Ví dụ cắt đồ thị ở video sau có thể dùng mỗi siêu điểm ảnh làm một nút,
+
+00:03:13.929 --> 00:03:15.607 line:98%,end
+đồ thị nhỏ đi rất nhiều.
+
+00:03:17.058 --> 00:03:22.268 line:98%,end
+SLIC cho ra các mảnh nhỏ, chưa phải chiếc xe hay mặt đường hoàn chỉnh.
+
+00:03:22.836 --> 00:03:26.721 line:98%,end
+Và cả K-means lẫn SLIC chỉ so mỗi pixel với tâm cụm,
+
+00:03:26.721 --> 00:03:30.755 line:98%,end
+không xét trực tiếp từng cặp pixel giống nhau đến đâu.
+
+00:03:30.705 --> 00:03:34.819 line:98%,end
+Video sau nhìn ảnh như một đồ thị: cắt đồ thị.
+
+00:03:36.330 --> 00:03:42.621 line:98%,end
+Bẫy một: vector của SLIC có năm chiều, ba cho màu và hai cho tọa độ.
+
+00:03:43.188 --> 00:03:48.562 line:98%,end
+Bẫy hai: SLIC chỉ tìm trong vùng hai s nhân hai s quanh mỗi tâm,
+
+00:03:48.562 --> 00:03:50.326 line:98%,end
+đó là lý do nó nhanh.
+
+00:03:50.886 --> 00:03:56.292 line:98%,end
+Bẫy ba: c lớn làm mảnh gọn hơn, c nhỏ làm mảnh bám ranh giới hơn.
+
+00:03:56.242 --> 00:03:58.768 line:98%,end
+Đề hay đảo hai vế này.

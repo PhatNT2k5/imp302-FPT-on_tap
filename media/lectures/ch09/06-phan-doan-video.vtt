@@ -1,0 +1,130 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.732 line:98%,end
+Camera ghi suốt cả ngày.
+
+00:00:02.682 --> 00:00:07.190 line:98%,end
+Ta cần biết lúc nào cảnh thay đổi, vùng nào trong mỗi khung đang chuyển động,
+
+00:00:07.190 --> 00:00:09.883 line:98%,end
+và những vật nào chuyển động độc lập với nhau.
+
+00:00:11.386 --> 00:00:15.659 line:98%,end
+Ảnh sai khác đơn thuần so từng pixel, nên nhạy với nhiễu,
+
+00:00:15.659 --> 00:00:17.833 line:98%,end
+ánh sáng và camera di chuyển.
+
+00:00:19.288 --> 00:00:24.740 line:98%,end
+Phân đoạn video là thành phần cốt lõi của tóm tắt, lập chỉ mục, truy xuất,
+
+00:00:24.740 --> 00:00:26.582 line:98%,end
+mã hóa và biên tập video.
+
+00:00:27.130 --> 00:00:31.651 line:98%,end
+Ý tưởng là so ở mức thô hơn và bền hơn: so khối, so histogram,
+
+00:00:31.651 --> 00:00:36.754 line:98%,end
+xử lý nhiều độ phân giải, và nhớ những gì đã xảy ra ở các khung trước.
+
+00:00:38.224 --> 00:00:42.145 line:98%,end
+Phát hiện chuyển cảnh là phân đoạn một chiều theo trục thời gian.
+
+00:00:42.095 --> 00:00:45.272 line:98%,end
+Ta tính độ khác biệt giữa các khung liên tiếp.
+
+00:00:45.874 --> 00:00:49.991 line:98%,end
+Thử đoán: điểm chuyển cảnh trông như thế nào trên biểu đồ này?
+
+00:00:52.548 --> 00:00:56.713 line:98%,end
+Đó là đỉnh nhọn đột ngột: khác biệt lớn trong không gian đặc trưng,
+
+00:00:56.713 --> 00:00:58.826 line:98%,end
+thường kết hợp màu và chuyển động.
+
+00:00:59.382 --> 00:01:03.426 line:98%,end
+Muốn bền hơn: chia khung thành khối rồi so thống kê từng khối,
+
+00:01:03.426 --> 00:01:07.470 line:98%,end
+lọc thông thấp trước, hoặc so histogram thay vì so từng pixel.
+
+00:01:08.940 --> 00:01:13.346 line:98%,end
+Tách mỗi khung thành vùng thay đổi, tức tiền cảnh, và vùng không đổi,
+
+00:01:13.346 --> 00:01:16.794 line:98%,end
+tức hậu cảnh, bằng cách ngưỡng hóa ảnh sai khác khung.
+
+00:01:17.358 --> 00:01:20.822 line:98%,end
+Cải thiện bằng kim tự tháp Gauss đa độ phân giải,
+
+00:01:20.822 --> 00:01:23.649 line:98%,end
+xử lý từ độ phân giải thấp nhất trở lên.
+
+00:01:24.216 --> 00:01:29.361 line:98%,end
+Và tích hợp thời gian: thêm trí nhớ để vùng thay đổi liên tục qua các khung.
+
+00:01:30.822 --> 00:01:35.095 line:98%,end
+Phân đoạn chuyển động gán nhãn pixel theo những phần chuyển động độc lập.
+
+00:01:35.045 --> 00:01:39.680 line:98%,end
+Khi camera di chuyển, ước lượng chuyển động trội của cả khung trước.
+
+00:01:40.296 --> 00:01:43.999 line:98%,end
+Đăng ký hai ảnh theo chuyển động trội, tìm vùng không khớp,
+
+00:01:43.999 --> 00:01:47.577 line:98%,end
+rồi lặp với mô hình bậc cao hơn như affine hay phối cảnh.
+
+00:01:48.138 --> 00:01:53.083 line:98%,end
+Phương pháp thống kê mô tả vùng bằng bốn nhóm: thống kê Gauss, Fourier,
+
+00:01:53.083 --> 00:01:54.755 line:98%,end
+hiệp phương sai và nhãn.
+
+00:01:54.705 --> 00:01:59.522 line:98%,end
+Ứng dụng gồm phân đoạn xe, ảnh chụp trên không và phục vụ nén ảnh.
+
+00:02:01.032 --> 00:02:05.409 line:98%,end
+Phát hiện chuyển cảnh chia theo thời gian: tìm thời điểm đổi cảnh.
+
+00:02:05.970 --> 00:02:10.972 line:98%,end
+Phát hiện thay đổi không gian thời gian chia mỗi khung thành tiền cảnh và hậu cảnh.
+
+00:02:11.532 --> 00:02:15.019 line:98%,end
+Phân đoạn chuyển động tách những vật chuyển động độc lập,
+
+00:02:15.019 --> 00:02:16.977 line:98%,end
+kể cả khi camera cũng di chuyển.
+
+00:02:18.426 --> 00:02:21.963 line:98%,end
+Tóm tắt và lập chỉ mục video, mã hóa video tiên tiến,
+
+00:02:21.963 --> 00:02:26.234 line:98%,end
+biên tập và sản xuất video, cải thiện ước lượng luồng quang học,
+
+00:02:26.234 --> 00:02:28.103 line:98%,end
+ước lượng cấu trúc ba chiều.
+
+00:02:29.568 --> 00:02:33.054 line:98%,end
+Phân đoạn video cho biết vùng nào chuyển động ở mỗi khung,
+
+00:02:33.054 --> 00:02:36.901 line:98%,end
+nhưng chưa nói chiếc xe ở khung này là chiếc xe nào ở khung sau.
+
+00:02:37.458 --> 00:02:41.262 line:98%,end
+Và kết quả tự động chưa chắc có ý nghĩa ngữ nghĩa.
+
+00:02:41.212 --> 00:02:45.053 line:98%,end
+Video sau: theo dõi đối tượng và học sâu.
+
+00:02:46.560 --> 00:02:51.237 line:98%,end
+Bẫy một: phát hiện chuyển cảnh là phân đoạn một chiều theo trục thời gian.
+
+00:02:51.786 --> 00:02:56.238 line:98%,end
+Bẫy hai: muốn bền hơn thì so theo khối, lọc thông thấp trước,
+
+00:02:56.238 --> 00:02:59.158 line:98%,end
+hoặc so histogram thay vì so từng pixel.
+
+00:02:59.724 --> 00:03:04.882 line:98%,end
+Bẫy ba: không gì đảm bảo kết quả phân đoạn tự động có ý nghĩa ngữ nghĩa.

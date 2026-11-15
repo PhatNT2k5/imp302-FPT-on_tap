@@ -173,7 +173,7 @@ function drawGraph(root, v, W, H) {
     const a = byId[e.a], b = byId[e.b], [x1, y1] = P(a), [x2, y2] = P(b), L = look(e);
     const len = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / len, uy = (y2 - y1) / len;
     const ra = a.shape === "box" ? 22 : radius(a), rb = b.shape === "box" ? 22 : radius(b);
-    const g = svg("g", { opacity: e.style === "dim" && e.visible ? 0.1 : L.opacity });  // superseded edges fade almost out
+    const g = svg("g", { opacity: e.style === "dim" && e.visible ? 0.2 : L.opacity });  // superseded edges fade almost out
     g.append(svg("line", { x1: x1 + ux * ra, y1: y1 + uy * ra, x2: x2 - ux * (rb + (v.arrows ? 3 : 0)), y2: y2 - uy * (rb + (v.arrows ? 3 : 0)),
       stroke: e.style || e.current ? L.stroke : COLORS.muted, "stroke-width": L.width, "stroke-dasharray": e.style === "cut" ? "9 7" : null,
       "marker-end": v.arrows ? "url(#arrow)" : null }));
@@ -216,7 +216,7 @@ function drawHistogram(root, v, W, H) {
     const g = svg("g", { opacity: L.opacity });
     g.append(svg("rect", { x, y: base - h, width: w, height: Math.max(h, 1), rx: 3,
       fill: b.style === "warn" ? COLORS.orange : b.style === "accent" || b.current ? COLORS.accent : "#5f7f68" }));
-    if (n <= 16) g.append(svg("text", { x: x + w / 2, y: base - h - 8, "text-anchor": "middle", "font-size": 15, class: "muted" }, String(b.value)));
+    if (n <= 16) g.append(svg("text", { x: x + w / 2, y: base - h - 8, "text-anchor": "middle", "font-size": 15, class: "muted" }, String(b.value).replace(".", ",")));
     root.append(g);
     if (i % every === 0) root.append(svg("text", { x: X(i) + slot / 2, y: base + 22, "text-anchor": "middle", "font-size": 15, class: "muted", opacity: L.opacity ? 1 : 0 }, b.label));
   });

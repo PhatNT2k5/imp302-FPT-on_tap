@@ -1,0 +1,79 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.865 line:98%,end
+Để đo tốc độ một chiếc xe,
+
+00:00:01.865 --> 00:00:05.532 line:98%,end
+ta phải bám theo đúng chiếc xe đó qua từng khung hình.
+
+00:00:06.094 --> 00:00:11.126 line:98%,end
+Và để biết vùng nào là xe, vùng nào là người, máy cần hiểu nghĩa của vùng,
+
+00:00:11.126 --> 00:00:13.166 line:98%,end
+không chỉ màu hay chuyển động.
+
+00:00:14.620 --> 00:00:21.548 line:98%,end
+Theo dõi theo Bayes giống đoán vị trí một chiếc xe trong sương mù: dựa vào vị trí và vận tốc trước để dự đoán,
+
+00:00:21.548 --> 00:00:23.815 line:98%,end
+rồi khi nhìn thấy lờ mờ thì sửa lại.
+
+00:00:25.282 --> 00:00:29.763 line:98%,end
+Hậu nghiệm ở bước k trừ một là hiểu biết hiện tại về trạng thái vật.
+
+00:00:30.316 --> 00:00:34.446 line:98%,end
+Lan truyền tiến theo thời gian bằng mô hình hệ thống để dự đoán.
+
+00:00:35.014 --> 00:00:39.495 line:98%,end
+Mô hình đo lường liên kết phép đo có nhiễu với vector trạng thái.
+
+00:00:40.048 --> 00:00:44.269 line:98%,end
+Rồi dùng định lý Bayes để tính hậu nghiệm mới ở bước k.
+
+00:00:45.718 --> 00:00:51.646 line:98%,end
+Theo dõi vật cứng hai chiều có bốn hướng: dựa trên vùng, đường biên, đặc trưng,
+
+00:00:51.646 --> 00:00:52.322 line:98%,end
+hoặc mẫu.
+
+00:00:52.888 --> 00:00:58.385 line:98%,end
+Theo dõi ba chiều ước lượng sáu tham số: ba cho vị trí tâm, ba cho hướng.
+
+00:00:58.335 --> 00:01:03.022 line:98%,end
+Ứng dụng chính là ước lượng tư thế đầu người, coi đầu như vật cứng.
+
+00:01:03.634 --> 00:01:09.228 line:98%,end
+Phương pháp nơ-ron cổ điển gồm mạng truyền thẳng một lớp ẩn, mạng RBFN,
+
+00:01:09.228 --> 00:01:13.245 line:98%,end
+và mạng SAWTA dùng bộ lọc Gabor cho ảnh có kết cấu.
+
+00:01:14.704 --> 00:01:20.443 line:98%,end
+Phân đoạn ngữ nghĩa gán nhãn lớp cho mỗi pixel, chia theo mức giám sát: đầy đủ,
+
+00:01:20.443 --> 00:01:23.131 line:98%,end
+bán giám sát, yếu, và không giám sát.
+
+00:01:23.698 --> 00:01:26.391 line:98%,end
+Phân đoạn thực thể tách riêng từng đối tượng,
+
+00:01:26.391 --> 00:01:29.442 line:98%,end
+chia theo kiến trúc đa giai đoạn hay đơn giai đoạn.
+
+00:01:29.392 --> 00:01:33.051 line:98%,end
+Mask R-CNN là đại diện tiêu biểu.
+
+00:01:33.652 --> 00:01:38.329 line:98%,end
+Các backbone tiêu biểu là VGG mười sáu và ResNet năm mươi.
+
+00:01:39.778 --> 00:01:45.119 line:98%,end
+Bẫy một: theo dõi ba chiều có sáu tham số, ba vị trí và ba hướng.
+
+00:01:45.676 --> 00:01:52.879 line:98%,end
+Bẫy hai: theo dõi Bayes dùng mô hình hệ thống để dự đoán và mô hình đo lường để liên kết phép đo với trạng thái.
+
+00:01:53.446 --> 00:01:56.865 line:98%,end
+Bẫy ba: phân đoạn ngữ nghĩa gán lớp cho pixel,
+
+00:01:56.865 --> 00:02:01.547 line:98%,end
+phân đoạn thực thể tách riêng từng đối tượng, ví dụ Mask R-CNN.
