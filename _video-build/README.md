@@ -49,7 +49,7 @@ Rules:
 - **Guess first:** put `"ask": true` on a point before revealing an answer; it shows a "Thử đoán trước" badge and adds a 2 s pause (`pause` overrides).
 - **Faithful to the slides:** definitions, formulas and numbers follow `../references/` and `lessons.txt`; every number is checked in `verify_examples.py`. Applications outside the slides must be well-known facts.
 - Spoken style: short sentences, "các bạn"; never read symbols aloud.
-- Length (estimated by the validator): intro 0.5–2.5 min, method 1.5–6.5 min, extra 1–4.5 min, summary 0.8–3.5 min.
+- Length (estimated by the validator): intro 0.5–2.5 min, method 1.5–6.5 min, extra 1–4.5 min, summary 0.6–3.5 min.
 
 ## Story script format
 

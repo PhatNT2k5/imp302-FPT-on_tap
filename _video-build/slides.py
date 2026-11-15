@@ -50,7 +50,7 @@ def staged(item: Staged, reach: int, shown: list[int]) -> dict:
 
 def histogram_state(h: Histogram, reach: int, shown: list[int]) -> dict:
     return {"bars": [staged(b, reach, shown) for b in h.bars], "lines": [staged(x, reach, shown) for x in h.lines],
-            "bands": [staged(b, reach, shown) for b in h.bands], "caption": h.caption}
+            "bands": [staged(b, reach, shown) for b in h.bands], "caption": h.caption, "top": h.top}
 
 
 def panel_state(panel: Panel) -> dict:

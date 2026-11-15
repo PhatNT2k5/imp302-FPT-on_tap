@@ -54,7 +54,7 @@ Kicker = OldKicker | Beat
 Style = Literal["accent", "warn", "dim", "cut"]
 Cell = str | int | float
 CHARS_PER_SECOND = 14  # measured on rendered chapters: ~0.072 s of speech per character at RATE -4%
-STORY_MINUTES = {"intro": (0.5, 2.5), "method": (1.5, 6.5), "extra": (1.0, 4.5), "summary": (0.8, 3.5)}
+STORY_MINUTES = {"intro": (0.5, 2.5), "method": (1.5, 6.5), "extra": (1.0, 4.5), "summary": (0.6, 3.5)}
 
 
 class Strict(BaseModel):
@@ -169,6 +169,7 @@ class Histogram(Strict):
     lines: list[Line] = []
     bands: list[Band] = []
     caption: str | None = None
+    top: float | None = Field(default=None, gt=0)  # fixed scale, e.g. to compare two panels
 
     def steps(self) -> int:
         return max(item.last_step() for item in [*self.bars, *self.lines, *self.bands])

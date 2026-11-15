@@ -15,6 +15,64 @@ def close(actual: float, expected: float, tol: float = 5e-3) -> None:
         raise AssertionError(f"expected {expected}, computed {actual}")
 
 
+def ch03() -> None:
+    # Mean filters on a 3x3 window: eight pixels 100 and one pepper pixel 0
+    window = np.array([100.0] * 8 + [0.0])
+    close(window.mean(), 88.89, 0.01)
+    assert np.prod(window) == 0  # geometric mean collapses to 0
+    contra_q1 = (window ** 2).sum() / window.sum()
+    close(contra_q1, 100)
+    assert np.median(window) == 100 and window.max() == 100
+    salt = np.array([100.0] * 8 + [255.0])
+    close(salt.mean(), 117.22, 0.01)
+    close(len(salt) / (1 / salt).sum(), 107.24, 0.01)  # harmonic copes with salt
+    assert salt.min() == 100 and np.median(salt) == 100
+    # Inverse filter vs Wiener at three frequencies: F = 10, N = 0.5, K = Sn/Sf = 0.01
+    rows = []
+    for h in (1.0, 0.5, 0.01):
+        g = h * 10 + 0.5
+        inverse = g / h
+        wiener = h / (h * h + 0.01) * g
+        rows.append((g, inverse, wiener))
+    assert [round(r[0], 2) for r in rows] == [10.5, 5.5, 0.6]
+    assert [round(r[1], 2) for r in rows] == [10.5, 11.0, 60.0]
+    assert [round(r[2], 2) for r in rows] == [10.4, 10.58, 0.59], rows
+    # Wavelet thresholding with T = 1
+    coeffs = np.array([0.3, -0.8, 2.5, -4.0, 0.1])
+    hard = np.where(np.abs(coeffs) > 1, coeffs, 0)
+    soft = np.sign(coeffs) * np.maximum(np.abs(coeffs) - 1, 0)
+    assert hard.tolist() == [0, 0, 2.5, -4.0, 0] and soft.tolist() == [0, 0, 1.5, -3.0, 0]
+    # Backprojection of a 2x2 object from row and column sums
+    obj = np.array([[2.0, 0.0], [0.0, 1.0]])
+    back = np.repeat(obj.sum(axis=1, keepdims=True) / 2, 2, axis=1) + np.repeat(obj.sum(axis=0, keepdims=True) / 2, 2, axis=0)
+    assert back.tolist() == [[2.0, 1.5], [1.5, 1.0]], back
+    print("ch03 filters, inverse/Wiener", [tuple(round(v, 2) for v in r) for r in rows], "backprojection", back.tolist())
+
+
+def ch04() -> None:
+    x = np.array([10.0, 11, 12, 13])
+    dft = np.fft.fft(x)
+    assert np.allclose(dft, [46, -2 + 2j, -2, -2 - 2j])
+    assert np.allclose(dft.real - dft.imag, [46, -4, -2, 0])  # Hartley = Re - Im, all real
+    def dct(v: np.ndarray) -> np.ndarray:
+        n = len(v)
+        return np.array([(math.sqrt(1 / n) if k == 0 else math.sqrt(2 / n)) *
+                         sum(v[i] * math.cos(math.pi * (2 * i + 1) * k / (2 * n)) for i in range(n)) for k in range(n)])
+    c = dct(x)
+    assert np.allclose(c, [23, -2.23, 0, -0.159], atol=5e-3)
+    close((c ** 2)[0] / (x ** 2).sum(), 0.99)
+    assert np.allclose((np.abs(dft) / 2) ** 2, [529, 2, 1, 2])  # DFT spreads the rest up to the highest frequency
+    assert np.allclose(dct(np.full(4, 5.0)), [10, 0, 0, 0], atol=1e-9)
+    dst = np.array([sum(5 * math.sin(math.pi * (i + 1) * (k + 1) / 5) for i in range(4)) for k in range(4)])
+    assert np.allclose(dst, [15.39, 0, 3.63, 0], atol=5e-3)
+    h4 = np.array([[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1], [1, -1, -1, 1]])
+    assert (h4 @ x).tolist() == [46, -2, -4, 0] and np.allclose(h4 @ (h4 @ x) / 4, x)
+    approx, detail = (x[0::2] + x[1::2]) / 2, (x[0::2] - x[1::2]) / 2
+    assert approx.tolist() == [10.5, 12.5] and detail.tolist() == [-0.5, -0.5]
+    assert (approx.mean(), (approx[0] - approx[1]) / 2) == (11.5, -1.0)
+    print("ch04 DHT", (dft.real - dft.imag).tolist(), "DCT", np.round(c, 3).tolist(), "WHT", (h4 @ x).tolist())
+
+
 def ch05() -> None:
     # Huffman, slide example
     p = {"a2": 0.4, "a6": 0.3, "a1": 0.1, "a4": 0.1, "a3": 0.06, "a5": 0.04}
@@ -125,6 +183,9 @@ def ch07() -> None:
     smooth = np.convolve(up, [0.5, 1, 0.5], mode="same")
     assert smooth.tolist() == [10, 15, 20, 25, 30]
     print("ch07 aliasing 0.4 -> 0.8 -> 0.2; bilinear 27.5; upsample", smooth.tolist())
+    stripe = [round(50 + 40 * math.cos(2 * math.pi * 0.4 * n)) for n in range(10)]
+    assert stripe[::2] == [90, 62, 18, 18, 62], stripe  # story video: kept samples repeat every 5 -> 0.2 cycles/pixel
+    assert [0, 50, 0, 50, 0] == [(a + b) // 2 for a, b in zip([0, 100, 0, 0, 0], [0, 0, 0, 100, 0])]  # ghosting
 
 
 def ch08() -> None:
@@ -328,6 +389,6 @@ def ch12() -> None:
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    for check in (ch05, ch06, ch07, ch08, ch09, ch10, ch11, ch12):
+    for check in (ch03, ch04, ch05, ch06, ch07, ch08, ch09, ch10, ch11, ch12):
         check()
     print("all worked-example numbers verified")
