@@ -1,0 +1,46 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.542 line:98%,end
+DST cũng có độ phân giải tần số gấp đôi DFT.
+
+00:00:04.492 --> 00:00:08.294 line:98%,end
+Nhưng nó có dồn năng lượng tốt như DCT không?
+
+00:00:09.802 --> 00:00:16.686 line:98%,end
+DST giả định tín hiệu tuần hoàn chu kỳ hai nhân N cộng một và đối xứng lẻ: tín hiệu soi gương đổi dấu,
+
+00:00:16.686 --> 00:00:18.710 line:98%,end
+giá trị trung bình bằng không.
+
+00:00:19.276 --> 00:00:23.692 line:98%,end
+Vì vậy DST không có thành phần DC tại u bằng không.
+
+00:00:25.162 --> 00:00:28.940 line:98%,end
+Lấy một vùng phẳng, bốn pixel cùng bằng năm.
+
+00:00:29.500 --> 00:00:34.307 line:98%,end
+Thử đoán: DCT cần mấy hệ số khác không để biểu diễn vùng này?
+
+00:00:36.870 --> 00:00:42.067 line:98%,end
+DCT chỉ cần một: hệ số DC bằng mười, còn lại bằng không.
+
+00:00:42.624 --> 00:00:46.442 line:98%,end
+DST không có DC, nên phải dùng hai hệ số khác không,
+
+00:00:46.442 --> 00:00:51.728 line:98%,end
+mười lăm phẩy ba chín và ba phẩy sáu ba, kể cả một hệ số tần số cao hơn.
+
+00:00:53.190 --> 00:00:57.958 line:98%,end
+DCT đối xứng chẵn, có DC, giảm gián đoạn biên.
+
+00:00:58.512 --> 00:01:04.491 line:98%,end
+DST đối xứng lẻ, không có DC, không giảm gián đoạn biên như DCT.
+
+00:01:05.958 --> 00:01:11.937 line:98%,end
+Bẫy một: DST không có thành phần DC vì đối xứng lẻ, trung bình bằng không.
+
+00:01:12.504 --> 00:01:17.259 line:98%,end
+Bẫy hai: DST không giảm gián đoạn biên như DCT.
+
+00:01:17.209 --> 00:01:19.748 line:98%,end
+Câu so sánh này rất hay gặp.

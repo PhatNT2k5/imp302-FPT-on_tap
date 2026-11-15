@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:07.007 line:98%,end
+DFT cho số phức, giả định chu kỳ N. DHT cho số thực với ma trận thực, trực giao,
+
+00:00:07.007 --> 00:00:07.784 line:98%,end
+đối xứng.
+
+00:00:08.350 --> 00:00:13.977 line:98%,end
+DCT chu kỳ hai N đối xứng chẵn, dồn năng lượng tốt nhất trong thực tế.
+
+00:00:13.927 --> 00:00:17.729 line:98%,end
+DST đối xứng lẻ, không có DC.
+
+00:00:18.328 --> 00:00:21.755 line:98%,end
+WHT chỉ cộng trừ, rất nhanh.
+
+00:00:21.705 --> 00:00:25.233 line:98%,end
+Wavelet định vị được cả không gian lẫn tần số.
+
+00:00:26.734 --> 00:00:31.372 line:98%,end
+Một: mọi biến đổi cùng thông tin, cùng năng lượng, khả nghịch.
+
+00:00:31.936 --> 00:00:34.881 line:98%,end
+Hai: DHT cho số thực.
+
+00:00:35.434 --> 00:00:40.085 line:98%,end
+Ba: DCT chu kỳ hai N, đối xứng chẵn.
+
+00:00:40.636 --> 00:00:43.893 line:98%,end
+Bốn: DST không có DC.
+
+00:00:44.446 --> 00:00:47.742 line:98%,end
+Năm: wavelet hai chiều nhạy ba hướng.
+
+00:00:49.204 --> 00:00:52.565 line:98%,end
+Chương năm dùng các biến đổi này để nén ảnh.

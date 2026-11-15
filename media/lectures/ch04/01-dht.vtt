@@ -1,0 +1,76 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.435 line:98%,end
+Biến đổi Fourier rời rạc cho ra số phức.
+
+00:00:03.385 --> 00:00:09.427 line:98%,end
+Với ảnh lớn, mỗi hệ số có hai phần thực và ảo, tính và lưu đều tốn gấp đôi.
+
+00:00:10.930 --> 00:00:15.999 line:98%,end
+DFT của hàng mười, mười một, mười hai, mười ba là bốn mươi sáu,
+
+00:00:15.999 --> 00:00:22.195 line:98%,end
+âm hai cộng hai j, âm hai, và âm hai trừ hai j. Ba trên bốn hệ số là số phức.
+
+00:00:23.656 --> 00:00:26.574 line:98%,end
+DHT dùng hàm cas, tức cos cộng sin,
+
+00:00:26.574 --> 00:00:30.325 line:98%,end
+thay cho e mũ trừ j. Kết quả luôn là số thực.
+
+00:00:30.874 --> 00:00:35.011 line:98%,end
+Hệ số Hartley bằng phần thực trừ phần ảo của hệ số Fourier,
+
+00:00:35.011 --> 00:00:37.465 line:98%,end
+nên mang thông tin tương đương DFT.
+
+00:00:38.920 --> 00:00:42.893 line:98%,end
+Lấy phần thực trừ phần ảo từng hệ số DFT.
+
+00:00:43.450 --> 00:00:48.569 line:98%,end
+Thử đoán: hệ số thứ hai, âm hai cộng hai j, thành bao nhiêu?
+
+00:00:51.132 --> 00:00:53.829 line:98%,end
+Âm hai trừ hai bằng âm bốn.
+
+00:00:53.779 --> 00:00:58.532 line:98%,end
+Kết quả: bốn mươi sáu, âm bốn, âm hai, không.
+
+00:00:58.532 --> 00:01:00.225 line:98%,end
+Toàn số thực.
+
+00:01:01.746 --> 00:01:05.654 line:98%,end
+DFT cho số phức, DHT cho số thực.
+
+00:01:06.204 --> 00:01:11.062 line:98%,end
+DHT đối xứng: H tại u v bằng H tại trừ u trừ v. Ma trận biến đổi thực,
+
+00:01:11.062 --> 00:01:15.711 line:98%,end
+trực giao và đối xứng; biến đổi ngược cùng dạng với biến đổi thuận.
+
+00:01:16.278 --> 00:01:18.754 line:98%,end
+Cả hai bảo toàn năng lượng.
+
+00:01:20.220 --> 00:01:25.209 line:98%,end
+DHT được dùng thay DFT khi muốn tính toán hoàn toàn bằng số thực,
+
+00:01:25.209 --> 00:01:29.584 line:98%,end
+ví dụ trên phần cứng đơn giản, vì từ DHT suy ra được DFT.
+
+00:01:31.050 --> 00:01:37.328 line:98%,end
+Cả DFT và DHT coi hàng pixel lặp lại nguyên xi: mười ba nhảy về mười.
+
+00:01:37.278 --> 00:01:40.924 line:98%,end
+Bước nhảy đó sinh ra thành phần tần số cao giả.
+
+00:01:41.532 --> 00:01:45.362 line:98%,end
+Video sau: DCT xóa bước nhảy đó.
+
+00:01:46.818 --> 00:01:51.755 line:98%,end
+Bẫy một: DHT luôn cho số thực, DFT cho số phức.
+
+00:01:52.308 --> 00:01:57.297 line:98%,end
+Bẫy hai: ma trận DHT là thực, trực giao và đối xứng.
+
+00:01:57.870 --> 00:02:03.119 line:98%,end
+Bẫy ba: hệ số Hartley bằng phần thực trừ phần ảo của hệ số Fourier.

@@ -1,0 +1,97 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.448 line:98%,end
+Trên bức chân dung có một vết xước nhỏ ở góc.
+
+00:00:03.398 --> 00:00:08.203 line:98%,end
+Ta muốn biết không chỉ ảnh có chi tiết sắc, mà chi tiết đó nằm ở đâu.
+
+00:00:09.706 --> 00:00:12.261 line:98%,end
+Fourier dùng sóng sin kéo dài vô hạn,
+
+00:00:12.261 --> 00:00:15.437 line:98%,end
+nên biết có tần số nào nhưng không biết ở đâu.
+
+00:00:15.387 --> 00:00:19.580 line:98%,end
+DCT, WHT cũng vậy trên mỗi khối.
+
+00:00:21.088 --> 00:00:26.923 line:98%,end
+Wavelet là những sóng nhỏ có độ dài hữu hạn, nên cho biết cả tần số lẫn vị trí.
+
+00:00:27.490 --> 00:00:31.950 line:98%,end
+Nó là nền tảng của lý thuyết đa phân giải, hợp nhất mã hóa băng con,
+
+00:00:31.950 --> 00:00:36.476 line:98%,end
+lọc gương cầu phương trong xử lý tiếng nói, và xử lý ảnh kim tự tháp.
+
+00:00:36.936 --> 00:00:42.897 line:98%,end
+DWT dựa trên hàm tỉ lệ cha, trực giao với các phép tịnh tiến nguyên của nó,
+
+00:00:42.897 --> 00:00:44.328 line:98%,end
+và hàm wavelet mẹ.
+
+00:00:44.328 --> 00:00:48.984 line:98%,end
+Mỗi mức tách tín hiệu thành hệ số xấp xỉ và hệ số chi tiết.
+
+00:00:50.334 --> 00:00:53.286 line:98%,end
+Wavelet đơn giản nhất là Haar:
+
+00:00:53.286 --> 00:00:58.494 line:98%,end
+ghép từng cặp, lấy trung bình làm xấp xỉ, lấy nửa hiệu làm chi tiết.
+
+00:00:58.494 --> 00:01:02.862 line:98%,end
+Cặp mười, mười một và cặp mười hai, mười ba.
+
+00:01:03.412 --> 00:01:08.740 line:98%,end
+Xấp xỉ: mười phẩy năm và mười hai phẩy năm, một bản thu nhỏ của hàng.
+
+00:01:09.310 --> 00:01:14.039 line:98%,end
+Thử đoán: chi tiết của một hàng thay đổi đều như vậy lớn hay nhỏ?
+
+00:01:16.608 --> 00:01:20.542 line:98%,end
+Rất nhỏ: âm không phẩy năm và âm không phẩy năm.
+
+00:01:20.492 --> 00:01:24.802 line:98%,end
+Nếu có vết xước, chi tiết sẽ lớn đúng tại vị trí đó.
+
+00:01:25.410 --> 00:01:30.842 line:98%,end
+Mức hai chỉ tiếp tục chia phần xấp xỉ: được mười một phẩy năm và chi tiết âm một.
+
+00:01:30.792 --> 00:01:34.764 line:98%,end
+Kết quả là một kim tự tháp: mức thô chứa cấu trúc lớn,
+
+00:01:34.764 --> 00:01:36.677 line:98%,end
+mức mịn chứa chi tiết nhỏ.
+
+00:01:38.184 --> 00:01:42.678 line:98%,end
+Fourier biết tần số nào; wavelet biết tần số nào ở đâu.
+
+00:01:43.242 --> 00:01:49.299 line:98%,end
+CWT cho tỉ lệ và vị trí thay đổi liên tục, rất dư thừa, hợp để phân tích.
+
+00:01:49.249 --> 00:01:53.845 line:98%,end
+DWT gọn, khả nghịch, hợp để nén và khử nhiễu.
+
+00:01:55.368 --> 00:01:58.135 line:98%,end
+JPEG hai nghìn, khử nhiễu ở chương ba,
+
+00:01:58.135 --> 00:02:02.649 line:98%,end
+phân tích tín hiệu có biến cố đột ngột như nhịp tim, động đất.
+
+00:02:04.110 --> 00:02:06.612 line:98%,end
+Ta mới làm trên một hàng.
+
+00:02:06.562 --> 00:02:11.432 line:98%,end
+Ảnh có hai chiều, và chi tiết có thể nằm ngang, dọc hay chéo.
+
+00:02:11.432 --> 00:02:14.557 line:98%,end
+Video sau: wavelet hai chiều.
+
+00:02:16.068 --> 00:02:21.956 line:98%,end
+Bẫy một: wavelet định vị được cả tần số lẫn vị trí, Fourier chỉ biết tần số.
+
+00:02:22.518 --> 00:02:26.947 line:98%,end
+Bẫy hai: phân rã nhiều mức chỉ tiếp tục chia phần xấp xỉ.
+
+00:02:27.504 --> 00:02:35.032 line:98%,end
+Bẫy ba: CWT liên tục và dư thừa, hợp phân tích; DWT gọn và khả nghịch, hợp nén.

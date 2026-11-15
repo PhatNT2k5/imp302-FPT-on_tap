@@ -1,0 +1,100 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.061 line:98%,end
+Để nén, ta muốn gần hết năng lượng nằm ở vài hệ số đầu,
+
+00:00:04.061 --> 00:00:06.365 line:98%,end
+còn lại gần không để bỏ đi được.
+
+00:00:07.834 --> 00:00:12.810 line:98%,end
+DFT giả định tín hiệu tuần hoàn chu kỳ N, không đối xứng.
+
+00:00:12.760 --> 00:00:16.823 line:98%,end
+Hàng mười đến mười ba lặp lại thì mười ba nhảy xuống mười.
+
+00:00:17.428 --> 00:00:21.050 line:98%,end
+Bước nhảy giả đó đẩy năng lượng sang tần số cao.
+
+00:00:22.498 --> 00:00:30.527 line:98%,end
+DCT giả định tín hiệu tuần hoàn chu kỳ hai N và đối xứng chẵn: ghép hàng pixel với ảnh gương của nó,
+
+00:00:30.527 --> 00:00:36.068 line:98%,end
+mười, mười một, mười hai, mười ba, mười ba, mười hai, mười một, mười.
+
+00:00:36.628 --> 00:00:41.539 line:98%,end
+Không còn bước nhảy ở biên, nên giảm gián đoạn và nhiễu tần số cao.
+
+00:00:41.489 --> 00:00:46.710 line:98%,end
+Phổ của DCT tương tự DFT nhưng độ phân giải tần số gấp đôi.
+
+00:00:48.226 --> 00:00:51.509 line:98%,end
+Năng lượng của hàng là năm trăm ba mươi tư.
+
+00:00:51.459 --> 00:00:55.192 line:98%,end
+Cả hai biến đổi đều đặt năm trăm hai mươi chín vào hệ số đầu,
+
+00:00:55.192 --> 00:00:57.149 line:98%,end
+khoảng chín mươi chín phần trăm.
+
+00:00:57.772 --> 00:01:03.764 line:98%,end
+Thử đoán: năm đơn vị năng lượng còn lại, DCT và DFT đặt vào đâu?
+
+00:01:06.318 --> 00:01:10.653 line:98%,end
+DCT dồn gần hết vào hệ số tần số thấp nhất, bốn phẩy chín bảy,
+
+00:01:10.653 --> 00:01:13.729 line:98%,end
+hệ số cao nhất chỉ không phẩy không hai lăm.
+
+00:01:13.679 --> 00:01:19.929 line:98%,end
+DFT rải đều, kể cả hệ số tần số cao nhất cũng nhận một, vì bước nhảy ở biên.
+
+00:01:21.444 --> 00:01:26.381 line:98%,end
+Hệ số đầu tiên là hệ số DC, tỉ lệ với độ sáng trung bình.
+
+00:01:26.331 --> 00:01:28.959 line:98%,end
+Với khối tám nhân tám của ảnh tự nhiên,
+
+00:01:28.959 --> 00:01:31.722 line:98%,end
+năng lượng tập trung ở góc trên bên trái.
+
+00:01:32.334 --> 00:01:36.220 line:98%,end
+Hệ số tần số cao nhỏ, mắt lại kém nhạy với chi tiết mịn,
+
+00:01:36.220 --> 00:01:40.383 line:98%,end
+nên có thể lượng tử thô hoặc bỏ đi mà ảnh gần như không đổi.
+
+00:01:40.333 --> 00:01:43.341 line:98%,end
+Đó là bí mật của JPEG.
+
+00:01:44.844 --> 00:01:52.008 line:98%,end
+DFT giả định chu kỳ N, không đối xứng; DCT chu kỳ hai N, đối xứng chẵn.
+
+00:01:52.566 --> 00:01:56.891 line:98%,end
+DFT có bước nhảy ở biên, DCT thì không.
+
+00:01:56.841 --> 00:02:01.008 line:98%,end
+DCT cho số thực và độ phân giải tần số gấp đôi.
+
+00:02:02.508 --> 00:02:09.867 line:98%,end
+JPEG, MPEG và hầu hết các chuẩn nén ảnh, video đều dùng DCT trên từng khối.
+
+00:02:09.817 --> 00:02:13.150 line:98%,end
+Ta sẽ gặp lại nó ở chương năm và sáu.
+
+00:02:14.658 --> 00:02:18.176 line:98%,end
+DCT dùng cosin và đối xứng chẵn.
+
+00:02:18.126 --> 00:02:21.329 line:98%,end
+Nếu dùng sin và đối xứng lẻ thì sao?
+
+00:02:21.329 --> 00:02:25.587 line:98%,end
+Đó là DST, người anh em của DCT.
+
+00:02:27.096 --> 00:02:32.710 line:98%,end
+Bẫy một: DCT giả định tuần hoàn chu kỳ hai N và đối xứng chẵn.
+
+00:02:33.282 --> 00:02:39.430 line:98%,end
+Bẫy hai: JPEG chọn DCT vì giảm gián đoạn ở biên và dồn năng lượng tốt.
+
+00:02:39.996 --> 00:02:45.154 line:98%,end
+Bẫy ba: DCT có độ phân giải tần số gấp đôi DFT.

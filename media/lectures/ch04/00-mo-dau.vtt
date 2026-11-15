@@ -1,0 +1,43 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:04.701 line:98%,end
+Chương bốn là các phép biến đổi ảnh.
+
+00:00:04.701 --> 00:00:10.447 line:98%,end
+Ví dụ của cả chương: một hàng bốn pixel trên má của bức chân dung, mười,
+
+00:00:10.447 --> 00:00:12.682 line:98%,end
+mười một, mười hai, mười ba.
+
+00:00:13.294 --> 00:00:18.530 line:98%,end
+Một phép biến đổi phân tách ảnh thành tổng có trọng số của các hàm cơ sở trực giao.
+
+00:00:18.480 --> 00:00:22.823 line:98%,end
+Mọi biến đổi của cùng một ảnh chứa cùng thông tin và tổng năng lượng,
+
+00:00:22.823 --> 00:00:23.767 line:98%,end
+đều khả nghịch.
+
+00:00:24.376 --> 00:00:28.558 line:98%,end
+Chúng chỉ khác nhau ở cách phân bố năng lượng giữa các hệ số.
+
+00:00:28.508 --> 00:00:32.323 line:98%,end
+Thử nghĩ: cách phân bố nào là tốt nhất để nén?
+
+00:00:35.838 --> 00:00:38.978 line:98%,end
+Ta đã gặp DFT ở chương hai.
+
+00:00:38.928 --> 00:00:45.113 line:98%,end
+Chương này đi qua DHT với số thực, DCT dồn năng lượng giỏi, DST đối xứng lẻ,
+
+00:00:45.113 --> 00:00:47.392 line:98%,end
+Walsh Hadamard chỉ cộng trừ.
+
+00:00:48.000 --> 00:00:53.236 line:98%,end
+Rồi wavelet biết cả tần số lẫn vị trí, và wavelet hai chiều cho ảnh.
+
+00:00:53.802 --> 00:00:58.817 line:98%,end
+Mỗi biến đổi vá một chỗ hụt của biến đổi trước, các bạn xem theo thứ tự.

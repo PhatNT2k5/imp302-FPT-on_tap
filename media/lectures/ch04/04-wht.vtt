@@ -1,0 +1,88 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.086 line:98%,end
+Trên vi mạch đơn giản, phép nhân với cosin là đắt.
+
+00:00:04.036 --> 00:00:07.448 line:98%,end
+Ta muốn một biến đổi chỉ cần cộng và trừ.
+
+00:00:08.962 --> 00:00:13.495 line:98%,end
+DCT phải nhân mỗi pixel với các giá trị cosin số thực.
+
+00:00:14.944 --> 00:00:19.783 line:98%,end
+WHT là biến đổi phi sin: hàm cơ sở là các hàm Walsh hình chữ nhật,
+
+00:00:19.783 --> 00:00:22.055 line:98%,end
+chỉ nhận cộng một hoặc trừ một.
+
+00:00:22.618 --> 00:00:27.399 line:98%,end
+Thay cho tần số, dùng sequency: số lần hàm đổi dấu.
+
+00:00:27.349 --> 00:00:30.278 line:98%,end
+Đổi dấu càng nhiều thì càng chi tiết.
+
+00:00:30.892 --> 00:00:35.532 line:98%,end
+Ma trận Hadamard xây đệ quy: cấp hai là một, một ở trên và một,
+
+00:00:35.532 --> 00:00:41.128 line:98%,end
+trừ một ở dưới; cấp hai N ghép từ bốn bản cấp N, góc dưới phải mang dấu trừ.
+
+00:00:42.586 --> 00:00:48.669 line:98%,end
+Nhân hàng mười, mười một, mười hai, mười ba với ma trận Hadamard bốn nhân bốn.
+
+00:00:48.619 --> 00:00:52.252 line:98%,end
+Hàng đầu toàn cộng một: tổng bằng bốn mươi sáu.
+
+00:00:52.852 --> 00:00:56.292 line:98%,end
+Hàng hai cộng trừ xen kẽ: âm hai.
+
+00:00:56.242 --> 00:00:58.572 line:98%,end
+Hàng ba: âm bốn.
+
+00:00:59.182 --> 00:01:03.585 line:98%,end
+Thử đoán: hàng bốn, cộng trừ trừ cộng, cho bao nhiêu?
+
+00:01:06.144 --> 00:01:09.831 line:98%,end
+Mười trừ mười một trừ mười hai cộng mười ba bằng không.
+
+00:01:09.781 --> 00:01:11.812 line:98%,end
+Toàn phép cộng trừ.
+
+00:01:11.812 --> 00:01:16.799 line:98%,end
+Biến đổi ngược dùng chính ma trận đó rồi chia bốn, ra đúng hàng ban đầu.
+
+00:01:18.318 --> 00:01:23.359 line:98%,end
+DCT dùng cosin và phép nhân; WHT chỉ cộng trừ.
+
+00:01:23.928 --> 00:01:29.204 line:98%,end
+WHT không mất mát, khả nghịch, biến đổi ngược giống hệt biến đổi thuận.
+
+00:01:29.154 --> 00:01:36.289 line:98%,end
+Bản nhanh FWHT có độ phức tạp N M log N M, tương đương FFT.
+
+00:01:37.806 --> 00:01:38.408 line:98%,end
+Nén ảnh,
+
+00:01:38.408 --> 00:01:45.477 line:98%,end
+vì nó cũng dồn năng lượng vào ít hệ số mà tính đơn giản hơn; nhận dạng mẫu; xử lý tín hiệu số.
+
+00:01:46.932 --> 00:01:51.257 line:98%,end
+Mọi biến đổi đến giờ dùng hàm cơ sở trải trên cả tín hiệu.
+
+00:01:51.207 --> 00:01:56.051 line:98%,end
+Chúng cho biết có thành phần nào, nhưng không nói thành phần đó nằm ở đâu.
+
+00:01:56.570 --> 00:01:58.706 line:98%,end
+Video sau:
+
+00:01:58.706 --> 00:02:00.386 line:98%,end
+wavelet.
+
+00:02:01.836 --> 00:02:08.010 line:98%,end
+Bẫy một: hàm Walsh chỉ nhận cộng một hoặc trừ một, nên WHT chỉ cần cộng trừ.
+
+00:02:08.574 --> 00:02:13.433 line:98%,end
+Bẫy hai: biến đổi ngược của WHT giống hệt biến đổi thuận.
+
+00:02:13.992 --> 00:02:21.390 line:98%,end
+Bẫy ba: FWHT có độ phức tạp N M log N M, tương đương FFT.
