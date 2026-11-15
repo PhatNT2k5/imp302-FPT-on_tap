@@ -1,4 +1,4 @@
-"""Turn a chapter script into frame states and draw them with slide_template.html in a headless browser."""
+"""Turn lecture units (scripts/chNN.json) into frame states and draw them with slide_template.html in a headless browser."""
 from __future__ import annotations
 
 import re
@@ -10,7 +10,7 @@ from typing import AsyncIterator
 import pymupdf
 from playwright.async_api import Page, async_playwright
 
-from script_model import ROOT, SITE, SLIDE_FILES, Scene, Script
+from script_model import ROOT, SITE, SLIDE_FILES, Grid, Histogram, Panel, Scene, Staged, Unit
 
 TEMPLATE = ROOT / "slide_template.html"
 SLIDE_CACHE = ROOT / "cache" / "slides"
@@ -34,21 +34,62 @@ def slide_png(chapter: int, page: int) -> Path:
     return out
 
 
-def scene_agenda(script: Script) -> list[str]:
-    return [latex_to_unicode(s.title) for s in script.scenes if s.kind != "intro"]
+def grid_state(grid: Grid, visible: bool = True, current: bool = False) -> dict:
+    marks = {f"{r},{c}": name for name in ("dim", "accent", "warn") for r, c in getattr(grid, name)}
+    return {"label": grid.label, "cells": [[str(c) for c in row] for row in grid.cells], "marks": marks,
+            "visible": visible, "current": current}
 
 
-def frame_state(chapter: int, script: Script, scene_index: int, point_index: int) -> dict:
-    scene: Scene = script.scenes[scene_index]
+def staged(item: Staged, reach: int, shown: list[int]) -> dict:
+    """Serialise one visual element with what the current frame shows of it."""
+    data = item.model_dump(exclude={"marks", "step"})
+    style = next((m.style for m in sorted(item.marks, key=lambda m: m.step, reverse=True) if m.step <= reach), None)
+    data.update(visible=item.step <= reach, current=item.step > 0 and item.step in shown, style=style)
+    return data
+
+
+def histogram_state(h: Histogram, reach: int, shown: list[int]) -> dict:
+    return {"bars": [staged(b, reach, shown) for b in h.bars], "lines": [staged(x, reach, shown) for x in h.lines],
+            "bands": [staged(b, reach, shown) for b in h.bands], "caption": h.caption}
+
+
+def panel_state(panel: Panel) -> dict:
+    if panel.grid:
+        return {"label": panel.label, "grid": grid_state(panel.grid)}
+    if panel.histogram:
+        return {"label": panel.label, "histogram": histogram_state(panel.histogram, 10**6, [])}
+    return {"label": panel.label, "image": (SITE / panel.image).resolve().as_uri()}
+
+
+def visual_state(scene: Scene, reach: int, shown: list[int]) -> dict | None:
+    if scene.graph:
+        g = scene.graph
+        return {"type": "graph", "arrows": g.arrows, "caption": g.caption,
+                "nodes": [staged(n, reach, shown) for n in g.nodes], "edges": [staged(e, reach, shown) for e in g.edges]}
+    if scene.histogram:
+        return {"type": "histogram", **histogram_state(scene.histogram, reach, shown)}
+    if scene.intervals:
+        return {"type": "intervals", "caption": scene.intervals.caption,
+                "rows": [staged(r, reach, shown) for r in scene.intervals.rows]}
+    if scene.compare:
+        c = scene.compare
+        return {"type": "compare", "arrow": c.arrow, "left": panel_state(c.left), "right": panel_state(c.right),
+                "showLeft": reach >= 1, "showRight": reach >= 2}
+    if scene.chain:
+        return {"type": "chain", "items": scene.chain.items, "current": scene.chain.current}
+    return None
+
+
+def frame_state(unit: Unit, scene_index: int, point_index: int) -> dict:
+    scene: Scene = unit.scenes[scene_index]
+    point = scene.points[point_index]
     shown = scene.reveal_at(point_index)
-    reach = max(shown, default=0)
-    for earlier in range(point_index):  # rows revealed earlier stay on screen
-        reach = max(reach, max(scene.reveal_at(earlier), default=0))
+    reach = scene.reach_at(point_index)
 
     bullets, last_bullet = [], -1
-    for i, point in enumerate(scene.points):
-        if point.text:
-            bullets.append({"text": point.text, "visible": i <= point_index, "current": False})
+    for i, p in enumerate(scene.points):
+        if p.text:
+            bullets.append({"text": p.text, "visible": i <= point_index, "current": False})
             if i <= point_index:
                 last_bullet = len(bullets) - 1
     if last_bullet >= 0:
@@ -56,7 +97,7 @@ def frame_state(chapter: int, script: Script, scene_index: int, point_index: int
 
     media = None
     if scene.slide:
-        media = {"src": slide_png(chapter, scene.slide).as_uri(), "caption": f"Slide gốc · trang {scene.slide}"}
+        media = {"src": slide_png(unit.chapter, scene.slide).as_uri(), "caption": f"Slide gốc · trang {scene.slide}"}
     elif scene.image:
         media = {"src": (SITE / scene.image).resolve().as_uri(), "caption": scene.image}
 
@@ -68,27 +109,27 @@ def frame_state(chapter: int, script: Script, scene_index: int, point_index: int
     code = None
     if scene.code:
         code = [{"text": line, "current": n in shown} for n, line in enumerate(scene.code.lines, start=1)]
-    grids = []
-    for n, grid in enumerate(scene.grids(), start=1):
-        marks = {f"{r},{c}": name for name in ("dim", "accent", "warn") for r, c in getattr(grid, name)}
-        only_grid = len(scene.grids()) == 1
-        grids.append({"label": grid.label, "cells": [[str(c) for c in row] for row in grid.cells], "marks": marks,
-                      "visible": only_grid or n <= reach, "current": n in shown})
+    only_grid = len(scene.grids()) == 1
+    grids = [grid_state(g, only_grid or n <= reach, n in shown) for n, g in enumerate(scene.grids(), start=1)]
 
+    story = unit.kind != "lecture"
+    label = f"VIDEO {unit.number:02d}/{unit.total - 1:02d}" if story and unit.number else ""
     points_total = len(scene.points)
     return {
-        "chapter": chapter, "chapterTitle": script.title, "intro": scene.kind == "intro",
-        "agenda": scene.agenda or scene_agenda(script), "title": scene.title, "kicker": scene.kicker,
+        "chapter": unit.chapter, "chapterTitle": unit.chapter_title, "unitLabel": label,
+        "intro": scene.kind == "intro", "agenda": scene.agenda or unit.agenda, "title": scene.title,
+        "kicker": scene.kicker, "story": story, "ask": point.ask,
         "media": media, "wide": bool(scene.table or scene.code or scene.grid or scene.formula),
         "formula": scene.formula, "bullets": bullets, "table": table, "code": code, "grids": grids,
-        "sceneIndex": scene_index, "sceneCount": len(script.scenes),
-        "progress": (scene_index + (point_index + 1) / points_total) / len(script.scenes),
+        "visual": visual_state(scene, reach, shown),
+        "sceneIndex": scene_index, "sceneCount": len(unit.scenes),
+        "progress": (scene_index + (point_index + 1) / points_total) / len(unit.scenes),
     }
 
 
-def chapter_frames(chapter: int, script: Script) -> list[Frame]:
-    return [Frame(si, pi, frame_state(chapter, script, si, pi))
-            for si, scene in enumerate(script.scenes) for pi in range(len(scene.points))]
+def unit_frames(unit: Unit) -> list[Frame]:
+    return [Frame(si, pi, frame_state(unit, si, pi))
+            for si, scene in enumerate(unit.scenes) for pi in range(len(scene.points))]
 
 
 @asynccontextmanager

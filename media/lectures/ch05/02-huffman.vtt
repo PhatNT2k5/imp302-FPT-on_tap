@@ -1,0 +1,232 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.807 line:98%,end
+Video trước để lại một câu hỏi: entropy nói rằng chỉ cần ít bit hơn,
+
+00:00:04.807 --> 00:00:08.683 line:98%,end
+nhưng làm sao tạo ra một bộ mã cụ thể đạt gần con số đó?
+
+00:00:09.238 --> 00:00:13.686 line:98%,end
+Bộ mã đó còn phải giải mã được duy nhất: đọc một chuỗi bit liền nhau,
+
+00:00:13.686 --> 00:00:16.844 line:98%,end
+không có dấu cách, mà vẫn tách đúng từng ký hiệu.
+
+00:00:18.316 --> 00:00:22.081 line:98%,end
+Ta dùng đúng ví dụ trong slide: sáu ký hiệu.
+
+00:00:22.031 --> 00:00:27.832 line:98%,end
+a hai chiếm bốn mươi phần trăm, a sáu ba mươi, a một và a bốn mỗi ký hiệu mười,
+
+00:00:27.832 --> 00:00:30.989 line:98%,end
+a ba sáu phần trăm, và a năm bốn phần trăm.
+
+00:00:31.606 --> 00:00:37.103 line:98%,end
+Mã cố định cần ba bit cho mỗi ký hiệu, vì hai bit chỉ đủ cho bốn ký hiệu.
+
+00:00:37.053 --> 00:00:41.493 line:98%,end
+Nghĩa là a hai, chiếm gần một nửa, vẫn tốn ba bit.
+
+00:00:43.012 --> 00:00:47.650 line:98%,end
+Ý tưởng của Huffman: hai ký hiệu hiếm nhất nên nhận mã dài nhất.
+
+00:00:47.600 --> 00:00:51.682 line:98%,end
+Vậy ta ghép chúng thành một ký hiệu mới, cộng xác suất lại,
+
+00:00:51.682 --> 00:00:53.758 line:98%,end
+rồi lặp lại với nguồn nhỏ hơn.
+
+00:00:53.758 --> 00:00:56.571 line:98%,end
+Slide gọi đây là rút gọn nguồn.
+
+00:00:57.190 --> 00:01:00.278 line:98%,end
+Mỗi lần ghép là thêm một tầng cho cây.
+
+00:01:00.228 --> 00:01:04.473 line:98%,end
+Ký hiệu bị ghép sớm nằm sâu dưới đáy cây nên có mã dài.
+
+00:01:04.473 --> 00:01:08.770 line:98%,end
+Ký hiệu hay gặp được ghép muộn, nằm gần gốc, mã ngắn.
+
+00:01:09.376 --> 00:01:13.883 line:98%,end
+Thử đoán: trong sáu ký hiệu, cặp nào sẽ được ghép đầu tiên?
+
+00:01:17.334 --> 00:01:22.518 line:98%,end
+Hai ký hiệu nhỏ nhất là a ba và a năm, sáu và bốn phần trăm.
+
+00:01:22.468 --> 00:01:25.320 line:98%,end
+Ghép lại được một nút mười phần trăm.
+
+00:01:25.920 --> 00:01:31.443 line:98%,end
+Giờ có ba thứ cùng mười phần trăm: a một, a bốn, và nút vừa ghép.
+
+00:01:31.393 --> 00:01:35.599 line:98%,end
+Slide chọn a bốn với nút mới, được hai mươi phần trăm.
+
+00:01:35.599 --> 00:01:39.909 line:98%,end
+Chọn cặp khác cũng hợp lệ, và độ dài trung bình không đổi.
+
+00:01:40.530 --> 00:01:44.732 line:98%,end
+Tiếp theo, hai thứ nhỏ nhất là nút hai mươi phần trăm và a một,
+
+00:01:44.732 --> 00:01:46.600 line:98%,end
+ghép được ba mươi phần trăm.
+
+00:01:47.148 --> 00:01:50.522 line:98%,end
+Còn lại a sáu ba mươi và nút ba mươi.
+
+00:01:50.472 --> 00:01:53.116 line:98%,end
+Ghép lại được sáu mươi phần trăm.
+
+00:01:53.718 --> 00:01:59.124 line:98%,end
+Cuối cùng, ghép nút sáu mươi với a hai bốn mươi, được gốc một trăm phần trăm.
+
+00:01:59.074 --> 00:02:00.805 line:98%,end
+Cây đã xong.
+
+00:02:02.316 --> 00:02:06.146 line:98%,end
+Bước hai đi theo chiều ngược lại, từ gốc xuống lá.
+
+00:02:06.096 --> 00:02:10.471 line:98%,end
+Quy ước: nhánh trái là bit không, nhánh phải là bit một.
+
+00:02:10.471 --> 00:02:14.729 line:98%,end
+Mã của một ký hiệu là dãy bit trên đường đi từ gốc đến nó.
+
+00:02:15.342 --> 00:02:20.279 line:98%,end
+Thử đoán: a hai, ký hiệu hay gặp nhất, có mã dài mấy bit?
+
+00:02:22.832 --> 00:02:24.462 line:98%,end
+Chỉ một bit.
+
+00:02:24.412 --> 00:02:29.360 line:98%,end
+Từ gốc rẽ phải là tới a hai ngay, nên mã của a hai là một.
+
+00:02:29.978 --> 00:02:34.420 line:98%,end
+a sáu: rẽ trái rồi rẽ trái, mã là không không.
+
+00:02:34.988 --> 00:02:39.456 line:98%,end
+a một: trái, phải, phải, được không một một.
+
+00:02:40.022 --> 00:02:45.506 line:98%,end
+a bốn: trái, phải, trái, trái, được không một không không.
+
+00:02:46.064 --> 00:02:50.410 line:98%,end
+Hai ký hiệu hiếm nhất nằm sâu nhất: a ba là không một không một không,
+
+00:02:50.410 --> 00:02:52.459 line:98%,end
+a năm là không một không một một.
+
+00:02:52.409 --> 00:02:56.589 line:98%,end
+Năm bit, đúng như ta đoán: ghép sớm thì mã dài.
+
+00:02:58.094 --> 00:02:59.883 line:98%,end
+Để biết bộ mã tốt cỡ nào,
+
+00:02:59.883 --> 00:03:05.466 line:98%,end
+ta tính độ dài trung bình: mỗi ký hiệu lấy xác suất nhân số bit, rồi cộng lại.
+
+00:03:06.032 --> 00:03:11.216 line:98%,end
+Thử đoán: kết quả sẽ gần ba bit của mã cố định, hay gần entropy?
+
+00:03:13.786 --> 00:03:16.980 line:98%,end
+Không phẩy bốn nhân một, cộng không phẩy ba nhân hai,
+
+00:03:16.980 --> 00:03:20.476 line:98%,end
+cộng không phẩy một nhân ba, cộng không phẩy một nhân bốn,
+
+00:03:20.476 --> 00:03:23.007 line:98%,end
+cộng hai ký hiệu cuối mỗi ký hiệu năm bit.
+
+00:03:22.957 --> 00:03:26.082 line:98%,end
+Tổng là hai phẩy hai bit mỗi ký hiệu.
+
+00:03:26.692 --> 00:03:30.392 line:98%,end
+Entropy của nguồn này khoảng hai phẩy một bốn bit.
+
+00:03:30.342 --> 00:03:34.446 line:98%,end
+Huffman chỉ cao hơn giới hạn lý thuyết chưa tới một phần mười bit,
+
+00:03:34.446 --> 00:03:36.436 line:98%,end
+trong khi mã cố định tốn ba bit.
+
+00:03:37.954 --> 00:03:42.552 line:98%,end
+Về số bit, Huffman thắng rõ: hai phẩy hai so với ba.
+
+00:03:43.108 --> 00:03:45.468 line:98%,end
+Đổi lại, từ mã dài ngắn khác nhau,
+
+00:03:45.468 --> 00:03:50.050 line:98%,end
+nên bộ giải mã phải đọc từng bit để biết một từ mã kết thúc ở đâu.
+
+00:03:50.000 --> 00:03:54.649 line:98%,end
+Huffman làm được vì không từ mã nào là phần đầu của từ mã khác.
+
+00:03:54.649 --> 00:03:57.656 line:98%,end
+Người ta gọi đó là mã tiền tố.
+
+00:03:58.270 --> 00:04:02.934 line:98%,end
+Huffman phải biết trước xác suất, và bên nhận phải có cùng bảng mã.
+
+00:04:02.884 --> 00:04:06.009 line:98%,end
+Slide nêu câu hỏi thảo luận: Huffman thích nghi,
+
+00:04:06.009 --> 00:04:09.003 line:98%,end
+tức là cập nhật bảng mã khi xác suất thay đổi.
+
+00:04:09.616 --> 00:04:13.948 line:98%,end
+Và vì độ dài thay đổi, một bit lỗi có thể làm lệch ranh giới,
+
+00:04:13.948 --> 00:04:16.363 line:98%,end
+kéo theo sai các ký hiệu phía sau.
+
+00:04:16.313 --> 00:04:20.115 line:98%,end
+Với mã cố định, lỗi chỉ hỏng đúng một ký hiệu.
+
+00:04:21.622 --> 00:04:26.702 line:98%,end
+Bước cuối của JPEG mã hóa các hệ số đã lượng tử bằng Huffman.
+
+00:04:27.256 --> 00:04:34.094 line:98%,end
+File ZIP và ảnh PNG dùng thuật toán DEFLATE, trong đó có mã Huffman.
+
+00:04:34.666 --> 00:04:38.900 line:98%,end
+Nhạc MP3 cũng dùng mã Huffman ở bước cuối.
+
+00:04:40.360 --> 00:04:44.890 line:98%,end
+Nhưng Huffman có một giới hạn cứng: mỗi ký hiệu nhận một từ mã riêng,
+
+00:04:44.890 --> 00:04:46.925 line:98%,end
+nên tốn ít nhất một bit nguyên.
+
+00:04:47.482 --> 00:04:52.497 line:98%,end
+Thử nghĩ một ảnh trời gần như một màu, ký hiệu chính chiếm chín mươi phần trăm.
+
+00:04:52.447 --> 00:04:55.251 line:98%,end
+Entropy chỉ khoảng không phẩy bốn bảy bit,
+
+00:04:55.251 --> 00:04:59.257 line:98%,end
+nhưng Huffman vẫn phải trả một bit cho mỗi ký hiệu, gấp đôi.
+
+00:04:59.860 --> 00:05:04.914 line:98%,end
+Muốn trả ít hơn một bit cho mỗi ký hiệu, ta phải mã cả thông điệp cùng lúc.
+
+00:05:04.864 --> 00:05:07.013 line:98%,end
+Đó là mã số học.
+
+00:05:08.530 --> 00:05:13.806 line:98%,end
+Bẫy một: Huffman ghép hai ký hiệu có xác suất nhỏ nhất, không phải lớn nhất.
+
+00:05:14.356 --> 00:05:19.332 line:98%,end
+Bẫy hai: Huffman tối ưu với ràng buộc mỗi ký hiệu nguồn được mã riêng.
+
+00:05:19.282 --> 00:05:22.993 line:98%,end
+Bỏ ràng buộc đó thì mã số học có thể tốt hơn.
+
+00:05:23.614 --> 00:05:26.617 line:98%,end
+Bẫy ba: khi trùng xác suất có nhiều cây hợp lệ,
+
+00:05:26.617 --> 00:05:30.387 line:98%,end
+mã từng ký hiệu khác nhau nhưng độ dài trung bình như nhau.
+
+00:05:30.952 --> 00:05:36.970 line:98%,end
+Bẫy bốn: giải mã không cần dấu phân cách vì không từ mã nào là tiền tố của từ mã khác.

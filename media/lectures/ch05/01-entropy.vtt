@@ -1,0 +1,205 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.615 line:98%,end
+Quay lại tấm ảnh bầu trời.
+
+00:00:02.565 --> 00:00:05.275 line:98%,end
+Hiện giờ pixel nào cũng tốn đúng tám bit,
+
+00:00:05.275 --> 00:00:10.430 line:98%,end
+dù đó là pixel trời xanh xuất hiện khắp nơi, hay một pixel cánh chim hiếm hoi.
+
+00:00:11.038 --> 00:00:15.884 line:98%,end
+Thêm nữa, một pixel trời gần như giống hệt pixel bên cạnh nó.
+
+00:00:15.834 --> 00:00:19.323 line:98%,end
+Ta đang gửi đi gửi lại gần cùng một thông tin.
+
+00:00:19.936 --> 00:00:25.433 line:98%,end
+Vậy trong tám bit đó, bao nhiêu bit là thông tin thật, và bao nhiêu bit là thừa?
+
+00:00:28.902 --> 00:00:33.516 line:98%,end
+Để dễ tính, giả sử ảnh trời chỉ còn bốn mức xám, gọi là A, B,
+
+00:00:33.516 --> 00:00:39.113 line:98%,end
+C và D. Histogram cho thấy A chiếm bốn mươi phần trăm số pixel, B ba mươi,
+
+00:00:39.113 --> 00:00:41.912 line:98%,end
+C hai mươi, còn D chỉ mười phần trăm.
+
+00:00:42.480 --> 00:00:45.282 line:98%,end
+Cách cũ là mã độ dài cố định.
+
+00:00:45.232 --> 00:00:50.734 line:98%,end
+Bốn ký hiệu thì mỗi ký hiệu hai bit: A là không không, B là không một,
+
+00:00:50.734 --> 00:00:51.521 line:98%,end
+và cứ thế.
+
+00:00:52.122 --> 00:00:57.130 line:98%,end
+Chỗ hụt nằm ở đây: A xuất hiện gần một nửa thời gian mà vẫn tốn hai bit,
+
+00:00:57.130 --> 00:00:58.661 line:98%,end
+ngang với D hiếm nhất.
+
+00:00:58.611 --> 00:01:03.311 line:98%,end
+Ta đối xử mọi ký hiệu như nhau, trong khi chúng không hề như nhau.
+
+00:01:04.824 --> 00:01:07.053 line:98%,end
+Ý tưởng rất đời thường.
+
+00:01:07.003 --> 00:01:12.159 line:98%,end
+Khi nhắn tin, từ nào dùng nhiều các bạn viết tắt, từ hiếm thì viết đủ.
+
+00:01:12.159 --> 00:01:15.896 line:98%,end
+Tin nhắn ngắn đi mà người đọc vẫn hiểu đúng hoàn toàn.
+
+00:01:16.506 --> 00:01:21.769 line:98%,end
+Áp vào ảnh: ký hiệu hay gặp nhận mã ngắn, ký hiệu hiếm nhận mã dài.
+
+00:01:22.332 --> 00:01:26.188 line:98%,end
+Ý thứ hai: thứ gì đoán được thì không cần gửi.
+
+00:01:26.138 --> 00:01:31.190 line:98%,end
+Pixel trời đoán được từ pixel bên cạnh, đó là tương quan không gian.
+
+00:01:31.190 --> 00:01:35.604 line:98%,end
+Với video còn có tương quan thời gian giữa các khung hình liên tiếp.
+
+00:01:35.604 --> 00:01:39.302 line:98%,end
+Slide gọi chung là sự dư thừa trong tín hiệu ảnh.
+
+00:01:40.818 --> 00:01:44.596 line:98%,end
+Một bộ mã không mất dữ liệu gồm ba khối nối tiếp.
+
+00:01:44.546 --> 00:01:50.917 line:98%,end
+Khối một là biến đổi, ví dụ lấy hiệu giữa pixel và giá trị dự đoán từ hàng xóm,
+
+00:01:50.917 --> 00:01:51.642 line:98%,end
+hoặc DCT.
+
+00:01:51.642 --> 00:01:55.913 line:98%,end
+Ảnh trời sau bước này toàn những số gần không, rất dễ nén.
+
+00:01:56.532 --> 00:02:01.039 line:98%,end
+Khối hai ánh xạ dữ liệu thành các ký hiệu, ví dụ từng giá trị,
+
+00:02:01.039 --> 00:02:03.292 line:98%,end
+hoặc cặp số lần lặp và giá trị.
+
+00:02:03.846 --> 00:02:07.403 line:98%,end
+Khối ba gán từ mã nhị phân cho từng ký hiệu.
+
+00:02:07.353 --> 00:02:11.767 line:98%,end
+Huffman và mã số học trong hai video sau nằm ở khối này.
+
+00:02:12.384 --> 00:02:16.110 line:98%,end
+Khi chọn bộ mã, đừng chỉ nhìn tỉ lệ nén.
+
+00:02:16.060 --> 00:02:20.101 line:98%,end
+Slide liệt kê năm tiêu chí: hiệu suất nén, độ trễ mã hóa,
+
+00:02:20.101 --> 00:02:24.992 line:98%,end
+độ phức tạp triển khai, độ bền với lỗi, và khả năng mở rộng theo lớp.
+
+00:02:26.502 --> 00:02:30.124 line:98%,end
+Giờ ta đo xem có bao nhiêu bit là thông tin thật.
+
+00:02:30.074 --> 00:02:34.489 line:98%,end
+Phần bên phải công thức là lượng thông tin của một ký hiệu: càng hiếm,
+
+00:02:34.489 --> 00:02:36.949 line:98%,end
+càng bất ngờ, thì càng nhiều thông tin.
+
+00:02:36.949 --> 00:02:40.009 line:98%,end
+Phần bên trái lấy trung bình theo xác suất.
+
+00:02:40.632 --> 00:02:44.884 line:98%,end
+Thử đoán trước: với bốn mức A, B, C, D ở trên,
+
+00:02:44.884 --> 00:02:48.212 line:98%,end
+entropy lớn hơn hay nhỏ hơn hai bit?
+
+00:02:50.762 --> 00:02:56.194 line:98%,end
+Tính ra, A đáng khoảng một phẩy ba hai bit, D đáng khoảng ba phẩy ba hai bit.
+
+00:02:56.144 --> 00:03:00.728 line:98%,end
+Lấy trung bình theo xác suất, entropy chỉ khoảng một phẩy tám lăm bit,
+
+00:03:00.728 --> 00:03:02.758 line:98%,end
+nhỏ hơn hai bit của mã cố định.
+
+00:03:03.380 --> 00:03:08.486 line:98%,end
+Và đây là điều quan trọng nhất của video: entropy là cận dưới.
+
+00:03:08.436 --> 00:03:12.577 line:98%,end
+Không có bộ mã không mất dữ liệu nào, giải mã được duy nhất,
+
+00:03:12.577 --> 00:03:15.337 line:98%,end
+mà có số bit trung bình nhỏ hơn entropy.
+
+00:03:16.850 --> 00:03:21.469 line:98%,end
+Nén không mất dữ liệu buộc ảnh giải mã giống hệt ảnh gốc đến từng con số,
+
+00:03:21.469 --> 00:03:24.001 line:98%,end
+nên tỉ lệ nén chỉ khoảng hai đến ba lần.
+
+00:03:24.572 --> 00:03:28.492 line:98%,end
+Muốn hơn thế, slide nói đến không mất dữ liệu theo cảm nhận,
+
+00:03:28.492 --> 00:03:32.348 line:98%,end
+perceptually lossless: bỏ thêm thông tin mắt không nhận ra.
+
+00:03:32.298 --> 00:03:35.839 line:98%,end
+Ảnh nhìn vẫn y hệt, dù số liệu đã khác.
+
+00:03:36.446 --> 00:03:41.682 line:98%,end
+Còn nén có mất dữ liệu chấp nhận sai khác nhỏ để đổi lấy tỉ lệ nén cao nhất.
+
+00:03:41.632 --> 00:03:45.291 line:98%,end
+Ta sẽ đi con đường này từ video BTC.
+
+00:03:46.796 --> 00:03:52.309 line:98%,end
+Ảnh y tế, ảnh tài liệu, ảnh khoa học: một pixel sai có thể đổi cả kết luận,
+
+00:03:52.309 --> 00:03:54.441 line:98%,end
+nên phải giữ nguyên từng bit.
+
+00:03:54.998 --> 00:04:00.820 line:98%,end
+Ngay trong đời thường, file ZIP và ảnh PNG đều nén không mất dữ liệu.
+
+00:04:01.376 --> 00:04:04.388 line:98%,end
+Và ngay cả JPEG, một chuẩn có mất dữ liệu,
+
+00:04:04.388 --> 00:04:08.188 line:98%,end
+cũng kết thúc bằng một bước mã hóa không mất dữ liệu.
+
+00:04:09.638 --> 00:04:14.510 line:98%,end
+Entropy cho ta biết đích đến: khoảng một phẩy tám lăm bit mỗi ký hiệu.
+
+00:04:14.460 --> 00:04:18.444 line:98%,end
+Nhưng nó không nói phải gán bit cho từng ký hiệu thế nào.
+
+00:04:19.064 --> 00:04:23.584 line:98%,end
+Có cách nào tự động tạo ra một bộ mã tiến sát entropy không?
+
+00:04:23.534 --> 00:04:27.688 line:98%,end
+Câu trả lời là mã Huffman, ở video tiếp theo.
+
+00:04:29.198 --> 00:04:33.692 line:98%,end
+Bẫy một: entropy là cận dưới, không phải cận trên.
+
+00:04:33.642 --> 00:04:38.317 line:98%,end
+Mọi mã lossless giải mã duy nhất đều tốn ít nhất bằng entropy.
+
+00:04:38.936 --> 00:04:43.990 line:98%,end
+Bẫy hai: ảnh nén được nhờ dư thừa, tức tương quan giữa các mẫu.
+
+00:04:43.940 --> 00:04:48.797 line:98%,end
+Ảnh tĩnh có tương quan không gian, video có thêm tương quan thời gian.
+
+00:04:49.418 --> 00:04:53.925 line:98%,end
+Bẫy ba: nén không mất dữ liệu chỉ đạt khoảng hai đến ba lần.
+
+00:04:53.875 --> 00:04:56.779 line:98%,end
+Con số này hay xuất hiện trong đề.

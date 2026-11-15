@@ -1,0 +1,196 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:06.933 line:98%,end
+Video trước dừng ở một chỗ khó chịu: ký hiệu chiếm chín mươi phần trăm chỉ mang khoảng không phẩy một lăm bit thông tin,
+
+00:00:06.933 --> 00:00:08.982 line:98%,end
+mà Huffman vẫn bắt trả trọn một bit.
+
+00:00:09.550 --> 00:00:13.641 line:98%,end
+Ảnh trời gần một màu có hàng nghìn ký hiệu như vậy liên tiếp.
+
+00:00:13.591 --> 00:00:17.458 line:98%,end
+Mỗi ký hiệu phí gần một bit, cộng lại rất lớn.
+
+00:00:18.964 --> 00:00:22.508 line:98%,end
+Gốc của vấn đề: Huffman là mã khối.
+
+00:00:22.458 --> 00:00:25.822 line:98%,end
+Mỗi ký hiệu nguồn ánh xạ sang một từ mã cố định,
+
+00:00:25.822 --> 00:00:28.135 line:98%,end
+nên độ dài luôn là số nguyên bit.
+
+00:00:28.750 --> 00:00:33.231 line:98%,end
+Muốn trả phân số bit, ta phải thôi mã từng ký hiệu riêng lẻ.
+
+00:00:34.684 --> 00:00:38.893 line:98%,end
+Ý tưởng của mã số học: cả thông điệp được gán một từ mã duy nhất,
+
+00:00:38.893 --> 00:00:41.418 line:98%,end
+là một khoảng số nằm giữa không và một.
+
+00:00:41.974 --> 00:00:47.770 line:98%,end
+Hãy nghĩ đến một địa chỉ: tỉnh, rồi quận, rồi đường, rồi số nhà.
+
+00:00:47.720 --> 00:00:50.351 line:98%,end
+Mỗi cấp thu hẹp vùng tìm kiếm.
+
+00:00:50.351 --> 00:00:54.856 line:98%,end
+Ở đây mỗi ký hiệu thu hẹp khoảng hiện tại theo đúng xác suất của nó.
+
+00:00:55.480 --> 00:01:00.157 line:98%,end
+Ký hiệu hay gặp chiếm phần lớn, nên khoảng co ít, tốn ít bit.
+
+00:01:00.107 --> 00:01:04.456 line:98%,end
+Ký hiệu hiếm chiếm phần nhỏ, khoảng co mạnh, tốn nhiều bit.
+
+00:01:05.974 --> 00:01:11.932 line:98%,end
+Ví dụ trong slide có bốn ký hiệu: a một và a hai mỗi ký hiệu hai mươi phần trăm,
+
+00:01:11.932 --> 00:01:14.166 line:98%,end
+a ba bốn mươi, a bốn hai mươi.
+
+00:01:14.116 --> 00:01:18.739 line:98%,end
+Ban đầu khoảng là từ không đến một, chia theo đúng các tỉ lệ đó.
+
+00:01:18.739 --> 00:01:22.762 line:98%,end
+Ký hiệu đầu là a một, ta giữ phần của a một.
+
+00:01:23.368 --> 00:01:27.198 line:98%,end
+Phóng to phần đó lên và chia lại theo cùng tỉ lệ.
+
+00:01:27.148 --> 00:01:31.507 line:98%,end
+Ký hiệu thứ hai là a hai, lấy đoạn từ hai mươi đến bốn mươi phần trăm,
+
+00:01:31.507 --> 00:01:34.870 line:98%,end
+được từ không phẩy không bốn đến không phẩy không tám.
+
+00:01:35.482 --> 00:01:39.547 line:98%,end
+Ký hiệu tiếp theo là a ba, chiếm bốn mươi phần trăm.
+
+00:01:39.497 --> 00:01:42.413 line:98%,end
+Thử đoán: khoảng mới dài bao nhiêu?
+
+00:01:45.036 --> 00:01:48.944 line:98%,end
+Khoảng hiện tại dài không phẩy không bốn, a ba giữ bốn mươi phần trăm,
+
+00:01:48.944 --> 00:01:51.400 line:98%,end
+nên khoảng mới dài không phẩy không một sáu,
+
+00:01:51.400 --> 00:01:54.582 line:98%,end
+từ không phẩy không năm sáu đến không phẩy không bảy hai.
+
+00:01:55.134 --> 00:01:57.272 line:98%,end
+Lại là a ba.
+
+00:01:57.222 --> 00:01:57.890 line:98%,end
+Làm y hệt,
+
+00:01:57.890 --> 00:02:02.573 line:98%,end
+được từ không phẩy không sáu hai bốn đến không phẩy không sáu tám tám.
+
+00:02:03.192 --> 00:02:06.840 line:98%,end
+Cuối cùng là a bốn, hai mươi phần trăm cuối.
+
+00:02:06.790 --> 00:02:12.037 line:98%,end
+Khoảng kết quả là từ không phẩy không sáu bảy năm hai đến không phẩy không sáu tám tám.
+
+00:02:12.642 --> 00:02:16.969 line:98%,end
+Bất kỳ số nào trong khoảng này, ví dụ không phẩy không sáu tám,
+
+00:02:16.969 --> 00:02:19.168 line:98%,end
+đều đại diện cho cả năm ký hiệu.
+
+00:02:19.118 --> 00:02:24.183 line:98%,end
+Bên giải mã chỉ việc xem số đó rơi vào phần nào, lần lượt từng tầng.
+
+00:02:25.704 --> 00:02:31.266 line:98%,end
+Độ rộng khoảng cuối bằng tích xác suất các ký hiệu đã gặp: không phẩy không không một hai tám.
+
+00:02:31.818 --> 00:02:34.724 line:98%,end
+Để chỉ ra một số nằm trong khoảng rộng như vậy,
+
+00:02:34.724 --> 00:02:39.672 line:98%,end
+cần khoảng log cơ số hai của một chia độ rộng, tức gần mười bit cho năm ký hiệu.
+
+00:02:40.236 --> 00:02:43.493 line:98%,end
+Đó chính là lượng thông tin của cả thông điệp.
+
+00:02:43.443 --> 00:02:48.730 line:98%,end
+Mã số học trả đúng phần đó cho cả chuỗi, không làm tròn lên từng ký hiệu một.
+
+00:02:49.350 --> 00:02:52.843 line:98%,end
+Thông điệp càng dài thì khoảng càng hẹp và số bit càng tăng,
+
+00:02:52.843 --> 00:02:54.938 line:98%,end
+nhưng tăng đúng theo thông tin thật.
+
+00:02:56.388 --> 00:03:00.322 line:98%,end
+Huffman là mã khối, mỗi ký hiệu một từ mã.
+
+00:03:00.272 --> 00:03:04.491 line:98%,end
+Mã số học là mã không khối, cả thông điệp một từ mã.
+
+00:03:05.094 --> 00:03:10.278 line:98%,end
+Câu hỏi thảo luận trong slide: theo lý thuyết thông tin, cái nào ít bit hơn?
+
+00:03:10.228 --> 00:03:15.262 line:98%,end
+Mã số học, vì nó không phải làm tròn lên một bit nguyên cho từng ký hiệu,
+
+00:03:15.262 --> 00:03:16.986 line:98%,end
+nên tiến sát entropy hơn.
+
+00:03:17.592 --> 00:03:19.736 line:98%,end
+Đổi lại, nó tính toán nặng hơn,
+
+00:03:19.736 --> 00:03:23.401 line:98%,end
+phải liên tục chia khoảng và giữ độ chính xác số học.
+
+00:03:23.970 --> 00:03:28.888 line:98%,end
+Nhưng nó dễ thích nghi: slide nói đến ước lượng xác suất thích nghi theo ngữ cảnh,
+
+00:03:28.888 --> 00:03:31.706 line:98%,end
+chỉ cần cập nhật bảng xác suất sau mỗi ký hiệu.
+
+00:03:33.168 --> 00:03:37.740 line:98%,end
+JPEG2000 dùng một bộ mã số học thích nghi ở bước cuối.
+
+00:03:38.298 --> 00:03:41.665 line:98%,end
+Chuẩn nén video H.264 có chế độ CABAC,
+
+00:03:41.665 --> 00:03:45.475 line:98%,end
+cũng là mã số học thích nghi theo ngữ cảnh.
+
+00:03:45.425 --> 00:03:50.086 line:98%,end
+Chuẩn JPEG gốc cũng có tùy chọn mã số học bên cạnh Huffman.
+
+00:03:51.600 --> 00:03:56.836 line:98%,end
+Dù là Huffman hay mã số học, ta vẫn đang ở con đường không mất dữ liệu.
+
+00:03:56.786 --> 00:04:01.878 line:98%,end
+Ảnh giải mã giống hệt từng bit, nên trần nén vẫn chỉ khoảng hai đến ba lần.
+
+00:04:02.490 --> 00:04:07.075 line:98%,end
+Hai trăm năm mươi sáu kilobyte chia ba vẫn còn hơn tám mươi kilobyte.
+
+00:04:07.025 --> 00:04:11.505 line:98%,end
+Muốn nhỏ hơn nữa, ta phải chấp nhận bỏ đi một phần thông tin.
+
+00:04:11.505 --> 00:04:16.413 line:98%,end
+Video tiếp theo là BTC, phương pháp có mất dữ liệu đầu tiên.
+
+00:04:17.928 --> 00:04:21.381 line:98%,end
+Bẫy một: mã số học là mã không khối.
+
+00:04:21.331 --> 00:04:23.896 line:98%,end
+Huffman mới là mã khối.
+
+00:04:24.498 --> 00:04:27.666 line:98%,end
+Bẫy hai: thông điệp càng dài, khoảng càng hẹp,
+
+00:04:27.666 --> 00:04:30.490 line:98%,end
+số bit cần để biểu diễn khoảng càng tăng.
+
+00:04:31.044 --> 00:04:36.788 line:98%,end
+Bẫy ba: về lý thuyết thông tin, mã số học tiến sát entropy hơn Huffman.

@@ -1,0 +1,76 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:02.368 line:98%,end
+Cùng nhìn lại cả chương.
+
+00:00:02.318 --> 00:00:07.852 line:98%,end
+Câu hỏi ban đầu: gửi tấm ảnh trời hai trăm năm mươi sáu kilobyte bằng ít bit hơn.
+
+00:00:08.470 --> 00:00:11.076 line:98%,end
+Entropy cho biết giới hạn.
+
+00:00:11.026 --> 00:00:13.389 line:98%,end
+Huffman tạo bộ mã sát giới hạn đó,
+
+00:00:13.389 --> 00:00:17.628 line:98%,end
+mã số học vượt qua ràng buộc một bit mỗi ký hiệu của Huffman.
+
+00:00:18.232 --> 00:00:22.271 line:98%,end
+Chạm trần hai đến ba lần, ta chấp nhận mất dữ liệu.
+
+00:00:22.221 --> 00:00:25.181 line:98%,end
+BTC giữ trung bình và độ lệch của khối,
+
+00:00:25.181 --> 00:00:28.445 line:98%,end
+VQ thay cả khối bằng chỉ số trong codebook.
+
+00:00:29.050 --> 00:00:34.872 line:98%,end
+JPEG ghép DCT, lượng tử và Huffman thành chuẩn chung nhưng sinh méo khối.
+
+00:00:34.822 --> 00:00:38.377 line:98%,end
+Wavelet bỏ chia khối, còn lại ringing.
+
+00:00:38.377 --> 00:00:44.093 line:98%,end
+Hậu xử lý sửa méo ở phía nhận, còn ảnh đa phổ và học sâu mở rộng bài toán.
+
+00:00:45.616 --> 00:00:49.766 line:98%,end
+Hai phương pháp không mất dữ liệu: Huffman ghép hai xác suất nhỏ nhất,
+
+00:00:49.766 --> 00:00:52.493 line:98%,end
+mã số học biến cả thông điệp thành một khoảng.
+
+00:00:53.050 --> 00:00:58.367 line:98%,end
+Hai phương pháp có mất dữ liệu làm trên pixel: BTC giữ hai moment,
+
+00:00:58.367 --> 00:01:00.461 line:98%,end
+VQ gửi chỉ số code vector.
+
+00:01:01.012 --> 00:01:05.943 line:98%,end
+Hai phương pháp dựa trên biến đổi: JPEG chỉ mất dữ liệu ở bước lượng tử,
+
+00:01:05.943 --> 00:01:08.957 line:98%,end
+wavelet biến đổi toàn ảnh và dùng dead zone.
+
+00:01:10.426 --> 00:01:14.347 line:98%,end
+Một: Huffman gộp hai ký hiệu có xác suất nhỏ nhất.
+
+00:01:14.908 --> 00:01:19.025 line:98%,end
+Hai: entropy là cận dưới của số bit trung bình.
+
+00:01:19.582 --> 00:01:24.363 line:98%,end
+Ba: trong JPEG, chỉ lượng tử hóa làm mất dữ liệu.
+
+00:01:24.928 --> 00:01:29.422 line:98%,end
+Bốn: BTC bảo toàn trung bình và độ lệch chuẩn của khối.
+
+00:01:29.986 --> 00:01:33.256 line:98%,end
+Năm: mã số học là mã không khối.
+
+00:01:34.720 --> 00:01:38.134 line:98%,end
+Chương sau, tấm ảnh trời bắt đầu chuyển động.
+
+00:01:38.084 --> 00:01:42.020 line:98%,end
+Video có thêm tương quan thời gian giữa các khung hình,
+
+00:01:42.020 --> 00:01:47.172 line:98%,end
+và các bạn sẽ gặp lại DCT, lượng tử và Huffman bên trong các chuẩn MPEG.

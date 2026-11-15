@@ -1,0 +1,70 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.334 line:98%,end
+Ảnh giải mã từ bộ nén có mất dữ liệu mang hai loại méo.
+
+00:00:04.284 --> 00:00:07.917 line:98%,end
+Loại một là ringing, gợn sóng quanh cạnh.
+
+00:00:07.917 --> 00:00:12.035 line:98%,end
+Nó xuất hiện ở tỉ lệ nén cao trong mọi bộ mã dựa trên biến đổi,
+
+00:00:12.035 --> 00:00:14.388 line:98%,end
+do bản chất thông thấp của hệ thống.
+
+00:00:14.998 --> 00:00:17.562 line:98%,end
+Loại hai là blocking, méo khối,
+
+00:00:17.562 --> 00:00:21.615 line:98%,end
+do lượng tử độc lập các hệ số DCT theo từng khối.
+
+00:00:23.068 --> 00:00:28.682 line:98%,end
+Cách cũ là chấp nhận: muốn ít méo thì nén nhẹ tay, tức là tốn thêm dung lượng.
+
+00:00:30.154 --> 00:00:34.101 line:98%,end
+Ý tưởng: không đổi chuẩn nén, không đổi chuỗi bit.
+
+00:00:34.051 --> 00:00:38.140 line:98%,end
+Sau khi giải mã xong, ta xử lý thêm để giảm méo.
+
+00:00:38.740 --> 00:00:44.849 line:98%,end
+Slide nhắc lại từng bước của JPEG, từ chia khối, DCT, lượng tử đến DCT ngược,
+
+00:00:44.849 --> 00:00:48.260 line:98%,end
+để chỉ ra chính xác thông tin bị mất ở đâu.
+
+00:00:48.210 --> 00:00:52.338 line:98%,end
+Biết méo sinh ra ở bước nào thì biết cần phục hồi cái gì.
+
+00:00:53.842 --> 00:00:57.021 line:98%,end
+Bộ giải mã chuẩn làm việc như bình thường.
+
+00:00:57.580 --> 00:01:02.603 line:98%,end
+Khối hậu xử lý chen vào trước khi hiển thị: làm mượt ranh giới khối và gợn sóng,
+
+00:01:02.603 --> 00:01:04.926 line:98%,end
+nhưng phải giữ các cạnh thật của ảnh.
+
+00:01:06.394 --> 00:01:10.498 line:98%,end
+Nhiều trình xem ảnh và video có bộ lọc khử méo khối.
+
+00:01:10.448 --> 00:01:16.411 line:98%,end
+Ở video cuối chương, các bạn sẽ thấy học sâu cũng được dùng để khử vết nén,
+
+00:01:16.411 --> 00:01:17.922 line:98%,end
+ví dụ mạng CAS-CNN.
+
+00:01:19.432 --> 00:01:24.096 line:98%,end
+Hậu xử lý chỉ đoán lại phần đã mất, không lấy lại được thông tin thật.
+
+00:01:24.046 --> 00:01:28.134 line:98%,end
+Và đến giờ ta vẫn chỉ nói về ảnh hai chiều thông thường.
+
+00:01:29.638 --> 00:01:32.522 line:98%,end
+Bẫy một: ringing do bản chất thông thấp,
+
+00:01:32.522 --> 00:01:35.838 line:98%,end
+có ở mọi codec dựa trên biến đổi khi nén mạnh.
+
+00:01:36.400 --> 00:01:42.040 line:98%,end
+Bẫy hai: blocking do lượng tử độc lập các hệ số DCT của từng khối.

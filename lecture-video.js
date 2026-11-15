@@ -1,42 +1,103 @@
-import {lectures} from './lecture-data.js?v=2';
+import {lectures} from './lecture-data.js?v=4';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const time=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
-const SPEED_KEY='lecture-speed';
+const SPEED_KEY='lecture-speed',WATCHED_KEY='lecture-watched-v1';
+const KIND={intro:'Mở đầu',method:'Phương pháp',extra:'Mở rộng',summary:'Tổng kết'};
 const readSpeed=()=>{try{return Number(localStorage.getItem(SPEED_KEY))||1}catch{return 1}};
 const saveSpeed=v=>{try{localStorage.setItem(SPEED_KEY,String(v))}catch{}};
+const readWatched=()=>{try{return JSON.parse(localStorage.getItem(WATCHED_KEY)||'{}')||{}}catch{return {}}};
+const saveWatched=w=>{try{localStorage.setItem(WATCHED_KEY,JSON.stringify(w))}catch{}};
+const speedSelect=speed=>`<label>Tốc độ <select id="lecture-speed" aria-label="Tốc độ phát">${[.75,1,1.25,1.5,1.75,2].map(v=>`<option value="${v}" ${v===speed?'selected':''}>${v}×</option>`).join('')}</select></label><button class="text-button" id="lecture-cc" type="button" aria-pressed="true">CC Phụ đề</button>`;
+const videoInner=v=>`<source src="${esc(v.src)}" type="video/mp4"><track kind="captions" src="${esc(v.track)}" srclang="vi" label="Tiếng Việt" default>${v.chapters?`<track kind="chapters" src="${esc(v.chapters)}" srclang="vi" label="Mục lục">`:''}<p><a href="${esc(v.src)}">Mở video bài giảng</a></p>`;
+const outlineItems=v=>v.outline.map((p,i)=>`<li><button type="button" data-lecture-seek="${p.start}" data-lecture-part="${i}" data-title="${esc(p.beat?`${p.beat}: ${p.title}`:p.title)}"><span>${time(p.start)}</span><strong>${p.beat?`<em>${esc(p.beat)}</em>`:''}${esc(p.title)}</strong></button></li>`).join('');
 
 export const hasLecture=chapter=>Boolean(lectures[chapter]);
-export function lectureLabel(chapter){const l=lectures[chapter];return l?`▶ Video bài giảng · ${time(l.duration)}`:'';}
+export function lectureLabel(chapter){
+ const l=lectures[chapter];
+ if(!l)return '';
+ return l.stories?`▶ ${l.stories.length} video kể chuyện · ${time(l.duration)}`:`▶ Video bài giảng · ${time(l.duration)}`;
+}
 
 export function renderLecture(chapter){
  const l=lectures[chapter];
  if(!l)return '';
- const speed=readSpeed();
+ return l.stories?renderStories(chapter,l):renderSingle(chapter,l);
+}
+
+function renderSingle(chapter,l){
  return `<section class="lecture" aria-label="Video bài giảng chương ${chapter}">
-<div class="lecture-player"><video id="lecture-video" controls playsinline preload="metadata" poster="${esc(l.poster)}"><source src="${esc(l.src)}" type="video/mp4"><track kind="captions" src="${esc(l.track)}" srclang="vi" label="Tiếng Việt" default>${l.chapters?`<track kind="chapters" src="${esc(l.chapters)}" srclang="vi" label="Mục lục">`:''}<p><a href="${esc(l.src)}">Mở video bài giảng</a></p></video></div>
-<div class="lecture-tools"><span class="lecture-now" aria-live="polite">Giảng bằng tiếng Việt · ${time(l.duration)} · ${l.outline.length} phần</span><label>Tốc độ <select id="lecture-speed" aria-label="Tốc độ phát">${[.75,1,1.25,1.5,1.75,2].map(v=>`<option value="${v}" ${v===speed?'selected':''}>${v}×</option>`).join('')}</select></label><button class="text-button" id="lecture-cc" type="button" aria-pressed="true">CC Phụ đề</button></div>
-<ol class="lecture-outline">${l.outline.map((p,i)=>`<li><button type="button" data-lecture-seek="${p.start}" data-lecture-part="${i}"><span>${time(p.start)}</span><strong>${esc(p.title)}</strong></button></li>`).join('')}</ol>
+<div class="lecture-player"><video id="lecture-video" controls playsinline preload="metadata" poster="${esc(l.poster)}">${videoInner(l)}</video></div>
+<div class="lecture-tools"><span class="lecture-now" aria-live="polite">Giảng bằng tiếng Việt · ${time(l.duration)} · ${l.outline.length} phần</span>${speedSelect(readSpeed())}</div>
+<ol class="lecture-outline">${outlineItems(l)}</ol>
+</section>`;
+}
+
+function renderStories(chapter,l){
+ const watched=new Set(readWatched()[chapter]||[]);
+ const start=Math.max(0,l.stories.findIndex(s=>!watched.has(s.id)));
+ const first=l.stories[start];
+ return `<section class="lecture" data-lecture-chapter="${chapter}" aria-label="Video bài giảng chương ${chapter}">
+<div class="lecture-player"><video id="lecture-video" controls playsinline preload="metadata" poster="${esc(first.poster)}">${videoInner(first)}</video></div>
+<div class="lecture-tools"><span class="lecture-now" aria-live="polite"></span>${speedSelect(readSpeed())}</div>
+<div class="lecture-next" hidden><span>Xong video này.</span><button class="primary" type="button" id="lecture-next"></button></div>
+<div class="story-list"><div class="story-list-head"><h2>${l.stories.length} video · ${time(l.duration)}</h2><span class="story-progress"></span></div>
+<ol>${l.stories.map((s,i)=>`<li><button type="button" data-story="${i}"><span class="story-num">${String(i).padStart(2,'0')}</span><span class="story-text"><strong>${esc(s.title)}</strong><small>${KIND[s.kind]||''} · ${time(s.duration)}</small></span><span class="story-tick" aria-label="Đã xem">✓</span></button></li>`).join('')}</ol></div>
+<details class="story-beats" open><summary>Các nhịp của video đang xem · nhấn để tua</summary><ol class="lecture-outline"></ol></details>
 </section>`;
 }
 
 export function bindLecture(root,onFinish){
  const video=root.querySelector('#lecture-video');
  if(!video)return;
- const parts=[...root.querySelectorAll('[data-lecture-part]')];
- const now=root.querySelector('.lecture-now');
- const speed=root.querySelector('#lecture-speed');
- const cc=root.querySelector('#lecture-cc');
- const starts=parts.map(b=>Number(b.dataset.lectureSeek));
- let finished=false;
+ const section=video.closest('.lecture'),chapter=section.dataset.lectureChapter;
+ const now=root.querySelector('.lecture-now'),speed=root.querySelector('#lecture-speed'),cc=root.querySelector('#lecture-cc');
+ let ccOn=true,parts=[],starts=[],label='';
+ const applyCc=()=>{const track=video.textTracks[0];if(track)track.mode=ccOn?'showing':'hidden';cc.setAttribute('aria-pressed',String(ccOn));};
  video.playbackRate=readSpeed();
- video.addEventListener('loadedmetadata',()=>{video.playbackRate=readSpeed();});
+ video.addEventListener('loadedmetadata',()=>{video.playbackRate=readSpeed();applyCc();});
  speed.onchange=()=>{const v=Number(speed.value);video.playbackRate=v;saveSpeed(v);};
- cc.onclick=()=>{const track=video.textTracks[0];if(!track)return;const on=track.mode!=='showing';track.mode=on?'showing':'hidden';cc.setAttribute('aria-pressed',String(on));};
- parts.forEach(b=>b.onclick=()=>{video.currentTime=Number(b.dataset.lectureSeek)+.05;video.play().catch(()=>{});video.scrollIntoView({block:'nearest',behavior:'smooth'});});
- video.addEventListener('timeupdate',()=>{
+ cc.onclick=()=>{ccOn=!ccOn;applyCc();};
+ const bindOutline=()=>{
+  parts=[...section.querySelectorAll('[data-lecture-part]')];starts=parts.map(b=>Number(b.dataset.lectureSeek));
+  parts.forEach(b=>b.onclick=()=>{video.currentTime=Number(b.dataset.lectureSeek)+.05;video.play().catch(()=>{});video.scrollIntoView({block:'nearest',behavior:'smooth'});});
+ };
+ const showPart=()=>{
   let i=starts.length-1;while(i>0&&video.currentTime<starts[i])i--;
   parts.forEach((b,j)=>b.classList.toggle('active',j===i));
-  if(parts[i])now.textContent=`Phần ${i+1}/${parts.length} · ${parts[i].querySelector('strong').textContent}`;
-  if(!finished&&video.duration&&video.currentTime/video.duration>.9){finished=true;onFinish?.();}
+  if(parts[i])now.textContent=`${label}Phần ${i+1}/${parts.length} · ${parts[i].dataset.title}`;
+ };
+ if(!chapter){
+  let finished=false;bindOutline();
+  video.addEventListener('timeupdate',()=>{showPart();if(!finished&&video.duration&&video.currentTime/video.duration>.9){finished=true;onFinish?.();}});
+  return;
+ }
+ const stories=lectures[chapter].stories,buttons=[...section.querySelectorAll('[data-story]')];
+ const outline=section.querySelector('.story-beats ol'),next=section.querySelector('.lecture-next'),nextButton=section.querySelector('#lecture-next'),progress=section.querySelector('.story-progress');
+ const watched=new Set(readWatched()[chapter]||[]);
+ let current=-1,counted=false;
+ const paint=()=>{
+  buttons.forEach((b,i)=>{b.classList.toggle('active',i===current);b.classList.toggle('watched',watched.has(stories[i].id));if(i===current)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');});
+  progress.textContent=`Đã xem ${stories.filter(s=>watched.has(s.id)).length}/${stories.length}`;
+ };
+ const markWatched=()=>{
+  if(counted)return;counted=true;watched.add(stories[current].id);
+  const all=readWatched();all[chapter]=[...watched];saveWatched(all);paint();
+  if(stories.every(s=>watched.has(s.id)))onFinish?.();
+ };
+ const load=(i,play)=>{
+  current=i;counted=false;const s=stories[i];
+  label=`Video ${String(i).padStart(2,'0')} · `;
+  video.poster=s.poster;video.innerHTML=videoInner(s);video.load();
+  outline.innerHTML=outlineItems(s);bindOutline();
+  now.textContent=`${label}${s.title} · ${time(s.duration)}`;
+  next.hidden=true;paint();
+  if(play)video.play().catch(()=>{});
+ };
+ buttons.forEach((b,i)=>b.onclick=()=>{load(i,true);video.scrollIntoView({block:'nearest',behavior:'smooth'});});
+ video.addEventListener('timeupdate',()=>{showPart();if(video.duration&&video.currentTime/video.duration>.9)markWatched();});
+ video.addEventListener('ended',()=>{
+  markWatched();
+  if(current+1<stories.length){nextButton.textContent=`Tiếp: ${stories[current+1].title} →`;next.hidden=false;nextButton.onclick=()=>load(current+1,true);}
  });
+ load(Math.max(0,stories.findIndex(s=>!watched.has(s.id))),false);
 }

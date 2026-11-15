@@ -1,0 +1,163 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.193 line:98%,end
+Ta muốn nén ảnh trời mạnh hơn nữa mà không bị những ô vuông của JPEG.
+
+00:00:05.758 --> 00:00:10.409 line:98%,end
+Ô vuông sinh ra từ việc chia ảnh thành khối và xử lý mỗi khối riêng.
+
+00:00:11.860 --> 00:00:15.807 line:98%,end
+JPEG chỉ nhìn ảnh qua những ô tám nhân tám.
+
+00:00:15.757 --> 00:00:21.187 line:98%,end
+Mỗi ô không biết ô bên cạnh, nên không có gì bảo đảm biên giữa hai ô liền mạch.
+
+00:00:22.690 --> 00:00:30.075 line:98%,end
+Nén wavelet dựa trên một ý: các hệ số của một phép biến đổi giải tương quan được mã hóa hiệu quả hơn chính các pixel.
+
+00:00:30.628 --> 00:00:33.311 line:98%,end
+Wavelet biến đổi toàn ảnh theo nhiều mức,
+
+00:00:33.311 --> 00:00:36.190 line:98%,end
+tách ra một ảnh thu nhỏ và các ảnh chi tiết.
+
+00:00:36.140 --> 00:00:39.929 line:98%,end
+Thông tin thị giác quan trọng dồn vào số ít hệ số.
+
+00:00:40.534 --> 00:00:42.261 line:98%,end
+Các hệ số còn lại rất nhỏ,
+
+00:00:42.261 --> 00:00:46.578 line:98%,end
+có thể lượng tử thô hoặc cho bằng không mà ảnh gần như không đổi.
+
+00:00:48.052 --> 00:00:50.658 line:98%,end
+Bộ mã hóa gồm ba khối.
+
+00:00:50.608 --> 00:00:53.694 line:98%,end
+Khối một là biến đổi wavelet nhiều mức.
+
+00:00:54.310 --> 00:00:56.994 line:98%,end
+Khối hai lượng tử các hệ số.
+
+00:00:56.944 --> 00:00:59.405 line:98%,end
+Đây là nơi mất dữ liệu.
+
+00:01:00.016 --> 00:01:03.325 line:98%,end
+Khối ba mã hóa ký hiệu không mất dữ liệu.
+
+00:01:03.275 --> 00:01:08.653 line:98%,end
+Bộ giải mã làm ngược lại: giải mã ký hiệu, rồi biến đổi wavelet ngược.
+
+00:01:10.174 --> 00:01:15.775 line:98%,end
+Hình này là phân bố các hệ số chi tiết sau biến đổi: phần lớn nằm rất gần không.
+
+00:01:16.336 --> 00:01:20.817 line:98%,end
+Bộ lượng tử thường là lượng tử đều: mọi khoảng rộng như nhau.
+
+00:01:20.767 --> 00:01:24.517 line:98%,end
+Chỉ những hệ số thật sát không mới bị ép về không.
+
+00:01:25.138 --> 00:01:29.411 line:98%,end
+Thử đoán: nếu nới rộng riêng khoảng quanh số không thì được gì?
+
+00:01:31.980 --> 00:01:37.229 line:98%,end
+Mẹo của slide: nới rộng khoảng lượng tử quanh không, gọi là dead zone.
+
+00:01:37.179 --> 00:01:42.596 line:98%,end
+Nhiều hệ số nhỏ hơn bị ép về không, mà đó lại là chi tiết mắt ít thấy.
+
+00:01:42.596 --> 00:01:46.060 line:98%,end
+Nhiều số không liên tiếp thì mã hóa rất rẻ.
+
+00:01:46.662 --> 00:01:51.169 line:98%,end
+Slide còn nêu: có thể đổi kích thước khoảng lượng tử theo từng mức tỉ lệ,
+
+00:01:51.169 --> 00:01:54.255 line:98%,end
+và các khoảng đã chọn phải gửi kèm cho bộ giải mã.
+
+00:01:55.716 --> 00:01:58.335 line:98%,end
+Một: loại hàm wavelet.
+
+00:01:58.285 --> 00:02:03.455 line:98%,end
+Nó ảnh hưởng độ phức tạp tính toán và khả năng nén mà sai số vẫn chấp nhận được.
+
+00:02:03.455 --> 00:02:07.035 line:98%,end
+Slide có bảng so sánh vài họ wavelet thường dùng.
+
+00:02:07.638 --> 00:02:10.257 line:98%,end
+Hai: số mức phân rã.
+
+00:02:10.207 --> 00:02:14.621 line:98%,end
+Càng nhiều mức thì số phép tính của biến đổi xuôi và ngược càng tăng.
+
+00:02:15.240 --> 00:02:19.161 line:98%,end
+Thử đoán: có phải càng nhiều mức phân rã thì càng tốt?
+
+00:02:21.722 --> 00:02:23.208 line:98%,end
+Không hẳn.
+
+00:02:23.158 --> 00:02:28.320 line:98%,end
+Lượng tử các hệ số ở tỉ lệ ngày càng thấp ảnh hưởng đến vùng ảnh ngày càng rộng,
+
+00:02:28.320 --> 00:02:30.320 line:98%,end
+nên sai số tái tạo có thể tăng.
+
+00:02:30.320 --> 00:02:35.203 line:98%,end
+Slide minh họa bằng ví dụ nén một ảnh năm trăm mười hai nhân năm trăm mười hai.
+
+00:02:35.804 --> 00:02:40.129 line:98%,end
+Ba: thiết kế bộ lượng tử, như dead zone vừa rồi.
+
+00:02:41.594 --> 00:02:45.125 line:98%,end
+JPEG biến đổi theo khối tám nhân tám.
+
+00:02:45.075 --> 00:02:48.265 line:98%,end
+Wavelet biến đổi toàn ảnh, nhiều mức.
+
+00:02:48.884 --> 00:02:52.506 line:98%,end
+Méo đặc trưng của JPEG là méo khối.
+
+00:02:52.456 --> 00:02:58.263 line:98%,end
+Wavelet hết méo khối, nhưng khi nén mạnh có gợn sóng quanh cạnh, gọi là ringing.
+
+00:02:58.862 --> 00:03:02.210 line:98%,end
+Đổi lại, wavelet tính toán nặng hơn.
+
+00:03:02.768 --> 00:03:06.077 line:98%,end
+Cả hai đều có chế độ không mất dữ liệu.
+
+00:03:06.027 --> 00:03:11.731 line:98%,end
+Trong sơ đồ JPEG2000 ở slide, đường nét đứt là chế độ lossless.
+
+00:03:13.238 --> 00:03:18.331 line:98%,end
+Chuẩn JPEG2000 dùng biến đổi wavelet thay cho DCT theo khối.
+
+00:03:18.896 --> 00:03:25.591 line:98%,end
+JPEG2000 được dùng trong rạp chiếu phim kỹ thuật số và trong ảnh y tế theo chuẩn DICOM.
+
+00:03:27.062 --> 00:03:32.038 line:98%,end
+Wavelet hết ô vuông, nhưng nén rất mạnh vẫn có gợn sóng quanh các cạnh.
+
+00:03:31.988 --> 00:03:36.962 line:98%,end
+Mọi bộ mã dựa trên biến đổi đều gặp hiện tượng này ở tỉ lệ nén cao.
+
+00:03:37.568 --> 00:03:43.377 line:98%,end
+Còn hàng tỉ ảnh JPEG có sẵn vẫn mang méo khối, không thể bắt ai mã hóa lại.
+
+00:03:43.327 --> 00:03:46.153 line:98%,end
+Có sửa được ở phía người nhận không?
+
+00:03:46.153 --> 00:03:48.419 line:98%,end
+Đó là hậu xử lý.
+
+00:03:49.934 --> 00:03:55.275 line:98%,end
+Bẫy một: dead zone là khoảng lượng tử quanh số không được nới rộng hơn các khoảng khác.
+
+00:03:55.832 --> 00:04:00.235 line:98%,end
+Bẫy hai: nhiều mức phân rã không phải lúc nào cũng tốt hơn.
+
+00:04:00.185 --> 00:04:03.922 line:98%,end
+Phép tính tăng, sai số tái tạo có thể tăng.
+
+00:04:04.538 --> 00:04:10.412 line:98%,end
+Bẫy ba: wavelet bỏ được méo khối, nhưng vẫn có ringing ở tỉ lệ nén cao.

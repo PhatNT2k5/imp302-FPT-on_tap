@@ -1,0 +1,79 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:04.230 line:98%,end
+Ảnh vệ tinh viễn thám chụp cùng một vùng đất ở nhiều dải phổ.
+
+00:00:04.180 --> 00:00:09.297 line:98%,end
+Ảnh y tế ghép nhiều phương thức như MRI, CT, X quang.
+
+00:00:09.297 --> 00:00:13.268 line:98%,end
+Đó là ảnh đa phổ, một khối dữ liệu ba chiều.
+
+00:00:13.870 --> 00:00:17.964 line:98%,end
+Chiều thứ ba, chiều phổ, có bản chất khác hẳn hai chiều không gian,
+
+00:00:17.964 --> 00:00:21.385 line:98%,end
+nên các kỹ thuật nén ảnh hai chiều thường không phù hợp.
+
+00:00:22.852 --> 00:00:26.161 line:98%,end
+Các dải phổ của cùng một vùng rất giống nhau.
+
+00:00:26.111 --> 00:00:30.903 line:98%,end
+Ngoài tương quan không gian, ta khai thác thêm tương quan giữa các dải phổ.
+
+00:00:32.410 --> 00:00:36.169 line:98%,end
+Lớp phổ không gian: áp dụng biến đổi KL trên chiều phổ trước,
+
+00:00:36.169 --> 00:00:40.667 line:98%,end
+rồi nén từng thành phần đã giải tương quan bằng mã hóa dựa trên biến đổi.
+
+00:00:41.236 --> 00:00:46.126 line:98%,end
+Lớp không gian phổ: biến đổi không gian trước, như DCT khối hoặc wavelet,
+
+00:00:46.126 --> 00:00:50.144 line:98%,end
+rồi giải tương quan chiều phổ của mỗi băng bằng biến đổi KL.
+
+00:00:50.710 --> 00:00:54.625 line:98%,end
+Lớp không gian phổ phức: khi các mặt phẳng ảnh không khớp nhau,
+
+00:00:54.625 --> 00:00:57.483 line:98%,end
+cần biến đổi tần số phức để giữ thông tin pha.
+
+00:00:58.948 --> 00:01:01.534 line:98%,end
+Hướng mới nhất thay cả chuỗi biến đổi,
+
+00:01:01.534 --> 00:01:05.617 line:98%,end
+lượng tử và mã entropy bằng mạng nơ ron học từ đầu đến cuối.
+
+00:01:06.166 --> 00:01:08.251 line:98%,end
+Slide nêu ba hướng.
+
+00:01:08.201 --> 00:01:14.074 line:98%,end
+Hướng CNN, ví dụ CAS-CNN dùng mạng tích chập sâu để khử vết nén.
+
+00:01:14.680 --> 00:01:15.493 line:98%,end
+Hướng RNN,
+
+00:01:15.493 --> 00:01:22.325 line:98%,end
+ví dụ mô hình nén ảnh độ phân giải đầy đủ bằng mạng hồi quy của Toderici và cộng sự.
+
+00:01:22.882 --> 00:01:23.754 line:98%,end
+Và hướng GAN,
+
+00:01:23.754 --> 00:01:28.783 line:98%,end
+nén thích ứng bằng cách bù phần dư ngữ nghĩa và cảm nhận qua mạng đối sinh.
+
+00:01:30.232 --> 00:01:33.684 line:98%,end
+Bẫy một: ảnh đa phổ không nén như ảnh hai chiều được,
+
+00:01:33.684 --> 00:01:36.810 line:98%,end
+vì chiều phổ khác bản chất với chiều không gian.
+
+00:01:37.378 --> 00:01:41.596 line:98%,end
+Bẫy hai: lớp phổ không gian biến đổi KL trên chiều phổ trước,
+
+00:01:41.596 --> 00:01:43.877 line:98%,end
+lớp không gian phổ thì ngược lại.
+
+00:01:44.428 --> 00:01:50.563 line:98%,end
+Bẫy ba: ba hướng học sâu trong slide là CNN, RNN và GAN.

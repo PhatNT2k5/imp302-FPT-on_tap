@@ -1,0 +1,175 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:03.331 line:98%,end
+Các phương pháp đến giờ mỗi cái một kiểu.
+
+00:00:03.281 --> 00:00:05.624 line:98%,end
+Để gửi ảnh cho bất kỳ ai, máy ảnh,
+
+00:00:05.624 --> 00:00:09.414 line:98%,end
+điện thoại và trình duyệt phải cùng hiểu một định dạng.
+
+00:00:10.030 --> 00:00:14.275 line:98%,end
+Chuẩn đó còn phải nén tốt, chạy nhanh trên cả phần cứng lẫn phần mềm,
+
+00:00:14.275 --> 00:00:16.920 line:98%,end
+và cho chọn giữa dung lượng với chất lượng.
+
+00:00:18.388 --> 00:00:22.479 line:98%,end
+BTC và VQ làm việc trên giá trị pixel.
+
+00:00:22.429 --> 00:00:25.616 line:98%,end
+Trong miền pixel, thông tin trải đều mọi điểm,
+
+00:00:25.616 --> 00:00:28.249 line:98%,end
+khó biết bỏ chỗ nào mà mắt không thấy.
+
+00:00:28.870 --> 00:00:36.541 line:98%,end
+Ở chương bốn ta đã có câu trả lời: phép biến đổi DCT dồn phần lớn năng lượng của khối vào vài hệ số tần số thấp.
+
+00:00:37.996 --> 00:00:42.166 line:98%,end
+JPEG ghép những gì ta đã học: biến đổi để thông tin dồn lại,
+
+00:00:42.166 --> 00:00:47.100 line:98%,end
+lượng tử để bỏ phần mắt ít nhạy, rồi mã không mất dữ liệu phần còn lại.
+
+00:00:47.662 --> 00:00:52.534 line:98%,end
+Mắt người nhạy với mảng sáng tối lớn, kém nhạy với chi tiết rất mịn.
+
+00:00:52.484 --> 00:00:57.015 line:98%,end
+Vậy ta lượng tử thô các tần số cao, giữ kỹ tần số thấp.
+
+00:00:58.516 --> 00:01:03.023 line:98%,end
+Bước một, chia ảnh thành các khối tám nhân tám pixel liền kề.
+
+00:01:03.574 --> 00:01:07.196 line:98%,end
+Bước hai, biến đổi DCT từng khối.
+
+00:01:07.146 --> 00:01:10.352 line:98%,end
+Hệ số góc trên bên trái là độ sáng trung bình,
+
+00:01:10.352 --> 00:01:12.862 line:98%,end
+càng xa càng là chi tiết tần số cao.
+
+00:01:12.862 --> 00:01:16.273 line:98%,end
+DCT khả nghịch, nên chưa mất gì.
+
+00:01:16.888 --> 00:01:21.864 line:98%,end
+Bước ba, chia mỗi hệ số cho một số trong bảng lượng tử rồi làm tròn.
+
+00:01:21.814 --> 00:01:26.840 line:98%,end
+Đây là bước duy nhất làm mất dữ liệu, và bảng này dùng chung cho mọi khối.
+
+00:01:27.442 --> 00:01:33.343 line:98%,end
+Bước bốn, mã các hệ số đã lượng tử, phần lớn là số không, bằng Huffman.
+
+00:01:33.293 --> 00:01:38.615 line:98%,end
+Bên giải mã làm ngược lại: giải Huffman, nhân lại với bảng lượng tử,
+
+00:01:38.615 --> 00:01:40.493 line:98%,end
+rồi DCT ngược từng khối.
+
+00:01:42.016 --> 00:01:46.770 line:98%,end
+Thử đoán trước: hệ số nào sẽ mất nhiều nhất, hệ số DC lớn nhất,
+
+00:01:46.770 --> 00:01:48.958 line:98%,end
+hay một hệ số tần số cao nhỏ?
+
+00:01:51.522 --> 00:01:56.186 line:98%,end
+Hệ số DC bằng hai trăm ba mươi sáu, bước lượng tử mười sáu.
+
+00:01:56.136 --> 00:01:59.026 line:98%,end
+Chia ra rồi làm tròn được mười lăm.
+
+00:01:59.026 --> 00:02:03.570 line:98%,end
+Bộ giải mã nhân lại được hai trăm bốn mươi, sai lệch chỉ bốn.
+
+00:02:04.188 --> 00:02:08.721 line:98%,end
+Hệ số tần số thấp bằng âm hai mươi ba, bước lượng tử mười một.
+
+00:02:08.671 --> 00:02:13.632 line:98%,end
+Làm tròn được âm hai, giải mã ra âm hai mươi hai, sai lệch một.
+
+00:02:14.238 --> 00:02:19.043 line:98%,end
+Hệ số tần số cao bằng mười hai, nhưng bước lượng tử ở đó rất lớn,
+
+00:02:19.043 --> 00:02:20.152 line:98%,end
+chín mươi chín.
+
+00:02:20.102 --> 00:02:23.708 line:98%,end
+Chia ra chưa tới một nửa nên làm tròn thành không.
+
+00:02:23.708 --> 00:02:26.391 line:98%,end
+Hệ số này biến mất hoàn toàn.
+
+00:02:26.391 --> 00:02:28.851 line:98%,end
+Đó là cách JPEG bỏ chi tiết mịn,
+
+00:02:28.851 --> 00:02:32.849 line:98%,end
+và cũng là lý do sau lượng tử có rất nhiều số không.
+
+00:02:34.356 --> 00:02:40.504 line:98%,end
+BTC và VQ làm trên pixel, JPEG làm trên hệ số DCT.
+
+00:02:41.070 --> 00:02:46.775 line:98%,end
+Nhờ vậy JPEG bỏ thông tin đúng chỗ mắt ít nhạy, thay vì bỏ đều mọi nơi.
+
+00:02:47.328 --> 00:02:53.185 line:98%,end
+JPEG là chuẩn chung, độ phức tạp thấp, chạy được trên cả phần cứng lẫn phần mềm,
+
+00:02:53.185 --> 00:02:54.869 line:98%,end
+và hỗ trợ mọi loại ảnh.
+
+00:02:55.434 --> 00:02:59.672 line:98%,end
+JPEG có nhiều chế độ: tuần tự quét một lượt từ trái sang phải,
+
+00:02:59.672 --> 00:03:05.345 line:98%,end
+trên xuống dưới; lũy tiến gửi bản thô trước rồi tinh dần; phân cấp đa độ phân giải.
+
+00:03:05.295 --> 00:03:07.564 line:98%,end
+Độ sâu từ tám đến mười hai bit,
+
+00:03:07.564 --> 00:03:11.298 line:98%,end
+và JPEG định nghĩa cả thuật toán không mất dữ liệu.
+
+00:03:12.816 --> 00:03:18.277 line:98%,end
+JPEG là định dạng ảnh phổ biến nhất: ảnh chụp bằng điện thoại, máy ảnh,
+
+00:03:18.277 --> 00:03:19.276 line:98%,end
+ảnh trên web.
+
+00:03:19.842 --> 00:03:24.922 line:98%,end
+Chế độ lũy tiến là lý do một số ảnh trên web hiện mờ trước rồi nét dần.
+
+00:03:26.376 --> 00:03:31.210 line:98%,end
+Vì mỗi khối tám nhân tám được lượng tử độc lập với khối bên cạnh, khi nén mạnh,
+
+00:03:31.210 --> 00:03:34.269 line:98%,end
+ranh giới giữa các khối lộ ra thành những ô vuông.
+
+00:03:34.219 --> 00:03:37.266 line:98%,end
+Đó là méo khối, blocking.
+
+00:03:37.866 --> 00:03:43.584 line:98%,end
+Ảnh bầu trời là nạn nhân điển hình: vùng trời chuyển màu mượt bị vỡ thành từng bậc ô vuông.
+
+00:03:44.148 --> 00:03:47.575 line:98%,end
+Muốn hết ô vuông, phải bỏ cách chia khối.
+
+00:03:47.525 --> 00:03:52.134 line:98%,end
+Phép biến đổi wavelet làm trên toàn ảnh, ở video tiếp theo.
+
+00:03:53.634 --> 00:03:58.363 line:98%,end
+Bẫy một: trong JPEG chỉ lượng tử hóa làm mất dữ liệu.
+
+00:03:58.313 --> 00:04:01.854 line:98%,end
+DCT khả nghịch, Huffman không mất gì.
+
+00:04:02.460 --> 00:04:07.032 line:98%,end
+Bẫy hai: méo khối sinh ra vì mỗi khối được lượng tử độc lập.
+
+00:04:07.590 --> 00:04:12.813 line:98%,end
+Bẫy ba: JPEG định nghĩa cả thuật toán có mất lẫn không mất dữ liệu.
+
+00:04:13.368 --> 00:04:17.107 line:98%,end
+Bẫy bốn: bảng lượng tử dùng chung cho mọi khối.

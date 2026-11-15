@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))  # `python -I` leaves t
 
 from pydantic import ValidationError
 
-from script_model import SCRIPTS, check_assets, load_script
+from script_model import SCRIPTS, StoryScript, check_assets, load_script
 
 
 def validate(chapter: int) -> list[str]:
@@ -33,8 +33,12 @@ def main() -> int:
             print("\n".join(problems))
         else:
             script = load_script(chapter)
-            points = sum(len(s.points) for s in script.scenes)
-            print(f"ch{chapter:02d}: ok ({len(script.scenes)} scenes, {points} narration segments)")
+            if isinstance(script, StoryScript):
+                parts = [f"{s.id} ~{s.seconds() / 60:.1f}m" for s in script.stories]
+                print(f"ch{chapter:02d}: ok ({len(script.stories)} stories: {', '.join(parts)})")
+            else:
+                points = sum(len(s.points) for s in script.scenes)
+                print(f"ch{chapter:02d}: ok ({len(script.scenes)} scenes, {points} narration segments)")
     return 1 if failed else 0
 
 

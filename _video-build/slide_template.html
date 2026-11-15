@@ -76,6 +76,31 @@
   .agenda div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .agenda i { font-style: normal; color: var(--muted); margin-right: 12px; font-variant-numeric: tabular-nums; }
 
+  .head { position: relative; }
+  .ask { position: absolute; right: 0; top: 8px; font-size: 17px; font-weight: 700; color: var(--bg);
+         background: var(--orange); border-radius: 999px; padding: 6px 16px; }
+  .split { flex: 1; min-height: 0; display: flex; gap: 28px; }
+  .split > .visual { flex: 1.55; }
+  .split > ul.bullets { flex: 1; font-size: .86em; align-self: center; }
+  .visual { flex: 1; min-height: 200px; position: relative; }
+  .visual svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .visual .cap { position: absolute; left: 0; bottom: 0; font-size: 15px; color: var(--muted); }
+  svg text { font-family: "Segoe UI", sans-serif; fill: var(--ink); }
+  svg .muted { fill: var(--muted); }
+  .compare { flex: 1; min-height: 0; display: flex; align-items: stretch; gap: 22px; }
+  .compare .panel { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
+  .compare .panel b { font-size: .8em; color: var(--accent); font-weight: 600; }
+  .compare .panel .visual { width: 100%; }
+  .compare .panel img { max-width: 100%; max-height: 380px; object-fit: contain; border-radius: 8px; }
+  .compare .arrow { align-self: center; display: flex; flex-direction: column; align-items: center; color: var(--orange);
+                    font-size: .72em; max-width: 170px; text-align: center; gap: 4px; }
+  .compare .arrow i { font-style: normal; font-size: 2.2em; line-height: 1; }
+  .chain { display: flex; flex-wrap: wrap; gap: 14px 8px; align-items: center; font-size: .8em; flex: none; }
+  .chain span { padding: 9px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); }
+  .chain span.done { color: var(--ink); }
+  .chain span.done::before { content: "✓ "; color: var(--accent); }
+  .chain span.current { background: #3d5a3a; border-color: var(--accent); color: #fff; font-weight: 700; }
+  .chain i { font-style: normal; color: var(--line); }
   .foot { flex: none; height: 44px; position: relative; }
   .bar { height: 4px; border-radius: 2px; background: var(--line); }
   .bar div { height: 4px; border-radius: 2px; background: var(--accent); }
@@ -96,6 +121,204 @@ function el(tag, cls, text) {
   return node;
 }
 
+/* ---------- staged visuals (drawn as SVG once the holder has its final size) ---------- */
+const SVGNS = "http://www.w3.org/2000/svg";
+const COLORS = { fill: "#1b2a22", line: "#35463a", ink: "#e4eee1", muted: "#8fa392", accent: "#a9c995",
+                 accentFill: "#3d5a3a", orange: "#edb78e", warnFill: "#6a4a32" };
+
+function svg(tag, attrs = {}, text) {
+  const node = document.createElementNS(SVGNS, tag);
+  for (const [k, v] of Object.entries(attrs)) if (v !== undefined && v !== null) node.setAttribute(k, v);
+  if (text !== undefined && text !== null) node.textContent = String(text);
+  return node;
+}
+
+function look(item) {
+  const s = item.style;
+  return {
+    fill: s === "accent" ? COLORS.accentFill : s === "warn" ? COLORS.warnFill : COLORS.fill,
+    stroke: item.current ? COLORS.accent : s === "accent" ? COLORS.accent : s === "warn" || s === "cut" ? COLORS.orange : COLORS.line,
+    width: item.current ? 4 : s ? 2.5 : 1.5,
+    opacity: !item.visible ? 0 : s === "dim" ? 0.35 : 1,
+  };
+}
+
+function visualHolder(visual) {
+  const holder = el("div", "visual");
+  holder.visualData = visual;
+  if (visual.caption) holder.append(el("span", "cap", visual.caption));
+  return holder;
+}
+
+function textWidth(text, size) { return String(text).length * size * 0.56; }
+
+function drawGraph(root, v, W, H) {
+  const nodes = v.nodes, byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+  const xs = nodes.map(n => n.x), ys = nodes.map(n => n.y);
+  const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+  const font = 19, noteRoom = nodes.some(n => n.note) ? 26 : 0, capRoom = v.caption ? 26 : 0;
+  const radius = n => n.shape === "dot" ? 8 : n.shape === "box" ? Math.max(textWidth(n.label, font) / 2 + 14, 26) : 27;
+  const padX = Math.max(46, ...nodes.map(n => radius(n) + 8)), padY = 46;
+  const sx = (W - 2 * padX) / Math.max(maxX - minX, 1e-9), sy = (H - 2 * padY - noteRoom - capRoom) / Math.max(maxY - minY, 1e-9);
+  const k = Math.min(maxX > minX ? sx : Infinity, maxY > minY ? sy : Infinity, 1e6);
+  const kk = isFinite(k) ? k : 0;
+  const offX = (W - (maxX - minX) * kk) / 2, offY = (H - noteRoom - capRoom - (maxY - minY) * kk) / 2;
+  const P = n => [offX + (n.x - minX) * kk, offY + (n.y - minY) * kk];
+  if (v.arrows) {
+    const defs = svg("defs"), marker = svg("marker", { id: "arrow", viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse" });
+    marker.append(svg("path", { d: "M0,0 L10,5 L0,10 z", fill: COLORS.muted }));
+    defs.append(marker); root.append(defs);
+  }
+  for (const e of v.edges) {
+    const a = byId[e.a], b = byId[e.b], [x1, y1] = P(a), [x2, y2] = P(b), L = look(e);
+    const len = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / len, uy = (y2 - y1) / len;
+    const ra = a.shape === "box" ? 22 : radius(a), rb = b.shape === "box" ? 22 : radius(b);
+    const g = svg("g", { opacity: e.style === "dim" && e.visible ? 0.1 : L.opacity });  // superseded edges fade almost out
+    g.append(svg("line", { x1: x1 + ux * ra, y1: y1 + uy * ra, x2: x2 - ux * (rb + (v.arrows ? 3 : 0)), y2: y2 - uy * (rb + (v.arrows ? 3 : 0)),
+      stroke: e.style || e.current ? L.stroke : COLORS.muted, "stroke-width": L.width, "stroke-dasharray": e.style === "cut" ? "9 7" : null,
+      "marker-end": v.arrows ? "url(#arrow)" : null }));
+    if (e.label) {
+      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, w = textWidth(e.label, 17) + 14;
+      g.append(svg("rect", { x: mx - w / 2, y: my - 13, width: w, height: 26, rx: 6, fill: "#111c18" }));
+      g.append(svg("text", { x: mx, y: my + 6, "text-anchor": "middle", "font-size": 17, fill: e.style === "cut" ? COLORS.orange : COLORS.accent, "font-weight": 600 }, e.label));
+    }
+    root.append(g);
+  }
+  for (const n of nodes) {
+    const [x, y] = P(n), L = look(n), g = svg("g", { opacity: n.style === "dim" && n.visible ? 0.22 : L.opacity }), r = radius(n);
+    if (n.shape === "box") g.append(svg("rect", { x: x - r, y: y - 22, width: 2 * r, height: 44, rx: 10, fill: L.fill, stroke: L.stroke, "stroke-width": L.width }));
+    else g.append(svg("circle", { cx: x, cy: y, r, fill: n.shape === "dot" ? (n.style === "warn" ? COLORS.orange : n.style === "accent" || n.current ? COLORS.accent : COLORS.muted) : L.fill, stroke: n.shape === "dot" ? "none" : L.stroke, "stroke-width": L.width }));
+    if (n.label) g.append(svg("text", n.shape === "dot" ? { x: x + 13, y: y - 10, "font-size": 16, class: "muted" } : { x, y: y + 7, "text-anchor": "middle", "font-size": font, "font-weight": 600 }, n.label));
+    if (n.note) g.append(svg("text", { x, y: y + (n.shape === "dot" ? 26 : 50), "text-anchor": "middle", "font-size": 16, class: "muted" }, n.note));
+    root.append(g);
+  }
+}
+
+function drawHistogram(root, v, W, H) {
+  const labelled = v.bands.filter(b => b.label).length;
+  // Band labels get their own rows above the plot, then a row for the bar values.
+  const n = v.bars.length, top = 26 + 22 * labelled + (v.lines.length ? 22 : 0), bottom = 30 + (v.caption ? 26 : 0), left = 8, right = 8;
+  const plotW = W - left - right, plotH = H - top - bottom, slot = plotW / n, max = Math.max(...v.bars.map(b => b.value), 1e-9);
+  const X = at => left + at * slot, base = top + plotH;
+  let row = 0;
+  for (const band of v.bands) {
+    const L = look(band), g = svg("g", { opacity: L.opacity }), labelY = 18 + 22 * (band.label ? row++ : labelled);
+    g.append(svg("rect", { x: X(band.start), y: labelY + 6, width: X(band.end) - X(band.start), height: base - labelY - 6, rx: 6,
+      fill: band.style === "warn" ? COLORS.warnFill : COLORS.accentFill, "fill-opacity": 0.45 }));
+    if (band.label) g.append(svg("text", { x: (X(band.start) + X(band.end)) / 2, y: labelY, "text-anchor": "middle", "font-size": 16,
+      "font-weight": 600, fill: band.style === "warn" ? COLORS.orange : COLORS.accent }, band.label));
+    root.append(g);
+  }
+  root.append(svg("line", { x1: left, x2: W - right, y1: base, y2: base, stroke: COLORS.line, "stroke-width": 2 }));
+  const every = Math.ceil(n / 20);
+  v.bars.forEach((b, i) => {
+    const L = look(b), h = b.value / max * plotH, w = Math.min(slot * 0.72, 90), x = X(i) + (slot - w) / 2;
+    const g = svg("g", { opacity: L.opacity });
+    g.append(svg("rect", { x, y: base - h, width: w, height: Math.max(h, 1), rx: 3,
+      fill: b.style === "warn" ? COLORS.orange : b.style === "accent" || b.current ? COLORS.accent : "#5f7f68" }));
+    if (n <= 16) g.append(svg("text", { x: x + w / 2, y: base - h - 8, "text-anchor": "middle", "font-size": 15, class: "muted" }, String(b.value)));
+    root.append(g);
+    if (i % every === 0) root.append(svg("text", { x: X(i) + slot / 2, y: base + 22, "text-anchor": "middle", "font-size": 15, class: "muted", opacity: L.opacity ? 1 : 0 }, b.label));
+  });
+  for (const line of v.lines) {
+    const L = look(line), x = X(line.at), g = svg("g", { opacity: L.opacity });
+    g.append(svg("line", { x1: x, x2: x, y1: top - 4, y2: base + 4, stroke: COLORS.orange, "stroke-width": 3, "stroke-dasharray": "8 6" }));
+    g.append(svg("text", { x, y: top - 12, "text-anchor": "middle", "font-size": 17, "font-weight": 700, fill: COLORS.orange }, line.label));
+    root.append(g);
+  }
+}
+
+function fmt(x) { return String(Math.round(x * 1e6) / 1e6).replace(".", ","); }
+
+function drawIntervals(root, v, W, H) {
+  const rows = v.rows, capRoom = v.caption ? 26 : 0, left = 10, right = 10;
+  const rowH = Math.min(92, (H - capRoom) / rows.length), barH = Math.min(36, rowH * 0.45), plotW = W - left - right;
+  rows.forEach((row, i) => {
+    const y = i * rowH + 26, L = look(row), g = svg("g", { opacity: L.opacity });
+    const X = t => left + (t - row.low) / (row.high - row.low) * plotW;
+    for (const [name, a, b] of row.parts) {
+      const picked = name === row.pick, x = X(a), w = X(b) - X(a);
+      g.append(svg("rect", { x, y, width: w, height: barH, fill: picked ? COLORS.accentFill : COLORS.fill,
+        stroke: picked ? COLORS.accent : COLORS.line, "stroke-width": picked ? 3 : 1.5 }));
+      if (w > textWidth(name, 16) + 6) g.append(svg("text", { x: x + w / 2, y: y + barH / 2 + 6, "text-anchor": "middle", "font-size": 16, "font-weight": picked ? 700 : 400 }, name));
+    }
+    g.append(svg("text", { x: left, y: y - 7, "font-size": 15, class: "muted" }, fmt(row.low)));
+    g.append(svg("text", { x: W - right, y: y - 7, "text-anchor": "end", "font-size": 15, class: "muted" }, fmt(row.high)));
+    const next = rows[i + 1], pick = row.parts.find(p => p[0] === row.pick);
+    if (pick && next && next.visible) {
+      const ny = (i + 1) * rowH + 26;
+      for (const [from, to] of [[X(pick[1]), left], [X(pick[2]), W - right]])
+        g.append(svg("line", { x1: from, y1: y + barH, x2: to, y2: ny, stroke: COLORS.accent, "stroke-width": 1.5, "stroke-dasharray": "5 5", opacity: 0.8 }));
+    }
+    root.append(g);
+  });
+}
+
+function drawVisuals(stage) {
+  for (const holder of stage.querySelectorAll(".visual")) {
+    const v = holder.visualData;
+    holder.querySelector("svg")?.remove();
+    const W = holder.clientWidth, H = holder.clientHeight;
+    const root = svg("svg", { viewBox: `0 0 ${W} ${H}` });
+    if (v.type === "graph") drawGraph(root, v, W, H);
+    else if (v.type === "histogram") drawHistogram(root, v, W, H);
+    else if (v.type === "intervals") drawIntervals(root, v, W, H);
+    holder.prepend(root);
+  }
+}
+
+function buildPanel(panel, visible) {
+  const box = el("div", "panel" + (visible ? "" : " hidden"));
+  if (panel.grid) box.append(buildGrids([panel.grid]));
+  else if (panel.histogram) box.append(visualHolder({ type: "histogram", ...panel.histogram }));
+  else { const img = el("img"); img.src = panel.image; box.append(img); }
+  box.append(el("b", "", panel.label));
+  return box;
+}
+
+function buildVisual(v) {
+  if (v.type === "chain") {
+    const chain = el("div", "chain");
+    v.items.forEach((item, i) => {
+      if (i) chain.append(el("i", "", "→"));
+      chain.append(el("span", i + 1 === v.current ? "current" : i + 1 < v.current ? "done" : "", item));
+    });
+    return chain;
+  }
+  if (v.type === "compare") {
+    const wrap = el("div", "compare");
+    const arrow = el("div", "arrow" + (v.showRight ? "" : " hidden"));
+    arrow.append(el("i", "", "→"), el("span", "", v.arrow));
+    wrap.append(buildPanel(v.left, v.showLeft), arrow, buildPanel(v.right, v.showRight));
+    return wrap;
+  }
+  return visualHolder(v);
+}
+
+function buildBullets(bullets) {
+  const list = el("ul", "bullets");
+  for (const b of bullets) list.append(el("li", b.visible ? (b.current ? "current" : "") : "hidden", b.text));
+  return list;
+}
+
+function buildGrids(grids) {
+  const wrap = el("div", "grids");
+  for (const g of grids) {
+    const cols = g.cells[0].length;
+    const size = cols <= 4 ? 62 : cols <= 6 ? 52 : 44;
+    const box = el("div", "gridbox" + (g.visible ? (g.current ? " current" : "") : " hidden"));
+    const grid = el("div", "grid");
+    grid.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+    grid.style.setProperty("--cell", `calc(${size}px * var(--fit))`);
+    grid.style.setProperty("--cellfont", `calc(${Math.round(size * 0.36)}px * var(--fit))`);
+    g.cells.forEach((row, r) => row.forEach((value, c) => grid.append(el("div", g.marks[`${r},${c}`] || "", value))));
+    box.append(grid);
+    if (g.label) box.append(el("b", "", g.label));
+    wrap.append(box);
+  }
+  return wrap;
+}
+
 function buildContent(state) {
   const content = el("div", "content" + (state.media ? " beside" : ""));
   if (state.formula) {
@@ -103,14 +326,16 @@ function buildContent(state) {
     katex.render(state.formula, box, { displayMode: true, throwOnError: true });
     content.append(box);
   }
-  if (state.bullets.length) {
-    const list = el("ul", "bullets");
-    for (const b of state.bullets) {
-      const li = el("li", b.visible ? (b.current ? "current" : "") : "hidden", b.text);
-      list.append(li);
-    }
-    content.append(list);
+  const v = state.visual;
+  if (v && ["graph", "histogram", "intervals"].includes(v.type) && state.bullets.length) {
+    const split = el("div", "split");
+    split.append(buildVisual(v), buildBullets(state.bullets));
+    content.append(split);
+    return content;
   }
+  if (v && v.type === "chain") content.append(buildVisual(v));
+  if (state.bullets.length) content.append(buildBullets(state.bullets));
+  if (v && v.type !== "chain") content.append(buildVisual(v));
   if (state.table) {
     const table = el("table");
     const head = el("tr");
@@ -132,23 +357,7 @@ function buildContent(state) {
     });
     content.append(pre);
   }
-  if (state.grids.length) {
-    const wrap = el("div", "grids");
-    for (const g of state.grids) {
-      const cols = g.cells[0].length;
-      const size = cols <= 4 ? 62 : cols <= 6 ? 52 : 44;
-      const box = el("div", "gridbox" + (g.visible ? (g.current ? " current" : "") : " hidden"));
-      const grid = el("div", "grid");
-      grid.style.gridTemplateColumns = `repeat(${cols}, auto)`;
-      grid.style.setProperty("--cell", `calc(${size}px * var(--fit))`);
-      grid.style.setProperty("--cellfont", `calc(${Math.round(size * 0.36)}px * var(--fit))`);
-      g.cells.forEach((row, r) => row.forEach((value, c) => grid.append(el("div", g.marks[`${r},${c}`] || "", value))));
-      box.append(grid);
-      if (g.label) box.append(el("b", "", g.label));
-      wrap.append(box);
-    }
-    content.append(wrap);
-  }
+  if (state.grids.length) content.append(buildGrids(state.grids));
   return content;
 }
 
@@ -193,12 +402,13 @@ window.renderState = async function (state) {
   const stage = document.getElementById("stage");
   stage.replaceChildren();
   document.documentElement.style.setProperty("--fit", 1);
-  stage.append(el("div", "chapter", `CHƯƠNG ${state.chapter} · ${state.chapterTitle.toUpperCase()}`));
+  stage.append(el("div", "chapter", `CHƯƠNG ${state.chapter} · ${state.chapterTitle.toUpperCase()}${state.unitLabel ? " · " + state.unitLabel : ""}`));
   let box;
   if (state.intro) {
     box = buildIntro(state, stage);
   } else {
     const head = el("div", "head");
+    if (state.ask) head.append(el("div", "ask", "? Thử đoán trước"));
     if (state.kicker) head.append(el("div", "kicker", state.kicker), el("br"));
     head.append(el("h1", state.title.length > 52 ? "long" : "", state.title));
     const body = el("div", "body");
@@ -219,7 +429,7 @@ window.renderState = async function (state) {
   const done = el("div");
   done.style.width = `${(state.progress * 100).toFixed(2)}%`;
   bar.append(done);
-  const right = el("span", "right", `Phần ${state.sceneIndex + 1}/${state.sceneCount}`);
+  const right = el("span", "right", state.story ? `${state.kicker || ""} · ${state.sceneIndex + 1}/${state.sceneCount}` : `Phần ${state.sceneIndex + 1}/${state.sceneCount}`);
   foot.append(bar, el("span", "", "nhịp học · IMP302"), right);
   stage.append(foot);
 
@@ -228,6 +438,7 @@ window.renderState = async function (state) {
   let problems = [];
   for (const step of FIT_STEPS) {
     document.documentElement.style.setProperty("--fit", step);
+    drawVisuals(stage);
     problems = measure(stage, box);
     if (!problems.length) return { fit: step, problems };
   }

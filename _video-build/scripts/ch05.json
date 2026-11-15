@@ -1,297 +1,3791 @@
 {
-  "title": "Nén ảnh",
-  "scenes": [
+ "title": "Nén ảnh",
+ "example": "Gửi ảnh bầu trời xám 512×512, 8 bit/pixel (256 KB) qua mạng chậm",
+ "stories": [
+  {
+   "id": "mo-dau",
+   "title": "Mở đầu: gửi một tấm ảnh qua mạng chậm",
+   "kind": "intro",
+   "scenes": [
     {
-      "kind": "intro",
-      "title": "Giới thiệu chương",
-      "points": [
-        {"text": "Mở đầu", "say": "Chào các bạn, chương năm là nén ảnh. Đây là chương có nhiều câu tính toán trong đề thi nhất, nên lần này chúng ta sẽ đi chậm: mỗi kỹ thuật đều có ý tưởng trước, công thức sau, rồi một ví dụ tính tay từng bước."},
-        {"text": "Lộ trình", "say": "Lộ trình như sau. Đầu tiên là nén không mất dữ liệu với entropy, mã Huffman và mã số học. Sau đó là nén có mất dữ liệu với BTC, lượng tử hóa vector, wavelet và chuẩn JPEG. Cuối chương là bảng so sánh và những câu hỏi đề thi hay gài."}
-      ]
-    },
-    {
-      "kicker": "Recap",
-      "title": "Chương trước đã cho ta những gì",
-      "points": [
-        {"text": "Chương 1: histogram chia cho tổng số pixel = xác suất của mỗi mức xám", "say": "Trước khi vào bài, chúng ta nhặt lại ba thứ đã học. Thứ nhất, từ chương một: histogram chia cho tổng số pixel chính là xác suất xuất hiện của từng mức xám. Hôm nay xác suất đó sẽ quyết định mỗi ký hiệu được mã bằng bao nhiêu bit."},
-        {"text": "Chương 4: DCT và wavelet dồn năng lượng ảnh vào một số ít hệ số", "say": "Thứ hai, từ chương bốn: các phép biến đổi như DCT và wavelet không làm mất thông tin, nhưng chúng dồn phần lớn năng lượng của ảnh vào một số ít hệ số. JPEG và nén wavelet hôm nay dùng lại đúng tính chất này."},
-        {"text": "Chương 4: DCT ít gián đoạn ở biên khối nên hợp với nén theo khối", "say": "Thứ ba, DCT giả định tín hiệu đối xứng chẵn nên ít bị gián đoạn ở biên. Đó là lý do JPEG chọn DCT chứ không chọn DFT để biến đổi từng khối ảnh."}
-      ]
-    },
-    {
-      "kicker": "Intuition",
-      "title": "Vì sao ảnh nén được",
-      "slide": 5,
-      "points": [
-        {"text": "Viết tắt chữ hay dùng: ký hiệu hay gặp nhận mã ngắn", "say": "Hãy nghĩ đến lúc các bạn nhắn tin. Từ nào dùng nhiều thì các bạn viết tắt, từ hiếm thì viết đầy đủ. Tin nhắn ngắn đi mà người đọc vẫn hiểu đúng hoàn toàn. Nén không mất dữ liệu làm đúng việc đó: ký hiệu hay gặp nhận mã ngắn, ký hiệu hiếm nhận mã dài."},
-        {"text": "Pixel cạnh nhau gần giống nhau: dư thừa không gian; khung hình liền nhau: dư thừa thời gian", "say": "Lý do thứ hai là dư thừa. Trong một bức ảnh bầu trời, pixel nào cũng gần giống pixel bên cạnh. Đó là tương quan không gian. Với video còn có tương quan thời gian giữa các khung hình liên tiếp. Đã đoán được thì không cần gửi lại."},
-        {"text": "Lossless: giống hệt ảnh gốc, chỉ nén được khoảng 2 đến 3 lần", "say": "Nén không mất dữ liệu bắt buộc ảnh giải mã giống hệt ảnh gốc đến từng con số, nên tỉ lệ nén chỉ khoảng hai đến ba lần."},
-        {"text": "Perceptually lossless: bỏ thêm phần mắt không nhận ra", "say": "Muốn nén nhiều hơn, ta chấp nhận bỏ thêm cả những thông tin mắt người không nhận ra. Ảnh nhìn vẫn giống hệt, dù số liệu đã khác. Slide gọi đó là không mất dữ liệu theo cảm nhận, perceptually lossless."}
-      ]
-    },
-    {
-      "title": "Hệ thống mã hóa không mất dữ liệu",
-      "slide": 6,
-      "points": [
-        {"text": "Khối 1 – Transformation: đưa dữ liệu về dạng dễ nén (dự đoán, DCT, băng con)", "say": "Một bộ mã hóa không mất dữ liệu gồm ba khối nối tiếp. Khối một là biến đổi, ví dụ lấy hiệu giữa pixel và giá trị dự đoán, hoặc DCT. Mục đích là đưa dữ liệu về dạng có nhiều giá trị lặp lại, tức là dễ nén hơn."},
-        {"text": "Khối 2 – Data-to-symbol mapping: gom dữ liệu thành các ký hiệu", "say": "Khối hai ánh xạ dữ liệu thành các ký hiệu. Ký hiệu có thể là một giá trị, hoặc một cặp như số lần lặp và giá trị."},
-        {"text": "Khối 3 – Lossless symbol coding: gán từ mã nhị phân cho từng ký hiệu", "say": "Khối ba gán từ mã nhị phân cho mỗi ký hiệu. Huffman và mã số học mà ta sắp học nằm ở khối này."},
-        {"text": "Chọn bộ mã: tỉ lệ nén, độ trễ, độ phức tạp, chịu lỗi, scalability", "say": "Khi chọn bộ mã, đừng chỉ nhìn tỉ lệ nén. Slide liệt kê năm tiêu chí: hiệu suất nén, độ trễ mã hóa, độ phức tạp triển khai, độ bền với lỗi, và khả năng mở rộng theo lớp."}
-      ]
-    },
-    {
-      "kicker": "Formula",
-      "title": "Entropy: giới hạn của nén không mất dữ liệu",
-      "formula": "H(S) = \\underbrace{\\sum_{i=1}^{N} p_i}_{\\text{lấy trung bình theo xác suất}} \\; \\underbrace{\\log_2 \\frac{1}{p_i}}_{\\text{thông tin của ký hiệu } i} \\quad \\text{(bit / ký hiệu)}",
-      "points": [
-        {"text": "Ký hiệu càng hiếm càng mang nhiều thông tin: $p = 0.4 \\to 1.32$ bit, $p = 0.04 \\to 4.64$ bit", "say": "Công thức này trông đáng sợ nhưng ý rất đơn giản. Phần bên phải là lượng thông tin của một ký hiệu. Tin càng bất ngờ thì càng nhiều thông tin. Một ký hiệu xuất hiện bốn mươi phần trăm thời gian chỉ đáng khoảng một phẩy ba bit. Một ký hiệu chỉ xuất hiện bốn phần trăm thì đáng tới bốn phẩy sáu bit."},
-        {"text": "Entropy = lượng thông tin trung bình của cả nguồn", "say": "Phần bên trái chỉ là phép lấy trung bình: ký hiệu nào hay gặp thì được tính nặng hơn. Kết quả là entropy, tức số bit trung bình mà mỗi ký hiệu của nguồn thật sự chứa."},
-        {"text": "Không mã lossless nào có số bit trung bình nhỏ hơn entropy", "say": "Điều cần nhớ để đi thi: entropy là cận dưới. Không có bộ mã không mất dữ liệu nào, giải mã được duy nhất, mà có số bit trung bình nhỏ hơn entropy. Huffman và mã số học chỉ cố tiến sát con số này."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Huffman bước 1: rút gọn nguồn",
-      "table": {
-        "headers": ["Lần gộp", "Hai xác suất nhỏ nhất", "Nguồn sau khi gộp"],
-        "rows": [
-          ["Ban đầu", "—", "0.4, 0.3, 0.1, 0.1, 0.06, 0.04"],
-          ["1", "0.06 + 0.04 = 0.1", "0.4, 0.3, 0.1, 0.1, 0.1"],
-          ["2", "0.1 + 0.1 = 0.2", "0.4, 0.3, 0.2, 0.1"],
-          ["3", "0.2 + 0.1 = 0.3", "0.4, 0.3, 0.3"],
-          ["4", "0.3 + 0.3 = 0.6", "0.6, 0.4"]
-        ]
+     "kicker": "Mở đầu",
+     "title": "Một tấm ảnh 256 KB và một đường mạng chậm",
+     "points": [
+      {
+       "say": "Chào các bạn. Chương năm xoay quanh một câu hỏi duy nhất, và cả chương sẽ trả lời nó từng bước. Hãy tưởng tượng các bạn cần gửi một tấm ảnh bầu trời, ảnh xám năm trăm mười hai nhân năm trăm mười hai pixel, mỗi pixel tám bit.",
+       "text": "Ảnh bầu trời 512×512, 8 bit/pixel"
       },
-      "points": [
-        {"say": "Bây giờ ta làm đúng ví dụ trong slide. Nguồn có sáu ký hiệu với xác suất không phẩy bốn, không phẩy ba, không phẩy một, không phẩy một, không phẩy không sáu và không phẩy không bốn. Việc đầu tiên luôn là sắp xếp xác suất từ lớn đến nhỏ."},
-        {"say": "Lần gộp thứ nhất. Lấy hai xác suất nhỏ nhất là không phẩy không sáu và không phẩy không bốn, cộng lại được không phẩy một. Hai ký hiệu đó giờ được coi như một ký hiệu. Nguồn còn năm phần tử."},
-        {"say": "Lần gộp thứ hai. Hai giá trị nhỏ nhất bây giờ là không phẩy một và không phẩy một, cộng lại được không phẩy hai. Nguồn còn bốn phần tử."},
-        {"say": "Lần gộp thứ ba. Hai giá trị nhỏ nhất là không phẩy hai và không phẩy một, cộng lại được không phẩy ba. Nguồn còn ba phần tử."},
-        {"say": "Lần gộp thứ tư. Gộp không phẩy ba với không phẩy ba thành không phẩy sáu. Nguồn chỉ còn hai phần tử là không phẩy sáu và không phẩy bốn. Khi còn hai phần tử thì dừng."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Huffman bước 2: gán mã ngược trở lại",
-      "formula": "L_{avg} = 0.4(1) + 0.3(2) + 0.1(3) + 0.1(4) + 0.06(5) + 0.04(5) = 2.2 \\text{ bit}",
-      "table": {
-        "headers": ["Ký hiệu", "Xác suất", "Từ mã", "Số bit"],
-        "rows": [
-          ["$a_2$", "0.4", "1", "1"],
-          ["$a_6$", "0.3", "00", "2"],
-          ["$a_1$", "0.1", "011", "3"],
-          ["$a_4$", "0.1", "0100", "4"],
-          ["$a_3$", "0.06", "01010", "5"],
-          ["$a_5$", "0.04", "01011", "5"]
-        ]
+      {
+       "say": "Tính nhanh: khoảng hai trăm sáu mươi hai nghìn pixel, mỗi pixel một byte, tức là khoảng hai trăm năm mươi sáu kilobyte. Qua một đường mạng chậm, người nhận phải chờ khá lâu.",
+       "text": "≈ 262 144 byte = 256 KB"
       },
-      "points": [
-        {"reveal": [1], "say": "Bước hai đi ngược từ nguồn nhỏ nhất về nguồn ban đầu. Ở nguồn cuối, không phẩy sáu nhận bit không, không phẩy bốn nhận bit một. Không phẩy bốn chính là ký hiệu a hai, nên a hai có mã chỉ một bit."},
-        {"reveal": [2], "say": "Không phẩy sáu vốn do hai giá trị không phẩy ba gộp lại. Tách nó ra, mỗi nhánh giữ bit không ở đầu rồi thêm một bit nữa. Nhánh thứ nhất là ký hiệu a sáu, nhận mã không không."},
-        {"reveal": [3, 4], "say": "Nhánh còn lại mang mã không một, tiếp tục được tách. Mỗi lần tách, mã dài thêm một bit. Vì thế a một có ba bit, a bốn có bốn bit."},
-        {"reveal": [5, 6], "say": "Hai ký hiệu hiếm nhất, a ba và a năm, bị gộp sớm nhất nên nhận mã dài nhất, năm bit. Các bạn thấy quy luật chưa: gộp càng sớm thì mã càng dài."},
-        {"reveal": 0, "say": "Giờ tính độ dài trung bình: lấy xác suất nhân số bit rồi cộng lại, được hai phẩy hai bit mỗi ký hiệu. Nếu dùng mã độ dài cố định cho sáu ký hiệu thì cần ba bit. Còn entropy của nguồn này là hai phẩy một bốn bit. Huffman đã rất sát giới hạn, nhưng không thể thấp hơn."}
-      ]
+      {
+       "say": "Câu hỏi của cả chương: làm sao gửi ít bit hơn, mà người nhận vẫn thấy đúng tấm ảnh đó? Các bạn thử nghĩ trước một giây.",
+       "text": "Gửi ít bit hơn mà vẫn thấy đúng ảnh?",
+       "ask": true
+      }
+     ]
     },
     {
-      "kicker": "Algorithm",
-      "title": "Mã giả Huffman",
-      "code": {
-        "lines": [
-          "nodes ← mỗi ký hiệu là một nút, kèm xác suất",
-          "while số nút > 1:",
-          "    x, y ← hai nút có xác suất nhỏ nhất",
-          "    z ← nút mới, p(z) = p(x) + p(y), con là x và y",
-          "    bỏ x, y khỏi nodes; thêm z vào nodes",
-          "gán bit 0 / 1 cho hai nhánh của mỗi nút, đi từ gốc xuống",
-          "từ mã của ký hiệu = chuỗi bit trên đường từ gốc đến lá"
-        ]
+     "kicker": "Mở đầu",
+     "title": "Hai con đường, chín phương pháp",
+     "points": [
+      {
+       "say": "Có hai con đường. Con đường thứ nhất giữ nguyên từng bit, gọi là nén không mất dữ liệu. Ta sẽ đi qua entropy, mã Huffman và mã số học.",
+       "text": "Lossless: giữ nguyên từng bit"
       },
-      "points": [
-        {"reveal": [2, 3], "say": "Viết lại thành thuật toán. Vòng lặp chạy cho đến khi chỉ còn một nút. Mỗi vòng chọn ra hai nút có xác suất nhỏ nhất. Đây chính là bước rút gọn nguồn mà ta vừa làm bốn lần."},
-        {"reveal": [4, 5], "say": "Hai nút đó được thay bằng một nút cha có xác suất bằng tổng. Lặp lại nhiều lần, ta dựng được một cái cây từ lá lên gốc."},
-        {"reveal": [6, 7], "say": "Sau đó đi từ gốc xuống, mỗi lần rẽ nhánh thì ghi bit không hoặc bit một. Từ mã của một ký hiệu là chuỗi bit trên đường đi từ gốc tới lá của nó. Vì mọi ký hiệu đều nằm ở lá, không từ mã nào là phần đầu của từ mã khác. Đó là tính chất mã tiền tố, giúp giải mã được ngay mà không cần dấu ngăn cách."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Mã số học: cả thông điệp là một khoảng số",
-      "slide": 35,
-      "table": {
-        "headers": ["Ký hiệu", "Khoảng mới"],
-        "rows": [
-          ["$a_1$", "[0, 0.2)"],
-          ["$a_2$", "[0.04, 0.08)"],
-          ["$a_3$", "[0.056, 0.072)"],
-          ["$a_3$", "[0.0624, 0.0688)"],
-          ["$a_4$", "[0.06752, 0.0688)"]
-        ]
+      {
+       "say": "Nhưng con đường này chạm trần ở khoảng hai đến ba lần. Muốn nén mạnh hơn, ta phải chấp nhận bỏ đi những thứ mắt không thấy. Đó là con đường thứ hai, nén có mất dữ liệu: BTC, lượng tử hóa vector, JPEG và wavelet.",
+       "text": "Lossy: bỏ thứ mắt không thấy"
       },
-      "points": [
-        {"reveal": 0, "say": "Huffman mã từng ký hiệu riêng, nên mỗi ký hiệu tốn ít nhất một bit nguyên. Mã số học bỏ ràng buộc đó: cả thông điệp được biểu diễn bằng một khoảng số duy nhất nằm giữa không và một. Ví dụ trong slide: nguồn có bốn ký hiệu, a một và a hai có xác suất không phẩy hai, a ba không phẩy bốn, a bốn không phẩy hai. Mỗi ký hiệu sở hữu một đoạn con dài đúng bằng xác suất của nó."},
-        {"reveal": 1, "say": "Ta mã thông điệp a một, a hai, a ba, a ba, a bốn. Ký hiệu đầu là a một, nó sở hữu đoạn từ không đến không phẩy hai. Khoảng hiện tại thu về đúng đoạn đó."},
-        {"reveal": 2, "say": "Ký hiệu thứ hai là a hai. Ta chia khoảng hiện tại theo đúng tỉ lệ cũ, rồi lấy phần của a hai, tức là từ hai mươi đến bốn mươi phần trăm của khoảng. Khoảng dài không phẩy hai, nên được đoạn từ không phẩy không bốn đến không phẩy không tám."},
-        {"reveal": 3, "say": "Tiếp theo là a ba, chiếm từ bốn mươi đến tám mươi phần trăm. Khoảng hiện tại dài không phẩy không bốn, nên khoảng mới là từ không phẩy không năm sáu đến không phẩy không bảy hai."},
-        {"reveal": 4, "say": "Lại là a ba. Làm y hệt, ta được khoảng từ không phẩy không sáu hai bốn đến không phẩy không sáu tám tám."},
-        {"reveal": 5, "say": "Cuối cùng là a bốn, chiếm hai mươi phần trăm cuối. Khoảng kết quả là từ không phẩy không sáu bảy năm hai đến không phẩy không sáu tám tám. Bất kỳ số nào trong khoảng này, ví dụ không phẩy không sáu tám, đều đại diện cho cả thông điệp. Thông điệp càng dài, khoảng càng hẹp, và càng cần nhiều bit để ghi lại."}
-      ]
-    },
-    {
-      "kicker": "Intuition",
-      "title": "BTC: giữ lại trung bình và độ lệch chuẩn của khối",
-      "slide": 14,
-      "formula": "a = \\underbrace{m_1}_{\\text{trung bình}} - \\sigma\\sqrt{\\frac{q}{k-q}} \\qquad b = m_1 + \\sigma\\sqrt{\\frac{k-q}{q}}",
-      "points": [
-        {"text": "Mỗi khối chỉ giữ 2 mức xám: mức tối $a$ và mức sáng $b$", "say": "Chuyển sang nén có mất dữ liệu. Mã hóa cắt khối, BTC, làm một việc rất mạnh tay: trong mỗi khối nhỏ, nó chỉ giữ đúng hai mức xám. Pixel nào tối hơn trung bình thì thành mức a, pixel nào sáng hơn hoặc bằng trung bình thì thành mức b."},
-        {"text": "Bitmap 1 bit/pixel cho biết pixel thuộc mức nào", "say": "Để nhớ pixel nào thuộc mức nào, bộ mã gửi một bitmap, mỗi pixel đúng một bit. Vì số bit của mỗi khối luôn như nhau nên BTC là nén độ dài cố định."},
-        {"text": "$k$: số pixel của khối, $q$: số pixel $\\ge$ trung bình, $\\sigma$: độ lệch chuẩn", "say": "Còn a và b được chọn sao cho khối sau giải mã vẫn có đúng trung bình và đúng độ lệch chuẩn như khối gốc. Trong công thức, k là số pixel của khối, q là số pixel sáng. Nhìn vào công thức: a nằm dưới trung bình, b nằm trên trung bình, và độ lệch chuẩn càng lớn thì hai mức càng xa nhau."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "BTC trên một khối 4×4",
-      "grid": [
-        {"label": "Khối gốc", "cells": [[121, 114, 56, 47], [37, 200, 247, 255], [16, 0, 12, 169], [43, 5, 7, 251]]},
-        {"label": "Bitmap (1 nếu ≥ 98.75)", "cells": [[1, 1, 0, 0], [0, 1, 1, 1], [0, 0, 0, 1], [0, 0, 0, 1]], "accent": [[0, 0], [0, 1], [1, 1], [1, 2], [1, 3], [2, 3], [3, 3]]},
-        {"label": "Khối giải mã", "cells": [[204, 204, 17, 17], [17, 204, 204, 204], [17, 17, 17, 204], [17, 17, 17, 204]], "accent": [[0, 0], [0, 1], [1, 1], [1, 2], [1, 3], [2, 3], [3, 3]]}
+      {
+       "say": "Mỗi video tiếp theo là một phương pháp, và mỗi phương pháp ra đời để vá chỗ hụt của phương pháp trước. Vì vậy các bạn hãy xem theo đúng thứ tự.",
+       "text": "Mỗi phương pháp vá chỗ hụt của cái trước"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
       ],
-      "points": [
-        {"reveal": 1, "text": "Bước 1: $m_1 = 98.75$, $\\sigma = 92.95$, $k = 16$", "say": "Lấy một khối bốn nhân bốn, tức là mười sáu pixel. Bước một, tính trung bình của mười sáu giá trị, được chín mươi tám phẩy bảy lăm. Độ lệch chuẩn là chín mươi hai phẩy chín lăm. Độ lệch chuẩn lớn vì khối này vừa có vùng rất tối vừa có vùng rất sáng."},
-        {"reveal": 2, "text": "Bước 2: so từng pixel với trung bình → bitmap, $q = 7$", "say": "Bước hai, so từng pixel với trung bình. Một trăm hai mươi mốt lớn hơn, ghi một. Năm mươi sáu nhỏ hơn, ghi không. Làm hết mười sáu pixel, ta có bitmap. Đếm số bit một, được q bằng bảy."},
-        {"reveal": 3, "text": "Bước 3: $a \\approx 17$, $b \\approx 204$ → thay 0 bằng $a$, 1 bằng $b$", "say": "Bước ba, thay số vào công thức. Mức tối a ra khoảng mười bảy, mức sáng b ra khoảng hai trăm linh bốn. Bộ giải mã chỉ việc đặt mười bảy vào chỗ bit không và hai trăm linh bốn vào chỗ bit một. Trung bình của khối giải mã vẫn xấp xỉ chín mươi tám phẩy tám."},
-        {"reveal": 3, "text": "Chi phí: 16 bit bitmap + 2 × 8 bit = 32 bit, so với 128 bit gốc", "say": "Cuối cùng là chi phí. Bitmap tốn mười sáu bit, hai mức a và b tốn mỗi mức tám bit. Tổng cộng ba mươi hai bit, so với một trăm hai mươi tám bit của khối gốc. Tức là nén bốn lần, còn hai bit mỗi pixel. Cái giá phải trả là mọi chi tiết bên trong khối đã mất."}
-      ]
-    },
-    {
-      "kicker": "Algorithm",
-      "title": "Lượng tử hóa vector và thuật toán LBG",
-      "slide": 21,
-      "code": {
-        "lines": [
-          "codebook ← N vector chọn ngẫu nhiên từ tập huấn luyện",
-          "repeat:",
-          "    gán mỗi vector huấn luyện vào code vector gần nhất",
-          "    mỗi code vector ← centroid của nhóm vừa gán cho nó",
-          "until codebook gần như không đổi",
-          "mã hóa: mỗi khối ảnh → chỉ số của code vector gần nhất"
-        ]
-      },
-      "points": [
-        {"reveal": 0, "say": "Lượng tử hóa là ánh xạ một tập giá trị lớn sang một tập nhỏ hơn. Lượng tử hóa vector, VQ, không làm tròn từng pixel mà làm tròn cả một khối pixel cùng lúc. Hãy hình dung một bảng màu mẫu: thay vì mô tả chính xác từng màu, ta chỉ nói số thứ tự của màu gần nhất trong bảng. Bảng đó gọi là codebook, và thiết kế codebook là việc quan trọng nhất."},
-        {"reveal": 1, "say": "Thuật toán kinh điển để thiết kế codebook là Linde Buzo Gray, viết tắt LBG. Bắt đầu bằng cách chọn ngẫu nhiên N vector trong tập huấn luyện làm codebook ban đầu."},
-        {"reveal": 3, "say": "Sau đó lặp hai việc. Việc một, gán mỗi vector huấn luyện vào code vector gần nó nhất, theo quy tắc lân cận gần nhất."},
-        {"reveal": 4, "say": "Việc hai, dời mỗi code vector về tâm của nhóm vừa được gán cho nó. Lặp cho đến khi codebook gần như không đổi. Các bạn sẽ gặp lại đúng ý tưởng này ở chương chín với tên K-means."},
-        {"reveal": 6, "say": "Khi nén, mỗi khối ảnh được thay bằng chỉ số của code vector gần nhất. Bên giải mã có cùng codebook nên chỉ cần tra chỉ số là dựng lại được khối."}
-      ]
-    },
-    {
-      "title": "Nén ảnh bằng wavelet",
-      "slide": 28,
-      "points": [
-        {"text": "Mã hóa hệ số đã giải tương quan hiệu quả hơn mã hóa pixel", "say": "Nén wavelet dựa trên điều ta đã nhắc ở phần recap: sau khi biến đổi, thông tin quan trọng dồn vào ít hệ số. Mã hóa các hệ số đó hiệu quả hơn mã hóa trực tiếp pixel. Các hệ số còn lại rất nhỏ, có thể lượng tử thô hoặc cho bằng không mà ảnh gần như không đổi."},
-        {"text": "Ba yếu tố: loại wavelet, số mức phân rã, thiết kế bộ lượng tử", "say": "Có ba yếu tố ảnh hưởng đến khả năng nén. Một là loại hàm wavelet. Hai là số mức phân rã: càng nhiều mức thì tính toán càng nặng, và lỗi lượng tử ở tỉ lệ thấp lan ra vùng ảnh càng rộng. Ba là thiết kế bộ lượng tử."},
-        {"text": "Dead zone: khoảng lượng tử quanh 0 rộng hơn để ép hệ số nhỏ về 0", "say": "Bộ lượng tử thường là lượng tử đều. Một mẹo cải thiện là nới rộng khoảng lượng tử quanh số không, gọi là dead zone. Nhờ vậy càng nhiều hệ số nhỏ bị ép về không, và có thể đổi bước lượng tử theo từng tỉ lệ."}
-      ]
-    },
-    {
-      "kicker": "Algorithm",
-      "title": "Chuẩn JPEG: bốn bước mã hóa",
-      "slide": 40,
-      "code": {
-        "lines": [
-          "chia ảnh thành các khối 8×8 liền kề",
-          "for mỗi khối:",
-          "    F ← DCT(khối)",
-          "    Fq(u,v) ← round( F(u,v) / Q(u,v) )",
-          "    mã hóa Fq không mất dữ liệu (Huffman)",
-          "giải mã: Huffman⁻¹ → Fq × Q → IDCT từng khối"
-        ]
-      },
-      "points": [
-        {"reveal": 1, "say": "Bây giờ ta ghép mọi thứ lại thành JPEG, chuẩn nén có mất dữ liệu quen thuộc nhất. Bước một, chia ảnh thành các khối tám nhân tám pixel liền kề nhau."},
-        {"reveal": 3, "say": "Bước hai, biến đổi DCT từng khối. Sau bước này, hệ số ở góc trên bên trái mang độ sáng trung bình của khối, các hệ số xa dần mang chi tiết tần số cao. Chưa có gì bị mất cả."},
-        {"reveal": 4, "say": "Bước ba mới là nơi mất dữ liệu. Mỗi hệ số được chia cho một số trong bảng lượng tử rồi làm tròn. Bảng lượng tử này dùng chung cho mọi khối. Vì mỗi khối bị lượng tử độc lập với khối bên cạnh, ở tỉ lệ nén cao ta nhìn thấy ranh giới giữa các khối. Đó là méo khối, blocking."},
-        {"reveal": 5, "say": "Bước bốn, các hệ số đã lượng tử, phần lớn là số không, được mã hóa không mất dữ liệu bằng Huffman."},
-        {"reveal": 6, "say": "Bên giải mã làm ngược lại đúng thứ tự: giải mã Huffman, nhân lại với bảng lượng tử, rồi biến đổi DCT ngược từng khối. Ngoài chế độ tuần tự quét một lượt, JPEG còn có chế độ lũy tiến gửi bản thô trước rồi tinh dần, chế độ phân cấp đa độ phân giải, và hỗ trợ từ tám đến mười hai bit mỗi mẫu."}
-      ]
-    },
-    {
-      "kicker": "Worked example",
-      "title": "Lượng tử hóa trong JPEG làm mất gì",
-      "table": {
-        "headers": ["Hệ số", "$F$", "$Q$", "round($F/Q$)", "Giải mã", "Sai số"],
-        "rows": [
-          ["DC (0,0)", "236", "16", "15", "240", "4"],
-          ["Tần số thấp (0,1)", "−23", "11", "−2", "−22", "1"],
-          ["Tần số cao (7,7)", "12", "99", "0", "0", "12"]
-        ]
-      },
-      "points": [
-        {"say": "Thử với ba hệ số của một khối. Hệ số DC bằng hai trăm ba mươi sáu, bước lượng tử là mười sáu. Chia ra được mười bốn phẩy bảy lăm, làm tròn thành mười lăm. Bộ giải mã nhân lại với mười sáu, được hai trăm bốn mươi. Sai lệch chỉ là bốn."},
-        {"say": "Một hệ số tần số thấp bằng âm hai mươi ba, bước lượng tử mười một. Chia và làm tròn được âm hai, giải mã ra âm hai mươi hai. Sai lệch chỉ là một."},
-        {"say": "Một hệ số tần số cao bằng mười hai, nhưng bước lượng tử ở đó rất lớn, chín mươi chín. Chia ra chưa tới không phẩy năm nên làm tròn thành không. Hệ số này biến mất hoàn toàn. Đó chính là cách JPEG bỏ chi tiết mịn mà mắt ít nhạy, và cũng là lý do sau lượng tử hóa có rất nhiều số không để Huffman nén tiếp."}
-      ]
-    },
-    {
-      "title": "Ảnh đa phổ, hậu xử lý và học sâu",
-      "slide": 52,
-      "points": [
-        {"text": "Ảnh đa phổ: 3 lớp bộ mã – spectral-spatial, spatial-spectral, complex", "say": "Ba nội dung cuối của slide. Ảnh đa phổ, như ảnh vệ tinh hay ảnh y tế, có thêm chiều phổ với bản chất khác hai chiều không gian. Bộ mã dựa trên biến đổi chia làm ba lớp: phổ không gian, dùng biến đổi KL trên chiều phổ trước; không gian phổ, biến đổi không gian trước; và biến đổi phức khi các mặt phẳng ảnh không khớp nhau."},
-        {"text": "Hậu xử lý giảm hai loại méo: ringing và blocking", "say": "Hậu xử lý ảnh nén nhằm giảm hai loại méo. Ringing là gợn sóng quanh cạnh ở tỉ lệ nén cao, có ở mọi bộ mã dựa trên biến đổi. Blocking là méo khối, do lượng tử độc lập từng khối DCT như ta vừa thấy."},
-        {"text": "Học sâu: CNN (CAS-CNN), RNN, GAN thay dần pipeline cổ điển", "say": "Và nén bằng học sâu có ba hướng: CNN, ví dụ CAS-CNN để khử vết nén; RNN cho nén ảnh độ phân giải đầy đủ; và GAN cho nén thích ứng. Chúng thay dần chuỗi biến đổi, lượng tử, mã entropy bằng một mạng học từ đầu đến cuối."}
-      ]
-    },
-    {
-      "kicker": "Compare",
-      "title": "So sánh các kỹ thuật dễ nhầm",
-      "table": {
-        "headers": ["Kỹ thuật", "Loại", "Đơn vị được mã", "Ý chính"],
-        "rows": [
-          ["Huffman", "Lossless", "Từng ký hiệu", "Gộp 2 xác suất nhỏ nhất, mã tiền tố"],
-          ["Arithmetic", "Lossless", "Cả thông điệp", "Một khoảng con trong [0, 1)"],
-          ["BTC", "Lossy, độ dài cố định", "Khối $n \\times n$", "Bitmap + 2 mức, giữ mean và $\\sigma$"],
-          ["VQ", "Lossy", "Khối (vector)", "Chỉ số trong codebook (LBG)"],
-          ["JPEG", "Lossy", "Khối 8×8", "DCT → lượng tử $Q$ → Huffman"]
-        ]
-      },
-      "points": [
-        {"say": "Đặt các kỹ thuật cạnh nhau để khỏi nhầm. Huffman là không mất dữ liệu, mã từng ký hiệu một, bằng cách gộp hai xác suất nhỏ nhất."},
-        {"say": "Mã số học cũng không mất dữ liệu, nhưng mã cả thông điệp thành một khoảng số. Nó không bị buộc mỗi ký hiệu phải có số bit nguyên."},
-        {"say": "BTC là có mất dữ liệu, độ dài cố định. Mỗi khối thành một bitmap cộng hai mức xám, giữ nguyên trung bình và độ lệch chuẩn."},
-        {"say": "VQ cũng có mất dữ liệu và cũng làm theo khối, nhưng thay khối bằng chỉ số trong codebook. Codebook được thiết kế bằng LBG."},
-        {"say": "JPEG có mất dữ liệu, làm trên khối tám nhân tám, và là sự kết hợp: DCT, lượng tử hóa, rồi Huffman. Chỉ riêng bước lượng tử hóa làm mất thông tin."}
-      ]
-    },
-    {
-      "kicker": "Exam traps",
-      "title": "Những chỗ đề thi hay gài",
-      "table": {
-        "headers": ["Câu hỏi", "Đáp án đúng"],
-        "rows": [
-          ["Huffman gộp hai ký hiệu nào?", "Hai ký hiệu có xác suất NHỎ nhất"],
-          ["Entropy là cận trên hay cận dưới?", "Cận DƯỚI của số bit trung bình"],
-          ["Bước nào của JPEG làm mất dữ liệu?", "Lượng tử hóa; DCT và Huffman thì không"],
-          ["BTC bảo toàn những gì?", "Trung bình và độ lệch chuẩn của khối"],
-          ["Arithmetic coding là block code?", "Sai: nonblock code, cả thông điệp một từ mã"]
-        ]
-      },
-      "points": [
-        {"say": "Năm cái bẫy quen thuộc. Một: Huffman gộp hai ký hiệu có xác suất nhỏ nhất, không phải lớn nhất."},
-        {"say": "Hai: entropy là cận dưới của số bit trung bình, không phải cận trên. Ở ví dụ vừa rồi, hai phẩy một bốn nhỏ hơn hai phẩy hai."},
-        {"say": "Ba: trong JPEG, chỉ lượng tử hóa làm mất dữ liệu. DCT khả nghịch, Huffman không mất gì. Và méo khối sinh ra từ việc lượng tử độc lập từng khối."},
-        {"say": "Bốn: BTC bảo toàn trung bình và độ lệch chuẩn của từng khối, với bộ lượng tử hai mức thì tốn một bit mỗi pixel cho bitmap."},
-        {"say": "Năm: mã số học là mã không khối. Cả thông điệp nhận một từ mã, là một khoảng trong đoạn từ không đến một. Huffman mới là mã khối."}
-      ]
-    },
-    {
-      "kicker": "Summary",
-      "title": "Tổng kết chương 5",
-      "points": [
-        {"text": "Lossless nén khoảng 2–3 lần; entropy là cận dưới", "say": "Tổng kết chương năm. Nén không mất dữ liệu chỉ đạt khoảng hai đến ba lần, và entropy là giới hạn dưới của số bit trung bình."},
-        {"text": "Huffman: gộp 2 xác suất nhỏ nhất. Arithmetic: thu hẹp một khoảng", "say": "Huffman gộp dần hai xác suất nhỏ nhất rồi gán mã ngược lại. Mã số học thu hẹp dần một khoảng theo xác suất của từng ký hiệu."},
-        {"text": "BTC: bitmap + $a$, $b$. VQ: codebook thiết kế bằng LBG", "say": "BTC giữ bitmap và hai mức xám để bảo toàn trung bình và độ lệch chuẩn. VQ thay mỗi khối bằng chỉ số trong codebook."},
-        {"text": "JPEG: 8×8 → DCT → lượng tử → Huffman; méo blocking và ringing", "say": "JPEG gồm chia khối tám nhân tám, DCT, lượng tử hóa và Huffman, với hai loại méo là blocking và ringing. Ở chương sáu, chúng ta thêm chiều thời gian: nén video, nơi khung hình trước giúp đoán khung hình sau."}
-      ]
+      "current": 0
+     }
     }
-  ]
+   ]
+  },
+  {
+   "id": "entropy",
+   "title": "Vì sao ảnh nén được: dư thừa và entropy",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Mỗi pixel tám bit: có phí không?",
+     "points": [
+      {
+       "say": "Quay lại tấm ảnh bầu trời. Hiện giờ pixel nào cũng tốn đúng tám bit, dù đó là pixel trời xanh xuất hiện khắp nơi, hay một pixel cánh chim hiếm hoi.",
+       "text": "Pixel nào cũng 8 bit, hay gặp hay hiếm như nhau"
+      },
+      {
+       "say": "Thêm nữa, một pixel trời gần như giống hệt pixel bên cạnh nó. Ta đang gửi đi gửi lại gần cùng một thông tin.",
+       "text": "Pixel cạnh nhau gần giống nhau"
+      },
+      {
+       "say": "Vậy trong tám bit đó, bao nhiêu bit là thông tin thật, và bao nhiêu bit là thừa?",
+       "text": "Bao nhiêu bit là thông tin thật?",
+       "ask": true
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Mã độ dài cố định",
+     "points": [
+      {
+       "say": "Để dễ tính, giả sử ảnh trời chỉ còn bốn mức xám, gọi là A, B, C và D. Histogram cho thấy A chiếm bốn mươi phần trăm số pixel, B ba mươi, C hai mươi, còn D chỉ mười phần trăm.",
+       "text": "4 mức: A 40%, B 30%, C 20%, D 10%"
+      },
+      {
+       "say": "Cách cũ là mã độ dài cố định. Bốn ký hiệu thì mỗi ký hiệu hai bit: A là không không, B là không một, và cứ thế.",
+       "text": "Mã cố định: mỗi ký hiệu 2 bit"
+      },
+      {
+       "say": "Chỗ hụt nằm ở đây: A xuất hiện gần một nửa thời gian mà vẫn tốn hai bit, ngang với D hiếm nhất. Ta đối xử mọi ký hiệu như nhau, trong khi chúng không hề như nhau.",
+       "text": "A hay gặp vẫn tốn bằng D hiếm"
+      }
+     ],
+     "histogram": {
+      "bars": [
+       {
+        "label": "A",
+        "value": 40
+       },
+       {
+        "label": "B",
+        "value": 30
+       },
+       {
+        "label": "C",
+        "value": 20
+       },
+       {
+        "label": "D",
+        "value": 10
+       }
+      ],
+      "caption": "Ảnh trời rút gọn còn 4 mức xám (% số pixel)"
+     }
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Viết tắt thứ hay dùng, đừng gửi thứ đoán được",
+     "points": [
+      {
+       "say": "Ý tưởng rất đời thường. Khi nhắn tin, từ nào dùng nhiều các bạn viết tắt, từ hiếm thì viết đủ. Tin nhắn ngắn đi mà người đọc vẫn hiểu đúng hoàn toàn.",
+       "text": "Như nhắn tin: từ hay dùng thì viết tắt"
+      },
+      {
+       "say": "Áp vào ảnh: ký hiệu hay gặp nhận mã ngắn, ký hiệu hiếm nhận mã dài.",
+       "text": "Ký hiệu hay gặp → mã ngắn"
+      },
+      {
+       "say": "Ý thứ hai: thứ gì đoán được thì không cần gửi. Pixel trời đoán được từ pixel bên cạnh, đó là tương quan không gian. Với video còn có tương quan thời gian giữa các khung hình liên tiếp. Slide gọi chung là sự dư thừa trong tín hiệu ảnh.",
+       "text": "Dư thừa: tương quan không gian (ảnh), thêm thời gian (video)"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Ba khối của một bộ mã không mất dữ liệu",
+     "points": [
+      {
+       "say": "Một bộ mã không mất dữ liệu gồm ba khối nối tiếp. Khối một là biến đổi, ví dụ lấy hiệu giữa pixel và giá trị dự đoán từ hàng xóm, hoặc DCT. Ảnh trời sau bước này toàn những số gần không, rất dễ nén.",
+       "text": "1. Biến đổi: dự đoán, DCT, băng con",
+       "reveal": 1
+      },
+      {
+       "say": "Khối hai ánh xạ dữ liệu thành các ký hiệu, ví dụ từng giá trị, hoặc cặp số lần lặp và giá trị.",
+       "text": "2. Ánh xạ dữ liệu → ký hiệu",
+       "reveal": 2
+      },
+      {
+       "say": "Khối ba gán từ mã nhị phân cho từng ký hiệu. Huffman và mã số học trong hai video sau nằm ở khối này.",
+       "text": "3. Mã hóa ký hiệu: Huffman, mã số học",
+       "reveal": 3
+      },
+      {
+       "say": "Khi chọn bộ mã, đừng chỉ nhìn tỉ lệ nén. Slide liệt kê năm tiêu chí: hiệu suất nén, độ trễ mã hóa, độ phức tạp triển khai, độ bền với lỗi, và khả năng mở rộng theo lớp.",
+       "text": "Chọn bộ mã: tỉ lệ nén, độ trễ, độ phức tạp, chịu lỗi, mở rộng",
+       "reveal": 3
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "n0",
+        "label": "Ảnh",
+        "x": 0,
+        "y": 0,
+        "shape": "box",
+        "step": 0
+       },
+       {
+        "id": "n1",
+        "label": "Biến đổi",
+        "x": 0,
+        "y": 1,
+        "shape": "box",
+        "step": 1
+       },
+       {
+        "id": "n2",
+        "label": "Ánh xạ ký hiệu",
+        "x": 0,
+        "y": 2,
+        "shape": "box",
+        "step": 2
+       },
+       {
+        "id": "n3",
+        "label": "Mã hóa ký hiệu",
+        "x": 0,
+        "y": 3,
+        "shape": "box",
+        "step": 3
+       },
+       {
+        "id": "n4",
+        "label": "Chuỗi bit",
+        "x": 0,
+        "y": 4,
+        "shape": "box",
+        "step": 3
+       }
+      ],
+      "edges": [
+       {
+        "a": "n0",
+        "b": "n1",
+        "step": 1
+       },
+       {
+        "a": "n1",
+        "b": "n2",
+        "step": 2
+       },
+       {
+        "a": "n2",
+        "b": "n3",
+        "step": 3
+       },
+       {
+        "a": "n3",
+        "b": "n4",
+        "step": 3
+       }
+      ],
+      "arrows": true
+     }
+    },
+    {
+     "kicker": "Công thức",
+     "title": "Entropy: đếm số bit thông tin thật",
+     "points": [
+      {
+       "say": "Giờ ta đo xem có bao nhiêu bit là thông tin thật. Phần bên phải công thức là lượng thông tin của một ký hiệu: càng hiếm, càng bất ngờ, thì càng nhiều thông tin. Phần bên trái lấy trung bình theo xác suất.",
+       "text": "Ký hiệu càng hiếm càng nhiều thông tin"
+      },
+      {
+       "say": "Thử đoán trước: với bốn mức A, B, C, D ở trên, entropy lớn hơn hay nhỏ hơn hai bit?",
+       "text": "Thử đoán: lớn hơn hay nhỏ hơn 2 bit?",
+       "ask": true
+      },
+      {
+       "say": "Tính ra, A đáng khoảng một phẩy ba hai bit, D đáng khoảng ba phẩy ba hai bit. Lấy trung bình theo xác suất, entropy chỉ khoảng một phẩy tám lăm bit, nhỏ hơn hai bit của mã cố định.",
+       "text": "H ≈ 0,4·1,32 + 0,3·1,74 + 0,2·2,32 + 0,1·3,32 ≈ 1,85 bit"
+      },
+      {
+       "say": "Và đây là điều quan trọng nhất của video: entropy là cận dưới. Không có bộ mã không mất dữ liệu nào, giải mã được duy nhất, mà có số bit trung bình nhỏ hơn entropy.",
+       "text": "Entropy = cận DƯỚI của mọi mã lossless"
+      }
+     ],
+     "formula": "H = \\underbrace{\\sum_{i} p_i}_{\\text{trung bình theo xác suất}} \\; \\underbrace{\\log_2 \\frac{1}{p_i}}_{\\text{thông tin của ký hiệu } i} \\quad \\text{(bit / ký hiệu)}"
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Lossless, perceptually lossless và lossy",
+     "points": [
+      {
+       "say": "Nén không mất dữ liệu buộc ảnh giải mã giống hệt ảnh gốc đến từng con số, nên tỉ lệ nén chỉ khoảng hai đến ba lần."
+      },
+      {
+       "say": "Muốn hơn thế, slide nói đến không mất dữ liệu theo cảm nhận, perceptually lossless: bỏ thêm thông tin mắt không nhận ra. Ảnh nhìn vẫn y hệt, dù số liệu đã khác."
+      },
+      {
+       "say": "Còn nén có mất dữ liệu chấp nhận sai khác nhỏ để đổi lấy tỉ lệ nén cao nhất. Ta sẽ đi con đường này từ video BTC."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Kiểu nén",
+       "Ảnh giải mã",
+       "Tỉ lệ nén"
+      ],
+      "rows": [
+       [
+        "Lossless",
+        "Giống hệt từng con số",
+        "≈ 2–3 lần"
+       ],
+       [
+        "Perceptually lossless",
+        "Nhìn giống hệt, số liệu khác",
+        "Cao hơn"
+       ],
+       [
+        "Lossy",
+        "Có sai khác, chấp nhận được",
+        "Cao nhất"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Khi nào bắt buộc phải lossless",
+     "points": [
+      {
+       "say": "Ảnh y tế, ảnh tài liệu, ảnh khoa học: một pixel sai có thể đổi cả kết luận, nên phải giữ nguyên từng bit.",
+       "text": "Ảnh y tế, tài liệu, khoa học: không được sai một bit"
+      },
+      {
+       "say": "Ngay trong đời thường, file ZIP và ảnh PNG đều nén không mất dữ liệu.",
+       "text": "ZIP, PNG: nén không mất dữ liệu"
+      },
+      {
+       "say": "Và ngay cả JPEG, một chuẩn có mất dữ liệu, cũng kết thúc bằng một bước mã hóa không mất dữ liệu.",
+       "text": "Bước cuối của JPEG cũng là lossless"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Biết giới hạn, nhưng chưa có bộ mã",
+     "points": [
+      {
+       "say": "Entropy cho ta biết đích đến: khoảng một phẩy tám lăm bit mỗi ký hiệu. Nhưng nó không nói phải gán bit cho từng ký hiệu thế nào.",
+       "text": "Entropy chỉ là giới hạn, chưa phải bộ mã"
+      },
+      {
+       "say": "Có cách nào tự động tạo ra một bộ mã tiến sát entropy không? Câu trả lời là mã Huffman, ở video tiếp theo.",
+       "text": "→ Huffman: tự động dựng bộ mã sát entropy"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 2
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: entropy là cận dưới, không phải cận trên. Mọi mã lossless giải mã duy nhất đều tốn ít nhất bằng entropy."
+      },
+      {
+       "say": "Bẫy hai: ảnh nén được nhờ dư thừa, tức tương quan giữa các mẫu. Ảnh tĩnh có tương quan không gian, video có thêm tương quan thời gian."
+      },
+      {
+       "say": "Bẫy ba: nén không mất dữ liệu chỉ đạt khoảng hai đến ba lần. Con số này hay xuất hiện trong đề."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Entropy là cận trên hay cận dưới?",
+        "Cận DƯỚI của số bit trung bình"
+       ],
+       [
+        "Vì sao ảnh nén được?",
+        "Dư thừa: tương quan không gian, thêm thời gian ở video"
+       ],
+       [
+        "Lossless nén được khoảng bao nhiêu?",
+        "Khoảng 2–3 lần"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "huffman",
+   "title": "Mã Huffman",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Cần một bộ mã cụ thể, sát entropy",
+     "points": [
+      {
+       "say": "Video trước để lại một câu hỏi: entropy nói rằng chỉ cần ít bit hơn, nhưng làm sao tạo ra một bộ mã cụ thể đạt gần con số đó?",
+       "text": "Cần bộ mã cụ thể, sát entropy"
+      },
+      {
+       "say": "Bộ mã đó còn phải giải mã được duy nhất: đọc một chuỗi bit liền nhau, không có dấu cách, mà vẫn tách đúng từng ký hiệu.",
+       "text": "Giải mã duy nhất, không cần dấu phân cách"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Mã cố định cho sáu ký hiệu",
+     "points": [
+      {
+       "say": "Ta dùng đúng ví dụ trong slide: sáu ký hiệu. a hai chiếm bốn mươi phần trăm, a sáu ba mươi, a một và a bốn mỗi ký hiệu mười, a ba sáu phần trăm, và a năm bốn phần trăm."
+      },
+      {
+       "say": "Mã cố định cần ba bit cho mỗi ký hiệu, vì hai bit chỉ đủ cho bốn ký hiệu. Nghĩa là a hai, chiếm gần một nửa, vẫn tốn ba bit."
+      }
+     ],
+     "histogram": {
+      "bars": [
+       {
+        "label": "a2",
+        "value": 40
+       },
+       {
+        "label": "a6",
+        "value": 30
+       },
+       {
+        "label": "a1",
+        "value": 10
+       },
+       {
+        "label": "a4",
+        "value": 10
+       },
+       {
+        "label": "a3",
+        "value": 6
+       },
+       {
+        "label": "a5",
+        "value": 4
+       }
+      ],
+      "caption": "Xác suất 6 ký hiệu (%), ví dụ trong slide"
+     }
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Ghép hai thứ hiếm nhất",
+     "points": [
+      {
+       "say": "Ý tưởng của Huffman: hai ký hiệu hiếm nhất nên nhận mã dài nhất. Vậy ta ghép chúng thành một ký hiệu mới, cộng xác suất lại, rồi lặp lại với nguồn nhỏ hơn. Slide gọi đây là rút gọn nguồn.",
+       "text": "Ghép 2 ký hiệu xác suất NHỎ nhất, lặp lại"
+      },
+      {
+       "say": "Mỗi lần ghép là thêm một tầng cho cây. Ký hiệu bị ghép sớm nằm sâu dưới đáy cây nên có mã dài. Ký hiệu hay gặp được ghép muộn, nằm gần gốc, mã ngắn.",
+       "text": "Ghép sớm → nằm sâu → mã dài"
+      },
+      {
+       "say": "Thử đoán: trong sáu ký hiệu, cặp nào sẽ được ghép đầu tiên?",
+       "text": "Thử đoán: cặp nào ghép trước?",
+       "ask": true
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bước 1: rút gọn nguồn, dựng cây",
+     "points": [
+      {
+       "say": "Hai ký hiệu nhỏ nhất là a ba và a năm, sáu và bốn phần trăm. Ghép lại được một nút mười phần trăm.",
+       "text": "a3 + a5 = 0,1",
+       "reveal": 1
+      },
+      {
+       "say": "Giờ có ba thứ cùng mười phần trăm: a một, a bốn, và nút vừa ghép. Slide chọn a bốn với nút mới, được hai mươi phần trăm. Chọn cặp khác cũng hợp lệ, và độ dài trung bình không đổi.",
+       "text": "a4 + (0,1) = 0,2",
+       "reveal": 2
+      },
+      {
+       "say": "Tiếp theo, hai thứ nhỏ nhất là nút hai mươi phần trăm và a một, ghép được ba mươi phần trăm.",
+       "text": "(0,2) + a1 = 0,3",
+       "reveal": 3
+      },
+      {
+       "say": "Còn lại a sáu ba mươi và nút ba mươi. Ghép lại được sáu mươi phần trăm.",
+       "text": "a6 + (0,3) = 0,6",
+       "reveal": 4
+      },
+      {
+       "say": "Cuối cùng, ghép nút sáu mươi với a hai bốn mươi, được gốc một trăm phần trăm. Cây đã xong.",
+       "text": "(0,6) + a2 = 1",
+       "reveal": 5
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "a2",
+        "label": "a2 · 0,4",
+        "x": 8,
+        "y": 1,
+        "shape": "box"
+       },
+       {
+        "id": "a6",
+        "label": "a6 · 0,3",
+        "x": 1,
+        "y": 2,
+        "shape": "box"
+       },
+       {
+        "id": "a1",
+        "label": "a1 · 0,1",
+        "x": 7,
+        "y": 3,
+        "shape": "box"
+       },
+       {
+        "id": "a4",
+        "label": "a4 · 0,1",
+        "x": 2.5,
+        "y": 4,
+        "shape": "box"
+       },
+       {
+        "id": "a3",
+        "label": "a3 · 0,06",
+        "x": 4.5,
+        "y": 5,
+        "shape": "box"
+       },
+       {
+        "id": "a5",
+        "label": "a5 · 0,04",
+        "x": 6.5,
+        "y": 5,
+        "shape": "box"
+       },
+       {
+        "id": "X1",
+        "label": "0,1",
+        "x": 5.5,
+        "y": 4,
+        "shape": "box",
+        "step": 1
+       },
+       {
+        "id": "X2",
+        "label": "0,2",
+        "x": 4,
+        "y": 3,
+        "shape": "box",
+        "step": 2
+       },
+       {
+        "id": "X3",
+        "label": "0,3",
+        "x": 5,
+        "y": 2,
+        "shape": "box",
+        "step": 3
+       },
+       {
+        "id": "X4",
+        "label": "0,6",
+        "x": 3,
+        "y": 1,
+        "shape": "box",
+        "step": 4
+       },
+       {
+        "id": "R",
+        "label": "1",
+        "x": 5,
+        "y": 0,
+        "shape": "box",
+        "step": 5
+       }
+      ],
+      "edges": [
+       {
+        "a": "X1",
+        "b": "a3",
+        "step": 1
+       },
+       {
+        "a": "X1",
+        "b": "a5",
+        "step": 1
+       },
+       {
+        "a": "X2",
+        "b": "a4",
+        "step": 2
+       },
+       {
+        "a": "X2",
+        "b": "X1",
+        "step": 2
+       },
+       {
+        "a": "X3",
+        "b": "X2",
+        "step": 3
+       },
+       {
+        "a": "X3",
+        "b": "a1",
+        "step": 3
+       },
+       {
+        "a": "X4",
+        "b": "a6",
+        "step": 4
+       },
+       {
+        "a": "X4",
+        "b": "X3",
+        "step": 4
+       },
+       {
+        "a": "R",
+        "b": "X4",
+        "step": 5
+       },
+       {
+        "a": "R",
+        "b": "a2",
+        "step": 5
+       }
+      ],
+      "caption": "Mỗi lần ghép hai nút nhỏ nhất thành một nút mới"
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bước 2: đi từ gốc xuống để gán mã",
+     "points": [
+      {
+       "say": "Bước hai đi theo chiều ngược lại, từ gốc xuống lá. Quy ước: nhánh trái là bit không, nhánh phải là bit một. Mã của một ký hiệu là dãy bit trên đường đi từ gốc đến nó.",
+       "text": "Trái = 0, phải = 1; mã = đường đi từ gốc",
+       "reveal": 0
+      },
+      {
+       "say": "Thử đoán: a hai, ký hiệu hay gặp nhất, có mã dài mấy bit?",
+       "text": "Thử đoán: mã a2 dài mấy bit?",
+       "reveal": 0,
+       "ask": true
+      },
+      {
+       "say": "Chỉ một bit. Từ gốc rẽ phải là tới a hai ngay, nên mã của a hai là một.",
+       "text": "a2 = 1",
+       "reveal": 1
+      },
+      {
+       "say": "a sáu: rẽ trái rồi rẽ trái, mã là không không.",
+       "text": "a6 = 00",
+       "reveal": 2
+      },
+      {
+       "say": "a một: trái, phải, phải, được không một một.",
+       "text": "a1 = 011",
+       "reveal": 3
+      },
+      {
+       "say": "a bốn: trái, phải, trái, trái, được không một không không.",
+       "text": "a4 = 0100",
+       "reveal": 4
+      },
+      {
+       "say": "Hai ký hiệu hiếm nhất nằm sâu nhất: a ba là không một không một không, a năm là không một không một một. Năm bit, đúng như ta đoán: ghép sớm thì mã dài.",
+       "text": "a3 = 01010 · a5 = 01011",
+       "reveal": 5
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "a2",
+        "label": "a2 · 0,4",
+        "x": 8,
+        "y": 1,
+        "shape": "box",
+        "marks": [
+         {
+          "step": 1,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "a6",
+        "label": "a6 · 0,3",
+        "x": 1,
+        "y": 2,
+        "shape": "box",
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "a1",
+        "label": "a1 · 0,1",
+        "x": 7,
+        "y": 3,
+        "shape": "box",
+        "marks": [
+         {
+          "step": 3,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "a4",
+        "label": "a4 · 0,1",
+        "x": 2.5,
+        "y": 4,
+        "shape": "box",
+        "marks": [
+         {
+          "step": 4,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "a3",
+        "label": "a3 · 0,06",
+        "x": 4.5,
+        "y": 5,
+        "shape": "box",
+        "marks": [
+         {
+          "step": 5,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "a5",
+        "label": "a5 · 0,04",
+        "x": 6.5,
+        "y": 5,
+        "shape": "box",
+        "marks": [
+         {
+          "step": 5,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "X1",
+        "label": "0,1",
+        "x": 5.5,
+        "y": 4,
+        "shape": "box"
+       },
+       {
+        "id": "X2",
+        "label": "0,2",
+        "x": 4,
+        "y": 3,
+        "shape": "box"
+       },
+       {
+        "id": "X3",
+        "label": "0,3",
+        "x": 5,
+        "y": 2,
+        "shape": "box"
+       },
+       {
+        "id": "X4",
+        "label": "0,6",
+        "x": 3,
+        "y": 1,
+        "shape": "box"
+       },
+       {
+        "id": "R",
+        "label": "1",
+        "x": 5,
+        "y": 0,
+        "shape": "box"
+       }
+      ],
+      "edges": [
+       {
+        "a": "X1",
+        "b": "a3",
+        "label": "0",
+        "marks": [
+         {
+          "step": 5,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "X1",
+        "b": "a5",
+        "label": "1",
+        "marks": [
+         {
+          "step": 5,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "X2",
+        "b": "a4",
+        "label": "0",
+        "marks": [
+         {
+          "step": 4,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "X2",
+        "b": "X1",
+        "label": "1",
+        "marks": [
+         {
+          "step": 5,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "X3",
+        "b": "X2",
+        "label": "0",
+        "marks": [
+         {
+          "step": 4,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "X3",
+        "b": "a1",
+        "label": "1",
+        "marks": [
+         {
+          "step": 3,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "X4",
+        "b": "a6",
+        "label": "0",
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "X4",
+        "b": "X3",
+        "label": "1",
+        "marks": [
+         {
+          "step": 3,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "R",
+        "b": "X4",
+        "label": "0",
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "a": "R",
+        "b": "a2",
+        "label": "1",
+        "marks": [
+         {
+          "step": 1,
+          "style": "accent"
+         }
+        ]
+       }
+      ],
+      "caption": "Trái = 0, phải = 1"
+     }
+    },
+    {
+     "kicker": "Công thức",
+     "title": "Độ dài trung bình: 2,2 bit",
+     "points": [
+      {
+       "say": "Để biết bộ mã tốt cỡ nào, ta tính độ dài trung bình: mỗi ký hiệu lấy xác suất nhân số bit, rồi cộng lại.",
+       "text": "Xác suất × số bit, rồi cộng"
+      },
+      {
+       "say": "Thử đoán: kết quả sẽ gần ba bit của mã cố định, hay gần entropy?",
+       "text": "Thử đoán: gần 3 bit hay gần entropy?",
+       "ask": true
+      },
+      {
+       "say": "Không phẩy bốn nhân một, cộng không phẩy ba nhân hai, cộng không phẩy một nhân ba, cộng không phẩy một nhân bốn, cộng hai ký hiệu cuối mỗi ký hiệu năm bit. Tổng là hai phẩy hai bit mỗi ký hiệu.",
+       "text": "0,4·1 + 0,3·2 + 0,1·3 + 0,1·4 + 0,06·5 + 0,04·5 = 2,2"
+      },
+      {
+       "say": "Entropy của nguồn này khoảng hai phẩy một bốn bit. Huffman chỉ cao hơn giới hạn lý thuyết chưa tới một phần mười bit, trong khi mã cố định tốn ba bit.",
+       "text": "Entropy ≈ 2,14 · Huffman 2,2 · cố định 3"
+      }
+     ],
+     "formula": "L_{avg} = \\sum_i \\underbrace{p_i}_{\\text{xác suất}} \\; \\underbrace{l_i}_{\\text{số bit của mã}}"
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Huffman so với mã cố định",
+     "points": [
+      {
+       "say": "Về số bit, Huffman thắng rõ: hai phẩy hai so với ba."
+      },
+      {
+       "say": "Đổi lại, từ mã dài ngắn khác nhau, nên bộ giải mã phải đọc từng bit để biết một từ mã kết thúc ở đâu. Huffman làm được vì không từ mã nào là phần đầu của từ mã khác. Người ta gọi đó là mã tiền tố."
+      },
+      {
+       "say": "Huffman phải biết trước xác suất, và bên nhận phải có cùng bảng mã. Slide nêu câu hỏi thảo luận: Huffman thích nghi, tức là cập nhật bảng mã khi xác suất thay đổi."
+      },
+      {
+       "say": "Và vì độ dài thay đổi, một bit lỗi có thể làm lệch ranh giới, kéo theo sai các ký hiệu phía sau. Với mã cố định, lỗi chỉ hỏng đúng một ký hiệu."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Mã cố định",
+       "Huffman"
+      ],
+      "rows": [
+       [
+        "Bit trung bình",
+        "3",
+        "2,2"
+       ],
+       [
+        "Độ dài từ mã",
+        "Bằng nhau",
+        "Theo xác suất; mã tiền tố"
+       ],
+       [
+        "Cần biết trước",
+        "Không",
+        "Xác suất; gửi kèm bảng mã"
+       ],
+       [
+        "Lỗi 1 bit",
+        "Hỏng 1 ký hiệu",
+        "Có thể lệch các ký hiệu sau"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Huffman ở quanh ta",
+     "points": [
+      {
+       "say": "Bước cuối của JPEG mã hóa các hệ số đã lượng tử bằng Huffman.",
+       "text": "Bước cuối của JPEG"
+      },
+      {
+       "say": "File ZIP và ảnh PNG dùng thuật toán DEFLATE, trong đó có mã Huffman.",
+       "text": "ZIP, PNG (DEFLATE)"
+      },
+      {
+       "say": "Nhạc MP3 cũng dùng mã Huffman ở bước cuối.",
+       "text": "MP3"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Mỗi ký hiệu ít nhất một bit",
+     "points": [
+      {
+       "say": "Nhưng Huffman có một giới hạn cứng: mỗi ký hiệu nhận một từ mã riêng, nên tốn ít nhất một bit nguyên.",
+       "text": "Mỗi ký hiệu ≥ 1 bit"
+      },
+      {
+       "say": "Thử nghĩ một ảnh trời gần như một màu, ký hiệu chính chiếm chín mươi phần trăm. Entropy chỉ khoảng không phẩy bốn bảy bit, nhưng Huffman vẫn phải trả một bit cho mỗi ký hiệu, gấp đôi.",
+       "text": "p = 0,9: entropy ≈ 0,47 bit, Huffman = 1 bit"
+      },
+      {
+       "say": "Muốn trả ít hơn một bit cho mỗi ký hiệu, ta phải mã cả thông điệp cùng lúc. Đó là mã số học.",
+       "text": "→ Mã số học"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 3
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: Huffman ghép hai ký hiệu có xác suất nhỏ nhất, không phải lớn nhất."
+      },
+      {
+       "say": "Bẫy hai: Huffman tối ưu với ràng buộc mỗi ký hiệu nguồn được mã riêng. Bỏ ràng buộc đó thì mã số học có thể tốt hơn."
+      },
+      {
+       "say": "Bẫy ba: khi trùng xác suất có nhiều cây hợp lệ, mã từng ký hiệu khác nhau nhưng độ dài trung bình như nhau."
+      },
+      {
+       "say": "Bẫy bốn: giải mã không cần dấu phân cách vì không từ mã nào là tiền tố của từ mã khác."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Huffman ghép hai ký hiệu nào?",
+        "Hai ký hiệu xác suất NHỎ nhất"
+       ],
+       [
+        "Huffman tối ưu khi nào?",
+        "Khi mỗi ký hiệu được mã riêng"
+       ],
+       [
+        "Có nhiều cây Huffman hợp lệ?",
+        "Có, khi trùng xác suất; cùng độ dài trung bình"
+       ],
+       [
+        "Vì sao giải mã không cần dấu cách?",
+        "Không mã nào là tiền tố của mã khác"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "ma-so-hoc",
+   "title": "Mã số học",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Ký hiệu rất hay gặp vẫn tốn trọn một bit",
+     "points": [
+      {
+       "say": "Video trước dừng ở một chỗ khó chịu: ký hiệu chiếm chín mươi phần trăm chỉ mang khoảng không phẩy một lăm bit thông tin, mà Huffman vẫn bắt trả trọn một bit.",
+       "text": "Ký hiệu p = 0,9 chỉ mang ≈ 0,15 bit"
+      },
+      {
+       "say": "Ảnh trời gần một màu có hàng nghìn ký hiệu như vậy liên tiếp. Mỗi ký hiệu phí gần một bit, cộng lại rất lớn.",
+       "text": "Hàng nghìn ký hiệu → phí rất lớn"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Huffman: một ký hiệu, một từ mã",
+     "points": [
+      {
+       "say": "Gốc của vấn đề: Huffman là mã khối. Mỗi ký hiệu nguồn ánh xạ sang một từ mã cố định, nên độ dài luôn là số nguyên bit.",
+       "text": "Mã khối: số bit nguyên cho mỗi ký hiệu"
+      },
+      {
+       "say": "Muốn trả phân số bit, ta phải thôi mã từng ký hiệu riêng lẻ.",
+       "text": "Muốn phân số bit → thôi mã từng ký hiệu"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Cả thông điệp là một khoảng số",
+     "points": [
+      {
+       "say": "Ý tưởng của mã số học: cả thông điệp được gán một từ mã duy nhất, là một khoảng số nằm giữa không và một.",
+       "text": "Cả thông điệp → một khoảng trong [0; 1)"
+      },
+      {
+       "say": "Hãy nghĩ đến một địa chỉ: tỉnh, rồi quận, rồi đường, rồi số nhà. Mỗi cấp thu hẹp vùng tìm kiếm. Ở đây mỗi ký hiệu thu hẹp khoảng hiện tại theo đúng xác suất của nó.",
+       "text": "Như địa chỉ: mỗi ký hiệu thu hẹp khoảng"
+      },
+      {
+       "say": "Ký hiệu hay gặp chiếm phần lớn, nên khoảng co ít, tốn ít bit. Ký hiệu hiếm chiếm phần nhỏ, khoảng co mạnh, tốn nhiều bit.",
+       "text": "Hay gặp → co ít → ít bit"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Mã chuỗi a1 a2 a3 a3 a4 (ví dụ trong slide)",
+     "points": [
+      {
+       "say": "Ví dụ trong slide có bốn ký hiệu: a một và a hai mỗi ký hiệu hai mươi phần trăm, a ba bốn mươi, a bốn hai mươi. Ban đầu khoảng là từ không đến một, chia theo đúng các tỉ lệ đó. Ký hiệu đầu là a một, ta giữ phần của a một.",
+       "text": "a1 → [0; 0,2)",
+       "reveal": 1
+      },
+      {
+       "say": "Phóng to phần đó lên và chia lại theo cùng tỉ lệ. Ký hiệu thứ hai là a hai, lấy đoạn từ hai mươi đến bốn mươi phần trăm, được từ không phẩy không bốn đến không phẩy không tám.",
+       "text": "a2 → [0,04; 0,08)",
+       "reveal": 2
+      },
+      {
+       "say": "Ký hiệu tiếp theo là a ba, chiếm bốn mươi phần trăm. Thử đoán: khoảng mới dài bao nhiêu?",
+       "text": "Thử đoán: khoảng mới dài bao nhiêu?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Khoảng hiện tại dài không phẩy không bốn, a ba giữ bốn mươi phần trăm, nên khoảng mới dài không phẩy không một sáu, từ không phẩy không năm sáu đến không phẩy không bảy hai.",
+       "text": "a3 → [0,056; 0,072)",
+       "reveal": 3
+      },
+      {
+       "say": "Lại là a ba. Làm y hệt, được từ không phẩy không sáu hai bốn đến không phẩy không sáu tám tám.",
+       "text": "a3 → [0,0624; 0,0688)",
+       "reveal": 4
+      },
+      {
+       "say": "Cuối cùng là a bốn, hai mươi phần trăm cuối. Khoảng kết quả là từ không phẩy không sáu bảy năm hai đến không phẩy không sáu tám tám.",
+       "text": "a4 → [0,06752; 0,0688)",
+       "reveal": 5
+      },
+      {
+       "say": "Bất kỳ số nào trong khoảng này, ví dụ không phẩy không sáu tám, đều đại diện cho cả năm ký hiệu. Bên giải mã chỉ việc xem số đó rơi vào phần nào, lần lượt từng tầng.",
+       "text": "Gửi một số trong khoảng, ví dụ 0,068",
+       "reveal": 6
+      }
+     ],
+     "intervals": {
+      "rows": [
+       {
+        "low": 0.0,
+        "high": 1.0,
+        "parts": [
+         [
+          "a1",
+          0.0,
+          0.2
+         ],
+         [
+          "a2",
+          0.2,
+          0.4
+         ],
+         [
+          "a3",
+          0.4,
+          0.8
+         ],
+         [
+          "a4",
+          0.8,
+          1.0
+         ]
+        ],
+        "pick": "a1",
+        "step": 1
+       },
+       {
+        "low": 0.0,
+        "high": 0.2,
+        "parts": [
+         [
+          "a1",
+          0.0,
+          0.04
+         ],
+         [
+          "a2",
+          0.04,
+          0.08
+         ],
+         [
+          "a3",
+          0.08,
+          0.16
+         ],
+         [
+          "a4",
+          0.16,
+          0.2
+         ]
+        ],
+        "pick": "a2",
+        "step": 2
+       },
+       {
+        "low": 0.04,
+        "high": 0.08,
+        "parts": [
+         [
+          "a1",
+          0.04,
+          0.048
+         ],
+         [
+          "a2",
+          0.048,
+          0.056
+         ],
+         [
+          "a3",
+          0.056,
+          0.072
+         ],
+         [
+          "a4",
+          0.072,
+          0.08
+         ]
+        ],
+        "pick": "a3",
+        "step": 3
+       },
+       {
+        "low": 0.056,
+        "high": 0.072,
+        "parts": [
+         [
+          "a1",
+          0.056,
+          0.0592
+         ],
+         [
+          "a2",
+          0.0592,
+          0.0624
+         ],
+         [
+          "a3",
+          0.0624,
+          0.0688
+         ],
+         [
+          "a4",
+          0.0688,
+          0.072
+         ]
+        ],
+        "pick": "a3",
+        "step": 4
+       },
+       {
+        "low": 0.0624,
+        "high": 0.0688,
+        "parts": [
+         [
+          "a1",
+          0.0624,
+          0.06368
+         ],
+         [
+          "a2",
+          0.06368,
+          0.06496
+         ],
+         [
+          "a3",
+          0.06496,
+          0.06752
+         ],
+         [
+          "a4",
+          0.06752,
+          0.0688
+         ]
+        ],
+        "pick": "a4",
+        "step": 5
+       },
+       {
+        "low": 0.06752,
+        "high": 0.0688,
+        "parts": [
+         [
+          "cả thông điệp",
+          0.06752,
+          0.0688
+         ]
+        ],
+        "step": 6
+       }
+      ],
+      "caption": "Mỗi tầng phóng to phần vừa chọn"
+     }
+    },
+    {
+     "kicker": "Công thức",
+     "title": "Khoảng càng hẹp, càng cần nhiều bit",
+     "points": [
+      {
+       "say": "Độ rộng khoảng cuối bằng tích xác suất các ký hiệu đã gặp: không phẩy không không một hai tám.",
+       "text": "Độ rộng = tích các xác suất"
+      },
+      {
+       "say": "Để chỉ ra một số nằm trong khoảng rộng như vậy, cần khoảng log cơ số hai của một chia độ rộng, tức gần mười bit cho năm ký hiệu.",
+       "text": "≈ log₂(1/độ rộng) ≈ 9,6 → cỡ 10 bit"
+      },
+      {
+       "say": "Đó chính là lượng thông tin của cả thông điệp. Mã số học trả đúng phần đó cho cả chuỗi, không làm tròn lên từng ký hiệu một.",
+       "text": "Không làm tròn bit theo từng ký hiệu"
+      },
+      {
+       "say": "Thông điệp càng dài thì khoảng càng hẹp và số bit càng tăng, nhưng tăng đúng theo thông tin thật.",
+       "text": "Thông điệp dài → khoảng hẹp → nhiều bit"
+      }
+     ],
+     "formula": "\\underbrace{0{,}2 \\cdot 0{,}2 \\cdot 0{,}4 \\cdot 0{,}4 \\cdot 0{,}2}_{\\text{độ rộng khoảng}} = 0{,}00128 \\;\\Rightarrow\\; \\log_2 \\tfrac{1}{0{,}00128} \\approx 9{,}6 \\text{ bit}"
+    },
+    {
+     "kicker": "So sánh",
+     "title": "Huffman hay mã số học?",
+     "points": [
+      {
+       "say": "Huffman là mã khối, mỗi ký hiệu một từ mã. Mã số học là mã không khối, cả thông điệp một từ mã."
+      },
+      {
+       "say": "Câu hỏi thảo luận trong slide: theo lý thuyết thông tin, cái nào ít bit hơn? Mã số học, vì nó không phải làm tròn lên một bit nguyên cho từng ký hiệu, nên tiến sát entropy hơn."
+      },
+      {
+       "say": "Đổi lại, nó tính toán nặng hơn, phải liên tục chia khoảng và giữ độ chính xác số học."
+      },
+      {
+       "say": "Nhưng nó dễ thích nghi: slide nói đến ước lượng xác suất thích nghi theo ngữ cảnh, chỉ cần cập nhật bảng xác suất sau mỗi ký hiệu."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Huffman",
+       "Mã số học"
+      ],
+      "rows": [
+       [
+        "Loại mã",
+        "Mã khối",
+        "Không khối: cả thông điệp một từ mã"
+       ],
+       [
+        "Bit / ký hiệu",
+        "Số nguyên, ≥ 1",
+        "Có thể là phân số, sát entropy hơn"
+       ],
+       [
+        "Tính toán",
+        "Đơn giản, tra bảng",
+        "Nặng hơn: chia khoảng liên tục"
+       ],
+       [
+        "Thích nghi",
+        "Phải dựng lại cây",
+        "Dễ: cập nhật xác suất theo ngữ cảnh"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Mã số học ở đâu?",
+     "points": [
+      {
+       "say": "JPEG2000 dùng một bộ mã số học thích nghi ở bước cuối.",
+       "text": "JPEG2000"
+      },
+      {
+       "say": "Chuẩn nén video H.264 có chế độ CABAC, cũng là mã số học thích nghi theo ngữ cảnh. Chuẩn JPEG gốc cũng có tùy chọn mã số học bên cạnh Huffman.",
+       "text": "H.264 (CABAC), tùy chọn của JPEG"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Vẫn chỉ là nén không mất dữ liệu",
+     "points": [
+      {
+       "say": "Dù là Huffman hay mã số học, ta vẫn đang ở con đường không mất dữ liệu. Ảnh giải mã giống hệt từng bit, nên trần nén vẫn chỉ khoảng hai đến ba lần.",
+       "text": "Vẫn lossless: trần ≈ 2–3 lần"
+      },
+      {
+       "say": "Hai trăm năm mươi sáu kilobyte chia ba vẫn còn hơn tám mươi kilobyte. Muốn nhỏ hơn nữa, ta phải chấp nhận bỏ đi một phần thông tin. Video tiếp theo là BTC, phương pháp có mất dữ liệu đầu tiên.",
+       "text": "→ BTC: chấp nhận mất dữ liệu"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 4
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: mã số học là mã không khối. Huffman mới là mã khối."
+      },
+      {
+       "say": "Bẫy hai: thông điệp càng dài, khoảng càng hẹp, số bit cần để biểu diễn khoảng càng tăng."
+      },
+      {
+       "say": "Bẫy ba: về lý thuyết thông tin, mã số học tiến sát entropy hơn Huffman."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Mã số học là mã khối?",
+        "Sai: không khối, cả thông điệp một từ mã"
+       ],
+       [
+        "Thông điệp dài thì khoảng thế nào?",
+        "Hẹp lại, cần nhiều bit hơn"
+       ],
+       [
+        "Theo lý thuyết, cái nào ít bit hơn?",
+        "Mã số học: không làm tròn bit từng ký hiệu"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "btc",
+   "title": "BTC: mã hóa cắt khối",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Cần nén mạnh hơn hai đến ba lần",
+     "points": [
+      {
+       "say": "Ta đã chạm trần của nén không mất dữ liệu: tấm ảnh trời vẫn còn gần trăm kilobyte.",
+       "text": "Lossless: vẫn gần 100 KB"
+      },
+      {
+       "say": "Nhưng mắt người không cần từng con số chính xác. Một pixel tám mươi hay tám mươi hai, nhìn như nhau. Nếu chấp nhận ảnh giải mã khác đi một chút, ta có thể nén mạnh hơn nhiều.",
+       "text": "Mắt không phân biệt 80 với 82"
+      },
+      {
+       "say": "Câu hỏi: nếu được phép bỏ bớt, ta nên giữ lại những gì của một khối ảnh?",
+       "text": "Giữ lại gì của một khối?",
+       "ask": true
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Lossless phải giữ mọi thứ",
+     "points": [
+      {
+       "say": "Huffman và mã số học không được phép bỏ gì, nên bị chặn bởi entropy.",
+       "text": "Bị chặn bởi entropy"
+      },
+      {
+       "say": "Muốn vượt qua, ta phải đổi luật chơi: không giữ nguyên ảnh nữa, mà giữ những đặc trưng quan trọng của ảnh.",
+       "text": "Đổi luật: giữ đặc trưng quan trọng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Tóm tắt mỗi khối bằng trung bình và độ lệch",
+     "points": [
+      {
+       "say": "Hình dung các bạn mô tả chiều cao một lớp học mà không đọc từng người. Các bạn nói: trung bình bao nhiêu, chênh lệch nhiều hay ít, và ai cao hơn trung bình.",
+       "text": "Như mô tả chiều cao cả lớp"
+      },
+      {
+       "say": "BTC làm đúng như vậy với từng khối n nhân n: giữ trung bình, giữ độ lệch chuẩn, và một bản đồ một bit cho biết pixel nào sáng hơn trung bình.",
+       "text": "Giữ: trung bình, độ lệch chuẩn, bitmap 1 bit"
+      },
+      {
+       "say": "Khi giải mã, mỗi pixel chỉ còn một trong hai mức: a cho pixel tối, b cho pixel sáng, chọn sao cho trung bình và độ lệch chuẩn của khối vẫn được giữ nguyên.",
+       "text": "Giải mã: 2 mức a, b giữ nguyên 2 moment"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bước 1: trung bình và bitmap",
+     "points": [
+      {
+       "say": "Lấy khối bốn nhân bốn trong slide, mười sáu pixel. Trung bình là chín mươi tám phẩy bảy lăm, độ lệch chuẩn khoảng chín mươi hai phẩy chín lăm.",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: có bao nhiêu pixel lớn hơn hoặc bằng trung bình?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Đánh dấu một cho pixel lớn hơn hoặc bằng trung bình, không cho phần còn lại. Có bảy pixel sáng, gọi số đó là q, bằng bảy. Bitmap này tốn đúng mười sáu bit.",
+       "reveal": 2
+      }
+     ],
+     "compare": {
+      "left": {
+       "label": "Khối gốc · trung bình 98,75",
+       "grid": {
+        "cells": [
+         [
+          121,
+          114,
+          56,
+          47
+         ],
+         [
+          37,
+          200,
+          247,
+          255
+         ],
+         [
+          16,
+          0,
+          12,
+          169
+         ],
+         [
+          43,
+          5,
+          7,
+          251
+         ]
+        ]
+       }
+      },
+      "right": {
+       "label": "Bitmap · q = 7",
+       "grid": {
+        "cells": [
+         [
+          1,
+          1,
+          0,
+          0
+         ],
+         [
+          0,
+          1,
+          1,
+          1
+         ],
+         [
+          0,
+          0,
+          0,
+          1
+         ],
+         [
+          0,
+          0,
+          0,
+          1
+         ]
+        ],
+        "accent": [
+         [
+          0,
+          0
+         ],
+         [
+          0,
+          1
+         ],
+         [
+          1,
+          1
+         ],
+         [
+          1,
+          2
+         ],
+         [
+          1,
+          3
+         ],
+         [
+          2,
+          3
+         ],
+         [
+          3,
+          3
+         ]
+        ]
+       }
+      },
+      "arrow": "≥ trung bình → 1"
+     }
+    },
+    {
+     "kicker": "Công thức",
+     "title": "Bước 2: chọn hai mức a và b",
+     "points": [
+      {
+       "say": "Hai mức giải mã được tính từ trung bình, độ lệch chuẩn, số pixel k và số pixel sáng q, sao cho khối giải mã giữ nguyên hai moment đó.",
+       "text": "k = 16 pixel, q = 7 pixel sáng"
+      },
+      {
+       "say": "Thay số: a khoảng mười sáu phẩy tám, b khoảng hai trăm lẻ bốn phẩy một.",
+       "text": "a ≈ 16,8 · b ≈ 204,1"
+      },
+      {
+       "say": "Để ý: chỉ có bảy pixel sáng nên b phải lớn hơn trung bình nhiều, còn chín pixel tối kéo a xuống thấp. Nhờ vậy trung bình của khối giải mã vẫn đúng.",
+       "text": "Ít pixel sáng → b xa trung bình hơn"
+      }
+     ],
+     "formula": "a = m - \\sigma\\sqrt{\\frac{q}{k-q}} \\qquad b = m + \\sigma\\sqrt{\\frac{k-q}{q}}"
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bước 3: giải mã",
+     "points": [
+      {
+       "say": "Bên nhận có bitmap mười sáu bit, cùng trung bình và độ lệch chuẩn, mỗi số tám bit.",
+       "reveal": 1
+      },
+      {
+       "say": "Pixel nào là một nhận b, làm tròn là hai trăm lẻ bốn. Pixel nào là không nhận a, làm tròn là mười bảy. Khối giải mã thô hơn, nhưng sáng tối đúng chỗ, và trung bình vẫn xấp xỉ chín mươi tám phẩy tám.",
+       "reveal": 2
+      },
+      {
+       "say": "Tổng cộng ba mươi hai bit thay vì một trăm hai mươi tám bit: nén bốn lần, tức hai bit mỗi pixel, và khối nào cũng như nhau.",
+       "reveal": 2
+      }
+     ],
+     "compare": {
+      "left": {
+       "label": "Bitmap",
+       "grid": {
+        "cells": [
+         [
+          1,
+          1,
+          0,
+          0
+         ],
+         [
+          0,
+          1,
+          1,
+          1
+         ],
+         [
+          0,
+          0,
+          0,
+          1
+         ],
+         [
+          0,
+          0,
+          0,
+          1
+         ]
+        ],
+        "accent": [
+         [
+          0,
+          0
+         ],
+         [
+          0,
+          1
+         ],
+         [
+          1,
+          1
+         ],
+         [
+          1,
+          2
+         ],
+         [
+          1,
+          3
+         ],
+         [
+          2,
+          3
+         ],
+         [
+          3,
+          3
+         ]
+        ]
+       }
+      },
+      "right": {
+       "label": "Khối giải mã · 32 bit thay vì 128",
+       "grid": {
+        "cells": [
+         [
+          204,
+          204,
+          17,
+          17
+         ],
+         [
+          17,
+          204,
+          204,
+          204
+         ],
+         [
+          17,
+          17,
+          17,
+          204
+         ],
+         [
+          17,
+          17,
+          17,
+          204
+         ]
+        ],
+        "accent": [
+         [
+          0,
+          0
+         ],
+         [
+          0,
+          1
+         ],
+         [
+          1,
+          1
+         ],
+         [
+          1,
+          2
+         ],
+         [
+          1,
+          3
+         ],
+         [
+          2,
+          3
+         ],
+         [
+          3,
+          3
+         ]
+        ]
+       }
+      },
+      "arrow": "1 → b, 0 → a"
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "BTC so với nén không mất dữ liệu",
+     "points": [
+      {
+       "say": "Nén không mất dữ liệu giữ ảnh giống hệt. BTC chỉ giữ gần đúng, mỗi khối hai mức."
+      },
+      {
+       "say": "Đổi lại, BTC nén bốn lần với khối bốn nhân bốn, vượt qua trần hai đến ba lần."
+      },
+      {
+       "say": "BTC là nén có mất dữ liệu với độ dài cố định: khối nào cũng ba mươi hai bit, dễ dự trù băng thông."
+      },
+      {
+       "say": "Và nó cực kỳ đơn giản: giải mã chỉ là đọc bitmap rồi điền a hoặc b."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "Lossless (Huffman…)",
+       "BTC"
+      ],
+      "rows": [
+       [
+        "Ảnh giải mã",
+        "Giống hệt",
+        "Gần đúng, 2 mức mỗi khối"
+       ],
+       [
+        "Tỉ lệ nén",
+        "≈ 2–3 lần, tùy ảnh",
+        "Cố định: 4 lần (khối 4×4)"
+       ],
+       [
+        "Độ dài mã",
+        "Thay đổi",
+        "Cố định: 32 bit / khối"
+       ],
+       [
+        "Tính toán",
+        "Cần thống kê xác suất",
+        "Rất đơn giản, giải mã cực nhanh"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "BTC được dùng ở đâu",
+     "points": [
+      {
+       "say": "Theo slide, BTC từng được so sánh với DCT và mã lai cho ảnh trinh sát trên không độ phân giải cao. Ở tốc độ từ một đến ba bit mỗi pixel, BTC cho kết quả rất tốt.",
+       "text": "Ảnh trinh sát trên không: tốt ở 1–3 bit/pixel"
+      },
+      {
+       "say": "Slide cũng nêu biến thể dùng moment tuyệt đối thay cho độ lệch chuẩn, cho sai số bình phương trung bình tốt hơn BTC chuẩn.",
+       "text": "Biến thể: moment tuyệt đối → sai số tốt hơn"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Mỗi pixel vẫn được xét riêng",
+     "points": [
+      {
+       "say": "Hạn chế của BTC: mỗi pixel chỉ còn một trong hai mức, nên khối nhiều chi tiết bị vẽ thô.",
+       "text": "Mỗi khối chỉ 2 mức"
+      },
+      {
+       "say": "Sâu hơn, BTC vẫn lượng tử từng pixel riêng lẻ, chỉ là theo ngưỡng của khối. Nó không tận dụng việc các khối ảnh thường lặp lại thành những mẫu giống nhau.",
+       "text": "Vẫn lượng tử từng pixel"
+      },
+      {
+       "say": "Nếu ta lượng tử cả khối như một đơn vị thì sao? Đó là lượng tử hóa vector.",
+       "text": "→ Lượng tử hóa vector"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 5
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: BTC là nén có mất dữ liệu, với độ dài cố định."
+      },
+      {
+       "say": "Bẫy hai: BTC bảo toàn trung bình và độ lệch chuẩn của khối, không phải trung vị."
+      },
+      {
+       "say": "Bẫy ba: với bộ lượng tử hai mức, bitmap tốn một bit cho mỗi pixel."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "BTC là lossless hay lossy?",
+        "Lossy, độ dài cố định"
+       ],
+       [
+        "BTC bảo toàn gì?",
+        "Trung bình và độ lệch chuẩn (không phải trung vị)"
+       ],
+       [
+        "Bitmap tốn bao nhiêu?",
+        "1 bit / pixel với bộ lượng tử 2 mức"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "vq-lbg",
+   "title": "Lượng tử hóa vector và thuật toán LBG",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Ảnh lặp lại những kiểu khối giống nhau",
+     "points": [
+      {
+       "say": "Nhìn kỹ tấm ảnh trời: có những khối trời phẳng, khối mây sáng, khối viền mây. Những kiểu khối này lặp đi lặp lại khắp ảnh.",
+       "text": "Ảnh có những kiểu khối lặp lại"
+      },
+      {
+       "say": "Nếu cả hai bên đều có sẵn một danh sách các kiểu khối mẫu, ta chỉ cần gửi số thứ tự của mẫu gần nhất, thay vì gửi cả khối.",
+       "text": "Gửi số thứ tự thay cho cả khối?"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Lượng tử vô hướng: xét từng mẫu",
+     "points": [
+      {
+       "say": "Lượng tử hóa là ánh xạ một tập giá trị lớn sang một tập nhỏ hơn, ví dụ làm tròn số thực về số nguyên. Làm khéo thì sai số được giữ ở mức nhỏ.",
+       "text": "Lượng tử: tập lớn → tập nhỏ"
+      },
+      {
+       "say": "BTC và cách làm tròn thông thường xét từng pixel một. Mỗi pixel quyết định riêng, không biết hàng xóm của nó thế nào.",
+       "text": "Từng pixel quyết định riêng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Làm tròn cả khối về mẫu gần nhất",
+     "points": [
+      {
+       "say": "Lượng tử hóa vector, viết tắt VQ, gom một khối mẫu thành một vector và làm tròn cả vector cùng lúc.",
+       "text": "VQ: lượng tử cả khối"
+      },
+      {
+       "say": "Giống như bảng màu sơn: thay vì đọc mã màu chính xác, các bạn chỉ nói số của ô màu gần nhất. Bảng đó gọi là codebook.",
+       "text": "Như bảng màu: gửi số của mẫu gần nhất"
+      },
+      {
+       "say": "Bên mã hóa tìm code vector gần nhất rồi gửi chỉ số. Bên giải mã có cùng codebook, tra chỉ số là dựng lại được khối.",
+       "text": "Mã hóa gửi chỉ số, giải mã tra bảng"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Thiết kế codebook bằng LBG",
+     "points": [
+      {
+       "say": "Ví dụ nhỏ: mỗi khối chỉ có hai pixel, nên mỗi khối là một điểm trên mặt phẳng. Tập huấn luyện có tám khối: bốn khối tối ở góc dưới, bốn khối sáng ở góc trên.",
+       "text": "8 khối 2 pixel = 8 điểm",
+       "reveal": 0
+      },
+      {
+       "say": "Thuật toán của Linde, Buzo và Gray, gọi tắt là LBG. Bước một: chọn ngẫu nhiên N code vector từ tập huấn luyện. Ở đây N bằng hai, và không may cả hai đều rơi vào nhóm tối.",
+       "text": "1. Chọn ngẫu nhiên N code vector",
+       "reveal": 1
+      },
+      {
+       "say": "Bước hai: gán mỗi vector huấn luyện cho code vector gần nhất, theo quy tắc lân cận gần nhất. c hai ở gần nhóm sáng hơn, nên ôm luôn cả bốn khối sáng.",
+       "text": "2. Gán theo lân cận gần nhất",
+       "reveal": 2
+      },
+      {
+       "say": "Thử đoán: khi dời mỗi code vector về tâm nhóm của nó, c hai sẽ đi về đâu?",
+       "text": "Thử đoán: c2 đi về đâu?",
+       "reveal": 2,
+       "ask": true
+      },
+      {
+       "say": "Bước ba: tính tâm mỗi nhóm và dùng làm codebook mới. c một về một phẩy năm, một phẩy năm. c hai bị kéo ra giữa, năm phẩy năm, năm phẩy năm.",
+       "text": "3. Code vector ← tâm nhóm",
+       "reveal": 3
+      },
+      {
+       "say": "Lặp lại phép gán. Giờ hai khối tối đã gần c một hơn, nên mỗi nhóm đúng là một cụm.",
+       "text": "Lặp: gán lại",
+       "reveal": 4
+      },
+      {
+       "say": "Tính tâm lần nữa: c một về hai, hai, còn c hai về bảy, bảy. Gán lại thì không còn gì thay đổi: thuật toán đã hội tụ.",
+       "text": "Hội tụ: codebook không đổi",
+       "reveal": 5
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "p0",
+        "shape": "dot",
+        "x": 1,
+        "y": 7,
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "p1",
+        "shape": "dot",
+        "x": 2,
+        "y": 8,
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "p2",
+        "shape": "dot",
+        "x": 2,
+        "y": 6,
+        "marks": [
+         {
+          "step": 2,
+          "style": "warn"
+         },
+         {
+          "step": 4,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "p3",
+        "shape": "dot",
+        "x": 3,
+        "y": 7,
+        "marks": [
+         {
+          "step": 2,
+          "style": "warn"
+         },
+         {
+          "step": 4,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "p4",
+        "shape": "dot",
+        "x": 6,
+        "y": 2,
+        "marks": [
+         {
+          "step": 2,
+          "style": "warn"
+         }
+        ]
+       },
+       {
+        "id": "p5",
+        "shape": "dot",
+        "x": 7,
+        "y": 3,
+        "marks": [
+         {
+          "step": 2,
+          "style": "warn"
+         }
+        ]
+       },
+       {
+        "id": "p6",
+        "shape": "dot",
+        "x": 8,
+        "y": 2,
+        "marks": [
+         {
+          "step": 2,
+          "style": "warn"
+         }
+        ]
+       },
+       {
+        "id": "p7",
+        "shape": "dot",
+        "x": 7,
+        "y": 1,
+        "marks": [
+         {
+          "step": 2,
+          "style": "warn"
+         }
+        ]
+       },
+       {
+        "id": "c1a",
+        "label": "c1",
+        "x": 2,
+        "y": 8,
+        "step": 1,
+        "marks": [
+         {
+          "step": 1,
+          "style": "accent"
+         },
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "id": "c2a",
+        "label": "c2",
+        "x": 3,
+        "y": 7,
+        "step": 1,
+        "marks": [
+         {
+          "step": 1,
+          "style": "warn"
+         },
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "id": "c1b",
+        "label": "c1",
+        "x": 1.5,
+        "y": 7.5,
+        "step": 3,
+        "marks": [
+         {
+          "step": 3,
+          "style": "accent"
+         },
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "id": "c2b",
+        "label": "c2",
+        "x": 5.5,
+        "y": 3.5,
+        "step": 3,
+        "marks": [
+         {
+          "step": 3,
+          "style": "warn"
+         },
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "id": "c1c",
+        "label": "c1",
+        "x": 2,
+        "y": 7,
+        "step": 5,
+        "marks": [
+         {
+          "step": 5,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "id": "c2c",
+        "label": "c2",
+        "x": 7,
+        "y": 2,
+        "step": 5,
+        "marks": [
+         {
+          "step": 5,
+          "style": "warn"
+         }
+        ]
+       }
+      ],
+      "edges": [
+       {
+        "a": "p0",
+        "b": "c1a",
+        "step": 2,
+        "marks": [
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p1",
+        "b": "c1a",
+        "step": 2,
+        "marks": [
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p2",
+        "b": "c2a",
+        "step": 2,
+        "marks": [
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p3",
+        "b": "c2a",
+        "step": 2,
+        "marks": [
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p4",
+        "b": "c2a",
+        "step": 2,
+        "marks": [
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p5",
+        "b": "c2a",
+        "step": 2,
+        "marks": [
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p6",
+        "b": "c2a",
+        "step": 2,
+        "marks": [
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p7",
+        "b": "c2a",
+        "step": 2,
+        "marks": [
+         {
+          "step": 3,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p0",
+        "b": "c1b",
+        "step": 4,
+        "marks": [
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p1",
+        "b": "c1b",
+        "step": 4,
+        "marks": [
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p2",
+        "b": "c1b",
+        "step": 4,
+        "marks": [
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p3",
+        "b": "c1b",
+        "step": 4,
+        "marks": [
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p4",
+        "b": "c2b",
+        "step": 4,
+        "marks": [
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p5",
+        "b": "c2b",
+        "step": 4,
+        "marks": [
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p6",
+        "b": "c2b",
+        "step": 4,
+        "marks": [
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       },
+       {
+        "a": "p7",
+        "b": "c2b",
+        "step": 4,
+        "marks": [
+         {
+          "step": 5,
+          "style": "dim"
+         }
+        ]
+       }
+      ],
+      "caption": "Trục: giá trị pixel 1 và pixel 2 của mỗi khối"
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Mã giả LBG, mã hóa và giải mã",
+     "points": [
+      {
+       "say": "Tóm lại thành mã giả. Khởi tạo codebook ngẫu nhiên từ tập huấn luyện.",
+       "reveal": [
+        1
+       ]
+      },
+      {
+       "say": "Lặp hai việc, gán theo lân cận gần nhất rồi dời về tâm, cho đến khi codebook gần như không đổi.",
+       "reveal": [
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      {
+       "say": "Khi nén, mỗi khối ảnh được thay bằng chỉ số của code vector gần nhất. Với codebook hai trăm năm mươi sáu mục, mỗi khối mười sáu pixel chỉ tốn tám bit.",
+       "reveal": [
+        6
+       ]
+      },
+      {
+       "say": "Bên giải mã giữ cùng codebook và chỉ việc tra bảng, rất nhanh. Phần nặng nằm ở bên mã hóa, phải tìm vector gần nhất.",
+       "reveal": [
+        7
+       ]
+      }
+     ],
+     "code": {
+      "lines": [
+       "codebook ← N vector ngẫu nhiên từ tập huấn luyện",
+       "repeat:",
+       "    gán mỗi vector vào code vector gần nhất",
+       "    mỗi code vector ← tâm nhóm của nó",
+       "until codebook gần như không đổi",
+       "mã hóa: mỗi khối → chỉ số code vector gần nhất",
+       "giải mã: chỉ số → tra codebook"
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "VQ so với BTC",
+     "points": [
+      {
+       "say": "BTC lượng tử từng pixel theo ngưỡng của khối. VQ lượng tử cả khối như một vector."
+      },
+      {
+       "say": "BTC gửi trung bình, độ lệch và bitmap. VQ chỉ gửi một chỉ số."
+      },
+      {
+       "say": "BTC gần như không tốn chi phí chuẩn bị. VQ phải huấn luyện codebook, và mỗi lần mã hóa phải tìm vector gần nhất."
+      },
+      {
+       "say": "Cả hai đều giải mã rất nhanh."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "BTC",
+       "VQ"
+      ],
+      "rows": [
+       [
+        "Đơn vị lượng tử",
+        "Từng pixel (ngưỡng khối)",
+        "Cả khối (vector)"
+       ],
+       [
+        "Gửi đi",
+        "Trung bình, độ lệch, bitmap",
+        "Chỉ số trong codebook"
+       ],
+       [
+        "Chi phí",
+        "Rất rẻ",
+        "Huấn luyện codebook, tìm kiếm"
+       ],
+       [
+        "Giải mã",
+        "Điền a / b",
+        "Tra bảng"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Codebook ở đâu?",
+     "points": [
+      {
+       "say": "Ý tưởng codebook có trong nén giọng nói: các bộ mã thoại kiểu CELP dùng codebook để mã hóa tín hiệu.",
+       "text": "Mã thoại CELP"
+      },
+      {
+       "say": "Và các bạn sẽ gặp lại đúng thuật toán này ở chương chín, với tên K-means, để phân đoạn ảnh.",
+       "text": "Chương 9: K-means"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Codebook tốn kém, vẫn làm trên pixel",
+     "points": [
+      {
+       "say": "Codebook phải được huấn luyện, tốn thời gian, và chỉ tốt với loại ảnh giống tập huấn luyện.",
+       "text": "Codebook tốn công huấn luyện"
+      },
+      {
+       "say": "Mã hóa phải so khối với mọi code vector, rất nặng khi codebook lớn.",
+       "text": "Tìm kiếm nặng"
+      },
+      {
+       "say": "Và cả BTC lẫn VQ đều làm trực tiếp trên pixel. Có cách nào biến đổi ảnh trước, để thông tin dồn vào vài con số, rồi mới bỏ bớt không? Đó chính là cách JPEG làm.",
+       "text": "→ JPEG: biến đổi rồi mới lượng tử"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 6
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: VQ lượng tử cả khối mẫu cùng lúc, không phải từng mẫu riêng."
+      },
+      {
+       "say": "Bẫy hai: thứ tự của LBG là khởi tạo ngẫu nhiên, gán theo lân cận gần nhất, tính tâm, rồi lặp đến khi hội tụ."
+      },
+      {
+       "say": "Bẫy ba: bên mã hóa chỉ gửi chỉ số, codebook đã có sẵn ở cả hai bên."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "VQ lượng tử cái gì?",
+        "Cả khối mẫu (vector), không phải từng mẫu"
+       ],
+       [
+        "LBG gồm những bước nào?",
+        "Khởi tạo ngẫu nhiên → gán lân cận gần nhất → tính tâm → lặp"
+       ],
+       [
+        "Bên mã hóa gửi gì?",
+        "Chỉ số của code vector gần nhất"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "jpeg",
+   "title": "Chuẩn JPEG",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Cần một chuẩn chung",
+     "points": [
+      {
+       "say": "Các phương pháp đến giờ mỗi cái một kiểu. Để gửi ảnh cho bất kỳ ai, máy ảnh, điện thoại và trình duyệt phải cùng hiểu một định dạng.",
+       "text": "Mọi thiết bị phải hiểu chung một định dạng"
+      },
+      {
+       "say": "Chuẩn đó còn phải nén tốt, chạy nhanh trên cả phần cứng lẫn phần mềm, và cho chọn giữa dung lượng với chất lượng.",
+       "text": "Nén tốt, chạy nhanh, chỉnh được chất lượng"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "BTC và VQ làm trực tiếp trên pixel",
+     "points": [
+      {
+       "say": "BTC và VQ làm việc trên giá trị pixel. Trong miền pixel, thông tin trải đều mọi điểm, khó biết bỏ chỗ nào mà mắt không thấy.",
+       "text": "Miền pixel: thông tin trải đều"
+      },
+      {
+       "say": "Ở chương bốn ta đã có câu trả lời: phép biến đổi DCT dồn phần lớn năng lượng của khối vào vài hệ số tần số thấp.",
+       "text": "Chương 4: DCT dồn năng lượng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Biến đổi, bỏ phần mắt ít nhạy, rồi mã hóa",
+     "points": [
+      {
+       "say": "JPEG ghép những gì ta đã học: biến đổi để thông tin dồn lại, lượng tử để bỏ phần mắt ít nhạy, rồi mã không mất dữ liệu phần còn lại.",
+       "text": "Biến đổi → lượng tử → mã entropy"
+      },
+      {
+       "say": "Mắt người nhạy với mảng sáng tối lớn, kém nhạy với chi tiết rất mịn. Vậy ta lượng tử thô các tần số cao, giữ kỹ tần số thấp.",
+       "text": "Tần số cao: lượng tử thô"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bốn bước mã hóa JPEG",
+     "points": [
+      {
+       "say": "Bước một, chia ảnh thành các khối tám nhân tám pixel liền kề.",
+       "text": "1. Chia khối 8×8",
+       "reveal": 1
+      },
+      {
+       "say": "Bước hai, biến đổi DCT từng khối. Hệ số góc trên bên trái là độ sáng trung bình, càng xa càng là chi tiết tần số cao. DCT khả nghịch, nên chưa mất gì.",
+       "text": "2. DCT: chưa mất gì",
+       "reveal": 2
+      },
+      {
+       "say": "Bước ba, chia mỗi hệ số cho một số trong bảng lượng tử rồi làm tròn. Đây là bước duy nhất làm mất dữ liệu, và bảng này dùng chung cho mọi khối.",
+       "text": "3. Lượng tử: bước DUY NHẤT mất dữ liệu",
+       "reveal": 3
+      },
+      {
+       "say": "Bước bốn, mã các hệ số đã lượng tử, phần lớn là số không, bằng Huffman. Bên giải mã làm ngược lại: giải Huffman, nhân lại với bảng lượng tử, rồi DCT ngược từng khối.",
+       "text": "4. Huffman · giải mã: làm ngược lại",
+       "reveal": 4
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "n0",
+        "label": "Ảnh",
+        "x": 0,
+        "y": 0,
+        "shape": "box",
+        "step": 0
+       },
+       {
+        "id": "n1",
+        "label": "Chia khối 8×8",
+        "x": 0,
+        "y": 1,
+        "shape": "box",
+        "step": 1
+       },
+       {
+        "id": "n2",
+        "label": "DCT",
+        "x": 0,
+        "y": 2,
+        "shape": "box",
+        "step": 2
+       },
+       {
+        "id": "n3",
+        "label": "Lượng tử Q(u,v)",
+        "x": 0,
+        "y": 3,
+        "shape": "box",
+        "step": 3
+       },
+       {
+        "id": "n4",
+        "label": "Huffman",
+        "x": 0,
+        "y": 4,
+        "shape": "box",
+        "step": 4
+       },
+       {
+        "id": "n5",
+        "label": "Chuỗi bit",
+        "x": 0,
+        "y": 5,
+        "shape": "box",
+        "step": 4
+       }
+      ],
+      "edges": [
+       {
+        "a": "n0",
+        "b": "n1",
+        "step": 1
+       },
+       {
+        "a": "n1",
+        "b": "n2",
+        "step": 2
+       },
+       {
+        "a": "n2",
+        "b": "n3",
+        "step": 3
+       },
+       {
+        "a": "n3",
+        "b": "n4",
+        "step": 4
+       },
+       {
+        "a": "n4",
+        "b": "n5",
+        "step": 4
+       }
+      ],
+      "arrows": true
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Lượng tử làm mất gì?",
+     "points": [
+      {
+       "say": "Thử đoán trước: hệ số nào sẽ mất nhiều nhất, hệ số DC lớn nhất, hay một hệ số tần số cao nhỏ?",
+       "reveal": 0,
+       "ask": true
+      },
+      {
+       "say": "Hệ số DC bằng hai trăm ba mươi sáu, bước lượng tử mười sáu. Chia ra rồi làm tròn được mười lăm. Bộ giải mã nhân lại được hai trăm bốn mươi, sai lệch chỉ bốn.",
+       "reveal": 1
+      },
+      {
+       "say": "Hệ số tần số thấp bằng âm hai mươi ba, bước lượng tử mười một. Làm tròn được âm hai, giải mã ra âm hai mươi hai, sai lệch một.",
+       "reveal": 2
+      },
+      {
+       "say": "Hệ số tần số cao bằng mười hai, nhưng bước lượng tử ở đó rất lớn, chín mươi chín. Chia ra chưa tới một nửa nên làm tròn thành không. Hệ số này biến mất hoàn toàn. Đó là cách JPEG bỏ chi tiết mịn, và cũng là lý do sau lượng tử có rất nhiều số không.",
+       "reveal": 3
+      }
+     ],
+     "table": {
+      "headers": [
+       "Hệ số",
+       "F",
+       "Q",
+       "round(F/Q)",
+       "Giải mã",
+       "Sai số"
+      ],
+      "rows": [
+       [
+        "DC (0,0)",
+        "236",
+        "16",
+        "15",
+        "240",
+        "4"
+       ],
+       [
+        "Tần số thấp (0,1)",
+        "−23",
+        "11",
+        "−2",
+        "−22",
+        "1"
+       ],
+       [
+        "Tần số cao (7,7)",
+        "12",
+        "99",
+        "0",
+        "0",
+        "12"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "So sánh",
+     "title": "JPEG so với BTC và VQ",
+     "points": [
+      {
+       "say": "BTC và VQ làm trên pixel, JPEG làm trên hệ số DCT."
+      },
+      {
+       "say": "Nhờ vậy JPEG bỏ thông tin đúng chỗ mắt ít nhạy, thay vì bỏ đều mọi nơi."
+      },
+      {
+       "say": "JPEG là chuẩn chung, độ phức tạp thấp, chạy được trên cả phần cứng lẫn phần mềm, và hỗ trợ mọi loại ảnh."
+      },
+      {
+       "say": "JPEG có nhiều chế độ: tuần tự quét một lượt từ trái sang phải, trên xuống dưới; lũy tiến gửi bản thô trước rồi tinh dần; phân cấp đa độ phân giải. Độ sâu từ tám đến mười hai bit, và JPEG định nghĩa cả thuật toán không mất dữ liệu."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "BTC / VQ",
+       "JPEG"
+      ],
+      "rows": [
+       [
+        "Miền làm việc",
+        "Pixel",
+        "Hệ số DCT"
+       ],
+       [
+        "Bỏ thông tin ở đâu",
+        "Đều mọi pixel",
+        "Chủ yếu tần số cao"
+       ],
+       [
+        "Chuẩn hóa",
+        "Không",
+        "Chuẩn quốc tế"
+       ],
+       [
+        "Chế độ",
+        "Một kiểu",
+        "Tuần tự, lũy tiến, phân cấp, lossless"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "JPEG ở khắp nơi",
+     "points": [
+      {
+       "say": "JPEG là định dạng ảnh phổ biến nhất: ảnh chụp bằng điện thoại, máy ảnh, ảnh trên web.",
+       "text": "Ảnh điện thoại, máy ảnh, web"
+      },
+      {
+       "say": "Chế độ lũy tiến là lý do một số ảnh trên web hiện mờ trước rồi nét dần.",
+       "text": "Lũy tiến: ảnh hiện mờ rồi nét dần"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Nén mạnh thì vỡ ô vuông",
+     "points": [
+      {
+       "say": "Vì mỗi khối tám nhân tám được lượng tử độc lập với khối bên cạnh, khi nén mạnh, ranh giới giữa các khối lộ ra thành những ô vuông. Đó là méo khối, blocking.",
+       "text": "Lượng tử độc lập từng khối → méo khối"
+      },
+      {
+       "say": "Ảnh bầu trời là nạn nhân điển hình: vùng trời chuyển màu mượt bị vỡ thành từng bậc ô vuông.",
+       "text": "Trời chuyển màu mượt → vỡ ô"
+      },
+      {
+       "say": "Muốn hết ô vuông, phải bỏ cách chia khối. Phép biến đổi wavelet làm trên toàn ảnh, ở video tiếp theo.",
+       "text": "→ Wavelet: biến đổi toàn ảnh"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 7
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: trong JPEG chỉ lượng tử hóa làm mất dữ liệu. DCT khả nghịch, Huffman không mất gì."
+      },
+      {
+       "say": "Bẫy hai: méo khối sinh ra vì mỗi khối được lượng tử độc lập."
+      },
+      {
+       "say": "Bẫy ba: JPEG định nghĩa cả thuật toán có mất lẫn không mất dữ liệu."
+      },
+      {
+       "say": "Bẫy bốn: bảng lượng tử dùng chung cho mọi khối."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Bước nào của JPEG làm mất dữ liệu?",
+        "Chỉ lượng tử hóa; DCT, Huffman không mất"
+       ],
+       [
+        "Vì sao có méo khối?",
+        "Lượng tử độc lập từng khối 8×8"
+       ],
+       [
+        "JPEG chỉ có chế độ lossy?",
+        "Sai: có cả lossless"
+       ],
+       [
+        "Bảng lượng tử Q dùng thế nào?",
+        "Giống nhau cho mọi khối"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "wavelet",
+   "title": "Nén wavelet và JPEG2000",
+   "kind": "method",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Nén mạnh mà không vỡ ô vuông",
+     "points": [
+      {
+       "say": "Ta muốn nén ảnh trời mạnh hơn nữa mà không bị những ô vuông của JPEG.",
+       "text": "Nén mạnh nhưng không ô vuông"
+      },
+      {
+       "say": "Ô vuông sinh ra từ việc chia ảnh thành khối và xử lý mỗi khối riêng.",
+       "text": "Gốc rễ: chia khối"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "DCT theo khối 8×8",
+     "points": [
+      {
+       "say": "JPEG chỉ nhìn ảnh qua những ô tám nhân tám. Mỗi ô không biết ô bên cạnh, nên không có gì bảo đảm biên giữa hai ô liền mạch.",
+       "text": "Mỗi khối không biết khối bên cạnh"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Biến đổi cả ảnh, giữ vài hệ số lớn",
+     "points": [
+      {
+       "say": "Nén wavelet dựa trên một ý: các hệ số của một phép biến đổi giải tương quan được mã hóa hiệu quả hơn chính các pixel.",
+       "text": "Mã hệ số đã giải tương quan > mã pixel"
+      },
+      {
+       "say": "Wavelet biến đổi toàn ảnh theo nhiều mức, tách ra một ảnh thu nhỏ và các ảnh chi tiết. Thông tin thị giác quan trọng dồn vào số ít hệ số.",
+       "text": "Toàn ảnh, nhiều mức: thông tin dồn vào ít hệ số"
+      },
+      {
+       "say": "Các hệ số còn lại rất nhỏ, có thể lượng tử thô hoặc cho bằng không mà ảnh gần như không đổi.",
+       "text": "Hệ số nhỏ → lượng tử thô hoặc về 0"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Bộ mã hóa wavelet",
+     "points": [
+      {
+       "say": "Bộ mã hóa gồm ba khối. Khối một là biến đổi wavelet nhiều mức.",
+       "text": "1. Biến đổi wavelet",
+       "reveal": 1
+      },
+      {
+       "say": "Khối hai lượng tử các hệ số. Đây là nơi mất dữ liệu.",
+       "text": "2. Lượng tử: nơi mất dữ liệu",
+       "reveal": 2
+      },
+      {
+       "say": "Khối ba mã hóa ký hiệu không mất dữ liệu. Bộ giải mã làm ngược lại: giải mã ký hiệu, rồi biến đổi wavelet ngược.",
+       "text": "3. Mã hóa ký hiệu · giải mã: ngược lại",
+       "reveal": 3
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "n0",
+        "label": "Ảnh",
+        "x": 0,
+        "y": 0,
+        "shape": "box",
+        "step": 0
+       },
+       {
+        "id": "n1",
+        "label": "Biến đổi wavelet",
+        "x": 0,
+        "y": 1,
+        "shape": "box",
+        "step": 1
+       },
+       {
+        "id": "n2",
+        "label": "Lượng tử",
+        "x": 0,
+        "y": 2,
+        "shape": "box",
+        "step": 2
+       },
+       {
+        "id": "n3",
+        "label": "Mã hóa ký hiệu",
+        "x": 0,
+        "y": 3,
+        "shape": "box",
+        "step": 3
+       },
+       {
+        "id": "n4",
+        "label": "Chuỗi bit",
+        "x": 0,
+        "y": 4,
+        "shape": "box",
+        "step": 3
+       }
+      ],
+      "edges": [
+       {
+        "a": "n0",
+        "b": "n1",
+        "step": 1
+       },
+       {
+        "a": "n1",
+        "b": "n2",
+        "step": 2
+       },
+       {
+        "a": "n2",
+        "b": "n3",
+        "step": 3
+       },
+       {
+        "a": "n3",
+        "b": "n4",
+        "step": 3
+       }
+      ],
+      "arrows": true
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Dead zone: ép hệ số nhỏ về 0",
+     "points": [
+      {
+       "say": "Hình này là phân bố các hệ số chi tiết sau biến đổi: phần lớn nằm rất gần không.",
+       "text": "Hệ số chi tiết dồn quanh 0",
+       "reveal": 0
+      },
+      {
+       "say": "Bộ lượng tử thường là lượng tử đều: mọi khoảng rộng như nhau. Chỉ những hệ số thật sát không mới bị ép về không.",
+       "text": "Lượng tử đều: các khoảng bằng nhau",
+       "reveal": 1
+      },
+      {
+       "say": "Thử đoán: nếu nới rộng riêng khoảng quanh số không thì được gì?",
+       "text": "Thử đoán: nới rộng khoảng quanh 0?",
+       "reveal": 1,
+       "ask": true
+      },
+      {
+       "say": "Mẹo của slide: nới rộng khoảng lượng tử quanh không, gọi là dead zone. Nhiều hệ số nhỏ hơn bị ép về không, mà đó lại là chi tiết mắt ít thấy. Nhiều số không liên tiếp thì mã hóa rất rẻ.",
+       "text": "Dead zone: khoảng quanh 0 rộng hơn → nhiều số 0",
+       "reveal": 2
+      },
+      {
+       "say": "Slide còn nêu: có thể đổi kích thước khoảng lượng tử theo từng mức tỉ lệ, và các khoảng đã chọn phải gửi kèm cho bộ giải mã.",
+       "text": "Đổi bước theo tỉ lệ; gửi kèm cho bộ giải mã",
+       "reveal": 2
+      }
+     ],
+     "histogram": {
+      "bars": [
+       {
+        "label": "-4",
+        "value": 2
+       },
+       {
+        "label": "-3",
+        "value": 4
+       },
+       {
+        "label": "-2",
+        "value": 9
+       },
+       {
+        "label": "-1",
+        "value": 20,
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "label": "0",
+        "value": 40,
+        "marks": [
+         {
+          "step": 1,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "label": "1",
+        "value": 20,
+        "marks": [
+         {
+          "step": 2,
+          "style": "accent"
+         }
+        ]
+       },
+       {
+        "label": "2",
+        "value": 9
+       },
+       {
+        "label": "3",
+        "value": 4
+       },
+       {
+        "label": "4",
+        "value": 2
+       }
+      ],
+      "bands": [
+       {
+        "start": 4,
+        "end": 5,
+        "label": "khoảng thường",
+        "step": 1
+       },
+       {
+        "start": 3,
+        "end": 6,
+        "label": "dead zone",
+        "step": 2,
+        "marks": [
+         {
+          "step": 2,
+          "style": "warn"
+         }
+        ]
+       }
+      ],
+      "caption": "Phân bố hệ số chi tiết (minh họa); cột xanh = bị ép về 0"
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Ba yếu tố ảnh hưởng tỉ lệ nén",
+     "points": [
+      {
+       "say": "Một: loại hàm wavelet. Nó ảnh hưởng độ phức tạp tính toán và khả năng nén mà sai số vẫn chấp nhận được. Slide có bảng so sánh vài họ wavelet thường dùng.",
+       "text": "1. Loại hàm wavelet"
+      },
+      {
+       "say": "Hai: số mức phân rã. Càng nhiều mức thì số phép tính của biến đổi xuôi và ngược càng tăng.",
+       "text": "2. Số mức phân rã"
+      },
+      {
+       "say": "Thử đoán: có phải càng nhiều mức phân rã thì càng tốt?",
+       "text": "Thử đoán: càng nhiều mức càng tốt?",
+       "ask": true
+      },
+      {
+       "say": "Không hẳn. Lượng tử các hệ số ở tỉ lệ ngày càng thấp ảnh hưởng đến vùng ảnh ngày càng rộng, nên sai số tái tạo có thể tăng. Slide minh họa bằng ví dụ nén một ảnh năm trăm mười hai nhân năm trăm mười hai.",
+       "text": "Mức thấp ảnh hưởng vùng rộng → sai số tăng"
+      },
+      {
+       "say": "Ba: thiết kế bộ lượng tử, như dead zone vừa rồi.",
+       "text": "3. Thiết kế bộ lượng tử"
+      }
+     ]
+    },
+    {
+     "kicker": "So sánh",
+     "title": "JPEG so với wavelet / JPEG2000",
+     "points": [
+      {
+       "say": "JPEG biến đổi theo khối tám nhân tám. Wavelet biến đổi toàn ảnh, nhiều mức."
+      },
+      {
+       "say": "Méo đặc trưng của JPEG là méo khối. Wavelet hết méo khối, nhưng khi nén mạnh có gợn sóng quanh cạnh, gọi là ringing."
+      },
+      {
+       "say": "Đổi lại, wavelet tính toán nặng hơn."
+      },
+      {
+       "say": "Cả hai đều có chế độ không mất dữ liệu. Trong sơ đồ JPEG2000 ở slide, đường nét đứt là chế độ lossless."
+      }
+     ],
+     "table": {
+      "headers": [
+       "",
+       "JPEG (DCT)",
+       "Wavelet / JPEG2000"
+      ],
+      "rows": [
+       [
+        "Phạm vi biến đổi",
+        "Khối 8×8",
+        "Toàn ảnh, nhiều mức"
+       ],
+       [
+        "Méo đặc trưng",
+        "Méo khối (blocking)",
+        "Gợn sóng quanh cạnh (ringing)"
+       ],
+       [
+        "Độ phức tạp",
+        "Thấp",
+        "Cao hơn"
+       ],
+       [
+        "Chế độ lossless",
+        "Có",
+        "Có (đường nét đứt)"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "JPEG2000 được dùng ở đâu",
+     "points": [
+      {
+       "say": "Chuẩn JPEG2000 dùng biến đổi wavelet thay cho DCT theo khối.",
+       "text": "JPEG2000: wavelet"
+      },
+      {
+       "say": "JPEG2000 được dùng trong rạp chiếu phim kỹ thuật số và trong ảnh y tế theo chuẩn DICOM.",
+       "text": "Rạp phim số, ảnh y tế DICOM"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Vẫn còn gợn sóng, và JPEG cũ vẫn còn đó",
+     "points": [
+      {
+       "say": "Wavelet hết ô vuông, nhưng nén rất mạnh vẫn có gợn sóng quanh các cạnh. Mọi bộ mã dựa trên biến đổi đều gặp hiện tượng này ở tỉ lệ nén cao.",
+       "text": "Nén mạnh → ringing"
+      },
+      {
+       "say": "Còn hàng tỉ ảnh JPEG có sẵn vẫn mang méo khối, không thể bắt ai mã hóa lại. Có sửa được ở phía người nhận không? Đó là hậu xử lý.",
+       "text": "→ Hậu xử lý ở phía nhận"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 8
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: dead zone là khoảng lượng tử quanh số không được nới rộng hơn các khoảng khác."
+      },
+      {
+       "say": "Bẫy hai: nhiều mức phân rã không phải lúc nào cũng tốt hơn. Phép tính tăng, sai số tái tạo có thể tăng."
+      },
+      {
+       "say": "Bẫy ba: wavelet bỏ được méo khối, nhưng vẫn có ringing ở tỉ lệ nén cao."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Dead zone là gì?",
+        "Khoảng lượng tử quanh 0 rộng hơn"
+       ],
+       [
+        "Nhiều mức phân rã luôn tốt hơn?",
+        "Sai: thêm phép tính, sai số có thể tăng"
+       ],
+       [
+        "Wavelet loại bỏ méo nào của JPEG?",
+        "Méo khối (nhưng vẫn có ringing)"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "hau-xu-ly",
+   "title": "Hậu xử lý ảnh nén",
+   "kind": "extra",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Ảnh giải mã mang sẵn méo",
+     "points": [
+      {
+       "say": "Ảnh giải mã từ bộ nén có mất dữ liệu mang hai loại méo. Loại một là ringing, gợn sóng quanh cạnh. Nó xuất hiện ở tỉ lệ nén cao trong mọi bộ mã dựa trên biến đổi, do bản chất thông thấp của hệ thống.",
+       "text": "Ringing: do bản chất thông thấp"
+      },
+      {
+       "say": "Loại hai là blocking, méo khối, do lượng tử độc lập các hệ số DCT theo từng khối.",
+       "text": "Blocking: lượng tử DCT độc lập từng khối"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách cũ",
+     "title": "Chấp nhận méo",
+     "points": [
+      {
+       "say": "Cách cũ là chấp nhận: muốn ít méo thì nén nhẹ tay, tức là tốn thêm dung lượng.",
+       "text": "Muốn ít méo → nén nhẹ, tốn dung lượng"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Sửa ở phía người nhận",
+     "points": [
+      {
+       "say": "Ý tưởng: không đổi chuẩn nén, không đổi chuỗi bit. Sau khi giải mã xong, ta xử lý thêm để giảm méo.",
+       "text": "Không đổi chuẩn, xử lý sau giải mã"
+      },
+      {
+       "say": "Slide nhắc lại từng bước của JPEG, từ chia khối, DCT, lượng tử đến DCT ngược, để chỉ ra chính xác thông tin bị mất ở đâu. Biết méo sinh ra ở bước nào thì biết cần phục hồi cái gì.",
+       "text": "Biết méo sinh ở bước nào → biết sửa gì"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Chèn một bước sau bộ giải mã",
+     "points": [
+      {
+       "say": "Bộ giải mã chuẩn làm việc như bình thường.",
+       "text": "Giải mã chuẩn, không đổi",
+       "reveal": 1
+      },
+      {
+       "say": "Khối hậu xử lý chen vào trước khi hiển thị: làm mượt ranh giới khối và gợn sóng, nhưng phải giữ các cạnh thật của ảnh.",
+       "text": "Làm mượt biên khối, giữ cạnh thật",
+       "reveal": 2
+      }
+     ],
+     "graph": {
+      "nodes": [
+       {
+        "id": "n0",
+        "label": "Chuỗi bit",
+        "x": 0,
+        "y": 0,
+        "shape": "box",
+        "step": 0
+       },
+       {
+        "id": "n1",
+        "label": "Giải mã JPEG",
+        "x": 0,
+        "y": 1,
+        "shape": "box",
+        "step": 1
+       },
+       {
+        "id": "n2",
+        "label": "Hậu xử lý",
+        "x": 0,
+        "y": 2,
+        "shape": "box",
+        "step": 2
+       },
+       {
+        "id": "n3",
+        "label": "Ảnh hiển thị",
+        "x": 0,
+        "y": 3,
+        "shape": "box",
+        "step": 2
+       }
+      ],
+      "edges": [
+       {
+        "a": "n0",
+        "b": "n1",
+        "step": 1
+       },
+       {
+        "a": "n1",
+        "b": "n2",
+        "step": 2
+       },
+       {
+        "a": "n2",
+        "b": "n3",
+        "step": 2
+       }
+      ],
+      "arrows": true
+     }
+    },
+    {
+     "kicker": "Ứng dụng",
+     "title": "Ở đâu có hậu xử lý",
+     "points": [
+      {
+       "say": "Nhiều trình xem ảnh và video có bộ lọc khử méo khối. Ở video cuối chương, các bạn sẽ thấy học sâu cũng được dùng để khử vết nén, ví dụ mạng CAS-CNN.",
+       "text": "Bộ lọc khử khối; CAS-CNN"
+      }
+     ]
+    },
+    {
+     "kicker": "Hạn chế",
+     "title": "Chỉ đoán lại phần đã mất",
+     "points": [
+      {
+       "say": "Hậu xử lý chỉ đoán lại phần đã mất, không lấy lại được thông tin thật. Và đến giờ ta vẫn chỉ nói về ảnh hai chiều thông thường.",
+       "text": "Không lấy lại thông tin thật · ảnh không chỉ 2D"
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 9
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: ringing do bản chất thông thấp, có ở mọi codec dựa trên biến đổi khi nén mạnh."
+      },
+      {
+       "say": "Bẫy hai: blocking do lượng tử độc lập các hệ số DCT của từng khối."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Ringing do đâu?",
+        "Bản chất thông thấp của codec dựa trên biến đổi, ở tỉ lệ nén cao"
+       ],
+       [
+        "Blocking do đâu?",
+        "Lượng tử độc lập hệ số DCT từng khối"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "da-pho-hoc-sau",
+   "title": "Mở rộng: ảnh đa phổ và nén bằng học sâu",
+   "kind": "extra",
+   "scenes": [
+    {
+     "kicker": "Vấn đề",
+     "title": "Ảnh không chỉ có hai chiều",
+     "points": [
+      {
+       "say": "Ảnh vệ tinh viễn thám chụp cùng một vùng đất ở nhiều dải phổ. Ảnh y tế ghép nhiều phương thức như MRI, CT, X quang. Đó là ảnh đa phổ, một khối dữ liệu ba chiều.",
+       "text": "Ảnh đa phổ: viễn thám, y tế đa phương thức"
+      },
+      {
+       "say": "Chiều thứ ba, chiều phổ, có bản chất khác hẳn hai chiều không gian, nên các kỹ thuật nén ảnh hai chiều thường không phù hợp.",
+       "text": "Chiều phổ khác chiều không gian"
+      }
+     ]
+    },
+    {
+     "kicker": "Ý tưởng",
+     "title": "Giải tương quan cả chiều phổ",
+     "points": [
+      {
+       "say": "Các dải phổ của cùng một vùng rất giống nhau. Ngoài tương quan không gian, ta khai thác thêm tương quan giữa các dải phổ.",
+       "text": "Khai thác thêm tương quan giữa các dải"
+      }
+     ]
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Ba lớp bộ mã dựa trên biến đổi",
+     "points": [
+      {
+       "say": "Lớp phổ không gian: áp dụng biến đổi KL trên chiều phổ trước, rồi nén từng thành phần đã giải tương quan bằng mã hóa dựa trên biến đổi."
+      },
+      {
+       "say": "Lớp không gian phổ: biến đổi không gian trước, như DCT khối hoặc wavelet, rồi giải tương quan chiều phổ của mỗi băng bằng biến đổi KL."
+      },
+      {
+       "say": "Lớp không gian phổ phức: khi các mặt phẳng ảnh không khớp nhau, cần biến đổi tần số phức để giữ thông tin pha."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Lớp",
+       "Cách làm"
+      ],
+      "rows": [
+       [
+        "Phổ – không gian",
+        "KL trên chiều phổ trước, rồi mã biến đổi từng thành phần"
+       ],
+       [
+        "Không gian – phổ",
+        "Biến đổi không gian trước (DCT, wavelet), rồi KL theo chiều phổ"
+       ],
+       [
+        "Không gian – phổ phức",
+        "Ảnh không khớp nhau: biến đổi tần số phức, giữ pha"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Cách làm",
+     "title": "Nén bằng học sâu",
+     "points": [
+      {
+       "say": "Hướng mới nhất thay cả chuỗi biến đổi, lượng tử và mã entropy bằng mạng nơ ron học từ đầu đến cuối.",
+       "text": "Học end-to-end thay pipeline cổ điển"
+      },
+      {
+       "say": "Slide nêu ba hướng. Hướng CNN, ví dụ CAS-CNN dùng mạng tích chập sâu để khử vết nén.",
+       "text": "CNN: CAS-CNN khử vết nén"
+      },
+      {
+       "say": "Hướng RNN, ví dụ mô hình nén ảnh độ phân giải đầy đủ bằng mạng hồi quy của Toderici và cộng sự.",
+       "text": "RNN: nén ảnh độ phân giải đầy đủ"
+      },
+      {
+       "say": "Và hướng GAN, nén thích ứng bằng cách bù phần dư ngữ nghĩa và cảm nhận qua mạng đối sinh.",
+       "text": "GAN: bù phần dư ngữ nghĩa – cảm nhận"
+      }
+     ]
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Bẫy thi",
+     "points": [
+      {
+       "say": "Bẫy một: ảnh đa phổ không nén như ảnh hai chiều được, vì chiều phổ khác bản chất với chiều không gian."
+      },
+      {
+       "say": "Bẫy hai: lớp phổ không gian biến đổi KL trên chiều phổ trước, lớp không gian phổ thì ngược lại."
+      },
+      {
+       "say": "Bẫy ba: ba hướng học sâu trong slide là CNN, RNN và GAN."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Vì sao không nén ảnh đa phổ như ảnh 2D?",
+        "Chiều phổ có bản chất khác chiều không gian"
+       ],
+       [
+        "Phổ – không gian làm gì trước?",
+        "Biến đổi KL trên chiều phổ"
+       ],
+       [
+        "Ba hướng học sâu trong slide?",
+        "CNN, RNN, GAN"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "tong-ket",
+   "title": "Tổng kết chương 5",
+   "kind": "summary",
+   "scenes": [
+    {
+     "kicker": "Tổng kết",
+     "title": "Chín phương pháp, một mạch",
+     "points": [
+      {
+       "say": "Cùng nhìn lại cả chương. Câu hỏi ban đầu: gửi tấm ảnh trời hai trăm năm mươi sáu kilobyte bằng ít bit hơn."
+      },
+      {
+       "say": "Entropy cho biết giới hạn. Huffman tạo bộ mã sát giới hạn đó, mã số học vượt qua ràng buộc một bit mỗi ký hiệu của Huffman."
+      },
+      {
+       "say": "Chạm trần hai đến ba lần, ta chấp nhận mất dữ liệu. BTC giữ trung bình và độ lệch của khối, VQ thay cả khối bằng chỉ số trong codebook."
+      },
+      {
+       "say": "JPEG ghép DCT, lượng tử và Huffman thành chuẩn chung nhưng sinh méo khối. Wavelet bỏ chia khối, còn lại ringing. Hậu xử lý sửa méo ở phía nhận, còn ảnh đa phổ và học sâu mở rộng bài toán."
+      }
+     ],
+     "chain": {
+      "items": [
+       "Entropy",
+       "Huffman",
+       "Mã số học",
+       "BTC",
+       "VQ / LBG",
+       "JPEG",
+       "Wavelet / JPEG2000",
+       "Hậu xử lý",
+       "Đa phổ & học sâu"
+      ],
+      "current": 9
+     }
+    },
+    {
+     "kicker": "Tổng kết",
+     "title": "Bảng so sánh nhanh",
+     "points": [
+      {
+       "say": "Hai phương pháp không mất dữ liệu: Huffman ghép hai xác suất nhỏ nhất, mã số học biến cả thông điệp thành một khoảng.",
+       "reveal": [
+        1,
+        2
+       ]
+      },
+      {
+       "say": "Hai phương pháp có mất dữ liệu làm trên pixel: BTC giữ hai moment, VQ gửi chỉ số code vector.",
+       "reveal": [
+        3,
+        4
+       ]
+      },
+      {
+       "say": "Hai phương pháp dựa trên biến đổi: JPEG chỉ mất dữ liệu ở bước lượng tử, wavelet biến đổi toàn ảnh và dùng dead zone.",
+       "reveal": [
+        5,
+        6
+       ]
+      }
+     ],
+     "table": {
+      "headers": [
+       "Phương pháp",
+       "Mất dữ liệu?",
+       "Ý chính"
+      ],
+      "rows": [
+       [
+        "Huffman",
+        "Không",
+        "Ghép 2 xác suất nhỏ nhất"
+       ],
+       [
+        "Mã số học",
+        "Không",
+        "Cả thông điệp = một khoảng"
+       ],
+       [
+        "BTC",
+        "Có",
+        "Giữ trung bình + độ lệch chuẩn"
+       ],
+       [
+        "VQ / LBG",
+        "Có",
+        "Chỉ số code vector gần nhất"
+       ],
+       [
+        "JPEG",
+        "Có",
+        "Chỉ mất ở bước lượng tử"
+       ],
+       [
+        "Wavelet",
+        "Có",
+        "Toàn ảnh, dead zone"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Bẫy thi",
+     "title": "Năm bẫy chung của chương",
+     "points": [
+      {
+       "say": "Một: Huffman gộp hai ký hiệu có xác suất nhỏ nhất."
+      },
+      {
+       "say": "Hai: entropy là cận dưới của số bit trung bình."
+      },
+      {
+       "say": "Ba: trong JPEG, chỉ lượng tử hóa làm mất dữ liệu."
+      },
+      {
+       "say": "Bốn: BTC bảo toàn trung bình và độ lệch chuẩn của khối."
+      },
+      {
+       "say": "Năm: mã số học là mã không khối."
+      }
+     ],
+     "table": {
+      "headers": [
+       "Câu hỏi",
+       "Đáp án"
+      ],
+      "rows": [
+       [
+        "Huffman gộp hai ký hiệu nào?",
+        "Hai ký hiệu xác suất NHỎ nhất"
+       ],
+       [
+        "Entropy là cận trên hay cận dưới?",
+        "Cận DƯỚI"
+       ],
+       [
+        "Bước nào của JPEG làm mất dữ liệu?",
+        "Lượng tử hóa"
+       ],
+       [
+        "BTC bảo toàn gì?",
+        "Trung bình và độ lệch chuẩn"
+       ],
+       [
+        "Mã số học là mã khối?",
+        "Sai: không khối"
+       ]
+      ]
+     }
+    },
+    {
+     "kicker": "Tổng kết",
+     "title": "Sang chương 6",
+     "points": [
+      {
+       "say": "Chương sau, tấm ảnh trời bắt đầu chuyển động. Video có thêm tương quan thời gian giữa các khung hình, và các bạn sẽ gặp lại DCT, lượng tử và Huffman bên trong các chuẩn MPEG.",
+       "text": "Chương 6: nén video, tương quan thời gian"
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }

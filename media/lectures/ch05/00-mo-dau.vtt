@@ -1,0 +1,64 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:01.873 line:98%,end
+Chào các bạn.
+
+00:00:01.823 --> 00:00:04.580 line:98%,end
+Chương năm xoay quanh một câu hỏi duy nhất,
+
+00:00:04.580 --> 00:00:06.953 line:98%,end
+và cả chương sẽ trả lời nó từng bước.
+
+00:00:06.953 --> 00:00:10.241 line:98%,end
+Hãy tưởng tượng các bạn cần gửi một tấm ảnh bầu trời,
+
+00:00:10.241 --> 00:00:14.831 line:98%,end
+ảnh xám năm trăm mười hai nhân năm trăm mười hai pixel, mỗi pixel tám bit.
+
+00:00:15.430 --> 00:00:20.047 line:98%,end
+Tính nhanh: khoảng hai trăm sáu mươi hai nghìn pixel, mỗi pixel một byte,
+
+00:00:20.047 --> 00:00:22.893 line:98%,end
+tức là khoảng hai trăm năm mươi sáu kilobyte.
+
+00:00:22.843 --> 00:00:26.775 line:98%,end
+Qua một đường mạng chậm, người nhận phải chờ khá lâu.
+
+00:00:27.376 --> 00:00:30.710 line:98%,end
+Câu hỏi của cả chương: làm sao gửi ít bit hơn,
+
+00:00:30.710 --> 00:00:33.537 line:98%,end
+mà người nhận vẫn thấy đúng tấm ảnh đó?
+
+00:00:33.487 --> 00:00:36.065 line:98%,end
+Các bạn thử nghĩ trước một giây.
+
+00:00:39.582 --> 00:00:41.615 line:98%,end
+Có hai con đường.
+
+00:00:41.565 --> 00:00:46.110 line:98%,end
+Con đường thứ nhất giữ nguyên từng bit, gọi là nén không mất dữ liệu.
+
+00:00:46.110 --> 00:00:50.511 line:98%,end
+Ta sẽ đi qua entropy, mã Huffman và mã số học.
+
+00:00:51.120 --> 00:00:54.937 line:98%,end
+Nhưng con đường này chạm trần ở khoảng hai đến ba lần.
+
+00:00:54.887 --> 00:00:59.601 line:98%,end
+Muốn nén mạnh hơn, ta phải chấp nhận bỏ đi những thứ mắt không thấy.
+
+00:00:59.601 --> 00:01:06.256 line:98%,end
+Đó là con đường thứ hai, nén có mất dữ liệu: BTC, lượng tử hóa vector,
+
+00:01:06.256 --> 00:01:07.778 line:98%,end
+JPEG và wavelet.
+
+00:01:08.394 --> 00:01:10.833 line:98%,end
+Mỗi video tiếp theo là một phương pháp,
+
+00:01:10.833 --> 00:01:14.711 line:98%,end
+và mỗi phương pháp ra đời để vá chỗ hụt của phương pháp trước.
+
+00:01:14.661 --> 00:01:18.021 line:98%,end
+Vì vậy các bạn hãy xem theo đúng thứ tự.

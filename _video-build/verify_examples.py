@@ -64,6 +64,32 @@ def ch05() -> None:
         assert round(coeff / step) == level and level * step == back
     print("ch05 JPEG quantisation ok")
 
+    # Story videos: sky image reduced to four grey levels (video 01)
+    sky = [0.4, 0.3, 0.2, 0.1]
+    close(-sum(q * math.log2(q) for q in sky), 1.85)
+    close(-math.log2(0.3), 1.74)
+    close(-math.log2(0.2), 2.32)
+    close(-math.log2(0.1), 3.32)
+    assert 512 * 512 == 262144 and 512 * 512 // 1024 == 256
+    # Huffman limit: one symbol at p = 0.9 (videos 02-03)
+    close(-(0.9 * math.log2(0.9) + 0.1 * math.log2(0.1)), 0.47)
+    close(-math.log2(0.9), 0.15)
+    # Arithmetic coding: final width and the bits it needs (video 03)
+    close(high - low, 0.00128, 1e-9)
+    close(math.log2(1 / (high - low)), 9.6, 0.02)
+    assert low <= 0.068 < high
+    # BTC decode: 7 pixels at b, 9 at a keep the mean (video 04)
+    close((7 * b + 9 * a) / 16, m1, 0.01)
+    # LBG on eight two-pixel blocks (video 05)
+    pts = np.array([(1, 2), (2, 1), (2, 3), (3, 2), (6, 7), (7, 6), (8, 7), (7, 8)], dtype=float)
+    books = [np.array([(2, 1), (3, 2)], dtype=float)]
+    for _ in range(3):
+        cells = np.argmin(((pts[:, None, :] - books[-1][None, :, :]) ** 2).sum(-1), axis=1)
+        books.append(np.array([pts[cells == j].mean(axis=0) for j in range(2)]))
+    assert books[1].tolist() == [[1.5, 1.5], [5.5, 5.5]], books[1]
+    assert books[2].tolist() == [[2, 2], [7, 7]] and books[3].tolist() == [[2, 2], [7, 7]], books
+    print("ch05 story numbers ok: H(sky)=1.85, arithmetic 9.6 bits, LBG converges to (2,2),(7,7)")
+
 
 def ch06() -> None:
     bytes_per_frame = 352 * 288 * 1.5

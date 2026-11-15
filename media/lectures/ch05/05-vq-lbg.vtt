@@ -1,0 +1,184 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.831 line:98%,end
+Nhìn kỹ tấm ảnh trời: có những khối trời phẳng, khối mây sáng, khối viền mây.
+
+00:00:05.781 --> 00:00:09.128 line:98%,end
+Những kiểu khối này lặp đi lặp lại khắp ảnh.
+
+00:00:09.742 --> 00:00:13.613 line:98%,end
+Nếu cả hai bên đều có sẵn một danh sách các kiểu khối mẫu,
+
+00:00:13.613 --> 00:00:17.817 line:98%,end
+ta chỉ cần gửi số thứ tự của mẫu gần nhất, thay vì gửi cả khối.
+
+00:00:19.276 --> 00:00:23.719 line:98%,end
+Lượng tử hóa là ánh xạ một tập giá trị lớn sang một tập nhỏ hơn,
+
+00:00:23.719 --> 00:00:26.218 line:98%,end
+ví dụ làm tròn số thực về số nguyên.
+
+00:00:26.168 --> 00:00:29.632 line:98%,end
+Làm khéo thì sai số được giữ ở mức nhỏ.
+
+00:00:30.238 --> 00:00:34.407 line:98%,end
+BTC và cách làm tròn thông thường xét từng pixel một.
+
+00:00:34.357 --> 00:00:38.810 line:98%,end
+Mỗi pixel quyết định riêng, không biết hàng xóm của nó thế nào.
+
+00:00:40.324 --> 00:00:42.754 line:98%,end
+Lượng tử hóa vector, viết tắt VQ,
+
+00:00:42.754 --> 00:00:47.540 line:98%,end
+gom một khối mẫu thành một vector và làm tròn cả vector cùng lúc.
+
+00:00:48.094 --> 00:00:51.796 line:98%,end
+Giống như bảng màu sơn: thay vì đọc mã màu chính xác,
+
+00:00:51.796 --> 00:00:54.450 line:98%,end
+các bạn chỉ nói số của ô màu gần nhất.
+
+00:00:54.400 --> 00:00:57.017 line:98%,end
+Bảng đó gọi là codebook.
+
+00:00:57.640 --> 00:01:01.809 line:98%,end
+Bên mã hóa tìm code vector gần nhất rồi gửi chỉ số.
+
+00:01:01.759 --> 00:01:06.589 line:98%,end
+Bên giải mã có cùng codebook, tra chỉ số là dựng lại được khối.
+
+00:01:08.110 --> 00:01:14.115 line:98%,end
+Ví dụ nhỏ: mỗi khối chỉ có hai pixel, nên mỗi khối là một điểm trên mặt phẳng.
+
+00:01:14.065 --> 00:01:19.898 line:98%,end
+Tập huấn luyện có tám khối: bốn khối tối ở góc dưới, bốn khối sáng ở góc trên.
+
+00:01:20.512 --> 00:01:25.996 line:98%,end
+Thuật toán của Linde, Buzo và Gray, gọi tắt là LBG.
+
+00:01:25.946 --> 00:01:30.555 line:98%,end
+Bước một: chọn ngẫu nhiên N code vector từ tập huấn luyện.
+
+00:01:30.555 --> 00:01:35.659 line:98%,end
+Ở đây N bằng hai, và không may cả hai đều rơi vào nhóm tối.
+
+00:01:36.274 --> 00:01:40.404 line:98%,end
+Bước hai: gán mỗi vector huấn luyện cho code vector gần nhất,
+
+00:01:40.404 --> 00:01:42.435 line:98%,end
+theo quy tắc lân cận gần nhất.
+
+00:01:42.385 --> 00:01:47.007 line:98%,end
+c hai ở gần nhóm sáng hơn, nên ôm luôn cả bốn khối sáng.
+
+00:01:47.620 --> 00:01:53.377 line:98%,end
+Thử đoán: khi dời mỗi code vector về tâm nhóm của nó, c hai sẽ đi về đâu?
+
+00:01:55.926 --> 00:02:00.199 line:98%,end
+Bước ba: tính tâm mỗi nhóm và dùng làm codebook mới.
+
+00:02:00.149 --> 00:02:03.508 line:98%,end
+c một về một phẩy năm, một phẩy năm.
+
+00:02:03.508 --> 00:02:08.079 line:98%,end
+c hai bị kéo ra giữa, năm phẩy năm, năm phẩy năm.
+
+00:02:08.688 --> 00:02:10.747 line:98%,end
+Lặp lại phép gán.
+
+00:02:10.697 --> 00:02:15.684 line:98%,end
+Giờ hai khối tối đã gần c một hơn, nên mỗi nhóm đúng là một cụm.
+
+00:02:16.290 --> 00:02:22.204 line:98%,end
+Tính tâm lần nữa: c một về hai, hai, còn c hai về bảy, bảy.
+
+00:02:22.154 --> 00:02:26.450 line:98%,end
+Gán lại thì không còn gì thay đổi: thuật toán đã hội tụ.
+
+00:02:27.960 --> 00:02:30.293 line:98%,end
+Tóm lại thành mã giả.
+
+00:02:30.243 --> 00:02:33.758 line:98%,end
+Khởi tạo codebook ngẫu nhiên từ tập huấn luyện.
+
+00:02:34.362 --> 00:02:38.233 line:98%,end
+Lặp hai việc, gán theo lân cận gần nhất rồi dời về tâm,
+
+00:02:38.233 --> 00:02:40.979 line:98%,end
+cho đến khi codebook gần như không đổi.
+
+00:02:41.532 --> 00:02:46.352 line:98%,end
+Khi nén, mỗi khối ảnh được thay bằng chỉ số của code vector gần nhất.
+
+00:02:46.302 --> 00:02:51.823 line:98%,end
+Với codebook hai trăm năm mươi sáu mục, mỗi khối mười sáu pixel chỉ tốn tám bit.
+
+00:02:52.446 --> 00:02:57.070 line:98%,end
+Bên giải mã giữ cùng codebook và chỉ việc tra bảng, rất nhanh.
+
+00:02:57.020 --> 00:03:01.278 line:98%,end
+Phần nặng nằm ở bên mã hóa, phải tìm vector gần nhất.
+
+00:03:02.796 --> 00:03:06.691 line:98%,end
+BTC lượng tử từng pixel theo ngưỡng của khối.
+
+00:03:06.641 --> 00:03:10.079 line:98%,end
+VQ lượng tử cả khối như một vector.
+
+00:03:10.686 --> 00:03:14.607 line:98%,end
+BTC gửi trung bình, độ lệch và bitmap.
+
+00:03:14.557 --> 00:03:17.253 line:98%,end
+VQ chỉ gửi một chỉ số.
+
+00:03:17.856 --> 00:03:21.387 line:98%,end
+BTC gần như không tốn chi phí chuẩn bị.
+
+00:03:21.337 --> 00:03:26.779 line:98%,end
+VQ phải huấn luyện codebook, và mỗi lần mã hóa phải tìm vector gần nhất.
+
+00:03:27.402 --> 00:03:30.151 line:98%,end
+Cả hai đều giải mã rất nhanh.
+
+00:03:31.608 --> 00:03:38.811 line:98%,end
+Ý tưởng codebook có trong nén giọng nói: các bộ mã thoại kiểu CELP dùng codebook để mã hóa tín hiệu.
+
+00:03:39.378 --> 00:03:44.586 line:98%,end
+Và các bạn sẽ gặp lại đúng thuật toán này ở chương chín, với tên K-means,
+
+00:03:44.586 --> 00:03:45.799 line:98%,end
+để phân đoạn ảnh.
+
+00:03:47.256 --> 00:03:50.213 line:98%,end
+Codebook phải được huấn luyện, tốn thời gian,
+
+00:03:50.213 --> 00:03:53.170 line:98%,end
+và chỉ tốt với loại ảnh giống tập huấn luyện.
+
+00:03:53.730 --> 00:03:58.927 line:98%,end
+Mã hóa phải so khối với mọi code vector, rất nặng khi codebook lớn.
+
+00:03:59.484 --> 00:04:03.926 line:98%,end
+Và cả BTC lẫn VQ đều làm trực tiếp trên pixel.
+
+00:04:03.876 --> 00:04:08.386 line:98%,end
+Có cách nào biến đổi ảnh trước, để thông tin dồn vào vài con số,
+
+00:04:08.386 --> 00:04:09.866 line:98%,end
+rồi mới bỏ bớt không?
+
+00:04:09.866 --> 00:04:12.874 line:98%,end
+Đó chính là cách JPEG làm.
+
+00:04:14.394 --> 00:04:19.643 line:98%,end
+Bẫy một: VQ lượng tử cả khối mẫu cùng lúc, không phải từng mẫu riêng.
+
+00:04:20.196 --> 00:04:26.087 line:98%,end
+Bẫy hai: thứ tự của LBG là khởi tạo ngẫu nhiên, gán theo lân cận gần nhất,
+
+00:04:26.087 --> 00:04:28.714 line:98%,end
+tính tâm, rồi lặp đến khi hội tụ.
+
+00:04:29.262 --> 00:04:35.228 line:98%,end
+Bẫy ba: bên mã hóa chỉ gửi chỉ số, codebook đã có sẵn ở cả hai bên.

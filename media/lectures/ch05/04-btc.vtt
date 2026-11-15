@@ -1,0 +1,172 @@
+WEBVTT
+
+00:00:00.100 --> 00:00:05.597 line:98%,end
+Ta đã chạm trần của nén không mất dữ liệu: tấm ảnh trời vẫn còn gần trăm kilobyte.
+
+00:00:06.166 --> 00:00:09.540 line:98%,end
+Nhưng mắt người không cần từng con số chính xác.
+
+00:00:09.490 --> 00:00:13.527 line:98%,end
+Một pixel tám mươi hay tám mươi hai, nhìn như nhau.
+
+00:00:13.527 --> 00:00:18.514 line:98%,end
+Nếu chấp nhận ảnh giải mã khác đi một chút, ta có thể nén mạnh hơn nhiều.
+
+00:00:19.120 --> 00:00:24.356 line:98%,end
+Câu hỏi: nếu được phép bỏ bớt, ta nên giữ lại những gì của một khối ảnh?
+
+00:00:27.822 --> 00:00:33.189 line:98%,end
+Huffman và mã số học không được phép bỏ gì, nên bị chặn bởi entropy.
+
+00:00:33.744 --> 00:00:37.816 line:98%,end
+Muốn vượt qua, ta phải đổi luật chơi: không giữ nguyên ảnh nữa,
+
+00:00:37.816 --> 00:00:40.530 line:98%,end
+mà giữ những đặc trưng quan trọng của ảnh.
+
+00:00:41.982 --> 00:00:46.620 line:98%,end
+Hình dung các bạn mô tả chiều cao một lớp học mà không đọc từng người.
+
+00:00:46.570 --> 00:00:50.584 line:98%,end
+Các bạn nói: trung bình bao nhiêu, chênh lệch nhiều hay ít,
+
+00:00:50.584 --> 00:00:52.286 line:98%,end
+và ai cao hơn trung bình.
+
+00:00:52.896 --> 00:00:58.422 line:98%,end
+BTC làm đúng như vậy với từng khối n nhân n: giữ trung bình, giữ độ lệch chuẩn,
+
+00:00:58.422 --> 00:01:02.690 line:98%,end
+và một bản đồ một bit cho biết pixel nào sáng hơn trung bình.
+
+00:01:03.258 --> 00:01:07.561 line:98%,end
+Khi giải mã, mỗi pixel chỉ còn một trong hai mức: a cho pixel tối,
+
+00:01:07.561 --> 00:01:08.670 line:98%,end
+b cho pixel sáng,
+
+00:01:08.670 --> 00:01:13.234 line:98%,end
+chọn sao cho trung bình và độ lệch chuẩn của khối vẫn được giữ nguyên.
+
+00:01:14.688 --> 00:01:18.961 line:98%,end
+Lấy khối bốn nhân bốn trong slide, mười sáu pixel.
+
+00:01:18.911 --> 00:01:21.313 line:98%,end
+Trung bình là chín mươi tám phẩy bảy lăm,
+
+00:01:21.313 --> 00:01:24.184 line:98%,end
+độ lệch chuẩn khoảng chín mươi hai phẩy chín lăm.
+
+00:01:24.786 --> 00:01:28.942 line:98%,end
+Thử đoán: có bao nhiêu pixel lớn hơn hoặc bằng trung bình?
+
+00:01:31.508 --> 00:01:36.640 line:98%,end
+Đánh dấu một cho pixel lớn hơn hoặc bằng trung bình, không cho phần còn lại.
+
+00:01:36.590 --> 00:01:41.122 line:98%,end
+Có bảy pixel sáng, gọi số đó là q, bằng bảy.
+
+00:01:41.122 --> 00:01:43.960 line:98%,end
+Bitmap này tốn đúng mười sáu bit.
+
+00:01:45.482 --> 00:01:49.270 line:98%,end
+Hai mức giải mã được tính từ trung bình, độ lệch chuẩn,
+
+00:01:49.270 --> 00:01:54.573 line:98%,end
+số pixel k và số pixel sáng q, sao cho khối giải mã giữ nguyên hai moment đó.
+
+00:01:55.124 --> 00:02:00.230 line:98%,end
+Thay số: a khoảng mười sáu phẩy tám, b khoảng hai trăm lẻ bốn phẩy một.
+
+00:02:00.782 --> 00:02:05.225 line:98%,end
+Để ý: chỉ có bảy pixel sáng nên b phải lớn hơn trung bình nhiều,
+
+00:02:05.225 --> 00:02:07.724 line:98%,end
+còn chín pixel tối kéo a xuống thấp.
+
+00:02:07.674 --> 00:02:11.047 line:98%,end
+Nhờ vậy trung bình của khối giải mã vẫn đúng.
+
+00:02:12.548 --> 00:02:17.165 line:98%,end
+Bên nhận có bitmap mười sáu bit, cùng trung bình và độ lệch chuẩn,
+
+00:02:17.165 --> 00:02:18.214 line:98%,end
+mỗi số tám bit.
+
+00:02:18.782 --> 00:02:23.224 line:98%,end
+Pixel nào là một nhận b, làm tròn là hai trăm lẻ bốn.
+
+00:02:23.174 --> 00:02:27.315 line:98%,end
+Pixel nào là không nhận a, làm tròn là mười bảy.
+
+00:02:27.315 --> 00:02:30.392 line:98%,end
+Khối giải mã thô hơn, nhưng sáng tối đúng chỗ,
+
+00:02:30.392 --> 00:02:33.604 line:98%,end
+và trung bình vẫn xấp xỉ chín mươi tám phẩy tám.
+
+00:02:34.208 --> 00:02:38.876 line:98%,end
+Tổng cộng ba mươi hai bit thay vì một trăm hai mươi tám bit: nén bốn lần,
+
+00:02:38.876 --> 00:02:42.010 line:98%,end
+tức hai bit mỗi pixel, và khối nào cũng như nhau.
+
+00:02:43.478 --> 00:02:46.527 line:98%,end
+Nén không mất dữ liệu giữ ảnh giống hệt.
+
+00:02:46.477 --> 00:02:50.201 line:98%,end
+BTC chỉ giữ gần đúng, mỗi khối hai mức.
+
+00:02:50.816 --> 00:02:57.042 line:98%,end
+Đổi lại, BTC nén bốn lần với khối bốn nhân bốn, vượt qua trần hai đến ba lần.
+
+00:02:57.602 --> 00:03:03.153 line:98%,end
+BTC là nén có mất dữ liệu với độ dài cố định: khối nào cũng ba mươi hai bit,
+
+00:03:03.153 --> 00:03:04.687 line:98%,end
+dễ dự trù băng thông.
+
+00:03:05.252 --> 00:03:10.697 line:98%,end
+Và nó cực kỳ đơn giản: giải mã chỉ là đọc bitmap rồi điền a hoặc b.
+
+00:03:12.146 --> 00:03:12.955 line:98%,end
+Theo slide,
+
+00:03:12.955 --> 00:03:19.284 line:98%,end
+BTC từng được so sánh với DCT và mã lai cho ảnh trinh sát trên không độ phân giải cao.
+
+00:03:19.234 --> 00:03:24.689 line:98%,end
+Ở tốc độ từ một đến ba bit mỗi pixel, BTC cho kết quả rất tốt.
+
+00:03:25.292 --> 00:03:29.444 line:98%,end
+Slide cũng nêu biến thể dùng moment tuyệt đối thay cho độ lệch chuẩn,
+
+00:03:29.444 --> 00:03:32.573 line:98%,end
+cho sai số bình phương trung bình tốt hơn BTC chuẩn.
+
+00:03:34.034 --> 00:03:38.097 line:98%,end
+Hạn chế của BTC: mỗi pixel chỉ còn một trong hai mức,
+
+00:03:38.097 --> 00:03:40.703 line:98%,end
+nên khối nhiều chi tiết bị vẽ thô.
+
+00:03:41.252 --> 00:03:47.348 line:98%,end
+Sâu hơn, BTC vẫn lượng tử từng pixel riêng lẻ, chỉ là theo ngưỡng của khối.
+
+00:03:47.298 --> 00:03:51.907 line:98%,end
+Nó không tận dụng việc các khối ảnh thường lặp lại thành những mẫu giống nhau.
+
+00:03:52.526 --> 00:03:56.447 line:98%,end
+Nếu ta lượng tử cả khối như một đơn vị thì sao?
+
+00:03:56.397 --> 00:03:59.210 line:98%,end
+Đó là lượng tử hóa vector.
+
+00:04:00.716 --> 00:04:05.992 line:98%,end
+Bẫy một: BTC là nén có mất dữ liệu, với độ dài cố định.
+
+00:04:06.542 --> 00:04:12.469 line:98%,end
+Bẫy hai: BTC bảo toàn trung bình và độ lệch chuẩn của khối, không phải trung vị.
+
+00:04:13.040 --> 00:04:18.485 line:98%,end
+Bẫy ba: với bộ lượng tử hai mức, bitmap tốn một bit cho mỗi pixel.

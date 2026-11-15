@@ -8,22 +8,23 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))  # `python -I` leaves the script folder off sys.path
 
-from script_model import SCRIPTS, load_script
-from slides import chapter_frames, draw, slide_page
+from script_model import SCRIPTS, load_units
+from slides import draw, slide_page, unit_frames
 
 
 async def main(chapters: list[int]) -> int:
     total = 0
     async with slide_page() as page:
         for chapter in chapters:
-            script = load_script(chapter)
-            frames = chapter_frames(chapter, script)
-            found: dict[str, None] = {}
-            for frame in frames:
-                for problem in await draw(page, frame):
-                    found[f"  '{script.scenes[frame.scene_index].title}': {problem}"] = None
+            frames_seen, found = 0, {}
+            for unit in load_units(chapter):
+                frames = unit_frames(unit)
+                frames_seen += len(frames)
+                for frame in frames:
+                    for problem in await draw(page, frame):
+                        found[f"  {unit.stem} '{unit.scenes[frame.scene_index].title}': {problem}"] = None
             total += len(found)
-            print(f"ch{chapter:02d}: {len(frames)} frames, {len(found)} overflow problems")
+            print(f"ch{chapter:02d}: {frames_seen} frames, {len(found)} overflow problems")
             if found:
                 print("\n".join(found))
     return 1 if total else 0
